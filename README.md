@@ -74,6 +74,8 @@ go run github.com/fragment-dev/fragment-go \
 To [post](https://fragment.dev/docs#post-ledger-entries-post-to-the-api) a Ledger Entry defined in your schema:
 
 ``` go
+package main
+
 import (
   "encoding/json"
   
@@ -85,31 +87,33 @@ type UserFundsAccountParameters struct {
   UserId        string `json:"user_id"`
 }
 
-serializedParams, _ := json.Marshal(&UserFundsAccountParameters{
-  FundingAmount: "100",
-  UserId:        "user-1",
-})
+func main() {
+  serializedParams, _ := json.Marshal(&UserFundsAccountParameters{
+    FundingAmount: "100",
+    UserId:        "user-1",
+  })
 
-var posted string = "1968-01-01T16:45:00Z"
-response, _ := queries.AddLedgerEntry(
-  authenticatedContext,
-  "some-ik",
-  "your-ledger-ik",
-  "user_funds_account",
-  &posted,
-  json.RawMessage(&serializedParams),
-  []queries.LedgerEntryTagInput{},
-  []queries.LedgerEntryGroupInput{},
-)
+  var posted string = "1968-01-01T16:45:00Z"
+  response, _ := queries.AddLedgerEntry(
+    authenticatedContext,
+    "some-ik",
+    "your-ledger-ik",
+    "user_funds_account",
+    &posted,
+    json.RawMessage(&serializedParams),
+    []queries.LedgerEntryTagInput{},
+    []queries.LedgerEntryGroupInput{},
+  )
 
-switch r := (response.AddLedgerEntry).(type) {
-case *queries.AddLedgerEntryAddLedgerEntryAddLedgerEntryResult:
-  fmt.Println("Posted Entry with IK: ", v.Entry.Ik)
-  break
-case *queries.AddLedgerEntryAddLedgerEntryInternalError:
-case *queries.AddLedgerEntryAddLedgerEntryBadRequestError:
-  fmt.Println("Received error: ", v.Message)
-  break
+  switch r := (response.AddLedgerEntry).(type) {
+  case *queries.AddLedgerEntryAddLedgerEntryAddLedgerEntryResult:
+    fmt.Println("Posted Entry with IK: ", v.Entry.Ik)
+    break
+  case *queries.AddLedgerEntryAddLedgerEntryInternalError:
+  case *queries.AddLedgerEntryAddLedgerEntryBadRequestError:
+    fmt.Println("Received error: ", v.Message)
+    break
+  }
 }
 ```
 
@@ -118,18 +122,22 @@ case *queries.AddLedgerEntryAddLedgerEntryBadRequestError:
 To read a Ledger Account's [balance](https://fragment.dev/docs#read-balances-latest):
 
 ``` go
+package main
+
 import (
   "github.com/fragment-dev/fragment-go/queries"
 )
 
-response, _ := queries.GetLedgerAccountBalance(
-  authenticatedContext,
-  "liabilities/user:user-1/available",
-  "your-ledger-ik",
-  &queries.CurrencyMatchInput{queries.CurrencyCodeUsd, nil},
-  nil,
-  nil,
-)
+func main() {
+  response, _ := queries.GetLedgerAccountBalance(
+    authenticatedContext,
+    "liabilities/user:user-1/available",
+    "your-ledger-ik",
+    &queries.CurrencyMatchInput{queries.CurrencyCodeUsd, nil},
+    nil,
+    nil,
+  )
 
-fmt.Println("Latest balance of account is: ", response.LedgerAccount.OwnBalance)
+  fmt.Println("Latest balance of account is: ", response.LedgerAccount.OwnBalance)
+}
 ```
