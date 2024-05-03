@@ -12,19 +12,34 @@ type HttpClient struct {
 	*http.Client
 
 	auth.AuthenticatedContext
+	clock Clock
 }
 
-func newHttpClient(ctx auth.AuthenticatedContext) *HttpClient {
+type realClock struct{}
+
+func (realClock) Now() time.Time {
+	return time.Now()
+}
+
+func getClock() Clock {
+	return &realClock{}
+}
+
+func newHttpClient(ctx auth.AuthenticatedContext, clock Clock) *HttpClient {
+	if clock == nil {
+		clock = getClock()
+	}
 	return &HttpClient{
 		Client:               &http.Client{},
 		AuthenticatedContext: ctx,
+		clock:                clock,
 	}
 }
 
 func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 	token, _ := c.AuthenticatedContext.GetToken()
 	// If the token has expired, get a new one.
-	if time.Now().After(token.ExpiresAt) {
+	if c.clock.Now().After(token.ExpiresAt) {
 		token, err := auth.GetToken(
 			c.AuthenticatedContext,
 			c.AuthenticatedContext.GetTokenParams(),
@@ -47,13 +62,5 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 // NewClient creates a new GraphQL client with the provided authenticated context.
 func NewClient(ctx auth.AuthenticatedContext) (graphql.Client, error) {
 	tokenParams := ctx.GetTokenParams()
-	_, ok := ctx.GetToken()
-	if !ok {
-		token, err := auth.GetToken(ctx, tokenParams, nil)
-		if err != nil {
-			return nil, err
-		}
-		ctx.SetToken(token)
-	}
-	return graphql.NewClient(tokenParams.ApiUrl, newHttpClient(ctx)), nil
+	return graphql.NewClient(tokenParams.GetApiUrl(), newHttpClient(ctx, nil)), nil
 }

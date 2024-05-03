@@ -10,34 +10,6 @@ import (
 	"time"
 )
 
-type mockTokenParams struct {
-	authUrl string
-}
-
-func (mtp mockTokenParams) GetClientId() string {
-	return "test_client_id"
-}
-
-func (mtp mockTokenParams) GetClientSecret() string {
-	return "test_client_secret"
-}
-
-func (mtp mockTokenParams) GetScope() string {
-	return "*"
-}
-
-func (mtp mockTokenParams) GetAuthUrl() string {
-	return mtp.authUrl
-}
-
-func (mtp mockTokenParams) GetApiUrl() string {
-	return "https://api.fragment.dev/graphql"
-}
-
-func (mtp mockTokenParams) IsValid() error {
-	return nil
-}
-
 func TestGetAuthenticatedContext(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
@@ -84,7 +56,7 @@ func TestGetAuthenticatedContext(t *testing.T) {
 	}))
 	defer server.Close()
 
-	authedContext, err := GetAuthenticatedContext(context.TODO(), mockTokenParams{server.URL})
+	authedContext, err := GetAuthenticatedContext(context.TODO(), MockTokenParams{server.URL})
 	if err != nil {
 		t.Errorf("Got error from GetAuthenticatedContext: %s", err)
 	}

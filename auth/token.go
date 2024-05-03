@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,22 +15,9 @@ import (
 const (
 	expiryTimeSkew int64 = 120
 
-	tokenParamsContextKey = "tokenParams"
-	tokenContextKey       = "token"
+	TokenParamsContextKey = "tokenParams"
+	TokenContextKey       = "token"
 )
-
-var (
-	ErrTokenParamsNotFound = errors.New("Token params not found in the provided context.")
-)
-
-type TokenParams interface {
-	GetClientId() string
-	GetClientSecret() string
-	GetScope() string
-	GetAuthUrl() string
-	GetApiUrl() string
-	IsValid() error
-}
 
 // GetTokenParams defines the parameters required to get an access token.
 type GetTokenParams struct {
@@ -89,32 +75,21 @@ type Token struct {
 	ExpiresAt   time.Time
 }
 
-// AuthenticatedContext defines the interface for a context embedded
-// with the Fragment API access token.
-type AuthenticatedContext interface {
-	context.Context
-
-	GetTokenParams() *GetTokenParams
-
-	SetToken(*Token)
-	GetToken() (*Token, bool)
-}
-
 type authenticatedContext struct {
 	context.Context
 }
 
-func (ac *authenticatedContext) GetTokenParams() *GetTokenParams {
-	return ac.Value(tokenParamsContextKey).(*GetTokenParams)
+func (ac *authenticatedContext) GetTokenParams() TokenParams {
+	return ac.Value(TokenParamsContextKey).(*GetTokenParams)
 }
 
 func (ac *authenticatedContext) GetToken() (*Token, bool) {
-	token, ok := ac.Value(tokenContextKey).(*Token)
+	token, ok := ac.Value(TokenContextKey).(*Token)
 	return token, ok
 }
 
 func (ac *authenticatedContext) SetToken(token *Token) {
-	ac.Context = context.WithValue(ac.Context, tokenContextKey, token)
+	ac.Context = context.WithValue(ac.Context, TokenContextKey, token)
 }
 
 // GetAuthenticatedContext returns an AuthenticatedContext embedded with an access token.
@@ -129,7 +104,7 @@ func GetAuthenticatedContext(ctx context.Context, params TokenParams) (Authentic
 	if err != nil {
 		return nil, err
 	}
-	authedContext := &authenticatedContext{context.WithValue(ctx, tokenParamsContextKey, params)}
+	authedContext := &authenticatedContext{context.WithValue(ctx, TokenParamsContextKey, params)}
 	authedContext.SetToken(token)
 	return authedContext, nil
 }
@@ -169,6 +144,9 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 		client = &http.Client{}
 	}
 	resp, err := client.Do(req)
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("Received non-OK status")
+	}
 	if err != nil {
 		return nil, err
 	}
