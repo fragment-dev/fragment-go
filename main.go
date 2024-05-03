@@ -1,7 +1,5 @@
 package main
 
-// genqclient needs a schema file in the directory it is run in. This schema file is used to generate the client.
-
 import (
 	"fmt"
 	"io"
@@ -13,8 +11,6 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
-// Download the schema.graphql file from the fragment API and use it to generate the client.
-// Then, remove it from the directory after the client is generated.
 type cliArgs struct {
 	PackageName string   `arg:"--package" default:"main" help:"The package name to use for the generated client."`
 	Inputs      []string `arg:"-i,--input,separate" help:"The input files to generate a client from."`
