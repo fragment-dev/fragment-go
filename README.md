@@ -29,12 +29,12 @@ func main() {
   authenticatedContext, err := auth.GetAuthenticatedContext(
     context.Background(),
     &auth.GetTokenParams{
-      ClientId:     "Client ID from Dashboard"
-      ClientSecret: "Client Secret from Dashboard"
-      Scope:        "OAuth Scope from Dashboard"
-      AuthUrl:      "OAuth URL from Dashboard"
-      ApiUrl:       "API URL from Dashboard"
-    }
+      ClientId:     "Client ID from Dashboard",
+      ClientSecret: "Client Secret from Dashboard",
+      Scope:        "OAuth Scope from Dashboard",
+      AuthUrl:      "OAuth URL from Dashboard",
+      ApiUrl:       "API URL from Dashboard",
+    },
   )
   
   if err != nil {
