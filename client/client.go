@@ -44,6 +44,7 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 	return c.Client.Do(req)
 }
 
+// NewClient creates a new GraphQL client with the provided authenticated context.
 func NewClient(ctx auth.AuthenticatedContext) (graphql.Client, error) {
 	tokenParams := ctx.GetTokenParams()
 	_, ok := ctx.GetToken()

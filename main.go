@@ -85,6 +85,7 @@ func main() {
 			"SafeString":          {Type: "string"},
 			"UTCOffset":           {Type: "string"},
 		},
+		Optional:  "pointer",
 		Package:   args.PackageName,
 		Generated: args.Output,
 	}

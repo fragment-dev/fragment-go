@@ -22,19 +22,19 @@ type CreateLedgerInput struct {
 	// You can specify a different starting hour for balances. For example, use "-08:00" to align balances with Pacific Standard Time.
 	// Balance queries would then consider the start of each local day to be at 8am UTC the next day in UTC.
 	// The default timezone is UTC.
-	BalanceUTCOffset string      `json:"balanceUTCOffset"`
-	Name             string      `json:"name"`
-	Type             LedgerTypes `json:"type"`
+	BalanceUTCOffset *string      `json:"balanceUTCOffset"`
+	Name             string       `json:"name"`
+	Type             *LedgerTypes `json:"type"`
 }
 
 // GetBalanceUTCOffset returns CreateLedgerInput.BalanceUTCOffset, and is useful for accessing the field via an interface.
-func (v *CreateLedgerInput) GetBalanceUTCOffset() string { return v.BalanceUTCOffset }
+func (v *CreateLedgerInput) GetBalanceUTCOffset() *string { return v.BalanceUTCOffset }
 
 // GetName returns CreateLedgerInput.Name, and is useful for accessing the field via an interface.
 func (v *CreateLedgerInput) GetName() string { return v.Name }
 
 // GetType returns CreateLedgerInput.Type, and is useful for accessing the field via an interface.
-func (v *CreateLedgerInput) GetType() LedgerTypes { return v.Type }
+func (v *CreateLedgerInput) GetType() *LedgerTypes { return v.Type }
 
 type LedgerTypes string
 
@@ -59,11 +59,11 @@ func (v *__createLedgerInput) GetLedger() CreateLedgerInput { return v.Ledger }
 //
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type createLedgerCreateLedgerBadRequestError struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 }
 
 // GetTypename returns createLedgerCreateLedgerBadRequestError.Typename, and is useful for accessing the field via an interface.
-func (v *createLedgerCreateLedgerBadRequestError) GetTypename() string { return v.Typename }
+func (v *createLedgerCreateLedgerBadRequestError) GetTypename() *string { return v.Typename }
 
 // createLedgerCreateLedgerCreateLedgerResponse includes the requested fields of the GraphQL interface CreateLedgerResponse.
 //
@@ -74,7 +74,7 @@ func (v *createLedgerCreateLedgerBadRequestError) GetTypename() string { return 
 type createLedgerCreateLedgerCreateLedgerResponse interface {
 	implementsGraphQLInterfacecreateLedgerCreateLedgerCreateLedgerResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *createLedgerCreateLedgerBadRequestError) implementsGraphQLInterfacecreateLedgerCreateLedgerCreateLedgerResponse() {
@@ -154,13 +154,13 @@ func __marshalcreateLedgerCreateLedgerCreateLedgerResponse(v *createLedgerCreate
 
 // createLedgerCreateLedgerCreateLedgerResult includes the requested fields of the GraphQL type CreateLedgerResult.
 type createLedgerCreateLedgerCreateLedgerResult struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Ledger that was created
 	Ledger createLedgerCreateLedgerCreateLedgerResultLedger `json:"ledger"`
 }
 
 // GetTypename returns createLedgerCreateLedgerCreateLedgerResult.Typename, and is useful for accessing the field via an interface.
-func (v *createLedgerCreateLedgerCreateLedgerResult) GetTypename() string { return v.Typename }
+func (v *createLedgerCreateLedgerCreateLedgerResult) GetTypename() *string { return v.Typename }
 
 // GetLedger returns createLedgerCreateLedgerCreateLedgerResult.Ledger, and is useful for accessing the field via an interface.
 func (v *createLedgerCreateLedgerCreateLedgerResult) GetLedger() createLedgerCreateLedgerCreateLedgerResultLedger {
@@ -188,11 +188,11 @@ func (v *createLedgerCreateLedgerCreateLedgerResultLedger) GetName() string { re
 //
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type createLedgerCreateLedgerInternalError struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 }
 
 // GetTypename returns createLedgerCreateLedgerInternalError.Typename, and is useful for accessing the field via an interface.
-func (v *createLedgerCreateLedgerInternalError) GetTypename() string { return v.Typename }
+func (v *createLedgerCreateLedgerInternalError) GetTypename() *string { return v.Typename }
 
 // createLedgerResponse is returned by createLedger on success.
 type createLedgerResponse struct {
