@@ -33,8 +33,11 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 }
 
 func NewClient(ctx auth.AuthenticatedContext) (graphql.Client, error) {
-	tokenParams := ctx.Value("tokenParams").(*auth.GetTokenParams)
-	_, ok := ctx.Value(auth.TokenContextKey).(*auth.Token)
+	tokenParams, ok := ctx.Value(auth.TokenParamsContextKey).(*auth.GetTokenParams)
+	if !ok {
+		return nil, auth.ErrTokenParamsNotFound
+	}
+	_, ok = ctx.Value(auth.TokenContextKey).(*auth.Token)
 	if !ok {
 		token, err := auth.GetToken(ctx, *tokenParams)
 		if err != nil {

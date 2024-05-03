@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,11 +14,14 @@ import (
 )
 
 const (
-	TokenContextKey = "token"
+	expiryTimeSkew int64 = 120
+
+	TokenParamsContextKey = "tokenParams"
+	TokenContextKey       = "token"
 )
 
 var (
-	expiryTimeSkew int64 = 120
+	ErrTokenParamsNotFound = errors.New("Token params not found in the provided context.")
 )
 
 // GetTokenParams defines the parameters required to get an access token.
@@ -65,7 +69,7 @@ func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (Authe
 	if ctx == nil {
 		return nil, fmt.Errorf("You must provide a context to GetAuthenticatedContext")
 	}
-	return context.WithValue(ctx, "tokenParams", params), nil
+	return context.WithValue(ctx, TokenParamsContextKey, params), nil
 }
 
 func GetAuthenticatedContextWithToken(ctx context.Context, params *GetTokenParams, token *Token) (AuthenticatedContext, error) {
