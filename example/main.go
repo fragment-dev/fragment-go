@@ -24,8 +24,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	data, err := createLedger(authenticatedContext, "test-ledger-2", CreateLedgerInput{
-		Name: "Test Ledger 2",
+	data, err := createLedger(authenticatedContext, "test-ledger", CreateLedgerInput{
+		Name: "Test Ledger",
 	})
 	if err != nil {
 		fmt.Println("Failed to create ledger.")

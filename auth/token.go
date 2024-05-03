@@ -24,6 +24,15 @@ var (
 	ErrTokenParamsNotFound = errors.New("Token params not found in the provided context.")
 )
 
+type TokenParams interface {
+	GetClientId() string
+	GetClientSecret() string
+	GetScope() string
+	GetAuthUrl() string
+	GetApiUrl() string
+	IsValid() error
+}
+
 // GetTokenParams defines the parameters required to get an access token.
 type GetTokenParams struct {
 	// The client ID of the application.
@@ -41,6 +50,26 @@ type GetTokenParams struct {
 	// The API URL for this token.
 	// Required: true
 	ApiUrl string `json:"api_url"`
+}
+
+func (gtp *GetTokenParams) GetClientId() string {
+	return gtp.ClientId
+}
+
+func (gtp *GetTokenParams) GetClientSecret() string {
+	return gtp.ClientSecret
+}
+
+func (gtp *GetTokenParams) GetScope() string {
+	return gtp.Scope
+}
+
+func (gtp *GetTokenParams) GetAuthUrl() string {
+	return gtp.AuthUrl
+}
+
+func (gtp *GetTokenParams) GetApiUrl() string {
+	return gtp.ApiUrl
 }
 
 func (gtp *GetTokenParams) IsValid() error {
@@ -89,14 +118,14 @@ func (ac *authenticatedContext) SetToken(token *Token) {
 }
 
 // GetAuthenticatedContext returns an AuthenticatedContext embedded with an access token.
-func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (AuthenticatedContext, error) {
+func GetAuthenticatedContext(ctx context.Context, params TokenParams) (AuthenticatedContext, error) {
 	if invalidErr := params.IsValid(); invalidErr != nil {
 		return nil, invalidErr
 	}
 	if ctx == nil {
 		return nil, fmt.Errorf("You must provide a context to GetAuthenticatedContext")
 	}
-	token, err := GetToken(ctx, *params, nil)
+	token, err := GetToken(ctx, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -106,24 +135,24 @@ func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (Authe
 }
 
 // GetToken retrieves a fresh access token from the API.
-func GetToken(ctx context.Context, params GetTokenParams, client *http.Client) (*Token, error) {
-	if !strings.HasSuffix(params.AuthUrl, "oauth2/token") {
-		return nil, fmt.Errorf("The AuthUrl passed must end in /oauth2/token")
+func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*Token, error) {
+	if err := params.IsValid(); err != nil {
+		return nil, err
 	}
 
 	var sb strings.Builder
-	sb.WriteString(params.ClientId)
+	sb.WriteString(params.GetClientId())
 	sb.WriteByte(':')
-	sb.WriteString(params.ClientSecret)
+	sb.WriteString(params.GetClientSecret())
 
 	encodedAuthUrl := base64.StdEncoding.EncodeToString([]byte(sb.String()))
 
 	data := url.Values{}
 	data.Set("grant_type", "client_credentials")
-	data.Set("scope", params.Scope)
-	data.Set("client_id", params.ClientId)
+	data.Set("scope", params.GetScope())
+	data.Set("client_id", params.GetClientId())
 
-	req, err := http.NewRequest(http.MethodPost, params.AuthUrl, strings.NewReader(data.Encode()))
+	req, err := http.NewRequest(http.MethodPost, params.GetAuthUrl(), strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
 	}

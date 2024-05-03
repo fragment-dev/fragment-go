@@ -27,7 +27,7 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 	if time.Now().After(token.ExpiresAt) {
 		token, err := auth.GetToken(
 			c.AuthenticatedContext,
-			*c.AuthenticatedContext.GetTokenParams(),
+			c.AuthenticatedContext.GetTokenParams(),
 			nil)
 		if err != nil {
 			return nil, err
@@ -49,7 +49,7 @@ func NewClient(ctx auth.AuthenticatedContext) (graphql.Client, error) {
 	tokenParams := ctx.GetTokenParams()
 	_, ok := ctx.GetToken()
 	if !ok {
-		token, err := auth.GetToken(ctx, *tokenParams, nil)
+		token, err := auth.GetToken(ctx, tokenParams, nil)
 		if err != nil {
 			return nil, err
 		}
