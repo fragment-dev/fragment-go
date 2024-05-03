@@ -16,8 +16,8 @@ import (
 const (
 	expiryTimeSkew int64 = 120
 
-	TokenParamsContextKey = "tokenParams"
-	TokenContextKey       = "token"
+	tokenParamsContextKey = "tokenParams"
+	tokenContextKey       = "token"
 )
 
 var (
@@ -60,6 +60,8 @@ type Token struct {
 	ExpiresAt   time.Time
 }
 
+// AuthenticatedContext defines the interface for a context embedded
+// with the Fragment API access token.
 type AuthenticatedContext interface {
 	context.Context
 
@@ -74,18 +76,19 @@ type authenticatedContext struct {
 }
 
 func (ac *authenticatedContext) GetTokenParams() *GetTokenParams {
-	return ac.Value(TokenParamsContextKey).(*GetTokenParams)
+	return ac.Value(tokenParamsContextKey).(*GetTokenParams)
 }
 
 func (ac *authenticatedContext) GetToken() (*Token, bool) {
-	token, ok := ac.Value(TokenContextKey).(*Token)
+	token, ok := ac.Value(tokenContextKey).(*Token)
 	return token, ok
 }
 
 func (ac *authenticatedContext) SetToken(token *Token) {
-	ac.Context = context.WithValue(ac.Context, TokenContextKey, token)
+	ac.Context = context.WithValue(ac.Context, tokenContextKey, token)
 }
 
+// GetAuthenticatedContext returns an AuthenticatedContext embedded with an access token.
 func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (AuthenticatedContext, error) {
 	if invalidErr := params.IsValid(); invalidErr != nil {
 		return nil, invalidErr
@@ -93,19 +96,17 @@ func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (Authe
 	if ctx == nil {
 		return nil, fmt.Errorf("You must provide a context to GetAuthenticatedContext")
 	}
-	return &authenticatedContext{context.WithValue(ctx, TokenParamsContextKey, params)}, nil
-}
-
-func GetAuthenticatedContextWithToken(ctx context.Context, params *GetTokenParams, token *Token) (AuthenticatedContext, error) {
-	authedContext, err := GetAuthenticatedContext(ctx, params)
+	token, err := GetToken(ctx, *params, nil)
 	if err != nil {
 		return nil, err
 	}
+	authedContext := &authenticatedContext{context.WithValue(ctx, tokenParamsContextKey, params)}
 	authedContext.SetToken(token)
 	return authedContext, nil
 }
 
-func GetToken(ctx context.Context, params GetTokenParams) (*Token, error) {
+// GetToken retrieves a fresh access token from the API.
+func GetToken(ctx context.Context, params GetTokenParams, client *http.Client) (*Token, error) {
 	if !strings.HasSuffix(params.AuthUrl, "oauth2/token") {
 		return nil, fmt.Errorf("The AuthUrl passed must end in /oauth2/token")
 	}
@@ -135,7 +136,9 @@ func GetToken(ctx context.Context, params GetTokenParams) (*Token, error) {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Accept", "*/*")
 
-	client := &http.Client{}
+	if client == nil {
+		client = &http.Client{}
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
