@@ -101,7 +101,8 @@ func GetAuthenticatedContextWithToken(ctx context.Context, params *GetTokenParam
 	if err != nil {
 		return nil, err
 	}
-	return &authenticatedContext{context.WithValue(authedContext, TokenContextKey, token)}, nil
+	authedContext.SetToken(token)
+	return authedContext, nil
 }
 
 func GetToken(ctx context.Context, params GetTokenParams) (*Token, error) {
