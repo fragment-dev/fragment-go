@@ -1,7 +1,6 @@
 package client
 
 import (
-	"context"
 	"net/http"
 	"time"
 
@@ -23,16 +22,17 @@ func newHttpClient(ctx auth.AuthenticatedContext) *HttpClient {
 }
 
 func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
-	token := c.AuthenticatedContext.Value(auth.TokenContextKey).(*auth.Token)
+	token, _ := c.AuthenticatedContext.GetToken()
 	// If the token has expired, get a new one.
 	if time.Now().After(token.ExpiresAt) {
-		if token, err := auth.GetToken(
+		token, err := auth.GetToken(
 			c.AuthenticatedContext,
-			*c.AuthenticatedContext.Value(auth.TokenParamsContextKey).(*auth.GetTokenParams)); err != nil {
+			*c.AuthenticatedContext.GetTokenParams())
+		if err != nil {
 			return nil, err
-		} else {
-			c.AuthenticatedContext = context.WithValue(c.AuthenticatedContext, auth.TokenContextKey, token)
 		}
+
+		c.AuthenticatedContext.SetToken(token)
 	}
 	// Issue the request within the authenticated context, if a context hasn't been set.
 	if req.Context() == nil {
@@ -44,17 +44,14 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 }
 
 func NewClient(ctx auth.AuthenticatedContext) (graphql.Client, error) {
-	tokenParams, ok := ctx.Value(auth.TokenParamsContextKey).(*auth.GetTokenParams)
-	if !ok {
-		return nil, auth.ErrTokenParamsNotFound
-	}
-	_, ok = ctx.Value(auth.TokenContextKey).(*auth.Token)
+	tokenParams := ctx.GetTokenParams()
+	_, ok := ctx.GetToken()
 	if !ok {
 		token, err := auth.GetToken(ctx, *tokenParams)
 		if err != nil {
 			return nil, err
 		}
-		ctx = context.WithValue(ctx, auth.TokenContextKey, token)
+		ctx.SetToken(token)
 	}
 	return graphql.NewClient(tokenParams.ApiUrl, newHttpClient(ctx)), nil
 }

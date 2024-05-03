@@ -50,7 +50,7 @@ func (gtp *GetTokenParams) IsValid() error {
 	return nil
 }
 
-type getTokenResponse struct {
+type oauth2Response struct {
 	AccessToken string `json:"access_token"`
 	ExpiresIn   int64  `json:"expires_in"`
 }
@@ -60,7 +60,31 @@ type Token struct {
 	ExpiresAt   time.Time
 }
 
-type AuthenticatedContext = context.Context
+type AuthenticatedContext interface {
+	context.Context
+
+	GetTokenParams() *GetTokenParams
+
+	SetToken(*Token)
+	GetToken() (*Token, bool)
+}
+
+type authenticatedContext struct {
+	context.Context
+}
+
+func (ac *authenticatedContext) GetTokenParams() *GetTokenParams {
+	return ac.Value(TokenParamsContextKey).(*GetTokenParams)
+}
+
+func (ac *authenticatedContext) GetToken() (*Token, bool) {
+	token, ok := ac.Value(TokenContextKey).(*Token)
+	return token, ok
+}
+
+func (ac *authenticatedContext) SetToken(token *Token) {
+	ac.Context = context.WithValue(ac.Context, TokenContextKey, token)
+}
 
 func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (AuthenticatedContext, error) {
 	if invalidErr := params.IsValid(); invalidErr != nil {
@@ -69,15 +93,15 @@ func GetAuthenticatedContext(ctx context.Context, params *GetTokenParams) (Authe
 	if ctx == nil {
 		return nil, fmt.Errorf("You must provide a context to GetAuthenticatedContext")
 	}
-	return context.WithValue(ctx, TokenParamsContextKey, params), nil
+	return &authenticatedContext{context.WithValue(ctx, TokenParamsContextKey, params)}, nil
 }
 
 func GetAuthenticatedContextWithToken(ctx context.Context, params *GetTokenParams, token *Token) (AuthenticatedContext, error) {
-	authenticatedContext, err := GetAuthenticatedContext(ctx, params)
+	authedContext, err := GetAuthenticatedContext(ctx, params)
 	if err != nil {
 		return nil, err
 	}
-	return context.WithValue(authenticatedContext, TokenContextKey, token), nil
+	return &authenticatedContext{context.WithValue(authedContext, TokenContextKey, token)}, nil
 }
 
 func GetToken(ctx context.Context, params GetTokenParams) (*Token, error) {
@@ -118,7 +142,7 @@ func GetToken(ctx context.Context, params GetTokenParams) (*Token, error) {
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
-	var result getTokenResponse
+	var result oauth2Response
 	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, err
 	}
