@@ -1,0 +1,11 @@
+mutation createLedger($ik: SafeString!, $ledger: CreateLedgerInput!) {
+  createLedger(ik: $ik, ledger: $ledger) {
+    __typename
+    ... on CreateLedgerResult {
+      ledger {
+        id
+        name
+      }
+    }
+  }
+}
