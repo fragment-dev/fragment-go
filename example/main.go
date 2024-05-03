@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/fragment-dev/fragment-go/auth"
+	"github.com/fragment-dev/fragment-go/queries"
 )
 
 func main() {
@@ -24,9 +25,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	data, err := createLedger(authenticatedContext, "test-ledger", CreateLedgerInput{
-		Name: "Test Ledger",
-	})
+	data, err := queries.CreateLedger(
+		authenticatedContext,
+		"test-ledger",
+		queries.CreateLedgerInput{Name: "Test Ledger"},
+		"test-schema")
+
 	if err != nil {
 		fmt.Println("Failed to create ledger.")
 		fmt.Println(err)
