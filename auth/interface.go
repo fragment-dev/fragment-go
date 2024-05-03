@@ -17,8 +17,13 @@ type TokenParams interface {
 type AuthenticatedContext interface {
 	context.Context
 
+	// GetTokenParams returns the token parameters used to authenticate
+	// with the Fragment API.
 	GetTokenParams() TokenParams
 
+	// SetToken sets the access token in the context.
 	SetToken(*Token)
+
+	// GetToken returns the access token from the context.
 	GetToken() (*Token, bool)
 }

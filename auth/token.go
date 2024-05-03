@@ -70,9 +70,12 @@ type oauth2Response struct {
 	ExpiresIn   int64  `json:"expires_in"`
 }
 
+// Token represents a Fragment API access token.
 type Token struct {
+	// The Access Token.
 	AccessToken string
-	ExpiresAt   time.Time
+	// The expiration time for this token.
+	ExpiresAt time.Time
 }
 
 type authenticatedContext struct {

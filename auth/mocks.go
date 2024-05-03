@@ -1,5 +1,7 @@
 package auth
 
+// MockTokenParams implements the TokenParams interface for use
+// in tests.
 type MockTokenParams struct {
 	ServerUrl string
 }
