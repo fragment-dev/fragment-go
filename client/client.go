@@ -24,8 +24,19 @@ func newHttpClient(ctx auth.AuthenticatedContext) *HttpClient {
 
 func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 	token := c.AuthenticatedContext.Value(auth.TokenContextKey).(*auth.Token)
+	// If the token has expired, get a new one.
 	if time.Now().After(token.ExpiresAt) {
-		// TODO: Implement token refresh
+		if token, err := auth.GetToken(
+			c.AuthenticatedContext,
+			*c.AuthenticatedContext.Value(auth.TokenParamsContextKey).(*auth.GetTokenParams)); err != nil {
+			return nil, err
+		} else {
+			c.AuthenticatedContext = context.WithValue(c.AuthenticatedContext, auth.TokenContextKey, token)
+		}
+	}
+	// Issue the request within the authenticated context, if a context hasn't been set.
+	if req.Context() == nil {
+		req = req.WithContext(c.AuthenticatedContext)
 	}
 	req.Header.Set("Authorization", "Bearer "+token.AccessToken)
 	req.Header.Set("X-Fragment-Client", "go-client")
