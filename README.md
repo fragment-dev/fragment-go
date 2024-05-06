@@ -106,10 +106,10 @@ import (
 func main() {
 	response, _ := GetLatestSchema(
 		authenticatedContext,
-        "your-schema-key",
+		"your-schema-key",
 	)
 
-	fmt.Println("Latest version of Schema is: ", response.Schema.GetVersion().Version)
+    fmt.Println("Latest version of Schema is: ", response.Schema.GetVersion().Version)
     // Alternatively
     fmt.Println("Latest version of Schema is: ", response.Schema.Version.Version)
 }
