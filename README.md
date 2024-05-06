@@ -91,7 +91,7 @@ Run the SDK codegen to generate the code for your GraphQL query.
 go run github.com/fragment-dev/fragment-go \
   --input queries.graphql
   --output queries.go
-  ---package main
+  --package main
 ```
 
 This should generate a `queries.go` file in your current working directory. You can then issue the above GraphQL request by calling `GetLatestSchema`:
