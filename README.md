@@ -67,6 +67,55 @@ go run github.com/fragment-dev/fragment-go \
   --package <package-name>
 ```
 
+### An end-to-end example
+
+Say you're developing within the `main` package of your product and you have the following custom GraphQL query saved to `queries.graphql`.
+
+``` graphql
+query GetLatestSchema($key: SafeString!) {
+  schema(schema: { key: $key }) {
+    key
+    name
+    version {
+      created
+      version
+      json
+    }
+  }
+}
+```
+
+Run the SDK codegen to generate the code for your GraphQL query.
+
+``` shell
+go run github.com/fragment-dev/fragment-go \
+  --input queries.graphql
+  --output queries.go
+  ---package main
+```
+
+This should generate a `queries.go` file in your current working directory. You can then issue the above GraphQL request by calling `GetLatestSchema`:
+
+``` go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	response, _ := GetLatestSchema(
+		authenticatedContext,
+        "your-schema-key",
+	)
+
+	fmt.Println("Latest version of Schema is: ", response.Schema.GetVersion().Version)
+    // Alternatively
+    fmt.Println("Latest version of Schema is: ", response.Schema.Version.Version)
+}
+
+```
+
 ## Examples
 
 ### Post a Ledger Entry
