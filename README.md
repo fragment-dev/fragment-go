@@ -109,9 +109,9 @@ func main() {
 		"your-schema-key",
 	)
 
-    fmt.Println("Latest version of Schema is: ", response.Schema.GetVersion().Version)
-    // Alternatively
-    fmt.Println("Latest version of Schema is: ", response.Schema.Version.Version)
+	fmt.Println("Latest version of Schema is: ", response.Schema.GetVersion().Version)
+	// Alternatively
+	fmt.Println("Latest version of Schema is: ", response.Schema.Version.Version)
 }
 
 ```
