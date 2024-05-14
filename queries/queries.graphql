@@ -511,7 +511,8 @@ query GetSchema($key: SafeString!, $version: Int) {
     }
   }
 }
-query listLedgerEntries(
+
+query ListLedgerEntries(
   $ledgerIk: SafeString!
   $after: String
   $first: Int
