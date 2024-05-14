@@ -7,7 +7,7 @@ on:
 jobs:
   ci:
     name: CI
-    runs-on: ubuntu-latest-4-cores
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         go: ['1.20', '1.21', '1.22']

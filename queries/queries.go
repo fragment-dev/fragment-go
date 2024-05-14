@@ -2211,6 +2211,45 @@ const (
 	LedgerAccountTypesLiability LedgerAccountTypes = "liability"
 )
 
+type LedgerEntriesFilterSet struct {
+	Date *DateFilter `json:"date"`
+	// Use to filter Ledger Entries by their IDs or IKs.
+	LedgerEntry *LedgerEntryFilter `json:"ledgerEntry"`
+	Posted      *DateTimeFilter    `json:"posted"`
+	// Use this to filter Ledger Entries by tags. The response will include entries that contain tags matching the filter.
+	Tag *TagFilter `json:"tag"`
+	// Use this to filter Ledger Entries by type. Ledger Entry types are defined in Schemas.
+	Type *StringFilter `json:"type"`
+}
+
+// GetDate returns LedgerEntriesFilterSet.Date, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetDate() *DateFilter { return v.Date }
+
+// GetLedgerEntry returns LedgerEntriesFilterSet.LedgerEntry, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetLedgerEntry() *LedgerEntryFilter { return v.LedgerEntry }
+
+// GetPosted returns LedgerEntriesFilterSet.Posted, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetPosted() *DateTimeFilter { return v.Posted }
+
+// GetTag returns LedgerEntriesFilterSet.Tag, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetTag() *TagFilter { return v.Tag }
+
+// GetType returns LedgerEntriesFilterSet.Type, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetType() *StringFilter { return v.Type }
+
+type LedgerEntryFilter struct {
+	// Result must be the specified Ledger Entry.
+	EqualTo *LedgerEntryMatchInput `json:"equalTo"`
+	// Result can be any of the specified Ledger Entries.
+	In []LedgerEntryMatchInput `json:"in"`
+}
+
+// GetEqualTo returns LedgerEntryFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *LedgerEntryFilter) GetEqualTo() *LedgerEntryMatchInput { return v.EqualTo }
+
+// GetIn returns LedgerEntryFilter.In, and is useful for accessing the field via an interface.
+func (v *LedgerEntryFilter) GetIn() []LedgerEntryMatchInput { return v.In }
+
 type LedgerEntryGroupInput struct {
 	// The key of this group. Can be up to 128 characters long.
 	Key string `json:"key"`
@@ -2223,6 +2262,28 @@ func (v *LedgerEntryGroupInput) GetKey() string { return v.Key }
 
 // GetValue returns LedgerEntryGroupInput.Value, and is useful for accessing the field via an interface.
 func (v *LedgerEntryGroupInput) GetValue() string { return v.Value }
+
+// Specify a Ledger Entry by using `id`.
+type LedgerEntryMatchInput struct {
+	// The FRAGMENT ID of the Ledger Entry
+	Id *string `json:"id"`
+	// The IK provided to the `addLedgerEntry` mutation or the `ik` field
+	// returned from a `reconcileTx` mutation. This is required if you have not
+	// provided `id`.
+	Ik *string `json:"ik"`
+	// The FRAGMENT ID of the Ledger to which this Ledger Entry belongs. This
+	// is required if you have not provided `id`.
+	Ledger *LedgerMatchInput `json:"ledger"`
+}
+
+// GetId returns LedgerEntryMatchInput.Id, and is useful for accessing the field via an interface.
+func (v *LedgerEntryMatchInput) GetId() *string { return v.Id }
+
+// GetIk returns LedgerEntryMatchInput.Ik, and is useful for accessing the field via an interface.
+func (v *LedgerEntryMatchInput) GetIk() *string { return v.Ik }
+
+// GetLedger returns LedgerEntryMatchInput.Ledger, and is useful for accessing the field via an interface.
+func (v *LedgerEntryMatchInput) GetLedger() *LedgerMatchInput { return v.Ledger }
 
 type LedgerEntryTagInput struct {
 	// The key of this tag. Can be up to 128 characters long.
@@ -2607,6 +2668,161 @@ type ListLedgerAccountsResponse struct {
 
 // GetLedger returns ListLedgerAccountsResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *ListLedgerAccountsResponse) GetLedger() *ListLedgerAccountsLedger { return v.Ledger }
+
+// ListLedgerEntriesLedger includes the requested fields of the GraphQL type Ledger.
+// The GraphQL type's documentation follows.
+//
+// Ledgers are databases designed for managing money
+type ListLedgerEntriesLedger struct {
+	// Query Ledger Entries in a Ledger. Ledger Entries are paginated and sorted in reverse-chronological order by posted date.
+	LedgerEntries *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
+}
+
+// GetLedgerEntries returns ListLedgerEntriesLedger.LedgerEntries, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedger) GetLedgerEntries() *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection {
+	return v.LedgerEntries
+}
+
+// ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection includes the requested fields of the GraphQL type LedgerEntriesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Entries
+type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection struct {
+	// The current page of results
+	Nodes []ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry `json:"nodes"`
+	// The [pagination info](https://fragment.dev/api-reference#types-connection-types-pageinfo) for this list
+	PageInfo ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection) GetNodes() []ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection) GetPageInfo() ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo {
+	return v.PageInfo
+}
+
+// ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry struct {
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// Lines posted in this Ledger Entry.
+	Lines ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetIk returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetType returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetPosted returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetLines returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetLines() ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection) GetNodes() []ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetAmount returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// ListLedgerEntriesResponse is returned by ListLedgerEntries on success.
+type ListLedgerEntriesResponse struct {
+	// Get a Ledger by ID
+	Ledger *ListLedgerEntriesLedger `json:"ledger"`
+}
+
+// GetLedger returns ListLedgerEntriesResponse.Ledger, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntriesResponse) GetLedger() *ListLedgerEntriesLedger { return v.Ledger }
 
 // ListMultiCurrencyLedgerAccountBalancesLedger includes the requested fields of the GraphQL type Ledger.
 // The GraphQL type's documentation follows.
@@ -4776,6 +4992,32 @@ func (v *SyncCustomTxsSyncCustomTxsSyncCustomTxsResultTxsTx) GetDescription() st
 // GetPosted returns SyncCustomTxsSyncCustomTxsSyncCustomTxsResultTxsTx.Posted, and is useful for accessing the field via an interface.
 func (v *SyncCustomTxsSyncCustomTxsSyncCustomTxsResultTxsTx) GetPosted() string { return v.Posted }
 
+// Filters a result set based on the tags it contains.
+type TagFilter struct {
+	EqualTo *TagMatchInput  `json:"equalTo"`
+	In      []TagMatchInput `json:"in"`
+}
+
+// GetEqualTo returns TagFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetEqualTo() *TagMatchInput { return v.EqualTo }
+
+// GetIn returns TagFilter.In, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetIn() []TagMatchInput { return v.In }
+
+// Specifies a single tag that an entity is expected to have. You must specify both the key and the value.
+type TagMatchInput struct {
+	// The key of this tag.
+	Key string `json:"key"`
+	// The value associated with this tag's key.
+	Value string `json:"value"`
+}
+
+// GetKey returns TagMatchInput.Key, and is useful for accessing the field via an interface.
+func (v *TagMatchInput) GetKey() string { return v.Key }
+
+// GetValue returns TagMatchInput.Value, and is useful for accessing the field via an interface.
+func (v *TagMatchInput) GetValue() string { return v.Value }
+
 // Specify a Tx by using `id` or `externalId`, the Link it belongs to by `linkId`, and the External Account it is a part of by `accountId` or `externalAccountId`.
 type TxMatchInput struct {
 	// The FRAGMENT ID of the external account
@@ -5305,6 +5547,30 @@ func (v *__ListLedgerAccountsInput) GetFirst() *int { return v.First }
 
 // GetBefore returns __ListLedgerAccountsInput.Before, and is useful for accessing the field via an interface.
 func (v *__ListLedgerAccountsInput) GetBefore() *string { return v.Before }
+
+// __ListLedgerEntriesInput is used internally by genqlient
+type __ListLedgerEntriesInput struct {
+	LedgerIk string                  `json:"ledgerIk"`
+	After    *string                 `json:"after"`
+	First    *int                    `json:"first"`
+	Before   *string                 `json:"before"`
+	Filter   *LedgerEntriesFilterSet `json:"filter"`
+}
+
+// GetLedgerIk returns __ListLedgerEntriesInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntriesInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetAfter returns __ListLedgerEntriesInput.After, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntriesInput) GetAfter() *string { return v.After }
+
+// GetFirst returns __ListLedgerEntriesInput.First, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntriesInput) GetFirst() *int { return v.First }
+
+// GetBefore returns __ListLedgerEntriesInput.Before, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntriesInput) GetBefore() *string { return v.Before }
+
+// GetFilter returns __ListLedgerEntriesInput.Filter, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntriesInput) GetFilter() *LedgerEntriesFilterSet { return v.Filter }
 
 // __ListMultiCurrencyLedgerAccountBalancesInput is used internally by genqlient
 type __ListMultiCurrencyLedgerAccountBalancesInput struct {
@@ -6078,6 +6344,74 @@ func ListLedgerAccounts(
 	}
 
 	var data_ ListLedgerAccountsResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by ListLedgerEntries.
+const ListLedgerEntries_Operation = `
+query ListLedgerEntries ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $filter: LedgerEntriesFilterSet) {
+	ledger(ledger: {ik:$ledgerIk}) {
+		ledgerEntries(after: $after, first: $first, before: $before, filter: $filter) {
+			nodes {
+				ik
+				type
+				posted
+				lines {
+					nodes {
+						amount
+						account {
+							path
+						}
+					}
+				}
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+				hasPreviousPage
+				startCursor
+			}
+		}
+	}
+}
+`
+
+func ListLedgerEntries(
+	ctx_ auth.AuthenticatedContext,
+	ledgerIk string,
+	after *string,
+	first *int,
+	before *string,
+	filter *LedgerEntriesFilterSet,
+) (*ListLedgerEntriesResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "ListLedgerEntries",
+		Query:  ListLedgerEntries_Operation,
+		Variables: &__ListLedgerEntriesInput{
+			LedgerIk: ledgerIk,
+			After:    after,
+			First:    first,
+			Before:   before,
+			Filter:   filter,
+		},
+	}
+	var err_ error
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	var data_ ListLedgerEntriesResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
