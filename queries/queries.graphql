@@ -543,3 +543,10 @@ query ListLedgerEntries(
     }
   }
 }
+
+query GetWorkspace {
+  workspace {
+    id
+    name
+  }
+}

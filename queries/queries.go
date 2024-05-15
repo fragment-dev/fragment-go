@@ -1350,12 +1350,12 @@ func (v *CreateLedgerCreateLedgerCreateLedgerResult) GetIsIkReplay() bool { retu
 // Ledgers are databases designed for managing money
 type CreateLedgerCreateLedgerCreateLedgerResultLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
-	// Schema key associated with this ledger.
+	// Schema key associated with this Ledger.
 	Schema *CreateLedgerCreateLedgerCreateLedgerResultLedgerSchema `json:"schema"`
 }
 
@@ -2064,9 +2064,9 @@ func (v *GetLedgerEntryResponse) GetLedgerEntry() *GetLedgerEntryLedgerEntry { r
 // Ledgers are databases designed for managing money
 type GetLedgerLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// When aggregating balances, all transactions within a 24 hour period starting at midnight UTC plus this offset are included in each day.
@@ -2147,6 +2147,29 @@ func (v *GetSchemaSchemaVersion) GetVersion() int { return v.Version }
 
 // GetJson returns GetSchemaSchemaVersion.Json, and is useful for accessing the field via an interface.
 func (v *GetSchemaSchemaVersion) GetJson() json.RawMessage { return v.Json }
+
+// GetWorkspaceResponse is returned by GetWorkspace on success.
+type GetWorkspaceResponse struct {
+	// Get the current Workspace
+	Workspace GetWorkspaceWorkspace `json:"workspace"`
+}
+
+// GetWorkspace returns GetWorkspaceResponse.Workspace, and is useful for accessing the field via an interface.
+func (v *GetWorkspaceResponse) GetWorkspace() GetWorkspaceWorkspace { return v.Workspace }
+
+// GetWorkspaceWorkspace includes the requested fields of the GraphQL type Workspace.
+type GetWorkspaceWorkspace struct {
+	// The ID of the Workspace
+	Id string `json:"id"`
+	// The name of the Workspace
+	Name string `json:"name"`
+}
+
+// GetId returns GetWorkspaceWorkspace.Id, and is useful for accessing the field via an interface.
+func (v *GetWorkspaceWorkspace) GetId() string { return v.Id }
+
+// GetName returns GetWorkspaceWorkspace.Name, and is useful for accessing the field via an interface.
+func (v *GetWorkspaceWorkspace) GetName() string { return v.Name }
 
 // The payload configuring the consistency for this Ledger Account.
 // See [Configure consistency](https://fragment.dev/docs#configure-consistency).
@@ -2384,9 +2407,9 @@ const (
 // Ledgers are databases designed for managing money
 type ListLedgerAccountBalancesLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
@@ -2541,9 +2564,9 @@ func (v *ListLedgerAccountBalancesResponse) GetLedger() *ListLedgerAccountBalanc
 // Ledgers are databases designed for managing money
 type ListLedgerAccountsLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
@@ -2830,9 +2853,9 @@ func (v *ListLedgerEntriesResponse) GetLedger() *ListLedgerEntriesLedger { retur
 // Ledgers are databases designed for managing money
 type ListMultiCurrencyLedgerAccountBalancesLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
@@ -5297,9 +5320,9 @@ func (v *UpdateLedgerUpdateLedgerUpdateLedgerResult) GetLedger() UpdateLedgerUpd
 // Ledgers are databases designed for managing money
 type UpdateLedgerUpdateLedgerUpdateLedgerResultLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
 	Name string `json:"name"`
 }
 
@@ -6207,6 +6230,43 @@ func GetSchema(
 	}
 
 	var data_ GetSchemaResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by GetWorkspace.
+const GetWorkspace_Operation = `
+query GetWorkspace {
+	workspace {
+		id
+		name
+	}
+}
+`
+
+func GetWorkspace(
+	ctx_ auth.AuthenticatedContext,
+) (*GetWorkspaceResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "GetWorkspace",
+		Query:  GetWorkspace_Operation,
+	}
+	var err_ error
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	var data_ GetWorkspaceResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
