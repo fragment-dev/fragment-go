@@ -5088,6 +5088,395 @@ func (v *TxTypeFilter) GetEqualTo() *TxType { return v.EqualTo }
 // GetIn returns TxTypeFilter.In, and is useful for accessing the field via an interface.
 func (v *TxTypeFilter) GetIn() []TxType { return v.In }
 
+type UpdateLedgerEntryInput struct {
+	// The list of Groups to add to this Ledger Entry.
+	Groups []LedgerEntryGroupInput `json:"groups"`
+	// The list of Tags to add and/or update on this Ledger Entry.
+	Tags []LedgerEntryTagInput `json:"tags"`
+}
+
+// GetGroups returns UpdateLedgerEntryInput.Groups, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryInput) GetGroups() []LedgerEntryGroupInput { return v.Groups }
+
+// GetTags returns UpdateLedgerEntryInput.Tags, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryInput) GetTags() []LedgerEntryTagInput { return v.Tags }
+
+// UpdateLedgerEntryResponse is returned by UpdateLedgerEntry on success.
+type UpdateLedgerEntryResponse struct {
+	// Update a ledger entry
+	UpdateLedgerEntry UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse `json:"-"`
+}
+
+// GetUpdateLedgerEntry returns UpdateLedgerEntryResponse.UpdateLedgerEntry, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryResponse) GetUpdateLedgerEntry() UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse {
+	return v.UpdateLedgerEntry
+}
+
+func (v *UpdateLedgerEntryResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*UpdateLedgerEntryResponse
+		UpdateLedgerEntry json.RawMessage `json:"updateLedgerEntry"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.UpdateLedgerEntryResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.UpdateLedgerEntry
+		src := firstPass.UpdateLedgerEntry
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal UpdateLedgerEntryResponse.UpdateLedgerEntry: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalUpdateLedgerEntryResponse struct {
+	UpdateLedgerEntry json.RawMessage `json:"updateLedgerEntry"`
+}
+
+func (v *UpdateLedgerEntryResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *UpdateLedgerEntryResponse) __premarshalJSON() (*__premarshalUpdateLedgerEntryResponse, error) {
+	var retval __premarshalUpdateLedgerEntryResponse
+
+	{
+
+		dst := &retval.UpdateLedgerEntry
+		src := v.UpdateLedgerEntry
+		var err error
+		*dst, err = __marshalUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal UpdateLedgerEntryResponse.UpdateLedgerEntry: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type UpdateLedgerEntryUpdateLedgerEntryBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+}
+
+// GetTypename returns UpdateLedgerEntryUpdateLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns UpdateLedgerEntryUpdateLedgerEntryBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns UpdateLedgerEntryUpdateLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetMessage() string { return v.Message }
+
+// UpdateLedgerEntryUpdateLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type UpdateLedgerEntryUpdateLedgerEntryInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+}
+
+// GetTypename returns UpdateLedgerEntryUpdateLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns UpdateLedgerEntryUpdateLedgerEntryInternalError.Code, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns UpdateLedgerEntryUpdateLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse includes the requested fields of the GraphQL interface UpdateLedgerEntryResponse.
+//
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse is implemented by the following types:
+// UpdateLedgerEntryUpdateLedgerEntryBadRequestError
+// UpdateLedgerEntryUpdateLedgerEntryInternalError
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse interface {
+	implementsGraphQLInterfaceUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) implementsGraphQLInterfaceUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse() {
+}
+func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) implementsGraphQLInterfaceUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse() {
+}
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult) implementsGraphQLInterfaceUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse() {
+}
+
+func __unmarshalUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse(b []byte, v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(UpdateLedgerEntryUpdateLedgerEntryBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(UpdateLedgerEntryUpdateLedgerEntryInternalError)
+		return json.Unmarshal(b, *v)
+	case "UpdateLedgerEntryResult":
+		*v = new(UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing UpdateLedgerEntryResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalUpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse(v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *UpdateLedgerEntryUpdateLedgerEntryBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*UpdateLedgerEntryUpdateLedgerEntryBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *UpdateLedgerEntryUpdateLedgerEntryInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*UpdateLedgerEntryUpdateLedgerEntryInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult:
+		typename = "UpdateLedgerEntryResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse: "%T"`, v)
+	}
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult includes the requested fields of the GraphQL type UpdateLedgerEntryResult.
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult struct {
+	Typename *string `json:"__typename"`
+	// The Ledger Entry that was updated.
+	Entry UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry `json:"entry"`
+}
+
+// GetTypename returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult.Typename, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetEntry returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult.Entry, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResult) GetEntry() UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry {
+	return v.Entry
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry struct {
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// Lines posted in this Ledger Entry.
+	Lines UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+	// The Ledger Entry Groups this Ledger Entry is in.
+	Groups []UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup `json:"groups"`
+	// The set of tags attached to this Ledger Entry.
+	Tags []UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag `json:"tags"`
+}
+
+// GetId returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetIk returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetPosted returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetCreated returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetDescription returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetLines returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetLines() UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// GetGroups returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Groups, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetGroups() []UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup {
+	return v.Groups
+}
+
+// GetTags returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry.Tags, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntry) GetTags() []UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag {
+	return v.Tags
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup includes the requested fields of the GraphQL type LedgerEntryGroup.
+// The GraphQL type's documentation follows.
+//
+// A group of Ledger Entries
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup struct {
+	// The key of this Ledger Entry Group.
+	Key string `json:"key"`
+	// The value associated with Ledger Entry Group.
+	Value string `json:"value"`
+}
+
+// GetKey returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup.Key, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup) GetKey() string {
+	return v.Key
+}
+
+// GetValue returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup.Value, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryGroupsLedgerEntryGroup) GetValue() string {
+	return v.Value
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnection) GetNodes() []UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag includes the requested fields of the GraphQL type LedgerEntryTag.
+// The GraphQL type's documentation follows.
+//
+// A tag attached to a Ledger Entry.
+type UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag struct {
+	// The key of this tag.
+	Key string `json:"key"`
+	// The value associated with this tag's key.
+	Value string `json:"value"`
+}
+
+// GetKey returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag.Key, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag) GetKey() string {
+	return v.Key
+}
+
+// GetValue returns UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag.Value, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResultEntryLedgerEntryTagsLedgerEntryTag) GetValue() string {
+	return v.Value
+}
+
 type UpdateLedgerInput struct {
 	// The new Ledger name.
 	Name *string `json:"name"`
@@ -5704,6 +6093,22 @@ func (v *__SyncCustomTxsInput) GetLinkId() string { return v.LinkId }
 
 // GetTxs returns __SyncCustomTxsInput.Txs, and is useful for accessing the field via an interface.
 func (v *__SyncCustomTxsInput) GetTxs() []CustomTxInput { return v.Txs }
+
+// __UpdateLedgerEntryInput is used internally by genqlient
+type __UpdateLedgerEntryInput struct {
+	EntryIk  string                 `json:"entryIk"`
+	LedgerIk string                 `json:"ledgerIk"`
+	Update   UpdateLedgerEntryInput `json:"update"`
+}
+
+// GetEntryIk returns __UpdateLedgerEntryInput.EntryIk, and is useful for accessing the field via an interface.
+func (v *__UpdateLedgerEntryInput) GetEntryIk() string { return v.EntryIk }
+
+// GetLedgerIk returns __UpdateLedgerEntryInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__UpdateLedgerEntryInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetUpdate returns __UpdateLedgerEntryInput.Update, and is useful for accessing the field via an interface.
+func (v *__UpdateLedgerEntryInput) GetUpdate() UpdateLedgerEntryInput { return v.Update }
 
 // __UpdateLedgerInput is used internally by genqlient
 type __UpdateLedgerInput struct {
@@ -6929,6 +7334,80 @@ func UpdateLedger(
 	}
 
 	var data_ UpdateLedgerResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by UpdateLedgerEntry.
+const UpdateLedgerEntry_Operation = `
+mutation UpdateLedgerEntry ($entryIk: SafeString!, $ledgerIk: SafeString!, $update: UpdateLedgerEntryInput!) {
+	updateLedgerEntry(ledgerEntry: {ik:$entryIk,ledger:{ik:$ledgerIk}}, update: $update) {
+		__typename
+		... on UpdateLedgerEntryResult {
+			entry {
+				id
+				ik
+				posted
+				created
+				description
+				lines {
+					nodes {
+						id
+						amount
+						account {
+							path
+						}
+					}
+				}
+				groups {
+					key
+					value
+				}
+				tags {
+					key
+					value
+				}
+			}
+		}
+		... on Error {
+			code
+			message
+		}
+	}
+}
+`
+
+func UpdateLedgerEntry(
+	ctx_ auth.AuthenticatedContext,
+	entryIk string,
+	ledgerIk string,
+	update UpdateLedgerEntryInput,
+) (*UpdateLedgerEntryResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "UpdateLedgerEntry",
+		Query:  UpdateLedgerEntry_Operation,
+		Variables: &__UpdateLedgerEntryInput{
+			EntryIk:  entryIk,
+			LedgerIk: ledgerIk,
+			Update:   update,
+		},
+	}
+	var err_ error
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	var data_ UpdateLedgerEntryResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
