@@ -26,3 +26,21 @@ jobs:
       - name: Run tests
         run: |
           go test -cover -v ./...
+
+      - name: Validate GraphQL queries
+        run: |
+          export EXITCODE=$(grep -E '^(mutation|query) [a-z]' queries/queries.graphql || echo $?)
+          if [[ $EXITCODE -eq 0 ]]; then
+            echo "Failed to validate queries."
+            echo "Ensure that queries are in TitleCase."
+            exit 1
+          fi
+
+      - name: Verify generated queries are up-to-date
+        run: |
+          go run main.go \
+            --input=queries/queries.graphql \
+            --output=queries/queries.go \
+            --package=queries
+          git diff --exit-code
+          exit $?
