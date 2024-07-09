@@ -2224,24 +2224,21 @@ func (v *Int96Filter) GetNe() *string { return v.Ne }
 // The payload configuring the consistency for this Ledger Account.
 // See [Configure consistency](https://fragment.dev/docs#configure-consistency).
 type LedgerAccountConsistencyConfigInput struct {
-	// The consistency configuration for groups balances in this account. This is an experimental feature.
-	// Contact support if you are interested in using this feature.
-	Groups []LedgerAccountGroupConsistencyConfigInput `json:"groups"`
-	// If set to `strong`, then a Ledger Account's `lines` updates will be strongly consistent with
-	// the API response. This Ledger Account's balance will be updated and
-	// available for strongly consistent reads before you receive an API response.
+	// The consistency configuration for Ledger Entry Groups affecting this account.
 	//
-	// Otherwise if unset or set to `eventual`, `lines` updates are applied
-	// asynchronously and may not be immediately reflected queries.
+	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	Groups []LedgerAccountGroupConsistencyConfigInput `json:"groups"`
+	// If set to `strong`, then a Ledger Account's `lines` updates will be strongly consistent with the API response.
+	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
+	//
+	// Otherwise if unset or set to `eventual`, `lines` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
 	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
 	Lines *LedgerLinesConsistencyMode `json:"lines"`
-	// If set to `strong`, then a Ledger Account's `ownBalance` updates will be strongly consistent with
-	// the API response. This Ledger Account's balance will be updated and
-	// available for strongly consistent reads before you receive an API response.
+	// If set to `strong`, then a Ledger Account's `ownBalance` updates will be strongly consistent with the API response.
+	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
-	// Otherwise if unset or set to `eventual`, `ownBalance` updates are applied
-	// asynchronously and may not be immediately reflected queries.
+	// Otherwise if unset or set to `eventual`, `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
 	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
 	OwnBalanceUpdates *BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
@@ -2260,12 +2257,16 @@ func (v *LedgerAccountConsistencyConfigInput) GetOwnBalanceUpdates() *BalanceUpd
 	return v.OwnBalanceUpdates
 }
 
-// The consistency configuration for groups balances in an account. This is an experimental feature.
-// Contact support if you are interested in using this feature.
+// The consistency configuration for a specific Ledger Entry Group in this account.
 type LedgerAccountGroupConsistencyConfigInput struct {
 	// The group key for this configuration.
 	Key string `json:"key"`
-	// The consistency configuration for the group's own balance in this Ledger Account.
+	// If set to `strong`, then Ledger Entry Group `ownBalance`s updates for this account will be strongly consistent with the API response.
+	// This Ledger Account's Ledger Entry Group balances will be updated and available for strongly consistent reads before you receive an API response.
+	//
+	// Otherwise if unset or set to `eventual`, Ledger Entry Group `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
+	//
+	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
 	OwnBalanceUpdates BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 }
 
@@ -2507,7 +2508,7 @@ type ListLedgerAccountBalancesLedger struct {
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
-	LedgerAccounts *ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection `json:"ledgerAccounts"`
+	LedgerAccounts ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection `json:"ledgerAccounts"`
 }
 
 // GetId returns ListLedgerAccountBalancesLedger.Id, and is useful for accessing the field via an interface.
@@ -2523,7 +2524,7 @@ func (v *ListLedgerAccountBalancesLedger) GetName() string { return v.Name }
 func (v *ListLedgerAccountBalancesLedger) GetCreated() string { return v.Created }
 
 // GetLedgerAccounts returns ListLedgerAccountBalancesLedger.LedgerAccounts, and is useful for accessing the field via an interface.
-func (v *ListLedgerAccountBalancesLedger) GetLedgerAccounts() *ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection {
+func (v *ListLedgerAccountBalancesLedger) GetLedgerAccounts() ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection {
 	return v.LedgerAccounts
 }
 
@@ -2664,7 +2665,7 @@ type ListLedgerAccountsLedger struct {
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
-	LedgerAccounts *ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnection `json:"ledgerAccounts"`
+	LedgerAccounts ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnection `json:"ledgerAccounts"`
 }
 
 // GetId returns ListLedgerAccountsLedger.Id, and is useful for accessing the field via an interface.
@@ -2680,7 +2681,7 @@ func (v *ListLedgerAccountsLedger) GetName() string { return v.Name }
 func (v *ListLedgerAccountsLedger) GetCreated() string { return v.Created }
 
 // GetLedgerAccounts returns ListLedgerAccountsLedger.LedgerAccounts, and is useful for accessing the field via an interface.
-func (v *ListLedgerAccountsLedger) GetLedgerAccounts() *ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnection {
+func (v *ListLedgerAccountsLedger) GetLedgerAccounts() ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnection {
 	return v.LedgerAccounts
 }
 
@@ -3104,7 +3105,7 @@ type ListMultiCurrencyLedgerAccountBalancesLedger struct {
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
-	LedgerAccounts *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection `json:"ledgerAccounts"`
+	LedgerAccounts ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection `json:"ledgerAccounts"`
 }
 
 // GetId returns ListMultiCurrencyLedgerAccountBalancesLedger.Id, and is useful for accessing the field via an interface.
@@ -3120,7 +3121,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedger) GetName() string { return
 func (v *ListMultiCurrencyLedgerAccountBalancesLedger) GetCreated() string { return v.Created }
 
 // GetLedgerAccounts returns ListMultiCurrencyLedgerAccountBalancesLedger.LedgerAccounts, and is useful for accessing the field via an interface.
-func (v *ListMultiCurrencyLedgerAccountBalancesLedger) GetLedgerAccounts() *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection {
+func (v *ListMultiCurrencyLedgerAccountBalancesLedger) GetLedgerAccounts() ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection {
 	return v.LedgerAccounts
 }
 
