@@ -18,7 +18,7 @@ type cliArgs struct {
 }
 
 func downloadSchemaToTempFile() (string, error) {
-	req, err := http.NewRequest(http.MethodGet, "https://api.fragment.dev/schema.graphql", nil)
+	req, err := http.NewRequest(http.MethodGet, "https://api.us-west-2.fragment.dev/schema.graphql", nil)
 	if err != nil {
 		return "", err
 	}

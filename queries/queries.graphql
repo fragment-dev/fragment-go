@@ -543,6 +543,52 @@ query GetLedgerAccountBalance(
   }
 }
 
+query ListLedgerEntryGroupBalances(
+  $ledgerIk: SafeString!
+  $groupKey: SafeString!
+  $groupValue: SafeString!
+  $consistencyMode: ReadBalanceConsistencyMode = use_account
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+  $filter: LedgerEntryGroupBalanceFilterSet
+) {
+  ledgerEntryGroup(ledgerEntryGroup: {
+    ledger: { ik: $ledgerIk },
+    key: $groupKey,
+    value: $groupValue,
+  }) {
+    key
+    value
+    created
+    balances(
+      after: $after,
+      before: $before,
+      first: $first,
+      last: $last,
+      filter: $filter,
+    ){
+      nodes {
+        account {
+          path
+        }
+        currency {
+          code
+          customCurrencyId
+        }
+        ownBalance(consistencyMode: $consistencyMode)
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+    }
+  }
+}
+
 query GetSchema($key: SafeString!, $version: Int) {
   schema(schema: { key: $key, version: $version }) {
     key
