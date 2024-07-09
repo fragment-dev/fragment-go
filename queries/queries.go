@@ -1682,6 +1682,19 @@ const (
 	CurrencyCodeZmw     CurrencyCode = "ZMW"
 )
 
+type CurrencyFilter struct {
+	// Must match the value provided
+	EqualTo *CurrencyMatchInput `json:"equalTo"`
+	// Must match one of the values provided
+	In []CurrencyMatchInput `json:"in"`
+}
+
+// GetEqualTo returns CurrencyFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *CurrencyFilter) GetEqualTo() *CurrencyMatchInput { return v.EqualTo }
+
+// GetIn returns CurrencyFilter.In, and is useful for accessing the field via an interface.
+func (v *CurrencyFilter) GetIn() []CurrencyMatchInput { return v.In }
+
 type CurrencyMatchInput struct {
 	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode).
 	Code CurrencyCode `json:"code"`
@@ -2171,9 +2184,49 @@ func (v *GetWorkspaceWorkspace) GetId() string { return v.Id }
 // GetName returns GetWorkspaceWorkspace.Name, and is useful for accessing the field via an interface.
 func (v *GetWorkspaceWorkspace) GetName() string { return v.Name }
 
+// A filter to query balances of a specific subset of accounts
+type GroupBalanceAccountFilter struct {
+	// A filter that must match the account ID
+	Id *StringFilter `json:"id"`
+	// A filter that must match the account path. Wildcards ('*') may be used only for template variables, and will only match a single variable each.
+	Path *StringMatchFilter `json:"path"`
+}
+
+// GetId returns GroupBalanceAccountFilter.Id, and is useful for accessing the field via an interface.
+func (v *GroupBalanceAccountFilter) GetId() *StringFilter { return v.Id }
+
+// GetPath returns GroupBalanceAccountFilter.Path, and is useful for accessing the field via an interface.
+func (v *GroupBalanceAccountFilter) GetPath() *StringMatchFilter { return v.Path }
+
+type Int96Filter struct {
+	// Must exactly equal this Int96 value
+	Eq *string `json:"eq"`
+	// Must be greater than or equal to this Int96 value
+	Gte *string `json:"gte"`
+	// Must be less than or equal to this Int96 value
+	Lte *string `json:"lte"`
+	// Must not equal this Int96 value
+	Ne *string `json:"ne"`
+}
+
+// GetEq returns Int96Filter.Eq, and is useful for accessing the field via an interface.
+func (v *Int96Filter) GetEq() *string { return v.Eq }
+
+// GetGte returns Int96Filter.Gte, and is useful for accessing the field via an interface.
+func (v *Int96Filter) GetGte() *string { return v.Gte }
+
+// GetLte returns Int96Filter.Lte, and is useful for accessing the field via an interface.
+func (v *Int96Filter) GetLte() *string { return v.Lte }
+
+// GetNe returns Int96Filter.Ne, and is useful for accessing the field via an interface.
+func (v *Int96Filter) GetNe() *string { return v.Ne }
+
 // The payload configuring the consistency for this Ledger Account.
 // See [Configure consistency](https://fragment.dev/docs#configure-consistency).
 type LedgerAccountConsistencyConfigInput struct {
+	// The consistency configuration for groups balances in this account. This is an experimental feature.
+	// Contact support if you are interested in using this feature.
+	Groups []LedgerAccountGroupConsistencyConfigInput `json:"groups"`
 	// If set to `strong`, then a Ledger Account's `lines` updates will be strongly consistent with
 	// the API response. This Ledger Account's balance will be updated and
 	// available for strongly consistent reads before you receive an API response.
@@ -2194,11 +2247,33 @@ type LedgerAccountConsistencyConfigInput struct {
 	OwnBalanceUpdates *BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 }
 
+// GetGroups returns LedgerAccountConsistencyConfigInput.Groups, and is useful for accessing the field via an interface.
+func (v *LedgerAccountConsistencyConfigInput) GetGroups() []LedgerAccountGroupConsistencyConfigInput {
+	return v.Groups
+}
+
 // GetLines returns LedgerAccountConsistencyConfigInput.Lines, and is useful for accessing the field via an interface.
 func (v *LedgerAccountConsistencyConfigInput) GetLines() *LedgerLinesConsistencyMode { return v.Lines }
 
 // GetOwnBalanceUpdates returns LedgerAccountConsistencyConfigInput.OwnBalanceUpdates, and is useful for accessing the field via an interface.
 func (v *LedgerAccountConsistencyConfigInput) GetOwnBalanceUpdates() *BalanceUpdateConsistencyMode {
+	return v.OwnBalanceUpdates
+}
+
+// The consistency configuration for groups balances in an account. This is an experimental feature.
+// Contact support if you are interested in using this feature.
+type LedgerAccountGroupConsistencyConfigInput struct {
+	// The group key for this configuration.
+	Key string `json:"key"`
+	// The consistency configuration for the group's own balance in this Ledger Account.
+	OwnBalanceUpdates BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
+}
+
+// GetKey returns LedgerAccountGroupConsistencyConfigInput.Key, and is useful for accessing the field via an interface.
+func (v *LedgerAccountGroupConsistencyConfigInput) GetKey() string { return v.Key }
+
+// GetOwnBalanceUpdates returns LedgerAccountGroupConsistencyConfigInput.OwnBalanceUpdates, and is useful for accessing the field via an interface.
+func (v *LedgerAccountGroupConsistencyConfigInput) GetOwnBalanceUpdates() BalanceUpdateConsistencyMode {
 	return v.OwnBalanceUpdates
 }
 
@@ -2272,6 +2347,25 @@ func (v *LedgerEntryFilter) GetEqualTo() *LedgerEntryMatchInput { return v.Equal
 
 // GetIn returns LedgerEntryFilter.In, and is useful for accessing the field via an interface.
 func (v *LedgerEntryFilter) GetIn() []LedgerEntryMatchInput { return v.In }
+
+// Optional filters for querying balances on a Ledger Entry Group.
+type LedgerEntryGroupBalanceFilterSet struct {
+	// Filter to a subset of accounts
+	Account *GroupBalanceAccountFilter `json:"account"`
+	// Filter to one or more currencies
+	Currency *CurrencyFilter `json:"currency"`
+	// Filter to only balances in a certain range
+	OwnBalance *Int96Filter `json:"ownBalance"`
+}
+
+// GetAccount returns LedgerEntryGroupBalanceFilterSet.Account, and is useful for accessing the field via an interface.
+func (v *LedgerEntryGroupBalanceFilterSet) GetAccount() *GroupBalanceAccountFilter { return v.Account }
+
+// GetCurrency returns LedgerEntryGroupBalanceFilterSet.Currency, and is useful for accessing the field via an interface.
+func (v *LedgerEntryGroupBalanceFilterSet) GetCurrency() *CurrencyFilter { return v.Currency }
+
+// GetOwnBalance returns LedgerEntryGroupBalanceFilterSet.OwnBalance, and is useful for accessing the field via an interface.
+func (v *LedgerEntryGroupBalanceFilterSet) GetOwnBalance() *Int96Filter { return v.OwnBalance }
 
 type LedgerEntryGroupInput struct {
 	// The key of this group. Can be up to 128 characters long.
@@ -2698,11 +2792,11 @@ func (v *ListLedgerAccountsResponse) GetLedger() *ListLedgerAccountsLedger { ret
 // Ledgers are databases designed for managing money
 type ListLedgerEntriesLedger struct {
 	// Query Ledger Entries in a Ledger. Ledger Entries are paginated and sorted in reverse-chronological order by posted date.
-	LedgerEntries *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
+	LedgerEntries ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
 }
 
 // GetLedgerEntries returns ListLedgerEntriesLedger.LedgerEntries, and is useful for accessing the field via an interface.
-func (v *ListLedgerEntriesLedger) GetLedgerEntries() *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection {
+func (v *ListLedgerEntriesLedger) GetLedgerEntries() ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection {
 	return v.LedgerEntries
 }
 
@@ -2846,6 +2940,157 @@ type ListLedgerEntriesResponse struct {
 
 // GetLedger returns ListLedgerEntriesResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *ListLedgerEntriesResponse) GetLedger() *ListLedgerEntriesLedger { return v.Ledger }
+
+// ListLedgerEntryGroupBalancesLedgerEntryGroup includes the requested fields of the GraphQL type LedgerEntryGroup.
+// The GraphQL type's documentation follows.
+//
+// A group of Ledger Entries
+type ListLedgerEntryGroupBalancesLedgerEntryGroup struct {
+	// The key of this Ledger Entry Group.
+	Key string `json:"key"`
+	// The value associated with Ledger Entry Group.
+	Value string `json:"value"`
+	// ISO-8601 timestamp this LedgerEntryGroup was created in Fragment.
+	Created  *string                                                                               `json:"created"`
+	Balances ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection `json:"balances"`
+}
+
+// GetKey returns ListLedgerEntryGroupBalancesLedgerEntryGroup.Key, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroup) GetKey() string { return v.Key }
+
+// GetValue returns ListLedgerEntryGroupBalancesLedgerEntryGroup.Value, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroup) GetValue() string { return v.Value }
+
+// GetCreated returns ListLedgerEntryGroupBalancesLedgerEntryGroup.Created, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroup) GetCreated() *string { return v.Created }
+
+// GetBalances returns ListLedgerEntryGroupBalancesLedgerEntryGroup.Balances, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroup) GetBalances() ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection {
+	return v.Balances
+}
+
+// ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection includes the requested fields of the GraphQL type LedgerEntryGroupBalanceConnection.
+// The GraphQL type's documentation follows.
+//
+// A set of balance changes for a specific Ledger Entry Group.
+type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection struct {
+	Nodes    []ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance `json:"nodes"`
+	PageInfo ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo                       `json:"pageInfo"`
+}
+
+// GetNodes returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection) GetNodes() []ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance {
+	return v.Nodes
+}
+
+// GetPageInfo returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnection) GetPageInfo() ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo {
+	return v.PageInfo
+}
+
+// ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance includes the requested fields of the GraphQL type LedgerEntryGroupBalance.
+// The GraphQL type's documentation follows.
+//
+// Represents the total effect of a Ledger Entry Group on a Ledger Account balance for a single currency.
+type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance struct {
+	// The Ledger Account whose balance is affected.
+	Account ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceAccountLedgerAccount `json:"account"`
+	// The currency of the affected balance.
+	Currency ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency `json:"currency"`
+	// The total balance change for this Ledger Account and currency.
+	OwnBalance string `json:"ownBalance"`
+}
+
+// GetAccount returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance.Account, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance) GetAccount() ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceAccountLedgerAccount {
+	return v.Account
+}
+
+// GetCurrency returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance.Currency, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance) GetCurrency() ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency {
+	return v.Currency
+}
+
+// GetOwnBalance returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance.OwnBalance, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalance) GetOwnBalance() string {
+	return v.OwnBalance
+}
+
+// ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency includes the requested fields of the GraphQL type Currency.
+type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency struct {
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) .
+	Code CurrencyCode `json:"code"`
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	CustomCurrencyId *string `json:"customCurrencyId"`
+}
+
+// GetCode returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency.Code, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency) GetCode() CurrencyCode {
+	return v.Code
+}
+
+// GetCustomCurrencyId returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency.CustomCurrencyId, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency) GetCustomCurrencyId() *string {
+	return v.CustomCurrencyId
+}
+
+// ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// ListLedgerEntryGroupBalancesResponse is returned by ListLedgerEntryGroupBalances on success.
+type ListLedgerEntryGroupBalancesResponse struct {
+	// Query a Ledger Entry Group given its Ledger, key, and value.
+	LedgerEntryGroup *ListLedgerEntryGroupBalancesLedgerEntryGroup `json:"ledgerEntryGroup"`
+}
+
+// GetLedgerEntryGroup returns ListLedgerEntryGroupBalancesResponse.LedgerEntryGroup, and is useful for accessing the field via an interface.
+func (v *ListLedgerEntryGroupBalancesResponse) GetLedgerEntryGroup() *ListLedgerEntryGroupBalancesLedgerEntryGroup {
+	return v.LedgerEntryGroup
+}
 
 // ListMultiCurrencyLedgerAccountBalancesLedger includes the requested fields of the GraphQL type Ledger.
 // The GraphQL type's documentation follows.
@@ -4479,6 +4724,24 @@ func (v *StringFilter) GetEqualTo() *string { return v.EqualTo }
 // GetIn returns StringFilter.In, and is useful for accessing the field via an interface.
 func (v *StringFilter) GetIn() []string { return v.In }
 
+type StringMatchFilter struct {
+	// Must exactly equal the provided value
+	EqualTo *string `json:"equalTo"`
+	// Must exactly equal one of the provided values
+	In []string `json:"in"`
+	// Must match the provided pattern. Wildcards ("*") will match any substring
+	Matches *string `json:"matches"`
+}
+
+// GetEqualTo returns StringMatchFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *StringMatchFilter) GetEqualTo() *string { return v.EqualTo }
+
+// GetIn returns StringMatchFilter.In, and is useful for accessing the field via an interface.
+func (v *StringMatchFilter) GetIn() []string { return v.In }
+
+// GetMatches returns StringMatchFilter.Matches, and is useful for accessing the field via an interface.
+func (v *StringMatchFilter) GetMatches() *string { return v.Matches }
+
 // SyncCustomAccountsResponse is returned by SyncCustomAccounts on success.
 type SyncCustomAccountsResponse struct {
 	// Once you've created a [Custom Link](https://fragment.dev/docs#reconcile-transactions-link-any-system), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
@@ -5984,6 +6247,50 @@ func (v *__ListLedgerEntriesInput) GetBefore() *string { return v.Before }
 // GetFilter returns __ListLedgerEntriesInput.Filter, and is useful for accessing the field via an interface.
 func (v *__ListLedgerEntriesInput) GetFilter() *LedgerEntriesFilterSet { return v.Filter }
 
+// __ListLedgerEntryGroupBalancesInput is used internally by genqlient
+type __ListLedgerEntryGroupBalancesInput struct {
+	LedgerIk        string                            `json:"ledgerIk"`
+	GroupKey        string                            `json:"groupKey"`
+	GroupValue      string                            `json:"groupValue"`
+	ConsistencyMode *ReadBalanceConsistencyMode       `json:"consistencyMode"`
+	After           *string                           `json:"after"`
+	Before          *string                           `json:"before"`
+	First           *int                              `json:"first"`
+	Last            *int                              `json:"last"`
+	Filter          *LedgerEntryGroupBalanceFilterSet `json:"filter"`
+}
+
+// GetLedgerIk returns __ListLedgerEntryGroupBalancesInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetGroupKey returns __ListLedgerEntryGroupBalancesInput.GroupKey, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetGroupKey() string { return v.GroupKey }
+
+// GetGroupValue returns __ListLedgerEntryGroupBalancesInput.GroupValue, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetGroupValue() string { return v.GroupValue }
+
+// GetConsistencyMode returns __ListLedgerEntryGroupBalancesInput.ConsistencyMode, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetConsistencyMode() *ReadBalanceConsistencyMode {
+	return v.ConsistencyMode
+}
+
+// GetAfter returns __ListLedgerEntryGroupBalancesInput.After, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetAfter() *string { return v.After }
+
+// GetBefore returns __ListLedgerEntryGroupBalancesInput.Before, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetBefore() *string { return v.Before }
+
+// GetFirst returns __ListLedgerEntryGroupBalancesInput.First, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetFirst() *int { return v.First }
+
+// GetLast returns __ListLedgerEntryGroupBalancesInput.Last, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetLast() *int { return v.Last }
+
+// GetFilter returns __ListLedgerEntryGroupBalancesInput.Filter, and is useful for accessing the field via an interface.
+func (v *__ListLedgerEntryGroupBalancesInput) GetFilter() *LedgerEntryGroupBalanceFilterSet {
+	return v.Filter
+}
+
 // __ListMultiCurrencyLedgerAccountBalancesInput is used internally by genqlient
 type __ListMultiCurrencyLedgerAccountBalancesInput struct {
 	LedgerIk                   string                      `json:"ledgerIk"`
@@ -6877,6 +7184,82 @@ func ListLedgerEntries(
 	}
 
 	var data_ ListLedgerEntriesResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by ListLedgerEntryGroupBalances.
+const ListLedgerEntryGroupBalances_Operation = `
+query ListLedgerEntryGroupBalances ($ledgerIk: SafeString!, $groupKey: SafeString!, $groupValue: SafeString!, $consistencyMode: ReadBalanceConsistencyMode = use_account, $after: String, $before: String, $first: Int, $last: Int, $filter: LedgerEntryGroupBalanceFilterSet) {
+	ledgerEntryGroup(ledgerEntryGroup: {ledger:{ik:$ledgerIk},key:$groupKey,value:$groupValue}) {
+		key
+		value
+		created
+		balances(after: $after, before: $before, first: $first, last: $last, filter: $filter) {
+			nodes {
+				account {
+					path
+				}
+				currency {
+					code
+					customCurrencyId
+				}
+				ownBalance(consistencyMode: $consistencyMode)
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+				hasPreviousPage
+				startCursor
+			}
+		}
+	}
+}
+`
+
+func ListLedgerEntryGroupBalances(
+	ctx_ auth.AuthenticatedContext,
+	ledgerIk string,
+	groupKey string,
+	groupValue string,
+	consistencyMode *ReadBalanceConsistencyMode,
+	after *string,
+	before *string,
+	first *int,
+	last *int,
+	filter *LedgerEntryGroupBalanceFilterSet,
+) (*ListLedgerEntryGroupBalancesResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "ListLedgerEntryGroupBalances",
+		Query:  ListLedgerEntryGroupBalances_Operation,
+		Variables: &__ListLedgerEntryGroupBalancesInput{
+			LedgerIk:        ledgerIk,
+			GroupKey:        groupKey,
+			GroupValue:      groupValue,
+			ConsistencyMode: consistencyMode,
+			After:           after,
+			Before:          before,
+			First:           first,
+			Last:            last,
+			Filter:          filter,
+		},
+	}
+	var err_ error
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	var data_ ListLedgerEntryGroupBalancesResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
