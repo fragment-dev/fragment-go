@@ -250,7 +250,7 @@ func (v *AddLedgerEntryAddLedgerEntryInternalError) GetMessage() string { return
 
 // AddLedgerEntryResponse is returned by AddLedgerEntry on success.
 type AddLedgerEntryResponse struct {
-	// Adds a Ledger Entry to a Ledger. This Ledger Entry cannot be into a Linked Ledger Account. For that, use [reconcileTx](https://fragment.dev/api-reference#mutations-reconciletx)
+	// Adds a Ledger Entry to a Ledger. This Ledger Entry cannot be into a Linked Ledger Account. For that, use [reconcileTx](https://fragment.dev/api-reference/api-mutations#reconciletx)
 	AddLedgerEntry AddLedgerEntryAddLedgerEntryAddLedgerEntryResponse `json:"-"`
 }
 
@@ -563,7 +563,7 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetMessage() string {
 
 // AddLedgerEntryRuntimeResponse is returned by AddLedgerEntryRuntime on success.
 type AddLedgerEntryRuntimeResponse struct {
-	// Adds a Ledger Entry to a Ledger. This Ledger Entry cannot be into a Linked Ledger Account. For that, use [reconcileTx](https://fragment.dev/api-reference#mutations-reconciletx)
+	// Adds a Ledger Entry to a Ledger. This Ledger Entry cannot be into a Linked Ledger Account. For that, use [reconcileTx](https://fragment.dev/api-reference/api-mutations#reconciletx)
 	AddLedgerEntry AddLedgerEntryRuntimeAddLedgerEntryAddLedgerEntryResponse `json:"-"`
 }
 
@@ -635,15 +635,12 @@ func (v *AddLedgerEntryRuntimeResponse) __premarshalJSON() (*__premarshalAddLedg
 	return &retval, nil
 }
 
-// Used to configure the write-consistency of a Ledger Account's balance.
-// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+// Used to configure the write-consistency of a Ledger Account's balance. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type BalanceUpdateConsistencyMode string
 
 const (
-	// Eventually consistent balance updates.
 	BalanceUpdateConsistencyModeEventual BalanceUpdateConsistencyMode = "eventual"
-	// Strongly consistent balance updates.
-	BalanceUpdateConsistencyModeStrong BalanceUpdateConsistencyMode = "strong"
+	BalanceUpdateConsistencyModeStrong   BalanceUpdateConsistencyMode = "strong"
 )
 
 // The input for your Chart of Accounts in a Schema.
@@ -653,7 +650,7 @@ type ChartOfAccountsInput struct {
 	// The default consistency configuration for all Ledger Accounts in this Schema.
 	// If a Ledger Account does not specify its own consistency configuration, it will use the default values provided here.
 	//
-	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	DefaultConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"defaultConsistencyConfig"`
 	// The default currency of each Ledger Account in the Chart Of Accounts.
 	// It must be provided if `defaultCurrencyMode` is set to `single`.
@@ -764,14 +761,10 @@ func __marshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResponse(v *Create
 	case *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult:
 		typename = "CreateCustomLinkResult"
 
-		premarshaled, err := v.__premarshalJSON()
-		if err != nil {
-			return nil, err
-		}
 		result := struct {
 			TypeName string `json:"__typename"`
-			*__premarshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResult
-		}{typename, premarshaled}
+			*CreateCustomLinkCreateCustomLinkCreateCustomLinkResult
+		}{typename, v}
 		return json.Marshal(result)
 	case *CreateCustomLinkCreateCustomLinkInternalError:
 		typename = "InternalError"
@@ -793,8 +786,8 @@ func __marshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResponse(v *Create
 type CreateCustomLinkCreateCustomLinkCreateCustomLinkResult struct {
 	Typename *string `json:"__typename"`
 	// The custom link that was created. Represents an instance of an external system.
-	Link       CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink `json:"-"`
-	IsIkReplay bool                                                       `json:"isIkReplay"`
+	Link       CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink `json:"link"`
+	IsIkReplay bool                                                                 `json:"isIkReplay"`
 }
 
 // GetTypename returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResult.Typename, and is useful for accessing the field via an interface.
@@ -803,7 +796,7 @@ func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) GetTypename() *
 }
 
 // GetLink returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResult.Link, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) GetLink() CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink {
+func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) GetLink() CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink {
 	return v.Link
 }
 
@@ -812,205 +805,14 @@ func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) GetIsIkReplay()
 	return v.IsIkReplay
 }
 
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*CreateCustomLinkCreateCustomLinkCreateCustomLinkResult
-		Link json.RawMessage `json:"link"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.CreateCustomLinkCreateCustomLinkCreateCustomLinkResult = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.Link
-		src := firstPass.Link
-		if len(src) != 0 && string(src) != "null" {
-			err = __unmarshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink(
-				src, dst)
-			if err != nil {
-				return fmt.Errorf(
-					"unable to unmarshal CreateCustomLinkCreateCustomLinkCreateCustomLinkResult.Link: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResult struct {
-	Typename *string `json:"__typename"`
-
-	Link json.RawMessage `json:"link"`
-
-	IsIkReplay bool `json:"isIkReplay"`
-}
-
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResult) __premarshalJSON() (*__premarshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResult, error) {
-	var retval __premarshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResult
-
-	retval.Typename = v.Typename
-	{
-
-		dst := &retval.Link
-		src := v.Link
-		var err error
-		*dst, err = __marshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"unable to marshal CreateCustomLinkCreateCustomLinkCreateCustomLinkResult.Link: %w", err)
-		}
-	}
-	retval.IsIkReplay = v.IsIkReplay
-	return &retval, nil
-}
-
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink includes the requested fields of the GraphQL interface Link.
-//
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink is implemented by the following types:
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink
-type CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink interface {
-	implementsGraphQLInterfaceCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink()
-	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() *string
-	// GetId returns the interface-field "id" from its implementation.
-	// The GraphQL interface field's documentation follows.
-	//
-	// FRAGMENT ID of the Link.
-	GetId() string
-	// GetName returns the interface-field "name" from its implementation.
-	// The GraphQL interface field's documentation follows.
-	//
-	// Name of the Link as it appears in the Dashboard.
-	GetName() string
-	// GetCreated returns the interface-field "created" from its implementation.
-	// The GraphQL interface field's documentation follows.
-	//
-	// ISO-8601 timestamp when the Link was created.
-	GetCreated() string
-}
-
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink) implementsGraphQLInterfaceCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink() {
-}
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink) implementsGraphQLInterfaceCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink() {
-}
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink) implementsGraphQLInterfaceCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink() {
-}
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink) implementsGraphQLInterfaceCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink() {
-}
-
-func __unmarshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink(b []byte, v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink) error {
-	if string(b) == "null" {
-		return nil
-	}
-
-	var tn struct {
-		TypeName string `json:"__typename"`
-	}
-	err := json.Unmarshal(b, &tn)
-	if err != nil {
-		return err
-	}
-
-	switch tn.TypeName {
-	case "CustomLink":
-		*v = new(CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink)
-		return json.Unmarshal(b, *v)
-	case "IncreaseLink":
-		*v = new(CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink)
-		return json.Unmarshal(b, *v)
-	case "StripeLink":
-		*v = new(CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink)
-		return json.Unmarshal(b, *v)
-	case "UnitLink":
-		*v = new(CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink)
-		return json.Unmarshal(b, *v)
-	case "":
-		return fmt.Errorf(
-			"response was missing Link.__typename")
-	default:
-		return fmt.Errorf(
-			`unexpected concrete type for CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink: "%v"`, tn.TypeName)
-	}
-}
-
-func __marshalCreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink(v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink) ([]byte, error) {
-
-	var typename string
-	switch v := (*v).(type) {
-	case *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink:
-		typename = "CustomLink"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink
-		}{typename, v}
-		return json.Marshal(result)
-	case *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink:
-		typename = "IncreaseLink"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink
-		}{typename, v}
-		return json.Marshal(result)
-	case *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink:
-		typename = "StripeLink"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink
-		}{typename, v}
-		return json.Marshal(result)
-	case *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink:
-		typename = "UnitLink"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink
-		}{typename, v}
-		return json.Marshal(result)
-	case nil:
-		return []byte("null"), nil
-	default:
-		return nil, fmt.Errorf(
-			`unexpected concrete type for CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLink: "%T"`, v)
-	}
-}
-
 // CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink includes the requested fields of the GraphQL type CustomLink.
 type CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink struct {
-	Typename *string `json:"__typename"`
-	// FRAGMENT ID of the Link.
+	// FRAGMENT ID of the Custom Link.
 	Id string `json:"id"`
-	// Name of the Link as it appears in the Dashboard.
+	// Name of the Link as it appears in the Fragment Dashboard.
 	Name string `json:"name"`
 	// ISO-8601 timestamp when the Link was created.
 	Created string `json:"created"`
-}
-
-// GetTypename returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink.Typename, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink) GetTypename() *string {
-	return v.Typename
 }
 
 // GetId returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink.Id, and is useful for accessing the field via an interface.
@@ -1025,99 +827,6 @@ func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink) G
 
 // GetCreated returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink.Created, and is useful for accessing the field via an interface.
 func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink) GetCreated() string {
-	return v.Created
-}
-
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink includes the requested fields of the GraphQL type IncreaseLink.
-type CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink struct {
-	Typename *string `json:"__typename"`
-	// FRAGMENT ID of the Link.
-	Id string `json:"id"`
-	// Name of the Link as it appears in the Dashboard.
-	Name string `json:"name"`
-	// ISO-8601 timestamp when the Link was created.
-	Created string `json:"created"`
-}
-
-// GetTypename returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink.Typename, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink) GetTypename() *string {
-	return v.Typename
-}
-
-// GetId returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink.Id, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink) GetId() string {
-	return v.Id
-}
-
-// GetName returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink.Name, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink) GetName() string {
-	return v.Name
-}
-
-// GetCreated returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink.Created, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkIncreaseLink) GetCreated() string {
-	return v.Created
-}
-
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink includes the requested fields of the GraphQL type StripeLink.
-type CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink struct {
-	Typename *string `json:"__typename"`
-	// FRAGMENT ID of the Link.
-	Id string `json:"id"`
-	// Name of the Link as it appears in the Dashboard.
-	Name string `json:"name"`
-	// ISO-8601 timestamp when the Link was created.
-	Created string `json:"created"`
-}
-
-// GetTypename returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink.Typename, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink) GetTypename() *string {
-	return v.Typename
-}
-
-// GetId returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink.Id, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink) GetId() string {
-	return v.Id
-}
-
-// GetName returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink.Name, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink) GetName() string {
-	return v.Name
-}
-
-// GetCreated returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink.Created, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkStripeLink) GetCreated() string {
-	return v.Created
-}
-
-// CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink includes the requested fields of the GraphQL type UnitLink.
-type CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink struct {
-	Typename *string `json:"__typename"`
-	// FRAGMENT ID of the Link.
-	Id string `json:"id"`
-	// Name of the Link as it appears in the Dashboard.
-	Name string `json:"name"`
-	// ISO-8601 timestamp when the Link was created.
-	Created string `json:"created"`
-}
-
-// GetTypename returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink.Typename, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink) GetTypename() *string {
-	return v.Typename
-}
-
-// GetId returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink.Id, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink) GetId() string {
-	return v.Id
-}
-
-// GetName returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink.Name, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink) GetName() string {
-	return v.Name
-}
-
-// GetCreated returns CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink.Created, and is useful for accessing the field via an interface.
-func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkUnitLink) GetCreated() string {
 	return v.Created
 }
 
@@ -1144,7 +853,7 @@ func (v *CreateCustomLinkCreateCustomLinkInternalError) GetMessage() string { re
 
 // CreateCustomLinkResponse is returned by CreateCustomLink on success.
 type CreateCustomLinkResponse struct {
-	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/docs#reconcile-transactions-link-any-system)
+	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/docs/reconcile-transactions#link-any-system)
 	CreateCustomLink CreateCustomLinkCreateCustomLinkCreateCustomLinkResponse `json:"-"`
 }
 
@@ -1350,9 +1059,9 @@ func (v *CreateLedgerCreateLedgerCreateLedgerResult) GetIsIkReplay() bool { retu
 // Ledgers are databases designed for managing money
 type CreateLedgerCreateLedgerCreateLedgerResultLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference/api-mutations#updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Schema key associated with this Ledger.
@@ -1696,9 +1405,9 @@ func (v *CurrencyFilter) GetEqualTo() *CurrencyMatchInput { return v.EqualTo }
 func (v *CurrencyFilter) GetIn() []CurrencyMatchInput { return v.In }
 
 type CurrencyMatchInput struct {
-	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode).
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode).
 	Code CurrencyCode `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -1793,7 +1502,7 @@ func (v *DateTimeFilter) GetAfter() *string { return v.After }
 // GetBefore returns DateTimeFilter.Before, and is useful for accessing the field via an interface.
 func (v *DateTimeFilter) GetBefore() *string { return v.Before }
 
-// Specify an External Account by using `id`, or  `linkId` and `externalId`.
+// Specify an External Account by using `id`, or `linkId` and `externalId`.
 type ExternalAccountMatchInput struct {
 	// The external system's ID of the External Account. If this is specified, `linkId` is required. `id` is optional, but will be validated if provided.
 	ExternalId *string `json:"externalId"`
@@ -1878,7 +1587,7 @@ func (v *GetLedgerAccountLinesLedgerAccount) GetLines() GetLedgerAccountLinesLed
 type GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnection struct {
 	// The current page of results
 	Nodes []GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
-	// The [pagination info](https://fragment.dev/api-reference#types-connection-types-pageinfo) for this list
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
 	PageInfo GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -1933,7 +1642,7 @@ func (v *GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionNodesLedger
 // GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -2077,9 +1786,9 @@ func (v *GetLedgerEntryResponse) GetLedgerEntry() *GetLedgerEntryLedgerEntry { r
 // Ledgers are databases designed for managing money
 type GetLedgerLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference/api-mutations#updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// When aggregating balances, all transactions within a 24 hour period starting at midnight UTC plus this offset are included in each day.
@@ -2222,25 +1931,25 @@ func (v *Int96Filter) GetLte() *string { return v.Lte }
 func (v *Int96Filter) GetNe() *string { return v.Ne }
 
 // The payload configuring the consistency for this Ledger Account.
-// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type LedgerAccountConsistencyConfigInput struct {
 	// The consistency configuration for Ledger Entry Groups affecting this account.
 	//
-	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	Groups []LedgerAccountGroupConsistencyConfigInput `json:"groups"`
 	// If set to `strong`, then a Ledger Account's `lines` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `lines` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	Lines *LedgerLinesConsistencyMode `json:"lines"`
 	// If set to `strong`, then a Ledger Account's `ownBalance` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	OwnBalanceUpdates *BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 }
 
@@ -2266,7 +1975,7 @@ type LedgerAccountGroupConsistencyConfigInput struct {
 	//
 	// Otherwise if unset or set to `eventual`, Ledger Entry Group `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	OwnBalanceUpdates BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 }
 
@@ -2282,12 +1991,11 @@ func (v *LedgerAccountGroupConsistencyConfigInput) GetOwnBalanceUpdates() Balanc
 //
 // When specifying a Ledger Account by `path`, you must provide `ledger`.
 type LedgerAccountMatchInput struct {
-	// The FRAGMENT ID of the ledger account
+	// The FRAGMENT ID of the Ledger Account
 	Id *string `json:"id"`
 	// The Ledger to which this Ledger Account belongs. This is required if you are specifying the Ledger Account by `path`.
 	Ledger *LedgerMatchInput `json:"ledger"`
-	// The unique path of the ledger account.
-	//
+	// The unique path of the Ledger Account.
 	// This is a slash-delimited string containing the keys of an account and all its direct ancestors.
 	Path *string `json:"path"`
 }
@@ -2385,12 +2093,9 @@ func (v *LedgerEntryGroupInput) GetValue() string { return v.Value }
 type LedgerEntryMatchInput struct {
 	// The FRAGMENT ID of the Ledger Entry
 	Id *string `json:"id"`
-	// The IK provided to the `addLedgerEntry` mutation or the `ik` field
-	// returned from a `reconcileTx` mutation. This is required if you have not
-	// provided `id`.
+	// The IK provided to the `addLedgerEntry` mutation or the `ik` field returned from a `reconcileTx` mutation. This is required if you have not provided `id`.
 	Ik *string `json:"ik"`
-	// The FRAGMENT ID of the Ledger to which this Ledger Entry belongs. This
-	// is required if you have not provided `id`.
+	// The FRAGMENT ID of the Ledger to which this Ledger Entry belongs. This is required if you have not provided `id`.
 	Ledger *LedgerMatchInput `json:"ledger"`
 }
 
@@ -2425,7 +2130,7 @@ type LedgerLineInput struct {
 	Currency *CurrencyMatchInput `json:"currency"`
 	// If not specified the description from the parent LedgerEntryInput will be used
 	Description *string `json:"description"`
-	// Optional identifier for Ledger Line. You can filter lines by key using [LedgerLinesFilterSet](https://fragment.dev/api-reference#types-filter-types-ledgerlinesfilterset).
+	// Optional identifier for Ledger Line. You can filter lines by key using [LedgerLinesFilterSet](https://fragment.dev/api-reference/api-types#filter-types-ledgerlinesfilterset).
 	Key *string `json:"key"`
 	// Required for reconcileTx to specify the transaction being reconciled, you can specify either the FRAGMENT ID or external ID of the transaction
 	Tx *TxMatchInput `json:"tx"`
@@ -2457,12 +2162,19 @@ const (
 )
 
 type LedgerLinesFilterSet struct {
+	// Filter by the created timestamp of the Ledger Line. This is the wall-clock time when the Ledger Line was created.
+	Created *DateTimeFilter `json:"created"`
+	// Filter by the posted date of the Ledger Line. This is identical to using `posted`, but only supports day-level granularity.
 	Date *DateFilter `json:"date"`
 	// Use this to filter Ledger Lines by key. Ledger Line keys are defined in Schemas.
-	Key    *StringFilter   `json:"key"`
+	Key *StringFilter `json:"key"`
+	// Filter by the posted timestamp of the Ledger Line.
 	Posted *DateTimeFilter `json:"posted"`
 	Type   *TxTypeFilter   `json:"type"`
 }
+
+// GetCreated returns LedgerLinesFilterSet.Created, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetCreated() *DateTimeFilter { return v.Created }
 
 // GetDate returns LedgerLinesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetDate() *DateFilter { return v.Date }
@@ -2478,9 +2190,9 @@ func (v *LedgerLinesFilterSet) GetType() *TxTypeFilter { return v.Type }
 
 // Specify a Ledger by using `id` or `ik`.
 type LedgerMatchInput struct {
-	// The FRAGMENT ID of the ledger
+	// The FRAGMENT ID of the Ledger
 	Id *string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a second unique identifier for this ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a second unique identifier for this Ledger.
 	Ik *string `json:"ik"`
 }
 
@@ -2502,9 +2214,9 @@ const (
 // Ledgers are databases designed for managing money
 type ListLedgerAccountBalancesLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference/api-mutations#updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
@@ -2535,7 +2247,7 @@ func (v *ListLedgerAccountBalancesLedger) GetLedgerAccounts() ListLedgerAccountB
 type ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection struct {
 	// The current page of results
 	Nodes []ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccount `json:"nodes"`
-	// The [pagination info](https://fragment.dev/api-reference#types-connection-types-pageinfo) for this list
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
 	PageInfo ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -2614,7 +2326,7 @@ func (v *ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNo
 // ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -2659,9 +2371,9 @@ func (v *ListLedgerAccountBalancesResponse) GetLedger() *ListLedgerAccountBalanc
 // Ledgers are databases designed for managing money
 type ListLedgerAccountsLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference/api-mutations#updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
@@ -2692,7 +2404,7 @@ func (v *ListLedgerAccountsLedger) GetLedgerAccounts() ListLedgerAccountsLedgerL
 type ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnection struct {
 	// The current page of results
 	Nodes []ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccount `json:"nodes"`
-	// The [pagination info](https://fragment.dev/api-reference#types-connection-types-pageinfo) for this list
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
 	PageInfo ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -2750,7 +2462,7 @@ func (v *ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionNodesLedg
 // ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -2808,7 +2520,7 @@ func (v *ListLedgerEntriesLedger) GetLedgerEntries() ListLedgerEntriesLedgerLedg
 type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnection struct {
 	// The current page of results
 	Nodes []ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry `json:"nodes"`
-	// The [pagination info](https://fragment.dev/api-reference#types-connection-types-pageinfo) for this list
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
 	PageInfo ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -2905,7 +2617,7 @@ func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerE
 // ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3035,9 +2747,9 @@ func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBal
 
 // ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency includes the requested fields of the GraphQL type Currency.
 type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionNodesLedgerEntryGroupBalanceCurrency struct {
-	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) .
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
 	Code CurrencyCode `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -3054,7 +2766,7 @@ func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBal
 // ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3099,9 +2811,9 @@ func (v *ListLedgerEntryGroupBalancesResponse) GetLedgerEntryGroup() *ListLedger
 // Ledgers are databases designed for managing money
 type ListMultiCurrencyLedgerAccountBalancesLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference/api-mutations#updateledger) mutation.
 	Name    string `json:"name"`
 	Created string `json:"created"`
 	// Query LedgerAccounts in Ledger. Ledger Accounts are paginated and returned in reverse-chronological order by their created date.
@@ -3132,7 +2844,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedger) GetLedgerAccounts() ListM
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnection struct {
 	// The current page of results
 	Nodes []ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccount `json:"nodes"`
-	// The [pagination info](https://fragment.dev/api-reference#types-connection-types-pageinfo) for this list
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
 	PageInfo ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -3245,9 +2957,9 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccount
 
 // ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccountBalancesCurrencyAmountConnectionNodesCurrencyAmountCurrency includes the requested fields of the GraphQL type Currency.
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccountBalancesCurrencyAmountConnectionNodesCurrencyAmountCurrency struct {
-	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) .
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
 	Code CurrencyCode `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -3298,9 +3010,9 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccount
 
 // ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccountChildBalancesCurrencyAmountConnectionNodesCurrencyAmountCurrency includes the requested fields of the GraphQL type Currency.
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccountChildBalancesCurrencyAmountConnectionNodesCurrencyAmountCurrency struct {
-	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) .
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
 	Code CurrencyCode `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -3351,9 +3063,9 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccount
 
 // ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccountOwnBalancesCurrencyAmountConnectionNodesCurrencyAmountCurrency includes the requested fields of the GraphQL type Currency.
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNodesLedgerAccountOwnBalancesCurrencyAmountConnectionNodesCurrencyAmountCurrency struct {
-	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) .
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
 	Code CurrencyCode `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -3370,7 +3082,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccount
 // ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs#query-data-basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3409,14 +3121,11 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 	return v.Ledger
 }
 
-// The consistency configuration of a Ledger Account's balance queries.
-// If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances.
-// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+// The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type ReadBalanceConsistencyMode string
 
 const (
-	// Balance queries will read eventually consistent balances. This is the default behavior if `ReadBalanceConsistencyMode` is not provided as an argument to the balance field.
-	// Both Ledger Accounts configured with strongly and eventually consistent balance updates support this enum.
+	// Balance queries will read eventually consistent balances. This is the default behavior if `ReadBalanceConsistencyMode` is not provided as an argument to the balance field. Both Ledger Accounts configured with strongly and eventually consistent balance updates support this enum.
 	ReadBalanceConsistencyModeEventual ReadBalanceConsistencyMode = "eventual"
 	// Balance queries will read strongly consistent balances. This is only allowed if the Ledger Account's `ownBalanceUpdates` in its `consistencyConfig` is `strong`.
 	ReadBalanceConsistencyModeStrong ReadBalanceConsistencyMode = "strong"
@@ -3658,7 +3367,7 @@ func (v *ReconcileTxReconcileTxReconcileTxResultLinesLedgerLineAccountLedgerAcco
 
 // ReconcileTxResponse is returned by ReconcileTx on success.
 type ReconcileTxResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/docs#reconcile-transactions) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-transactions) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -3970,7 +3679,7 @@ func (v *ReconcileTxRuntimeReconcileTxReconcileTxResultLinesLedgerLineAccountLed
 
 // ReconcileTxRuntimeResponse is returned by ReconcileTxRuntime on success.
 type ReconcileTxRuntimeResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/docs#reconcile-transactions) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-transactions) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxRuntimeReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -4100,11 +3809,11 @@ func (v *SchemaConditionInput) GetOwnBalance() *SchemaInt96ConditionInput { retu
 
 // The consistency configuration for entities created within Ledgers created by this Schema.
 //
-// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type SchemaConsistencyConfigInput struct {
 	// The consistency mode for the Ledger Entries list query within Ledgers created by this Schema.
 	//
-	// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	Entries *SchemaConsistencyMode `json:"entries"`
 }
 
@@ -4113,7 +3822,7 @@ func (v *SchemaConsistencyConfigInput) GetEntries() *SchemaConsistencyMode { ret
 
 // The consistency modes available for entities created within this Schema.
 //
-// See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type SchemaConsistencyMode string
 
 const (
@@ -4123,12 +3832,12 @@ const (
 	SchemaConsistencyModeStrong SchemaConsistencyMode = "strong"
 )
 
-// Matches a Currency. Can be a built-in [CurrencyCode](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode), custom Currency, or a parameterized string.
+// Matches a Currency. Can be a built-in [CurrencyCode](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode), custom Currency, or a parameterized string.
 // If you supply a parameterized string, you must pass in a valid CurrencyCode as a parameter when posting a Ledger Entry.
 type SchemaCurrencyMatchInput struct {
-	// The currency code. This must either be a [CurrencyCode](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) or a parameterized string that resolves to a CurrencyCode .
+	// The currency code. This must either be a [CurrencyCode](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) or a parameterized string that resolves to a CurrencyCode .
 	Code string `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -4212,12 +3921,12 @@ func (v *SchemaInt96ConditionInput) GetGte() *string { return v.Gte }
 func (v *SchemaInt96ConditionInput) GetLte() *string { return v.Lte }
 
 // Models a Ledger Account in a Schema.
-// Upon successfully storing a [Schema](https://fragment.dev/api-reference#types-core-types-schema), a [LedgerAccount](https://fragment.dev/api-reference#types-core-types-ledgeraccount) will be created for
+// Upon successfully storing a [Schema](https://fragment.dev/api-reference/api-types#core-types-schema), a [LedgerAccount](https://fragment.dev/api-reference/api-types#core-types-ledgeraccount) will be created for
 // each corresponding non-templated `SchemaLedgerAccountInput` in your Chart of Accounts.
 type SchemaLedgerAccountInput struct {
 	// Ledger Accounts to create as children of this Ledger Account. Ledger Accounts may be nested up to a maximum depth of 10.
 	Children []SchemaLedgerAccountInput `json:"children"`
-	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/docs#configure-consistency).
+	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	ConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"consistencyConfig"`
 	// The currency of this Ledger Account. If this is not set, and `currencyMode` is
 	// not set to `multi`, it is derived from the Chart of Accounts' default.
@@ -4345,7 +4054,7 @@ type SchemaLedgerEntryInput struct {
 	// Ledger Entries posted with this type will be in these Ledger Entry Groups.
 	Groups []SchemaLedgerEntryGroupInput `json:"groups"`
 	// The Ledger Lines in the Ledger Entry.
-	// If provided, when posting a Typed Entry, a [LedgerEntry](https://fragment.dev/api-reference#types-core-types-ledgerline) will be posted containing [LedgerLines](https://fragment.dev/api-reference#types-core-types-ledgerline) corresponding
+	// If provided, when posting a Typed Entry, a [LedgerEntry](https://fragment.dev/api-reference/api-types#core-types-ledgerline) will be posted containing [LedgerLines](https://fragment.dev/api-reference/api-types#core-types-ledgerline) corresponding
 	// to the values you provide here. If your lines contain parameters, you must supply values for those parameters that balance out the Ledger Entry. If not provided, lines will be required when posting a Typed Entry.
 	Lines []SchemaLedgerLineInput `json:"lines"`
 	// Fixed partial set of parameters to be included in a templated Ledger Entry.
@@ -4353,8 +4062,10 @@ type SchemaLedgerEntryInput struct {
 	// Ledger Entries posted with this type will be associated with these tags.
 	Tags []SchemaLedgerEntryTagInput `json:"tags"`
 	// The type of this Ledger Entry. This is a stable, unique identifier for this entry. Uniqueness is enforced at the Schema level.
-	// You can filter on this field when querying for Ledger Entries. See the docs on [LedgerEntryFilterSet](https://fragment.dev/api-reference#types-filter-types-ledgerentriesfilterset)
+	// You can filter on this field when querying for Ledger Entries. See the docs on [LedgerEntryFilterSet](https://fragment.dev/api-reference/api-types#filter-types-ledgerentriesfilterset)
 	Type string `json:"type"`
+	// Experimental: This field is not yet supported.
+	Version *int `json:"version"`
 }
 
 // GetConditions returns SchemaLedgerEntryInput.Conditions, and is useful for accessing the field via an interface.
@@ -4379,6 +4090,9 @@ func (v *SchemaLedgerEntryInput) GetTags() []SchemaLedgerEntryTagInput { return 
 
 // GetType returns SchemaLedgerEntryInput.Type, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetType() string { return v.Type }
+
+// GetVersion returns SchemaLedgerEntryInput.Version, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerEntryInput) GetVersion() *int { return v.Version }
 
 // A tag associated with a Ledger Entry type.
 type SchemaLedgerEntryTagInput struct {
@@ -4412,7 +4126,7 @@ type SchemaLedgerLineInput struct {
 	// This field is required if the Ledger Account being posted to is a Linked Ledger Account. Otherwise, this field is disallowed.
 	// It supports parameters in its attributes via handlebars syntax.
 	//
-	// See the docs on [reconciliation and Linked Ledger Accounts](https://fragment.dev/docs#reconcile-transactions).
+	// See the docs on [reconciliation and Linked Ledger Accounts](https://fragment.dev/docs/reconcile-transactions).
 	Tx *SchemaTxMatchInput `json:"tx"`
 }
 
@@ -4574,7 +4288,7 @@ func (v *StoreSchemaStoreSchemaInternalError) GetMessage() string { return v.Mes
 // StoreSchemaStoreSchemaStoreSchemaResult
 // The GraphQL type's documentation follows.
 //
-// Returned by the [storeSchema](https://fragment.dev/api-reference#mutations-storeschema) mutation.
+// Returned by the [storeSchema](https://fragment.dev/api-reference/api-mutations#storeschema) mutation.
 type StoreSchemaStoreSchemaStoreSchemaResponse interface {
 	implementsGraphQLInterfaceStoreSchemaStoreSchemaStoreSchemaResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -4726,6 +4440,8 @@ func (v *StringFilter) GetEqualTo() *string { return v.EqualTo }
 func (v *StringFilter) GetIn() []string { return v.In }
 
 type StringMatchFilter struct {
+	// Must contain the provided pattern somewhere within the string. For example, 'contains: hat' will match 'hat', 'chat', and 'hate'.
+	Contains *string `json:"contains"`
 	// Must exactly equal the provided value
 	EqualTo *string `json:"equalTo"`
 	// Must exactly equal one of the provided values
@@ -4733,6 +4449,9 @@ type StringMatchFilter struct {
 	// Must match the provided pattern. Wildcards ("*") will match any substring
 	Matches *string `json:"matches"`
 }
+
+// GetContains returns StringMatchFilter.Contains, and is useful for accessing the field via an interface.
+func (v *StringMatchFilter) GetContains() *string { return v.Contains }
 
 // GetEqualTo returns StringMatchFilter.EqualTo, and is useful for accessing the field via an interface.
 func (v *StringMatchFilter) GetEqualTo() *string { return v.EqualTo }
@@ -4745,7 +4464,7 @@ func (v *StringMatchFilter) GetMatches() *string { return v.Matches }
 
 // SyncCustomAccountsResponse is returned by SyncCustomAccounts on success.
 type SyncCustomAccountsResponse struct {
-	// Once you've created a [Custom Link](https://fragment.dev/docs#reconcile-transactions-link-any-system), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
+	// Once you've created a [Custom Link](https://fragment.dev/docs/reconcile-transactions#link-any-system), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
 	SyncCustomAccounts SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResponse `json:"-"`
 }
 
@@ -4998,9 +4717,9 @@ func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExt
 
 // SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency includes the requested fields of the GraphQL type Currency.
 type SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency struct {
-	// The currency code. This is an [enum type](https://fragment.dev/api-reference#types-scalars-and-enums-currencycode) .
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
 	Code CurrencyCode `json:"code"`
-	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference#mutations-createcustomcurrency) mutation.
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
 	CustomCurrencyId *string `json:"customCurrencyId"`
 }
 
@@ -5016,7 +4735,7 @@ func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExt
 
 // SyncCustomTxsResponse is returned by SyncCustomTxs on success.
 type SyncCustomTxsResponse struct {
-	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs#reconcile-transactions-link-any-system) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
+	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs/reconcile-transactions#link-any-system) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
 	SyncCustomTxs SyncCustomTxsSyncCustomTxsSyncCustomTxsResponse `json:"-"`
 }
 
@@ -5281,9 +5000,16 @@ func (v *SyncCustomTxsSyncCustomTxsSyncCustomTxsResultTxsTx) GetPosted() string 
 
 // Filters a result set based on the tags it contains.
 type TagFilter struct {
-	EqualTo *TagMatchInput  `json:"equalTo"`
-	In      []TagMatchInput `json:"in"`
+	// Matches tag values based on the existence of the provided string within the tag value. The key is matched exactly.
+	Contains *TagMatchInput `json:"contains"`
+	// Matches tags based on the exact value provided. The key and value are both matched exactly.
+	EqualTo *TagMatchInput `json:"equalTo"`
+	// Matches tags based on a list of possible tag matches. The key and value are both matched exactly.
+	In []TagMatchInput `json:"in"`
 }
+
+// GetContains returns TagFilter.Contains, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetContains() *TagMatchInput { return v.Contains }
 
 // GetEqualTo returns TagFilter.EqualTo, and is useful for accessing the field via an interface.
 func (v *TagFilter) GetEqualTo() *TagMatchInput { return v.EqualTo }
@@ -5973,9 +5699,9 @@ func (v *UpdateLedgerUpdateLedgerUpdateLedgerResult) GetLedger() UpdateLedgerUpd
 // Ledgers are databases designed for managing money
 type UpdateLedgerUpdateLedgerUpdateLedgerResultLedger struct {
 	Id string `json:"id"`
-	// The IK passed into the [createLedger](/api-reference#mutations-createledger) mutation. This is treated as a unique identifier for this Ledger.
+	// The IK passed into the [createLedger](/api-reference/api-mutations#createledger) mutation. This is treated as a unique identifier for this Ledger.
 	Ik string `json:"ik"`
-	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference#mutations-updateledger) mutation.
+	// The name of the Ledger. Can be updated with the [updateLedger](/api-reference/api-mutations#updateledger) mutation.
 	Name string `json:"name"`
 }
 
@@ -6583,7 +6309,6 @@ mutation CreateCustomLink ($name: String!, $ik: SafeString!) {
 		__typename
 		... on CreateCustomLinkResult {
 			link {
-				__typename
 				id
 				name
 				created

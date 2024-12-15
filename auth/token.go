@@ -142,6 +142,7 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 	req.Header.Add("Authorization", "Basic "+encodedAuthUrl)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Accept", "*/*")
+	req.Header.Add("User-Agent", "fragment-dev/fragment-go")
 
 	if client == nil {
 		client = &http.Client{}
