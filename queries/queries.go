@@ -853,7 +853,7 @@ func (v *CreateCustomLinkCreateCustomLinkInternalError) GetMessage() string { re
 
 // CreateCustomLinkResponse is returned by CreateCustomLink on success.
 type CreateCustomLinkResponse struct {
-	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/docs/reconcile-transactions#link-any-system)
+	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/docs/sync-payments#custom-link)
 	CreateCustomLink CreateCustomLinkCreateCustomLinkCreateCustomLinkResponse `json:"-"`
 }
 
@@ -1394,7 +1394,7 @@ const (
 type CurrencyFilter struct {
 	// Must match the value provided
 	EqualTo *CurrencyMatchInput `json:"equalTo"`
-	// Must match one of the values provided
+	// Must match one of the values provided. Limited to 100 items maximum.
 	In []CurrencyMatchInput `json:"in"`
 }
 
@@ -1478,8 +1478,9 @@ func (v *CustomTxInput) GetExternalId() string { return v.ExternalId }
 func (v *CustomTxInput) GetPosted() string { return v.Posted }
 
 type DateFilter struct {
-	EqualTo *string  `json:"equalTo"`
-	In      []string `json:"in"`
+	EqualTo *string `json:"equalTo"`
+	// Must match one of the values provided. Limited to 100 items maximum.
+	In []string `json:"in"`
 }
 
 // GetEqualTo returns DateFilter.EqualTo, and is useful for accessing the field via an interface.
@@ -2047,7 +2048,7 @@ func (v *LedgerEntriesFilterSet) GetType() *StringFilter { return v.Type }
 type LedgerEntryFilter struct {
 	// Result must be the specified Ledger Entry.
 	EqualTo *LedgerEntryMatchInput `json:"equalTo"`
-	// Result can be any of the specified Ledger Entries.
+	// Result can be any of the specified Ledger Entries. Limited to 100 items maximum.
 	In []LedgerEntryMatchInput `json:"in"`
 }
 
@@ -3367,7 +3368,7 @@ func (v *ReconcileTxReconcileTxReconcileTxResultLinesLedgerLineAccountLedgerAcco
 
 // ReconcileTxResponse is returned by ReconcileTx on success.
 type ReconcileTxResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-transactions) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -3679,7 +3680,7 @@ func (v *ReconcileTxRuntimeReconcileTxReconcileTxResultLinesLedgerLineAccountLed
 
 // ReconcileTxRuntimeResponse is returned by ReconcileTxRuntime on success.
 type ReconcileTxRuntimeResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-transactions) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxRuntimeReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -4126,7 +4127,7 @@ type SchemaLedgerLineInput struct {
 	// This field is required if the Ledger Account being posted to is a Linked Ledger Account. Otherwise, this field is disallowed.
 	// It supports parameters in its attributes via handlebars syntax.
 	//
-	// See the docs on [reconciliation and Linked Ledger Accounts](https://fragment.dev/docs/reconcile-transactions).
+	// See the docs on [reconciling payments](https://fragment.dev/docs/reconcile-payments).
 	Tx *SchemaTxMatchInput `json:"tx"`
 }
 
@@ -4429,8 +4430,9 @@ func (v *StoreSchemaStoreSchemaStoreSchemaResultSchemaVersion) GetCreated() stri
 func (v *StoreSchemaStoreSchemaStoreSchemaResultSchemaVersion) GetVersion() int { return v.Version }
 
 type StringFilter struct {
-	EqualTo *string  `json:"equalTo"`
-	In      []string `json:"in"`
+	EqualTo *string `json:"equalTo"`
+	// Must match one of the values provided. Limited to 100 items maximum.
+	In []string `json:"in"`
 }
 
 // GetEqualTo returns StringFilter.EqualTo, and is useful for accessing the field via an interface.
@@ -4444,7 +4446,7 @@ type StringMatchFilter struct {
 	Contains *string `json:"contains"`
 	// Must exactly equal the provided value
 	EqualTo *string `json:"equalTo"`
-	// Must exactly equal one of the provided values
+	// Must exactly equal one of the provided values. Limited to 100 items maximum.
 	In []string `json:"in"`
 	// Must match the provided pattern. Wildcards ("*") will match any substring
 	Matches *string `json:"matches"`
@@ -4464,7 +4466,7 @@ func (v *StringMatchFilter) GetMatches() *string { return v.Matches }
 
 // SyncCustomAccountsResponse is returned by SyncCustomAccounts on success.
 type SyncCustomAccountsResponse struct {
-	// Once you've created a [Custom Link](https://fragment.dev/docs/reconcile-transactions#link-any-system), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
+	// Once you've created a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
 	SyncCustomAccounts SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResponse `json:"-"`
 }
 
@@ -4735,7 +4737,7 @@ func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExt
 
 // SyncCustomTxsResponse is returned by SyncCustomTxs on success.
 type SyncCustomTxsResponse struct {
-	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs/reconcile-transactions#link-any-system) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
+	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
 	SyncCustomTxs SyncCustomTxsSyncCustomTxsSyncCustomTxsResponse `json:"-"`
 }
 
@@ -4955,16 +4957,17 @@ type SyncCustomTxsSyncCustomTxsSyncCustomTxsResultTxsTx struct {
 	Typename *string `json:"__typename"`
 	// FRAGMENT ID of this transaction's Link
 	LinkId string `json:"linkId"`
-	Id     string `json:"id"`
+	// FRAGMENT ID of this Tx. If you delete a Tx via deleteCustomTxs, it will not show up in listing queries, but can be resolved by if you lookup by its Fragment ID. If you resync a Tx with the same externalId, its Fragment ID will be different than the previous Tx.
+	Id string `json:"id"`
 	// ID of this transaction in the external system
 	ExternalId string `json:"externalId"`
 	// ID in the external system of this transaction's external account
 	ExternalAccountId string `json:"externalAccountId"`
 	// Integer amount in cents. Positive indicates money entering the external account, negative indicates money leaving
 	Amount string `json:"amount"`
-	// Description at the external account (can be overridden within the Fragment Dashboard)
+	// Description at the external account
 	Description string `json:"description"`
-	// ISO-8601 timestamp this Tx posted to the external account
+	// ISO-8601 timestamp when this Tx posted to the external account
 	Posted string `json:"posted"`
 }
 
@@ -5004,7 +5007,7 @@ type TagFilter struct {
 	Contains *TagMatchInput `json:"contains"`
 	// Matches tags based on the exact value provided. The key and value are both matched exactly.
 	EqualTo *TagMatchInput `json:"equalTo"`
-	// Matches tags based on a list of possible tag matches. The key and value are both matched exactly.
+	// Matches tags based on a list of possible tag matches. The key and value are both matched exactly. Limited to 100 items maximum.
 	In []TagMatchInput `json:"in"`
 }
 
@@ -5068,8 +5071,9 @@ const (
 )
 
 type TxTypeFilter struct {
-	EqualTo *TxType  `json:"equalTo"`
-	In      []TxType `json:"in"`
+	EqualTo *TxType `json:"equalTo"`
+	// Must match one of the values provided. Limited to 100 items maximum.
+	In []TxType `json:"in"`
 }
 
 // GetEqualTo returns TxTypeFilter.EqualTo, and is useful for accessing the field via an interface.
