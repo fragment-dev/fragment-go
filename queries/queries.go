@@ -643,6 +643,11 @@ const (
 	BalanceUpdateConsistencyModeStrong   BalanceUpdateConsistencyMode = "strong"
 )
 
+var AllBalanceUpdateConsistencyMode = []BalanceUpdateConsistencyMode{
+	BalanceUpdateConsistencyModeEventual,
+	BalanceUpdateConsistencyModeStrong,
+}
+
 // The input for your Chart of Accounts in a Schema.
 type ChartOfAccountsInput struct {
 	// The Ledger Accounts modeled by your Schema. Ledger Accounts may be nested up to a maximum depth of 10.
@@ -1391,6 +1396,184 @@ const (
 	CurrencyCodeZmw     CurrencyCode = "ZMW"
 )
 
+var AllCurrencyCode = []CurrencyCode{
+	CurrencyCodeAave,
+	CurrencyCodeAda,
+	CurrencyCodeAed,
+	CurrencyCodeAfn,
+	CurrencyCodeAll,
+	CurrencyCodeAmd,
+	CurrencyCodeAng,
+	CurrencyCodeAoa,
+	CurrencyCodeArs,
+	CurrencyCodeAud,
+	CurrencyCodeAwg,
+	CurrencyCodeAzn,
+	CurrencyCodeBam,
+	CurrencyCodeBbd,
+	CurrencyCodeBch,
+	CurrencyCodeBdt,
+	CurrencyCodeBgn,
+	CurrencyCodeBhd,
+	CurrencyCodeBif,
+	CurrencyCodeBmd,
+	CurrencyCodeBnd,
+	CurrencyCodeBob,
+	CurrencyCodeBrl,
+	CurrencyCodeBsd,
+	CurrencyCodeBtc,
+	CurrencyCodeBtn,
+	CurrencyCodeBwp,
+	CurrencyCodeByr,
+	CurrencyCodeBzd,
+	CurrencyCodeCad,
+	CurrencyCodeCdf,
+	CurrencyCodeChf,
+	CurrencyCodeClp,
+	CurrencyCodeCny,
+	CurrencyCodeCop,
+	CurrencyCodeCrc,
+	CurrencyCodeCuc,
+	CurrencyCodeCup,
+	CurrencyCodeCustom,
+	CurrencyCodeCve,
+	CurrencyCodeCzk,
+	CurrencyCodeDai,
+	CurrencyCodeDjf,
+	CurrencyCodeDkk,
+	CurrencyCodeDop,
+	CurrencyCodeDzd,
+	CurrencyCodeEgp,
+	CurrencyCodeErn,
+	CurrencyCodeEtb,
+	CurrencyCodeEth,
+	CurrencyCodeEur,
+	CurrencyCodeFjd,
+	CurrencyCodeFkp,
+	CurrencyCodeGbp,
+	CurrencyCodeGel,
+	CurrencyCodeGgp,
+	CurrencyCodeGhs,
+	CurrencyCodeGip,
+	CurrencyCodeGmd,
+	CurrencyCodeGnf,
+	CurrencyCodeGtq,
+	CurrencyCodeGyd,
+	CurrencyCodeHkd,
+	CurrencyCodeHnl,
+	CurrencyCodeHrk,
+	CurrencyCodeHtg,
+	CurrencyCodeHuf,
+	CurrencyCodeIdr,
+	CurrencyCodeIls,
+	CurrencyCodeImp,
+	CurrencyCodeInr,
+	CurrencyCodeIqd,
+	CurrencyCodeIrr,
+	CurrencyCodeIsk,
+	CurrencyCodeJmd,
+	CurrencyCodeJod,
+	CurrencyCodeJpy,
+	CurrencyCodeKes,
+	CurrencyCodeKgs,
+	CurrencyCodeKhr,
+	CurrencyCodeKmf,
+	CurrencyCodeKpw,
+	CurrencyCodeKrw,
+	CurrencyCodeKwd,
+	CurrencyCodeKyd,
+	CurrencyCodeKzt,
+	CurrencyCodeLak,
+	CurrencyCodeLbp,
+	CurrencyCodeLink,
+	CurrencyCodeLkr,
+	CurrencyCodeLogical,
+	CurrencyCodeLrd,
+	CurrencyCodeLsl,
+	CurrencyCodeLtc,
+	CurrencyCodeLyd,
+	CurrencyCodeMad,
+	CurrencyCodeMatic,
+	CurrencyCodeMdl,
+	CurrencyCodeMga,
+	CurrencyCodeMkd,
+	CurrencyCodeMmk,
+	CurrencyCodeMnt,
+	CurrencyCodeMop,
+	CurrencyCodeMur,
+	CurrencyCodeMvr,
+	CurrencyCodeMwk,
+	CurrencyCodeMxn,
+	CurrencyCodeMyr,
+	CurrencyCodeMzn,
+	CurrencyCodeNad,
+	CurrencyCodeNgn,
+	CurrencyCodeNio,
+	CurrencyCodeNok,
+	CurrencyCodeNpr,
+	CurrencyCodeNzd,
+	CurrencyCodeOmr,
+	CurrencyCodePab,
+	CurrencyCodePen,
+	CurrencyCodePgk,
+	CurrencyCodePhp,
+	CurrencyCodePkr,
+	CurrencyCodePln,
+	CurrencyCodePts,
+	CurrencyCodePyg,
+	CurrencyCodeQar,
+	CurrencyCodeRon,
+	CurrencyCodeRsd,
+	CurrencyCodeRub,
+	CurrencyCodeRwf,
+	CurrencyCodeSar,
+	CurrencyCodeSbd,
+	CurrencyCodeScr,
+	CurrencyCodeSdg,
+	CurrencyCodeSek,
+	CurrencyCodeSgd,
+	CurrencyCodeShp,
+	CurrencyCodeSll,
+	CurrencyCodeSol,
+	CurrencyCodeSos,
+	CurrencyCodeSpl,
+	CurrencyCodeSrd,
+	CurrencyCodeStn,
+	CurrencyCodeSvc,
+	CurrencyCodeSyp,
+	CurrencyCodeSzl,
+	CurrencyCodeThb,
+	CurrencyCodeTjs,
+	CurrencyCodeTmt,
+	CurrencyCodeTnd,
+	CurrencyCodeTop,
+	CurrencyCodeTry,
+	CurrencyCodeTtd,
+	CurrencyCodeTvd,
+	CurrencyCodeTwd,
+	CurrencyCodeTzs,
+	CurrencyCodeUah,
+	CurrencyCodeUgx,
+	CurrencyCodeUni,
+	CurrencyCodeUsd,
+	CurrencyCodeUsdc,
+	CurrencyCodeUsdt,
+	CurrencyCodeUyu,
+	CurrencyCodeUzs,
+	CurrencyCodeVef,
+	CurrencyCodeVnd,
+	CurrencyCodeVuv,
+	CurrencyCodeWst,
+	CurrencyCodeXaf,
+	CurrencyCodeXcd,
+	CurrencyCodeXlm,
+	CurrencyCodeXof,
+	CurrencyCodeXpf,
+	CurrencyCodeYer,
+	CurrencyCodeZar,
+	CurrencyCodeZmw,
+}
+
 type CurrencyFilter struct {
 	// Must match the value provided
 	EqualTo *CurrencyMatchInput `json:"equalTo"`
@@ -1424,6 +1607,11 @@ const (
 	CurrencyModeMulti  CurrencyMode = "multi"
 	CurrencyModeSingle CurrencyMode = "single"
 )
+
+var AllCurrencyMode = []CurrencyMode{
+	CurrencyModeMulti,
+	CurrencyModeSingle,
+}
 
 type CustomAccountInput struct {
 	// The currency of this external account. If this is not set, the workspace level default is used. 'currency' cannot be set if 'currencyMode' is 'multi'.
@@ -2019,6 +2207,13 @@ const (
 	LedgerAccountTypesLiability LedgerAccountTypes = "liability"
 )
 
+var AllLedgerAccountTypes = []LedgerAccountTypes{
+	LedgerAccountTypesAsset,
+	LedgerAccountTypesExpense,
+	LedgerAccountTypesIncome,
+	LedgerAccountTypesLiability,
+}
+
 type LedgerEntriesFilterSet struct {
 	Date *DateFilter `json:"date"`
 	// Use to filter Ledger Entries by their IDs or IKs.
@@ -2162,6 +2357,11 @@ const (
 	LedgerLinesConsistencyModeStrong   LedgerLinesConsistencyMode = "strong"
 )
 
+var AllLedgerLinesConsistencyMode = []LedgerLinesConsistencyMode{
+	LedgerLinesConsistencyModeEventual,
+	LedgerLinesConsistencyModeStrong,
+}
+
 type LedgerLinesFilterSet struct {
 	// Filter by the created timestamp of the Ledger Line. This is the wall-clock time when the Ledger Line was created.
 	Created *DateTimeFilter `json:"created"`
@@ -2208,6 +2408,10 @@ type LedgerTypes string
 const (
 	LedgerTypesDouble LedgerTypes = "double"
 )
+
+var AllLedgerTypes = []LedgerTypes{
+	LedgerTypesDouble,
+}
 
 // ListLedgerAccountBalancesLedger includes the requested fields of the GraphQL type Ledger.
 // The GraphQL type's documentation follows.
@@ -3134,6 +3338,12 @@ const (
 	ReadBalanceConsistencyModeUseAccount ReadBalanceConsistencyMode = "use_account"
 )
 
+var AllReadBalanceConsistencyMode = []ReadBalanceConsistencyMode{
+	ReadBalanceConsistencyModeEventual,
+	ReadBalanceConsistencyModeStrong,
+	ReadBalanceConsistencyModeUseAccount,
+}
+
 // ReconcileTxReconcileTxBadRequestError includes the requested fields of the GraphQL type BadRequestError.
 // The GraphQL type's documentation follows.
 //
@@ -3785,6 +3995,10 @@ const (
 	SceneEventTypeEntry SceneEventType = "entry"
 )
 
+var AllSceneEventType = []SceneEventType{
+	SceneEventTypeEntry,
+}
+
 type SceneInput struct {
 	// A list of simulated ledger entries that make up the Scene.
 	Events []SceneEventInput `json:"events"`
@@ -3832,6 +4046,11 @@ const (
 	// Strongly consistent entity updates
 	SchemaConsistencyModeStrong SchemaConsistencyMode = "strong"
 )
+
+var AllSchemaConsistencyMode = []SchemaConsistencyMode{
+	SchemaConsistencyModeEventual,
+	SchemaConsistencyModeStrong,
+}
 
 // Matches a Currency. Can be a built-in [CurrencyCode](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode), custom Currency, or a parameterized string.
 // If you supply a parameterized string, you must pass in a valid CurrencyCode as a parameter when posting a Ledger Entry.
@@ -5070,6 +5289,11 @@ const (
 	TxTypeDebit  TxType = "debit"
 )
 
+var AllTxType = []TxType{
+	TxTypeCredit,
+	TxTypeDebit,
+}
+
 type TxTypeFilter struct {
 	EqualTo *TxType `json:"equalTo"`
 	// Must match one of the values provided. Limited to 100 items maximum.
@@ -6160,7 +6384,7 @@ func (v *__UpdateLedgerInput) GetLedgerIk() string { return v.LedgerIk }
 // GetUpdate returns __UpdateLedgerInput.Update, and is useful for accessing the field via an interface.
 func (v *__UpdateLedgerInput) GetUpdate() UpdateLedgerInput { return v.Update }
 
-// The query or mutation executed by AddLedgerEntry.
+// The mutation executed by AddLedgerEntry.
 const AddLedgerEntry_Operation = `
 mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: String!, $posted: DateTime, $parameters: JSON!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
 	addLedgerEntry(ik: $ik, entry: {ledger:{ik:$ledgerIk},type:$entryType,posted:$posted,parameters:$parameters,tags:$tags,groups:$groups}) {
@@ -6199,7 +6423,7 @@ func AddLedgerEntry(
 	parameters json.RawMessage,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
-) (*AddLedgerEntryResponse, error) {
+) (data_ *AddLedgerEntryResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "AddLedgerEntry",
 		Query:  AddLedgerEntry_Operation,
@@ -6213,7 +6437,6 @@ func AddLedgerEntry(
 			Groups:     groups,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6221,8 +6444,8 @@ func AddLedgerEntry(
 		return nil, err_
 	}
 
-	var data_ AddLedgerEntryResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &AddLedgerEntryResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6230,10 +6453,10 @@ func AddLedgerEntry(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by AddLedgerEntryRuntime.
+// The mutation executed by AddLedgerEntryRuntime.
 const AddLedgerEntryRuntime_Operation = `
 mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk: SafeString!, $posted: DateTime, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
 	addLedgerEntry(ik: $ik, entry: {type:$entryType,ledger:{ik:$ledgerIk},posted:$posted,lines:$lines,tags:$tags,groups:$groups}) {
@@ -6272,7 +6495,7 @@ func AddLedgerEntryRuntime(
 	lines []LedgerLineInput,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
-) (*AddLedgerEntryRuntimeResponse, error) {
+) (data_ *AddLedgerEntryRuntimeResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "AddLedgerEntryRuntime",
 		Query:  AddLedgerEntryRuntime_Operation,
@@ -6286,7 +6509,6 @@ func AddLedgerEntryRuntime(
 			Groups:    groups,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6294,8 +6516,8 @@ func AddLedgerEntryRuntime(
 		return nil, err_
 	}
 
-	var data_ AddLedgerEntryRuntimeResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &AddLedgerEntryRuntimeResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6303,10 +6525,10 @@ func AddLedgerEntryRuntime(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by CreateCustomLink.
+// The mutation executed by CreateCustomLink.
 const CreateCustomLink_Operation = `
 mutation CreateCustomLink ($name: String!, $ik: SafeString!) {
 	createCustomLink(name: $name, ik: $ik) {
@@ -6331,7 +6553,7 @@ func CreateCustomLink(
 	ctx_ auth.AuthenticatedContext,
 	name string,
 	ik string,
-) (*CreateCustomLinkResponse, error) {
+) (data_ *CreateCustomLinkResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "CreateCustomLink",
 		Query:  CreateCustomLink_Operation,
@@ -6340,7 +6562,6 @@ func CreateCustomLink(
 			Ik:   ik,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6348,8 +6569,8 @@ func CreateCustomLink(
 		return nil, err_
 	}
 
-	var data_ CreateCustomLinkResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &CreateCustomLinkResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6357,10 +6578,10 @@ func CreateCustomLink(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by CreateLedger.
+// The mutation executed by CreateLedger.
 const CreateLedger_Operation = `
 mutation CreateLedger ($ik: SafeString!, $ledger: CreateLedgerInput!, $schemaKey: SafeString!) {
 	createLedger(ik: $ik, ledger: $ledger, schema: {key:$schemaKey}) {
@@ -6390,7 +6611,7 @@ func CreateLedger(
 	ik string,
 	ledger CreateLedgerInput,
 	schemaKey string,
-) (*CreateLedgerResponse, error) {
+) (data_ *CreateLedgerResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "CreateLedger",
 		Query:  CreateLedger_Operation,
@@ -6400,7 +6621,6 @@ func CreateLedger(
 			SchemaKey: schemaKey,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6408,8 +6628,8 @@ func CreateLedger(
 		return nil, err_
 	}
 
-	var data_ CreateLedgerResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &CreateLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6417,10 +6637,10 @@ func CreateLedger(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by GetLedger.
+// The query executed by GetLedger.
 const GetLedger_Operation = `
 query GetLedger ($ik: SafeString!) {
 	ledger(ledger: {ik:$ik}) {
@@ -6436,7 +6656,7 @@ query GetLedger ($ik: SafeString!) {
 func GetLedger(
 	ctx_ auth.AuthenticatedContext,
 	ik string,
-) (*GetLedgerResponse, error) {
+) (data_ *GetLedgerResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetLedger",
 		Query:  GetLedger_Operation,
@@ -6444,7 +6664,6 @@ func GetLedger(
 			Ik: ik,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6452,8 +6671,8 @@ func GetLedger(
 		return nil, err_
 	}
 
-	var data_ GetLedgerResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &GetLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6461,10 +6680,10 @@ func GetLedger(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by GetLedgerAccountBalance.
+// The query executed by GetLedgerAccountBalance.
 const GetLedgerAccountBalance_Operation = `
 query GetLedgerAccountBalance ($path: String!, $ledgerIk: SafeString!, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment, $ownBalanceConsistencyMode: ReadBalanceConsistencyMode) {
 	ledgerAccount(ledgerAccount: {ledger:{ik:$ledgerIk},path:$path}) {
@@ -6482,7 +6701,7 @@ func GetLedgerAccountBalance(
 	balanceCurrency *CurrencyMatchInput,
 	balanceAt *string,
 	ownBalanceConsistencyMode *ReadBalanceConsistencyMode,
-) (*GetLedgerAccountBalanceResponse, error) {
+) (data_ *GetLedgerAccountBalanceResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetLedgerAccountBalance",
 		Query:  GetLedgerAccountBalance_Operation,
@@ -6494,7 +6713,6 @@ func GetLedgerAccountBalance(
 			OwnBalanceConsistencyMode: ownBalanceConsistencyMode,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6502,8 +6720,8 @@ func GetLedgerAccountBalance(
 		return nil, err_
 	}
 
-	var data_ GetLedgerAccountBalanceResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &GetLedgerAccountBalanceResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6511,10 +6729,10 @@ func GetLedgerAccountBalance(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by GetLedgerAccountLines.
+// The query executed by GetLedgerAccountLines.
 const GetLedgerAccountLines_Operation = `
 query GetLedgerAccountLines ($path: String!, $ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $filter: LedgerLinesFilterSet) {
 	ledgerAccount(ledgerAccount: {ledger:{ik:$ledgerIk},path:$path}) {
@@ -6547,7 +6765,7 @@ func GetLedgerAccountLines(
 	first *int,
 	before *string,
 	filter *LedgerLinesFilterSet,
-) (*GetLedgerAccountLinesResponse, error) {
+) (data_ *GetLedgerAccountLinesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetLedgerAccountLines",
 		Query:  GetLedgerAccountLines_Operation,
@@ -6560,7 +6778,6 @@ func GetLedgerAccountLines(
 			Filter:   filter,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6568,8 +6785,8 @@ func GetLedgerAccountLines(
 		return nil, err_
 	}
 
-	var data_ GetLedgerAccountLinesResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &GetLedgerAccountLinesResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6577,10 +6794,10 @@ func GetLedgerAccountLines(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by GetLedgerEntry.
+// The query executed by GetLedgerEntry.
 const GetLedgerEntry_Operation = `
 query GetLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!) {
 	ledgerEntry(ledgerEntry: {ik:$ik,ledger:{ik:$ledgerIk}}) {
@@ -6606,7 +6823,7 @@ func GetLedgerEntry(
 	ctx_ auth.AuthenticatedContext,
 	ik string,
 	ledgerIk string,
-) (*GetLedgerEntryResponse, error) {
+) (data_ *GetLedgerEntryResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetLedgerEntry",
 		Query:  GetLedgerEntry_Operation,
@@ -6615,7 +6832,6 @@ func GetLedgerEntry(
 			LedgerIk: ledgerIk,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6623,8 +6839,8 @@ func GetLedgerEntry(
 		return nil, err_
 	}
 
-	var data_ GetLedgerEntryResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &GetLedgerEntryResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6632,10 +6848,10 @@ func GetLedgerEntry(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by GetSchema.
+// The query executed by GetSchema.
 const GetSchema_Operation = `
 query GetSchema ($key: SafeString!, $version: Int) {
 	schema(schema: {key:$key,version:$version}) {
@@ -6654,7 +6870,7 @@ func GetSchema(
 	ctx_ auth.AuthenticatedContext,
 	key string,
 	version *int,
-) (*GetSchemaResponse, error) {
+) (data_ *GetSchemaResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetSchema",
 		Query:  GetSchema_Operation,
@@ -6663,7 +6879,6 @@ func GetSchema(
 			Version: version,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6671,8 +6886,8 @@ func GetSchema(
 		return nil, err_
 	}
 
-	var data_ GetSchemaResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &GetSchemaResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6680,10 +6895,10 @@ func GetSchema(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by GetWorkspace.
+// The query executed by GetWorkspace.
 const GetWorkspace_Operation = `
 query GetWorkspace {
 	workspace {
@@ -6695,12 +6910,11 @@ query GetWorkspace {
 
 func GetWorkspace(
 	ctx_ auth.AuthenticatedContext,
-) (*GetWorkspaceResponse, error) {
+) (data_ *GetWorkspaceResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetWorkspace",
 		Query:  GetWorkspace_Operation,
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6708,8 +6922,8 @@ func GetWorkspace(
 		return nil, err_
 	}
 
-	var data_ GetWorkspaceResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &GetWorkspaceResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6717,10 +6931,10 @@ func GetWorkspace(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ListLedgerAccountBalances.
+// The query executed by ListLedgerAccountBalances.
 const ListLedgerAccountBalances_Operation = `
 query ListLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment, $ownBalanceConsistencyMode: ReadBalanceConsistencyMode) {
 	ledger(ledger: {ik:$ledgerIk}) {
@@ -6759,7 +6973,7 @@ func ListLedgerAccountBalances(
 	balanceCurrency *CurrencyMatchInput,
 	balanceAt *string,
 	ownBalanceConsistencyMode *ReadBalanceConsistencyMode,
-) (*ListLedgerAccountBalancesResponse, error) {
+) (data_ *ListLedgerAccountBalancesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListLedgerAccountBalances",
 		Query:  ListLedgerAccountBalances_Operation,
@@ -6773,7 +6987,6 @@ func ListLedgerAccountBalances(
 			OwnBalanceConsistencyMode: ownBalanceConsistencyMode,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6781,8 +6994,8 @@ func ListLedgerAccountBalances(
 		return nil, err_
 	}
 
-	var data_ ListLedgerAccountBalancesResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ListLedgerAccountBalancesResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6790,10 +7003,10 @@ func ListLedgerAccountBalances(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ListLedgerAccounts.
+// The query executed by ListLedgerAccounts.
 const ListLedgerAccounts_Operation = `
 query ListLedgerAccounts ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String) {
 	ledger(ledger: {ik:$ledgerIk}) {
@@ -6826,7 +7039,7 @@ func ListLedgerAccounts(
 	after *string,
 	first *int,
 	before *string,
-) (*ListLedgerAccountsResponse, error) {
+) (data_ *ListLedgerAccountsResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListLedgerAccounts",
 		Query:  ListLedgerAccounts_Operation,
@@ -6837,7 +7050,6 @@ func ListLedgerAccounts(
 			Before:   before,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6845,8 +7057,8 @@ func ListLedgerAccounts(
 		return nil, err_
 	}
 
-	var data_ ListLedgerAccountsResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ListLedgerAccountsResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6854,10 +7066,10 @@ func ListLedgerAccounts(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ListLedgerEntries.
+// The query executed by ListLedgerEntries.
 const ListLedgerEntries_Operation = `
 query ListLedgerEntries ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $filter: LedgerEntriesFilterSet) {
 	ledger(ledger: {ik:$ledgerIk}) {
@@ -6893,7 +7105,7 @@ func ListLedgerEntries(
 	first *int,
 	before *string,
 	filter *LedgerEntriesFilterSet,
-) (*ListLedgerEntriesResponse, error) {
+) (data_ *ListLedgerEntriesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListLedgerEntries",
 		Query:  ListLedgerEntries_Operation,
@@ -6905,7 +7117,6 @@ func ListLedgerEntries(
 			Filter:   filter,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6913,8 +7124,8 @@ func ListLedgerEntries(
 		return nil, err_
 	}
 
-	var data_ ListLedgerEntriesResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ListLedgerEntriesResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6922,10 +7133,10 @@ func ListLedgerEntries(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ListLedgerEntryGroupBalances.
+// The query executed by ListLedgerEntryGroupBalances.
 const ListLedgerEntryGroupBalances_Operation = `
 query ListLedgerEntryGroupBalances ($ledgerIk: SafeString!, $groupKey: SafeString!, $groupValue: SafeString!, $consistencyMode: ReadBalanceConsistencyMode = use_account, $after: String, $before: String, $first: Int, $last: Int, $filter: LedgerEntryGroupBalanceFilterSet) {
 	ledgerEntryGroup(ledgerEntryGroup: {ledger:{ik:$ledgerIk},key:$groupKey,value:$groupValue}) {
@@ -6965,7 +7176,7 @@ func ListLedgerEntryGroupBalances(
 	first *int,
 	last *int,
 	filter *LedgerEntryGroupBalanceFilterSet,
-) (*ListLedgerEntryGroupBalancesResponse, error) {
+) (data_ *ListLedgerEntryGroupBalancesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListLedgerEntryGroupBalances",
 		Query:  ListLedgerEntryGroupBalances_Operation,
@@ -6981,7 +7192,6 @@ func ListLedgerEntryGroupBalances(
 			Filter:          filter,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -6989,8 +7199,8 @@ func ListLedgerEntryGroupBalances(
 		return nil, err_
 	}
 
-	var data_ ListLedgerEntryGroupBalancesResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ListLedgerEntryGroupBalancesResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -6998,10 +7208,10 @@ func ListLedgerEntryGroupBalances(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ListMultiCurrencyLedgerAccountBalances.
+// The query executed by ListMultiCurrencyLedgerAccountBalances.
 const ListMultiCurrencyLedgerAccountBalances_Operation = `
 query ListMultiCurrencyLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $balanceAt: LastMoment, $ownBalancesConsistencyMode: ReadBalanceConsistencyMode) {
 	ledger(ledger: {ik:$ledgerIk}) {
@@ -7063,7 +7273,7 @@ func ListMultiCurrencyLedgerAccountBalances(
 	before *string,
 	balanceAt *string,
 	ownBalancesConsistencyMode *ReadBalanceConsistencyMode,
-) (*ListMultiCurrencyLedgerAccountBalancesResponse, error) {
+) (data_ *ListMultiCurrencyLedgerAccountBalancesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListMultiCurrencyLedgerAccountBalances",
 		Query:  ListMultiCurrencyLedgerAccountBalances_Operation,
@@ -7076,7 +7286,6 @@ func ListMultiCurrencyLedgerAccountBalances(
 			OwnBalancesConsistencyMode: ownBalancesConsistencyMode,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7084,8 +7293,8 @@ func ListMultiCurrencyLedgerAccountBalances(
 		return nil, err_
 	}
 
-	var data_ ListMultiCurrencyLedgerAccountBalancesResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ListMultiCurrencyLedgerAccountBalancesResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7093,10 +7302,10 @@ func ListMultiCurrencyLedgerAccountBalances(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ReconcileTx.
+// The mutation executed by ReconcileTx.
 const ReconcileTx_Operation = `
 mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $parameters: JSON!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
 	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,parameters:$parameters,tags:$tags,groups:$groups}) {
@@ -7134,7 +7343,7 @@ func ReconcileTx(
 	parameters json.RawMessage,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
-) (*ReconcileTxResponse, error) {
+) (data_ *ReconcileTxResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ReconcileTx",
 		Query:  ReconcileTx_Operation,
@@ -7146,7 +7355,6 @@ func ReconcileTx(
 			Groups:     groups,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7154,8 +7362,8 @@ func ReconcileTx(
 		return nil, err_
 	}
 
-	var data_ ReconcileTxResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ReconcileTxResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7163,10 +7371,10 @@ func ReconcileTx(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by ReconcileTxRuntime.
+// The mutation executed by ReconcileTxRuntime.
 const ReconcileTxRuntime_Operation = `
 mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
 	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,lines:$lines,tags:$tags,groups:$groups}) {
@@ -7204,7 +7412,7 @@ func ReconcileTxRuntime(
 	lines []LedgerLineInput,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
-) (*ReconcileTxRuntimeResponse, error) {
+) (data_ *ReconcileTxRuntimeResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ReconcileTxRuntime",
 		Query:  ReconcileTxRuntime_Operation,
@@ -7216,7 +7424,6 @@ func ReconcileTxRuntime(
 			Groups:    groups,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7224,8 +7431,8 @@ func ReconcileTxRuntime(
 		return nil, err_
 	}
 
-	var data_ ReconcileTxRuntimeResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &ReconcileTxRuntimeResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7233,10 +7440,10 @@ func ReconcileTxRuntime(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by StoreSchema.
+// The mutation executed by StoreSchema.
 const StoreSchema_Operation = `
 mutation StoreSchema ($schema: SchemaInput!) {
 	storeSchema(schema: $schema) {
@@ -7262,7 +7469,7 @@ mutation StoreSchema ($schema: SchemaInput!) {
 func StoreSchema(
 	ctx_ auth.AuthenticatedContext,
 	schema SchemaInput,
-) (*StoreSchemaResponse, error) {
+) (data_ *StoreSchemaResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "StoreSchema",
 		Query:  StoreSchema_Operation,
@@ -7270,7 +7477,6 @@ func StoreSchema(
 			Schema: schema,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7278,8 +7484,8 @@ func StoreSchema(
 		return nil, err_
 	}
 
-	var data_ StoreSchemaResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &StoreSchemaResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7287,10 +7493,10 @@ func StoreSchema(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by SyncCustomAccounts.
+// The mutation executed by SyncCustomAccounts.
 const SyncCustomAccounts_Operation = `
 mutation SyncCustomAccounts ($linkId: ID!, $accounts: [CustomAccountInput!]!) {
 	syncCustomAccounts(link: {id:$linkId}, accounts: $accounts) {
@@ -7318,7 +7524,7 @@ func SyncCustomAccounts(
 	ctx_ auth.AuthenticatedContext,
 	linkId string,
 	accounts []CustomAccountInput,
-) (*SyncCustomAccountsResponse, error) {
+) (data_ *SyncCustomAccountsResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "SyncCustomAccounts",
 		Query:  SyncCustomAccounts_Operation,
@@ -7327,7 +7533,6 @@ func SyncCustomAccounts(
 			Accounts: accounts,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7335,8 +7540,8 @@ func SyncCustomAccounts(
 		return nil, err_
 	}
 
-	var data_ SyncCustomAccountsResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &SyncCustomAccountsResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7344,10 +7549,10 @@ func SyncCustomAccounts(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by SyncCustomTxs.
+// The mutation executed by SyncCustomTxs.
 const SyncCustomTxs_Operation = `
 mutation SyncCustomTxs ($linkId: ID!, $txs: [CustomTxInput!]!) {
 	syncCustomTxs(link: {id:$linkId}, txs: $txs) {
@@ -7376,7 +7581,7 @@ func SyncCustomTxs(
 	ctx_ auth.AuthenticatedContext,
 	linkId string,
 	txs []CustomTxInput,
-) (*SyncCustomTxsResponse, error) {
+) (data_ *SyncCustomTxsResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "SyncCustomTxs",
 		Query:  SyncCustomTxs_Operation,
@@ -7385,7 +7590,6 @@ func SyncCustomTxs(
 			Txs:    txs,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7393,8 +7597,8 @@ func SyncCustomTxs(
 		return nil, err_
 	}
 
-	var data_ SyncCustomTxsResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &SyncCustomTxsResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7402,10 +7606,10 @@ func SyncCustomTxs(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by UpdateLedger.
+// The mutation executed by UpdateLedger.
 const UpdateLedger_Operation = `
 mutation UpdateLedger ($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
 	updateLedger(ledger: {ik:$ledgerIk}, update: $update) {
@@ -7429,7 +7633,7 @@ func UpdateLedger(
 	ctx_ auth.AuthenticatedContext,
 	ledgerIk string,
 	update UpdateLedgerInput,
-) (*UpdateLedgerResponse, error) {
+) (data_ *UpdateLedgerResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "UpdateLedger",
 		Query:  UpdateLedger_Operation,
@@ -7438,7 +7642,6 @@ func UpdateLedger(
 			Update:   update,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7446,8 +7649,8 @@ func UpdateLedger(
 		return nil, err_
 	}
 
-	var data_ UpdateLedgerResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &UpdateLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7455,10 +7658,10 @@ func UpdateLedger(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
 
-// The query or mutation executed by UpdateLedgerEntry.
+// The mutation executed by UpdateLedgerEntry.
 const UpdateLedgerEntry_Operation = `
 mutation UpdateLedgerEntry ($entryIk: SafeString!, $ledgerIk: SafeString!, $update: UpdateLedgerEntryInput!) {
 	updateLedgerEntry(ledgerEntry: {ik:$entryIk,ledger:{ik:$ledgerIk}}, update: $update) {
@@ -7502,7 +7705,7 @@ func UpdateLedgerEntry(
 	entryIk string,
 	ledgerIk string,
 	update UpdateLedgerEntryInput,
-) (*UpdateLedgerEntryResponse, error) {
+) (data_ *UpdateLedgerEntryResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "UpdateLedgerEntry",
 		Query:  UpdateLedgerEntry_Operation,
@@ -7512,7 +7715,6 @@ func UpdateLedgerEntry(
 			Update:   update,
 		},
 	}
-	var err_ error
 	var client_ graphql.Client
 
 	client_, err_ = client.NewClient(ctx_)
@@ -7520,8 +7722,8 @@ func UpdateLedgerEntry(
 		return nil, err_
 	}
 
-	var data_ UpdateLedgerEntryResponse
-	resp_ := &graphql.Response{Data: &data_}
+	data_ = &UpdateLedgerEntryResponse{}
+	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
 		ctx_,
@@ -7529,5 +7731,5 @@ func UpdateLedgerEntry(
 		resp_,
 	)
 
-	return &data_, err_
+	return data_, err_
 }
