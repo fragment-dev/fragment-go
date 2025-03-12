@@ -216,6 +216,8 @@ type AddLedgerEntryAddLedgerEntryBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryAddLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -227,6 +229,9 @@ func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetCode() string { return 
 // GetMessage returns AddLedgerEntryAddLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns AddLedgerEntryAddLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // AddLedgerEntryAddLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -237,6 +242,8 @@ type AddLedgerEntryAddLedgerEntryInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryAddLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
@@ -247,6 +254,9 @@ func (v *AddLedgerEntryAddLedgerEntryInternalError) GetCode() string { return v.
 
 // GetMessage returns AddLedgerEntryAddLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryAddLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntryAddLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryAddLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
 
 // AddLedgerEntryResponse is returned by AddLedgerEntry on success.
 type AddLedgerEntryResponse struct {
@@ -529,6 +539,8 @@ type AddLedgerEntryRuntimeAddLedgerEntryBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryRuntimeAddLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -540,6 +552,9 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetCode() string { 
 // GetMessage returns AddLedgerEntryRuntimeAddLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns AddLedgerEntryRuntimeAddLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // AddLedgerEntryRuntimeAddLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -550,6 +565,8 @@ type AddLedgerEntryRuntimeAddLedgerEntryInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryRuntimeAddLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
@@ -560,6 +577,9 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetCode() string { re
 
 // GetMessage returns AddLedgerEntryRuntimeAddLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntryRuntimeAddLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
 
 // AddLedgerEntryRuntimeResponse is returned by AddLedgerEntryRuntime on success.
 type AddLedgerEntryRuntimeResponse struct {
@@ -689,6 +709,8 @@ type CreateCustomLinkCreateCustomLinkBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateCustomLinkCreateCustomLinkBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -699,6 +721,9 @@ func (v *CreateCustomLinkCreateCustomLinkBadRequestError) GetCode() string { ret
 
 // GetMessage returns CreateCustomLinkCreateCustomLinkBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *CreateCustomLinkCreateCustomLinkBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateCustomLinkCreateCustomLinkBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateCustomLinkCreateCustomLinkBadRequestError) GetRetryable() bool { return v.Retryable }
 
 // CreateCustomLinkCreateCustomLinkCreateCustomLinkResponse includes the requested fields of the GraphQL interface CreateCustomLinkResponse.
 //
@@ -845,6 +870,8 @@ type CreateCustomLinkCreateCustomLinkInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateCustomLinkCreateCustomLinkInternalError.Typename, and is useful for accessing the field via an interface.
@@ -855,6 +882,9 @@ func (v *CreateCustomLinkCreateCustomLinkInternalError) GetCode() string { retur
 
 // GetMessage returns CreateCustomLinkCreateCustomLinkInternalError.Message, and is useful for accessing the field via an interface.
 func (v *CreateCustomLinkCreateCustomLinkInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateCustomLinkCreateCustomLinkInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateCustomLinkCreateCustomLinkInternalError) GetRetryable() bool { return v.Retryable }
 
 // CreateCustomLinkResponse is returned by CreateCustomLink on success.
 type CreateCustomLinkResponse struct {
@@ -940,6 +970,8 @@ type CreateLedgerCreateLedgerBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateLedgerCreateLedgerBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -950,6 +982,9 @@ func (v *CreateLedgerCreateLedgerBadRequestError) GetCode() string { return v.Co
 
 // GetMessage returns CreateLedgerCreateLedgerBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *CreateLedgerCreateLedgerBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateLedgerCreateLedgerBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateLedgerCreateLedgerBadRequestError) GetRetryable() bool { return v.Retryable }
 
 // CreateLedgerCreateLedgerCreateLedgerResponse includes the requested fields of the GraphQL interface CreateLedgerResponse.
 //
@@ -1110,6 +1145,8 @@ type CreateLedgerCreateLedgerInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateLedgerCreateLedgerInternalError.Typename, and is useful for accessing the field via an interface.
@@ -1120,6 +1157,9 @@ func (v *CreateLedgerCreateLedgerInternalError) GetCode() string { return v.Code
 
 // GetMessage returns CreateLedgerCreateLedgerInternalError.Message, and is useful for accessing the field via an interface.
 func (v *CreateLedgerCreateLedgerInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateLedgerCreateLedgerInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateLedgerCreateLedgerInternalError) GetRetryable() bool { return v.Retryable }
 
 type CreateLedgerInput struct {
 	// Use this field to specify a timezone for queries to your Ledger.
@@ -3412,6 +3452,8 @@ type ReconcileTxReconcileTxBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxReconcileTxBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -3423,6 +3465,9 @@ func (v *ReconcileTxReconcileTxBadRequestError) GetCode() string { return v.Code
 // GetMessage returns ReconcileTxReconcileTxBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxReconcileTxBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns ReconcileTxReconcileTxBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxReconcileTxBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // ReconcileTxReconcileTxInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -3433,6 +3478,8 @@ type ReconcileTxReconcileTxInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxReconcileTxInternalError.Typename, and is useful for accessing the field via an interface.
@@ -3443,6 +3490,9 @@ func (v *ReconcileTxReconcileTxInternalError) GetCode() string { return v.Code }
 
 // GetMessage returns ReconcileTxReconcileTxInternalError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxReconcileTxInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns ReconcileTxReconcileTxInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxReconcileTxInternalError) GetRetryable() bool { return v.Retryable }
 
 // ReconcileTxReconcileTxReconcileTxResponse includes the requested fields of the GraphQL interface ReconcileTxResponse.
 //
@@ -3718,6 +3768,8 @@ type ReconcileTxRuntimeReconcileTxBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxRuntimeReconcileTxBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -3729,6 +3781,9 @@ func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetCode() string { return
 // GetMessage returns ReconcileTxRuntimeReconcileTxBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns ReconcileTxRuntimeReconcileTxBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // ReconcileTxRuntimeReconcileTxInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -3739,6 +3794,8 @@ type ReconcileTxRuntimeReconcileTxInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxRuntimeReconcileTxInternalError.Typename, and is useful for accessing the field via an interface.
@@ -3749,6 +3806,9 @@ func (v *ReconcileTxRuntimeReconcileTxInternalError) GetCode() string { return v
 
 // GetMessage returns ReconcileTxRuntimeReconcileTxInternalError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxRuntimeReconcileTxInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns ReconcileTxRuntimeReconcileTxInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxRuntimeReconcileTxInternalError) GetRetryable() bool { return v.Retryable }
 
 // ReconcileTxRuntimeReconcileTxReconcileTxResponse includes the requested fields of the GraphQL interface ReconcileTxResponse.
 //
@@ -4526,6 +4586,8 @@ type StoreSchemaStoreSchemaBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns StoreSchemaStoreSchemaBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -4537,6 +4599,9 @@ func (v *StoreSchemaStoreSchemaBadRequestError) GetCode() string { return v.Code
 // GetMessage returns StoreSchemaStoreSchemaBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *StoreSchemaStoreSchemaBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns StoreSchemaStoreSchemaBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *StoreSchemaStoreSchemaBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // StoreSchemaStoreSchemaInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -4547,6 +4612,8 @@ type StoreSchemaStoreSchemaInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns StoreSchemaStoreSchemaInternalError.Typename, and is useful for accessing the field via an interface.
@@ -4557,6 +4624,9 @@ func (v *StoreSchemaStoreSchemaInternalError) GetCode() string { return v.Code }
 
 // GetMessage returns StoreSchemaStoreSchemaInternalError.Message, and is useful for accessing the field via an interface.
 func (v *StoreSchemaStoreSchemaInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns StoreSchemaStoreSchemaInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *StoreSchemaStoreSchemaInternalError) GetRetryable() bool { return v.Retryable }
 
 // StoreSchemaStoreSchemaStoreSchemaResponse includes the requested fields of the GraphQL interface StoreSchemaResponse.
 //
@@ -4835,6 +4905,8 @@ type SyncCustomAccountsSyncCustomAccountsBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomAccountsSyncCustomAccountsBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -4848,6 +4920,9 @@ func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetCode() string {
 // GetMessage returns SyncCustomAccountsSyncCustomAccountsBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns SyncCustomAccountsSyncCustomAccountsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // SyncCustomAccountsSyncCustomAccountsInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -4858,6 +4933,8 @@ type SyncCustomAccountsSyncCustomAccountsInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomAccountsSyncCustomAccountsInternalError.Typename, and is useful for accessing the field via an interface.
@@ -4868,6 +4945,9 @@ func (v *SyncCustomAccountsSyncCustomAccountsInternalError) GetCode() string { r
 
 // GetMessage returns SyncCustomAccountsSyncCustomAccountsInternalError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomAccountsSyncCustomAccountsInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns SyncCustomAccountsSyncCustomAccountsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsSyncCustomAccountsInternalError) GetRetryable() bool { return v.Retryable }
 
 // SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResponse includes the requested fields of the GraphQL interface SyncCustomAccountsResponse.
 //
@@ -5106,6 +5186,8 @@ type SyncCustomTxsSyncCustomTxsBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomTxsSyncCustomTxsBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -5117,6 +5199,9 @@ func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetCode() string { return v.
 // GetMessage returns SyncCustomTxsSyncCustomTxsBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns SyncCustomTxsSyncCustomTxsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // SyncCustomTxsSyncCustomTxsInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -5127,6 +5212,8 @@ type SyncCustomTxsSyncCustomTxsInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomTxsSyncCustomTxsInternalError.Typename, and is useful for accessing the field via an interface.
@@ -5137,6 +5224,9 @@ func (v *SyncCustomTxsSyncCustomTxsInternalError) GetCode() string { return v.Co
 
 // GetMessage returns SyncCustomTxsSyncCustomTxsInternalError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomTxsSyncCustomTxsInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns SyncCustomTxsSyncCustomTxsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsSyncCustomTxsInternalError) GetRetryable() bool { return v.Retryable }
 
 // SyncCustomTxsSyncCustomTxsSyncCustomTxsResponse includes the requested fields of the GraphQL interface SyncCustomTxsResponse.
 //
@@ -5855,6 +5945,8 @@ type UpdateLedgerUpdateLedgerBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns UpdateLedgerUpdateLedgerBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -5866,6 +5958,9 @@ func (v *UpdateLedgerUpdateLedgerBadRequestError) GetCode() string { return v.Co
 // GetMessage returns UpdateLedgerUpdateLedgerBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerUpdateLedgerBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns UpdateLedgerUpdateLedgerBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerUpdateLedgerBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // UpdateLedgerUpdateLedgerInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -5876,6 +5971,8 @@ type UpdateLedgerUpdateLedgerInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns UpdateLedgerUpdateLedgerInternalError.Typename, and is useful for accessing the field via an interface.
@@ -5886,6 +5983,9 @@ func (v *UpdateLedgerUpdateLedgerInternalError) GetCode() string { return v.Code
 
 // GetMessage returns UpdateLedgerUpdateLedgerInternalError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerUpdateLedgerInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns UpdateLedgerUpdateLedgerInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerUpdateLedgerInternalError) GetRetryable() bool { return v.Retryable }
 
 // UpdateLedgerUpdateLedgerUpdateLedgerResponse includes the requested fields of the GraphQL interface UpdateLedgerResponse.
 //
@@ -6477,6 +6577,7 @@ mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: S
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6549,6 +6650,7 @@ mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6612,6 +6714,7 @@ mutation CreateCustomLink ($name: String!, $ik: SafeString!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6669,6 +6772,7 @@ mutation CreateLedger ($ik: SafeString!, $ledger: CreateLedgerInput!, $schemaKey
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7399,6 +7503,7 @@ mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $parameters: 
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7468,6 +7573,7 @@ mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7529,6 +7635,7 @@ mutation StoreSchema ($schema: SchemaInput!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7583,6 +7690,7 @@ mutation SyncCustomAccounts ($linkId: ID!, $accounts: [CustomAccountInput!]!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7640,6 +7748,7 @@ mutation SyncCustomTxs ($linkId: ID!, $txs: [CustomTxInput!]!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7692,6 +7801,7 @@ mutation UpdateLedger ($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
