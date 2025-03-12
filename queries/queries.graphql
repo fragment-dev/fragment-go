@@ -14,6 +14,7 @@ mutation StoreSchema($schema: SchemaInput!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -40,6 +41,7 @@ mutation CreateLedger(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -85,6 +87,7 @@ mutation AddLedgerEntry(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -130,6 +133,7 @@ mutation AddLedgerEntryRuntime(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -172,6 +176,7 @@ mutation ReconcileTx(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -214,6 +219,7 @@ mutation ReconcileTxRuntime(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -274,6 +280,7 @@ mutation UpdateLedger($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -291,6 +298,7 @@ mutation CreateCustomLink($name: String!, $ik: SafeString!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -312,6 +320,7 @@ mutation SyncCustomAccounts($linkId: ID!, $accounts: [CustomAccountInput!]!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -334,6 +343,7 @@ mutation SyncCustomTxs($linkId: ID!, $txs: [CustomTxInput!]!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -543,52 +553,6 @@ query GetLedgerAccountBalance(
   }
 }
 
-query ListLedgerEntryGroupBalances(
-  $ledgerIk: SafeString!
-  $groupKey: SafeString!
-  $groupValue: SafeString!
-  $consistencyMode: ReadBalanceConsistencyMode = use_account
-  $after: String
-  $before: String
-  $first: Int
-  $last: Int
-  $filter: LedgerEntryGroupBalanceFilterSet
-) {
-  ledgerEntryGroup(ledgerEntryGroup: {
-    ledger: { ik: $ledgerIk },
-    key: $groupKey,
-    value: $groupValue,
-  }) {
-    key
-    value
-    created
-    balances(
-      after: $after,
-      before: $before,
-      first: $first,
-      last: $last,
-      filter: $filter,
-    ){
-      nodes {
-        account {
-          path
-        }
-        currency {
-          code
-          customCurrencyId
-        }
-        ownBalance(consistencyMode: $consistencyMode)
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-        hasPreviousPage
-        startCursor
-      }
-    }
-  }
-}
-
 query GetSchema($key: SafeString!, $version: Int) {
   schema(schema: { key: $key, version: $version }) {
     key
@@ -642,5 +606,51 @@ query GetWorkspace {
   workspace {
     id
     name
+  }
+}
+
+query ListLedgerEntryGroupBalances(
+  $ledgerIk: SafeString!
+  $groupKey: SafeString!
+  $groupValue: SafeString!
+  $consistencyMode: ReadBalanceConsistencyMode = use_account
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+  $filter: LedgerEntryGroupBalanceFilterSet
+) {
+  ledgerEntryGroup(ledgerEntryGroup: {
+    ledger: { ik: $ledgerIk },
+    key: $groupKey,
+    value: $groupValue,
+  }) {
+    key
+    value
+    created
+    balances(
+      after: $after,
+      before: $before,
+      first: $first,
+      last: $last,
+      filter: $filter,
+    ){
+      nodes {
+        account {
+          path
+        }
+        currency {
+          code
+          customCurrencyId
+        }
+        ownBalance(consistencyMode: $consistencyMode)
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+    }
   }
 }
