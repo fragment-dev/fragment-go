@@ -62,16 +62,6 @@ jobs:
             --output=queries/queries.go \
             --package=queries
 
-      - name: Verify generated queries are up-to-date
-        working-directory: ./fragment-go
-        run: |
-          go run main.go \
-            --input=queries/queries.graphql \
-            --output=queries/queries.go \
-            --package=queries
-          git diff --exit-code
-          exit $?
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
