@@ -34,10 +34,15 @@ jobs:
         run: |
           cp ../graphql-queries/queries.graphql queries/queries.graphql
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
       - name: Capitalize GraphQL queries in queries.graphql
         working-directory: ./fragment-go
         run: |
-          echo "hello world"
+          python format_queries.py
 
       - name: Validate GraphQL queries
         working-directory: ./fragment-go
