@@ -1,15 +1,23 @@
 """
-This script is used to capitalize the query names in queries.graphql file.
+Script to format/clean the standard queries in the SDK.
+
+1. Capitalize query names so that they are consistent with Go's public
+   method nomenclature.
+2. Rename protected variable names.
 """
 import string
 from typing import List
 
 def format_line(line: str):
   is_first_line = line.startswith("mutation") or line.startswith("query")
-  if not is_first_line:
+  contains_type = line.find("$type: String!") != -1 or line.find("type: $type") != -1
+  if not (is_first_line or contains_type):
     return line
-  line_parts = line.split(" ")
-  return " ".join([part[0].upper()+part[1:] if idx == 1 else part for idx,part in enumerate(line_parts)])
+  if is_first_line:
+    line_parts = line.split(" ")
+    return " ".join([part[0].upper()+part[1:] if idx == 1 else part for idx,part in enumerate(line_parts)])
+  if contains_type:
+    return line.replace("$type", "$entryType")
 
 def format_graphql_queries(raw_lines: [str]):
   return map(format_line, raw_lines)
