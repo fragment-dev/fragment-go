@@ -2096,6 +2096,29 @@ func (v *GroupBalanceAccountFilter) GetId() *StringFilter { return v.Id }
 // GetPath returns GroupBalanceAccountFilter.Path, and is useful for accessing the field via an interface.
 func (v *GroupBalanceAccountFilter) GetPath() *StringMatchFilter { return v.Path }
 
+// Filter for finding entries by group membership
+type GroupFilter struct {
+	// Find entries that are members of a group with all of these group keys
+	KeyIn []string `json:"keyIn"`
+	// Find entries that do not match this predicate
+	Not *GroupNotFilter `json:"not"`
+}
+
+// GetKeyIn returns GroupFilter.KeyIn, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetKeyIn() []string { return v.KeyIn }
+
+// GetNot returns GroupFilter.Not, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetNot() *GroupNotFilter { return v.Not }
+
+// Filter for finding entries that do not match this predicate
+type GroupNotFilter struct {
+	// Find entries that are not members of all of these groups. This is an AND filter.
+	KeyIn []string `json:"keyIn"`
+}
+
+// GetKeyIn returns GroupNotFilter.KeyIn, and is useful for accessing the field via an interface.
+func (v *GroupNotFilter) GetKeyIn() []string { return v.KeyIn }
+
 type Int96Filter struct {
 	// Must exactly equal this Int96 value
 	Eq *string `json:"eq"`
@@ -2216,9 +2239,17 @@ var AllLedgerAccountTypes = []LedgerAccountTypes{
 
 type LedgerEntriesFilterSet struct {
 	Date *DateFilter `json:"date"`
+	// Use this to filter Ledger Entries by groups. The response will include entries that contain or do not contain specific groups.
+	Group *GroupFilter `json:"group"`
+	// Use this to filter Ledger Entries that were posted using `reverseLedgerEntry`.
+	IsReversal *bool `json:"isReversal"`
+	// Use this to filter Ledger Entries that have been reversed.
+	IsReversed *bool `json:"isReversed"`
 	// Use to filter Ledger Entries by their IDs or IKs.
 	LedgerEntry *LedgerEntryFilter `json:"ledgerEntry"`
 	Posted      *DateTimeFilter    `json:"posted"`
+	// Use this filter to show hidden Ledger Entries.
+	ShowHidden *bool `json:"showHidden"`
 	// Use this to filter Ledger Entries by tags. The response will include entries that contain tags matching the filter.
 	Tag *TagFilter `json:"tag"`
 	// Use this to filter Ledger Entries by type. Ledger Entry types are defined in Schemas.
@@ -2228,11 +2259,23 @@ type LedgerEntriesFilterSet struct {
 // GetDate returns LedgerEntriesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetDate() *DateFilter { return v.Date }
 
+// GetGroup returns LedgerEntriesFilterSet.Group, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetGroup() *GroupFilter { return v.Group }
+
+// GetIsReversal returns LedgerEntriesFilterSet.IsReversal, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetIsReversal() *bool { return v.IsReversal }
+
+// GetIsReversed returns LedgerEntriesFilterSet.IsReversed, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetIsReversed() *bool { return v.IsReversed }
+
 // GetLedgerEntry returns LedgerEntriesFilterSet.LedgerEntry, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetLedgerEntry() *LedgerEntryFilter { return v.LedgerEntry }
 
 // GetPosted returns LedgerEntriesFilterSet.Posted, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetPosted() *DateTimeFilter { return v.Posted }
+
+// GetShowHidden returns LedgerEntriesFilterSet.ShowHidden, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetShowHidden() *bool { return v.ShowHidden }
 
 // GetTag returns LedgerEntriesFilterSet.Tag, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetTag() *TagFilter { return v.Tag }
@@ -2367,11 +2410,17 @@ type LedgerLinesFilterSet struct {
 	Created *DateTimeFilter `json:"created"`
 	// Filter by the posted date of the Ledger Line. This is identical to using `posted`, but only supports day-level granularity.
 	Date *DateFilter `json:"date"`
+	// Use this to filter Ledger Lines that were posted to this Ledger Account, using `reverseLedgerEntry`.
+	IsReversal *bool `json:"isReversal"`
+	// Use this to filter Ledger Lines that have been reversed.
+	IsReversed *bool `json:"isReversed"`
 	// Use this to filter Ledger Lines by key. Ledger Line keys are defined in Schemas.
 	Key *StringFilter `json:"key"`
 	// Filter by the posted timestamp of the Ledger Line.
 	Posted *DateTimeFilter `json:"posted"`
-	Type   *TxTypeFilter   `json:"type"`
+	// Use this filter to find hidden Ledger Lines.
+	ShowHidden *bool         `json:"showHidden"`
+	Type       *TxTypeFilter `json:"type"`
 }
 
 // GetCreated returns LedgerLinesFilterSet.Created, and is useful for accessing the field via an interface.
@@ -2380,11 +2429,20 @@ func (v *LedgerLinesFilterSet) GetCreated() *DateTimeFilter { return v.Created }
 // GetDate returns LedgerLinesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetDate() *DateFilter { return v.Date }
 
+// GetIsReversal returns LedgerLinesFilterSet.IsReversal, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetIsReversal() *bool { return v.IsReversal }
+
+// GetIsReversed returns LedgerLinesFilterSet.IsReversed, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetIsReversed() *bool { return v.IsReversed }
+
 // GetKey returns LedgerLinesFilterSet.Key, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetKey() *StringFilter { return v.Key }
 
 // GetPosted returns LedgerLinesFilterSet.Posted, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetPosted() *DateTimeFilter { return v.Posted }
+
+// GetShowHidden returns LedgerLinesFilterSet.ShowHidden, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetShowHidden() *bool { return v.ShowHidden }
 
 // GetType returns LedgerLinesFilterSet.Type, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetType() *TxTypeFilter { return v.Type }
@@ -4652,6 +4710,10 @@ type StringFilter struct {
 	EqualTo *string `json:"equalTo"`
 	// Must match one of the values provided. Limited to 100 items maximum.
 	In []string `json:"in"`
+	// Must not equal this string value
+	NotEqualTo *string `json:"notEqualTo"`
+	// Must not match any of the values provided. Limited to 100 items maximum.
+	NotIn []string `json:"notIn"`
 }
 
 // GetEqualTo returns StringFilter.EqualTo, and is useful for accessing the field via an interface.
@@ -4659,6 +4721,12 @@ func (v *StringFilter) GetEqualTo() *string { return v.EqualTo }
 
 // GetIn returns StringFilter.In, and is useful for accessing the field via an interface.
 func (v *StringFilter) GetIn() []string { return v.In }
+
+// GetNotEqualTo returns StringFilter.NotEqualTo, and is useful for accessing the field via an interface.
+func (v *StringFilter) GetNotEqualTo() *string { return v.NotEqualTo }
+
+// GetNotIn returns StringFilter.NotIn, and is useful for accessing the field via an interface.
+func (v *StringFilter) GetNotIn() []string { return v.NotIn }
 
 type StringMatchFilter struct {
 	// Must contain the provided pattern somewhere within the string. For example, 'contains: hat' will match 'hat', 'chat', and 'hate'.
