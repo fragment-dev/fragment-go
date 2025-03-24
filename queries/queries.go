@@ -216,6 +216,8 @@ type AddLedgerEntryAddLedgerEntryBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryAddLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -227,6 +229,9 @@ func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetCode() string { return 
 // GetMessage returns AddLedgerEntryAddLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns AddLedgerEntryAddLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // AddLedgerEntryAddLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -237,6 +242,8 @@ type AddLedgerEntryAddLedgerEntryInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryAddLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
@@ -247,6 +254,9 @@ func (v *AddLedgerEntryAddLedgerEntryInternalError) GetCode() string { return v.
 
 // GetMessage returns AddLedgerEntryAddLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryAddLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntryAddLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryAddLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
 
 // AddLedgerEntryResponse is returned by AddLedgerEntry on success.
 type AddLedgerEntryResponse struct {
@@ -529,6 +539,8 @@ type AddLedgerEntryRuntimeAddLedgerEntryBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryRuntimeAddLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -540,6 +552,9 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetCode() string { 
 // GetMessage returns AddLedgerEntryRuntimeAddLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns AddLedgerEntryRuntimeAddLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // AddLedgerEntryRuntimeAddLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -550,6 +565,8 @@ type AddLedgerEntryRuntimeAddLedgerEntryInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns AddLedgerEntryRuntimeAddLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
@@ -560,6 +577,9 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetCode() string { re
 
 // GetMessage returns AddLedgerEntryRuntimeAddLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntryRuntimeAddLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryRuntimeAddLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
 
 // AddLedgerEntryRuntimeResponse is returned by AddLedgerEntryRuntime on success.
 type AddLedgerEntryRuntimeResponse struct {
@@ -689,6 +709,8 @@ type CreateCustomLinkCreateCustomLinkBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateCustomLinkCreateCustomLinkBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -699,6 +721,9 @@ func (v *CreateCustomLinkCreateCustomLinkBadRequestError) GetCode() string { ret
 
 // GetMessage returns CreateCustomLinkCreateCustomLinkBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *CreateCustomLinkCreateCustomLinkBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateCustomLinkCreateCustomLinkBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateCustomLinkCreateCustomLinkBadRequestError) GetRetryable() bool { return v.Retryable }
 
 // CreateCustomLinkCreateCustomLinkCreateCustomLinkResponse includes the requested fields of the GraphQL interface CreateCustomLinkResponse.
 //
@@ -845,6 +870,8 @@ type CreateCustomLinkCreateCustomLinkInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateCustomLinkCreateCustomLinkInternalError.Typename, and is useful for accessing the field via an interface.
@@ -855,6 +882,9 @@ func (v *CreateCustomLinkCreateCustomLinkInternalError) GetCode() string { retur
 
 // GetMessage returns CreateCustomLinkCreateCustomLinkInternalError.Message, and is useful for accessing the field via an interface.
 func (v *CreateCustomLinkCreateCustomLinkInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateCustomLinkCreateCustomLinkInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateCustomLinkCreateCustomLinkInternalError) GetRetryable() bool { return v.Retryable }
 
 // CreateCustomLinkResponse is returned by CreateCustomLink on success.
 type CreateCustomLinkResponse struct {
@@ -940,6 +970,8 @@ type CreateLedgerCreateLedgerBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateLedgerCreateLedgerBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -950,6 +982,9 @@ func (v *CreateLedgerCreateLedgerBadRequestError) GetCode() string { return v.Co
 
 // GetMessage returns CreateLedgerCreateLedgerBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *CreateLedgerCreateLedgerBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateLedgerCreateLedgerBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateLedgerCreateLedgerBadRequestError) GetRetryable() bool { return v.Retryable }
 
 // CreateLedgerCreateLedgerCreateLedgerResponse includes the requested fields of the GraphQL interface CreateLedgerResponse.
 //
@@ -1110,6 +1145,8 @@ type CreateLedgerCreateLedgerInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns CreateLedgerCreateLedgerInternalError.Typename, and is useful for accessing the field via an interface.
@@ -1120,6 +1157,9 @@ func (v *CreateLedgerCreateLedgerInternalError) GetCode() string { return v.Code
 
 // GetMessage returns CreateLedgerCreateLedgerInternalError.Message, and is useful for accessing the field via an interface.
 func (v *CreateLedgerCreateLedgerInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateLedgerCreateLedgerInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateLedgerCreateLedgerInternalError) GetRetryable() bool { return v.Retryable }
 
 type CreateLedgerInput struct {
 	// Use this field to specify a timezone for queries to your Ledger.
@@ -1690,6 +1730,759 @@ func (v *DateTimeFilter) GetAfter() *string { return v.After }
 
 // GetBefore returns DateTimeFilter.Before, and is useful for accessing the field via an interface.
 func (v *DateTimeFilter) GetBefore() *string { return v.Before }
+
+// DeleteCustomTxsDeleteCustomTxsBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type DeleteCustomTxsDeleteCustomTxsBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteCustomTxsDeleteCustomTxsBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns DeleteCustomTxsDeleteCustomTxsBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns DeleteCustomTxsDeleteCustomTxsBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeleteCustomTxsDeleteCustomTxsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse includes the requested fields of the GraphQL interface DeleteCustomTxsResponse.
+//
+// DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse is implemented by the following types:
+// DeleteCustomTxsDeleteCustomTxsBadRequestError
+// DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult
+// DeleteCustomTxsDeleteCustomTxsInternalError
+type DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse interface {
+	implementsGraphQLInterfaceDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *DeleteCustomTxsDeleteCustomTxsBadRequestError) implementsGraphQLInterfaceDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse() {
+}
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult) implementsGraphQLInterfaceDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse() {
+}
+func (v *DeleteCustomTxsDeleteCustomTxsInternalError) implementsGraphQLInterfaceDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse() {
+}
+
+func __unmarshalDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse(b []byte, v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(DeleteCustomTxsDeleteCustomTxsBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "DeleteCustomTxsResult":
+		*v = new(DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(DeleteCustomTxsDeleteCustomTxsInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing DeleteCustomTxsResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse(v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DeleteCustomTxsDeleteCustomTxsBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteCustomTxsDeleteCustomTxsBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult:
+		typename = "DeleteCustomTxsResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteCustomTxsDeleteCustomTxsInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteCustomTxsDeleteCustomTxsInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse: "%T"`, v)
+	}
+}
+
+// DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult includes the requested fields of the GraphQL type DeleteCustomTxsResult.
+type DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult struct {
+	Typename *string `json:"__typename"`
+	// List of Txs deleted in this operation
+	Txs []DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTx `json:"txs"`
+}
+
+// GetTypename returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetTxs returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult.Txs, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResult) GetTxs() []DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTx {
+	return v.Txs
+}
+
+// DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTx includes the requested fields of the GraphQL type DeletedCustomTx.
+type DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTx struct {
+	// A deleted Tx
+	Tx DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx `json:"tx"`
+}
+
+// GetTx returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTx.Tx, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTx) GetTx() DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx {
+	return v.Tx
+}
+
+// DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx includes the requested fields of the GraphQL type Tx.
+type DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx struct {
+	// FRAGMENT ID of this transaction's Link
+	LinkId string `json:"linkId"`
+	// FRAGMENT ID of this Tx. If you delete a Tx via deleteCustomTxs, it will not show up in listing queries, but can be resolved by if you lookup by its Fragment ID. If you resync a Tx with the same externalId, its Fragment ID will be different than the previous Tx.
+	Id string `json:"id"`
+	// ID of this transaction in the external system
+	ExternalId string `json:"externalId"`
+	// ID in the external system of this transaction's external account
+	ExternalAccountId string `json:"externalAccountId"`
+	// Integer amount in cents. Positive indicates money entering the external account, negative indicates money leaving
+	Amount string `json:"amount"`
+	// Description at the external account
+	Description string `json:"description"`
+	// ISO-8601 timestamp when this Tx posted to the external account
+	Posted string `json:"posted"`
+	// ISO-8601 timestamp when this Tx was deleted
+	DeletedAt *string `json:"deletedAt"`
+}
+
+// GetLinkId returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.LinkId, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetLinkId() string {
+	return v.LinkId
+}
+
+// GetId returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.Id, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetId() string {
+	return v.Id
+}
+
+// GetExternalId returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.ExternalId, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetExternalId() string {
+	return v.ExternalId
+}
+
+// GetExternalAccountId returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.ExternalAccountId, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetExternalAccountId() string {
+	return v.ExternalAccountId
+}
+
+// GetAmount returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.Amount, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetAmount() string {
+	return v.Amount
+}
+
+// GetDescription returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.Description, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetDescription() string {
+	return v.Description
+}
+
+// GetPosted returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.Posted, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetPosted() string {
+	return v.Posted
+}
+
+// GetDeletedAt returns DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx.DeletedAt, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx) GetDeletedAt() *string {
+	return v.DeletedAt
+}
+
+// DeleteCustomTxsDeleteCustomTxsInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type DeleteCustomTxsDeleteCustomTxsInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteCustomTxsDeleteCustomTxsInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns DeleteCustomTxsDeleteCustomTxsInternalError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns DeleteCustomTxsDeleteCustomTxsInternalError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeleteCustomTxsDeleteCustomTxsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsDeleteCustomTxsInternalError) GetRetryable() bool { return v.Retryable }
+
+// DeleteCustomTxsResponse is returned by DeleteCustomTxs on success.
+type DeleteCustomTxsResponse struct {
+	// Delete Txs on a Custom Link. Once deleted, a Tx will not show up in listing queries, but can be resolved by if you lookup by its Fragment ID.
+	DeleteCustomTxs DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse `json:"-"`
+}
+
+// GetDeleteCustomTxs returns DeleteCustomTxsResponse.DeleteCustomTxs, and is useful for accessing the field via an interface.
+func (v *DeleteCustomTxsResponse) GetDeleteCustomTxs() DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse {
+	return v.DeleteCustomTxs
+}
+
+func (v *DeleteCustomTxsResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DeleteCustomTxsResponse
+		DeleteCustomTxs json.RawMessage `json:"deleteCustomTxs"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DeleteCustomTxsResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.DeleteCustomTxs
+		src := firstPass.DeleteCustomTxs
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal DeleteCustomTxsResponse.DeleteCustomTxs: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDeleteCustomTxsResponse struct {
+	DeleteCustomTxs json.RawMessage `json:"deleteCustomTxs"`
+}
+
+func (v *DeleteCustomTxsResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DeleteCustomTxsResponse) __premarshalJSON() (*__premarshalDeleteCustomTxsResponse, error) {
+	var retval __premarshalDeleteCustomTxsResponse
+
+	{
+
+		dst := &retval.DeleteCustomTxs
+		src := v.DeleteCustomTxs
+		var err error
+		*dst, err = __marshalDeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal DeleteCustomTxsResponse.DeleteCustomTxs: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// DeleteLedgerDeleteLedgerBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type DeleteLedgerDeleteLedgerBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteLedgerDeleteLedgerBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns DeleteLedgerDeleteLedgerBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns DeleteLedgerDeleteLedgerBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeleteLedgerDeleteLedgerBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// DeleteLedgerDeleteLedgerDeleteLedgerResponse includes the requested fields of the GraphQL interface DeleteLedgerResponse.
+//
+// DeleteLedgerDeleteLedgerDeleteLedgerResponse is implemented by the following types:
+// DeleteLedgerDeleteLedgerBadRequestError
+// DeleteLedgerDeleteLedgerDeleteLedgerResult
+// DeleteLedgerDeleteLedgerInternalError
+type DeleteLedgerDeleteLedgerDeleteLedgerResponse interface {
+	implementsGraphQLInterfaceDeleteLedgerDeleteLedgerDeleteLedgerResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *DeleteLedgerDeleteLedgerBadRequestError) implementsGraphQLInterfaceDeleteLedgerDeleteLedgerDeleteLedgerResponse() {
+}
+func (v *DeleteLedgerDeleteLedgerDeleteLedgerResult) implementsGraphQLInterfaceDeleteLedgerDeleteLedgerDeleteLedgerResponse() {
+}
+func (v *DeleteLedgerDeleteLedgerInternalError) implementsGraphQLInterfaceDeleteLedgerDeleteLedgerDeleteLedgerResponse() {
+}
+
+func __unmarshalDeleteLedgerDeleteLedgerDeleteLedgerResponse(b []byte, v *DeleteLedgerDeleteLedgerDeleteLedgerResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(DeleteLedgerDeleteLedgerBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "DeleteLedgerResult":
+		*v = new(DeleteLedgerDeleteLedgerDeleteLedgerResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(DeleteLedgerDeleteLedgerInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing DeleteLedgerResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DeleteLedgerDeleteLedgerDeleteLedgerResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDeleteLedgerDeleteLedgerDeleteLedgerResponse(v *DeleteLedgerDeleteLedgerDeleteLedgerResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DeleteLedgerDeleteLedgerBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteLedgerDeleteLedgerBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteLedgerDeleteLedgerDeleteLedgerResult:
+		typename = "DeleteLedgerResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteLedgerDeleteLedgerDeleteLedgerResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteLedgerDeleteLedgerInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteLedgerDeleteLedgerInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DeleteLedgerDeleteLedgerDeleteLedgerResponse: "%T"`, v)
+	}
+}
+
+// DeleteLedgerDeleteLedgerDeleteLedgerResult includes the requested fields of the GraphQL type DeleteLedgerResult.
+type DeleteLedgerDeleteLedgerDeleteLedgerResult struct {
+	Typename *string `json:"__typename"`
+	Success  bool    `json:"success"`
+}
+
+// GetTypename returns DeleteLedgerDeleteLedgerDeleteLedgerResult.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerDeleteLedgerResult) GetTypename() *string { return v.Typename }
+
+// GetSuccess returns DeleteLedgerDeleteLedgerDeleteLedgerResult.Success, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerDeleteLedgerResult) GetSuccess() bool { return v.Success }
+
+// DeleteLedgerDeleteLedgerInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type DeleteLedgerDeleteLedgerInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteLedgerDeleteLedgerInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns DeleteLedgerDeleteLedgerInternalError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns DeleteLedgerDeleteLedgerInternalError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeleteLedgerDeleteLedgerInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerDeleteLedgerInternalError) GetRetryable() bool { return v.Retryable }
+
+// DeleteLedgerResponse is returned by DeleteLedger on success.
+type DeleteLedgerResponse struct {
+	// Delete a Ledger.
+	//
+	// After using the deleteLedger mutation you can re-use the ik in a new ledger after a 30 second wait.
+	DeleteLedger DeleteLedgerDeleteLedgerDeleteLedgerResponse `json:"-"`
+}
+
+// GetDeleteLedger returns DeleteLedgerResponse.DeleteLedger, and is useful for accessing the field via an interface.
+func (v *DeleteLedgerResponse) GetDeleteLedger() DeleteLedgerDeleteLedgerDeleteLedgerResponse {
+	return v.DeleteLedger
+}
+
+func (v *DeleteLedgerResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DeleteLedgerResponse
+		DeleteLedger json.RawMessage `json:"deleteLedger"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DeleteLedgerResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.DeleteLedger
+		src := firstPass.DeleteLedger
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDeleteLedgerDeleteLedgerDeleteLedgerResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal DeleteLedgerResponse.DeleteLedger: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDeleteLedgerResponse struct {
+	DeleteLedger json.RawMessage `json:"deleteLedger"`
+}
+
+func (v *DeleteLedgerResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DeleteLedgerResponse) __premarshalJSON() (*__premarshalDeleteLedgerResponse, error) {
+	var retval __premarshalDeleteLedgerResponse
+
+	{
+
+		dst := &retval.DeleteLedger
+		src := v.DeleteLedger
+		var err error
+		*dst, err = __marshalDeleteLedgerDeleteLedgerDeleteLedgerResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal DeleteLedgerResponse.DeleteLedger: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// DeleteSchemaDeleteSchemaBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type DeleteSchemaDeleteSchemaBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteSchemaDeleteSchemaBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns DeleteSchemaDeleteSchemaBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns DeleteSchemaDeleteSchemaBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeleteSchemaDeleteSchemaBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// DeleteSchemaDeleteSchemaDeleteSchemaResponse includes the requested fields of the GraphQL interface DeleteSchemaResponse.
+//
+// DeleteSchemaDeleteSchemaDeleteSchemaResponse is implemented by the following types:
+// DeleteSchemaDeleteSchemaBadRequestError
+// DeleteSchemaDeleteSchemaDeleteSchemaResult
+// DeleteSchemaDeleteSchemaInternalError
+type DeleteSchemaDeleteSchemaDeleteSchemaResponse interface {
+	implementsGraphQLInterfaceDeleteSchemaDeleteSchemaDeleteSchemaResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *DeleteSchemaDeleteSchemaBadRequestError) implementsGraphQLInterfaceDeleteSchemaDeleteSchemaDeleteSchemaResponse() {
+}
+func (v *DeleteSchemaDeleteSchemaDeleteSchemaResult) implementsGraphQLInterfaceDeleteSchemaDeleteSchemaDeleteSchemaResponse() {
+}
+func (v *DeleteSchemaDeleteSchemaInternalError) implementsGraphQLInterfaceDeleteSchemaDeleteSchemaDeleteSchemaResponse() {
+}
+
+func __unmarshalDeleteSchemaDeleteSchemaDeleteSchemaResponse(b []byte, v *DeleteSchemaDeleteSchemaDeleteSchemaResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(DeleteSchemaDeleteSchemaBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "DeleteSchemaResult":
+		*v = new(DeleteSchemaDeleteSchemaDeleteSchemaResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(DeleteSchemaDeleteSchemaInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing DeleteSchemaResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DeleteSchemaDeleteSchemaDeleteSchemaResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDeleteSchemaDeleteSchemaDeleteSchemaResponse(v *DeleteSchemaDeleteSchemaDeleteSchemaResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DeleteSchemaDeleteSchemaBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteSchemaDeleteSchemaBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteSchemaDeleteSchemaDeleteSchemaResult:
+		typename = "DeleteSchemaResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteSchemaDeleteSchemaDeleteSchemaResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteSchemaDeleteSchemaInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteSchemaDeleteSchemaInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DeleteSchemaDeleteSchemaDeleteSchemaResponse: "%T"`, v)
+	}
+}
+
+// DeleteSchemaDeleteSchemaDeleteSchemaResult includes the requested fields of the GraphQL type DeleteSchemaResult.
+type DeleteSchemaDeleteSchemaDeleteSchemaResult struct {
+	Typename *string `json:"__typename"`
+	Success  bool    `json:"success"`
+}
+
+// GetTypename returns DeleteSchemaDeleteSchemaDeleteSchemaResult.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaDeleteSchemaResult) GetTypename() *string { return v.Typename }
+
+// GetSuccess returns DeleteSchemaDeleteSchemaDeleteSchemaResult.Success, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaDeleteSchemaResult) GetSuccess() bool { return v.Success }
+
+// DeleteSchemaDeleteSchemaInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type DeleteSchemaDeleteSchemaInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteSchemaDeleteSchemaInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns DeleteSchemaDeleteSchemaInternalError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns DeleteSchemaDeleteSchemaInternalError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeleteSchemaDeleteSchemaInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaDeleteSchemaInternalError) GetRetryable() bool { return v.Retryable }
+
+// DeleteSchemaResponse is returned by DeleteSchema on success.
+type DeleteSchemaResponse struct {
+	// Delete a Schema
+	DeleteSchema DeleteSchemaDeleteSchemaDeleteSchemaResponse `json:"-"`
+}
+
+// GetDeleteSchema returns DeleteSchemaResponse.DeleteSchema, and is useful for accessing the field via an interface.
+func (v *DeleteSchemaResponse) GetDeleteSchema() DeleteSchemaDeleteSchemaDeleteSchemaResponse {
+	return v.DeleteSchema
+}
+
+func (v *DeleteSchemaResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DeleteSchemaResponse
+		DeleteSchema json.RawMessage `json:"deleteSchema"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DeleteSchemaResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.DeleteSchema
+		src := firstPass.DeleteSchema
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDeleteSchemaDeleteSchemaDeleteSchemaResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal DeleteSchemaResponse.DeleteSchema: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDeleteSchemaResponse struct {
+	DeleteSchema json.RawMessage `json:"deleteSchema"`
+}
+
+func (v *DeleteSchemaResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DeleteSchemaResponse) __premarshalJSON() (*__premarshalDeleteSchemaResponse, error) {
+	var retval __premarshalDeleteSchemaResponse
+
+	{
+
+		dst := &retval.DeleteSchema
+		src := v.DeleteSchema
+		var err error
+		*dst, err = __marshalDeleteSchemaDeleteSchemaDeleteSchemaResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal DeleteSchemaResponse.DeleteSchema: %w", err)
+		}
+	}
+	return &retval, nil
+}
 
 // Specify an External Account by using `id`, or `linkId` and `externalId`.
 type ExternalAccountMatchInput struct {
@@ -3412,6 +4205,8 @@ type ReconcileTxReconcileTxBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxReconcileTxBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -3423,6 +4218,9 @@ func (v *ReconcileTxReconcileTxBadRequestError) GetCode() string { return v.Code
 // GetMessage returns ReconcileTxReconcileTxBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxReconcileTxBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns ReconcileTxReconcileTxBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxReconcileTxBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // ReconcileTxReconcileTxInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -3433,6 +4231,8 @@ type ReconcileTxReconcileTxInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxReconcileTxInternalError.Typename, and is useful for accessing the field via an interface.
@@ -3443,6 +4243,9 @@ func (v *ReconcileTxReconcileTxInternalError) GetCode() string { return v.Code }
 
 // GetMessage returns ReconcileTxReconcileTxInternalError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxReconcileTxInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns ReconcileTxReconcileTxInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxReconcileTxInternalError) GetRetryable() bool { return v.Retryable }
 
 // ReconcileTxReconcileTxReconcileTxResponse includes the requested fields of the GraphQL interface ReconcileTxResponse.
 //
@@ -3718,6 +4521,8 @@ type ReconcileTxRuntimeReconcileTxBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxRuntimeReconcileTxBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -3729,6 +4534,9 @@ func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetCode() string { return
 // GetMessage returns ReconcileTxRuntimeReconcileTxBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns ReconcileTxRuntimeReconcileTxBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // ReconcileTxRuntimeReconcileTxInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -3739,6 +4547,8 @@ type ReconcileTxRuntimeReconcileTxInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns ReconcileTxRuntimeReconcileTxInternalError.Typename, and is useful for accessing the field via an interface.
@@ -3749,6 +4559,9 @@ func (v *ReconcileTxRuntimeReconcileTxInternalError) GetCode() string { return v
 
 // GetMessage returns ReconcileTxRuntimeReconcileTxInternalError.Message, and is useful for accessing the field via an interface.
 func (v *ReconcileTxRuntimeReconcileTxInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns ReconcileTxRuntimeReconcileTxInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReconcileTxRuntimeReconcileTxInternalError) GetRetryable() bool { return v.Retryable }
 
 // ReconcileTxRuntimeReconcileTxReconcileTxResponse includes the requested fields of the GraphQL interface ReconcileTxResponse.
 //
@@ -4018,6 +4831,482 @@ func (v *ReconcileTxRuntimeResponse) __premarshalJSON() (*__premarshalReconcileT
 		}
 	}
 	return &retval, nil
+}
+
+// ReverseLedgerEntryResponse is returned by ReverseLedgerEntry on success.
+type ReverseLedgerEntryResponse struct {
+	// Reverses a Ledger Entry
+	ReverseLedgerEntry ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse `json:"-"`
+}
+
+// GetReverseLedgerEntry returns ReverseLedgerEntryResponse.ReverseLedgerEntry, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryResponse) GetReverseLedgerEntry() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse {
+	return v.ReverseLedgerEntry
+}
+
+func (v *ReverseLedgerEntryResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ReverseLedgerEntryResponse
+		ReverseLedgerEntry json.RawMessage `json:"reverseLedgerEntry"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ReverseLedgerEntryResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.ReverseLedgerEntry
+		src := firstPass.ReverseLedgerEntry
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal ReverseLedgerEntryResponse.ReverseLedgerEntry: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalReverseLedgerEntryResponse struct {
+	ReverseLedgerEntry json.RawMessage `json:"reverseLedgerEntry"`
+}
+
+func (v *ReverseLedgerEntryResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ReverseLedgerEntryResponse) __premarshalJSON() (*__premarshalReverseLedgerEntryResponse, error) {
+	var retval __premarshalReverseLedgerEntryResponse
+
+	{
+
+		dst := &retval.ReverseLedgerEntry
+		src := v.ReverseLedgerEntry
+		var err error
+		*dst, err = __marshalReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal ReverseLedgerEntryResponse.ReverseLedgerEntry: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// ReverseLedgerEntryReverseLedgerEntryBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type ReverseLedgerEntryReverseLedgerEntryBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns ReverseLedgerEntryReverseLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns ReverseLedgerEntryReverseLedgerEntryBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns ReverseLedgerEntryReverseLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns ReverseLedgerEntryReverseLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// ReverseLedgerEntryReverseLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type ReverseLedgerEntryReverseLedgerEntryInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns ReverseLedgerEntryReverseLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns ReverseLedgerEntryReverseLedgerEntryInternalError.Code, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns ReverseLedgerEntryReverseLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns ReverseLedgerEntryReverseLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse includes the requested fields of the GraphQL interface ReverseLedgerEntryResponse.
+//
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse is implemented by the following types:
+// ReverseLedgerEntryReverseLedgerEntryBadRequestError
+// ReverseLedgerEntryReverseLedgerEntryInternalError
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse interface {
+	implementsGraphQLInterfaceReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *ReverseLedgerEntryReverseLedgerEntryBadRequestError) implementsGraphQLInterfaceReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse() {
+}
+func (v *ReverseLedgerEntryReverseLedgerEntryInternalError) implementsGraphQLInterfaceReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse() {
+}
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult) implementsGraphQLInterfaceReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse() {
+}
+
+func __unmarshalReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse(b []byte, v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(ReverseLedgerEntryReverseLedgerEntryBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(ReverseLedgerEntryReverseLedgerEntryInternalError)
+		return json.Unmarshal(b, *v)
+	case "ReverseLedgerEntryResult":
+		*v = new(ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing ReverseLedgerEntryResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse(v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *ReverseLedgerEntryReverseLedgerEntryBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*ReverseLedgerEntryReverseLedgerEntryBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *ReverseLedgerEntryReverseLedgerEntryInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*ReverseLedgerEntryReverseLedgerEntryInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult:
+		typename = "ReverseLedgerEntryResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResponse: "%T"`, v)
+	}
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult includes the requested fields of the GraphQL type ReverseLedgerEntryResult.
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult struct {
+	Typename *string `json:"__typename"`
+	// The reversal Ledger Entry that was created
+	ReversingLedgerEntry ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry `json:"reversingLedgerEntry"`
+	// The Ledger Entry that was reversed
+	ReversedLedgerEntry ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry `json:"reversedLedgerEntry"`
+	// Whether the reversal was an IK replay
+	IsIkReplay bool `json:"isIkReplay"`
+}
+
+// GetTypename returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult.Typename, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetReversingLedgerEntry returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult.ReversingLedgerEntry, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult) GetReversingLedgerEntry() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry {
+	return v.ReversingLedgerEntry
+}
+
+// GetReversedLedgerEntry returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult.ReversedLedgerEntry, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult) GetReversedLedgerEntry() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry {
+	return v.ReversedLedgerEntry
+}
+
+// GetIsIkReplay returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult.IsIkReplay, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResult) GetIsIkReplay() bool {
+	return v.IsIkReplay
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry struct {
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// Indicates whether this Ledger Entry is hidden when listing Ledger Entries.
+	// Reversed and Reversal Ledger Entries are hidden by default because taken together they have no impact on a Ledger's balances.
+	Hidden bool `json:"hidden"`
+	// Lines posted in this Ledger Entry.
+	Lines ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetIk returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetId returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetPosted returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetType returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetDescription returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetHidden returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Hidden, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetHidden() bool {
+	return v.Hidden
+}
+
+// GetLines returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntry) GetLines() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection) GetNodes() []ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry struct {
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// Indicates whether this Ledger Entry is hidden when listing Ledger Entries.
+	// Reversed and Reversal Ledger Entries are hidden by default because taken together they have no impact on a Ledger's balances.
+	Hidden bool `json:"hidden"`
+	// Lines posted in this Ledger Entry.
+	Lines ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetIk returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetId returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetPosted returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetType returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetDescription returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetHidden returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Hidden, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetHidden() bool {
+	return v.Hidden
+}
+
+// GetLines returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntry) GetLines() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection) GetNodes() []ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *ReverseLedgerEntryReverseLedgerEntryReverseLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
 }
 
 // A simulated Ledger Entry posted as a part of a Scene.
@@ -4426,6 +5715,21 @@ func (v *SchemaLedgerLineInput) GetKey() string { return v.Key }
 // GetTx returns SchemaLedgerLineInput.Tx, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerLineInput) GetTx() *SchemaTxMatchInput { return v.Tx }
 
+// An object used to retrieve a Schema.
+type SchemaMatchInput struct {
+	// The key to retrieve a Schema by.
+	// `key` is unique to a Workspace.
+	Key string `json:"key"`
+	// Optional parameter to specify version of requested Schema. If not provided, it defaults to 0, representing the latest available version for the provided Schema key.
+	Version *int `json:"version"`
+}
+
+// GetKey returns SchemaMatchInput.Key, and is useful for accessing the field via an interface.
+func (v *SchemaMatchInput) GetKey() string { return v.Key }
+
+// GetVersion returns SchemaMatchInput.Version, and is useful for accessing the field via an interface.
+func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
+
 // Matches a transaction at an external system.
 // This is used to specify the transaction being reconciled into a Linked Ledger Account
 type SchemaTxMatchInput struct {
@@ -4526,6 +5830,8 @@ type StoreSchemaStoreSchemaBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns StoreSchemaStoreSchemaBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -4537,6 +5843,9 @@ func (v *StoreSchemaStoreSchemaBadRequestError) GetCode() string { return v.Code
 // GetMessage returns StoreSchemaStoreSchemaBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *StoreSchemaStoreSchemaBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns StoreSchemaStoreSchemaBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *StoreSchemaStoreSchemaBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // StoreSchemaStoreSchemaInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -4547,6 +5856,8 @@ type StoreSchemaStoreSchemaInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns StoreSchemaStoreSchemaInternalError.Typename, and is useful for accessing the field via an interface.
@@ -4557,6 +5868,9 @@ func (v *StoreSchemaStoreSchemaInternalError) GetCode() string { return v.Code }
 
 // GetMessage returns StoreSchemaStoreSchemaInternalError.Message, and is useful for accessing the field via an interface.
 func (v *StoreSchemaStoreSchemaInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns StoreSchemaStoreSchemaInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *StoreSchemaStoreSchemaInternalError) GetRetryable() bool { return v.Retryable }
 
 // StoreSchemaStoreSchemaStoreSchemaResponse includes the requested fields of the GraphQL interface StoreSchemaResponse.
 //
@@ -4835,6 +6149,8 @@ type SyncCustomAccountsSyncCustomAccountsBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomAccountsSyncCustomAccountsBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -4848,6 +6164,9 @@ func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetCode() string {
 // GetMessage returns SyncCustomAccountsSyncCustomAccountsBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns SyncCustomAccountsSyncCustomAccountsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // SyncCustomAccountsSyncCustomAccountsInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -4858,6 +6177,8 @@ type SyncCustomAccountsSyncCustomAccountsInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomAccountsSyncCustomAccountsInternalError.Typename, and is useful for accessing the field via an interface.
@@ -4868,6 +6189,9 @@ func (v *SyncCustomAccountsSyncCustomAccountsInternalError) GetCode() string { r
 
 // GetMessage returns SyncCustomAccountsSyncCustomAccountsInternalError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomAccountsSyncCustomAccountsInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns SyncCustomAccountsSyncCustomAccountsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsSyncCustomAccountsInternalError) GetRetryable() bool { return v.Retryable }
 
 // SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResponse includes the requested fields of the GraphQL interface SyncCustomAccountsResponse.
 //
@@ -5106,6 +6430,8 @@ type SyncCustomTxsSyncCustomTxsBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomTxsSyncCustomTxsBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -5117,6 +6443,9 @@ func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetCode() string { return v.
 // GetMessage returns SyncCustomTxsSyncCustomTxsBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns SyncCustomTxsSyncCustomTxsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // SyncCustomTxsSyncCustomTxsInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -5127,6 +6456,8 @@ type SyncCustomTxsSyncCustomTxsInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns SyncCustomTxsSyncCustomTxsInternalError.Typename, and is useful for accessing the field via an interface.
@@ -5137,6 +6468,9 @@ func (v *SyncCustomTxsSyncCustomTxsInternalError) GetCode() string { return v.Co
 
 // GetMessage returns SyncCustomTxsSyncCustomTxsInternalError.Message, and is useful for accessing the field via an interface.
 func (v *SyncCustomTxsSyncCustomTxsInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns SyncCustomTxsSyncCustomTxsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsSyncCustomTxsInternalError) GetRetryable() bool { return v.Retryable }
 
 // SyncCustomTxsSyncCustomTxsSyncCustomTxsResponse includes the requested fields of the GraphQL interface SyncCustomTxsResponse.
 //
@@ -5855,6 +7189,8 @@ type UpdateLedgerUpdateLedgerBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns UpdateLedgerUpdateLedgerBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -5866,6 +7202,9 @@ func (v *UpdateLedgerUpdateLedgerBadRequestError) GetCode() string { return v.Co
 // GetMessage returns UpdateLedgerUpdateLedgerBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerUpdateLedgerBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns UpdateLedgerUpdateLedgerBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerUpdateLedgerBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // UpdateLedgerUpdateLedgerInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -5876,6 +7215,8 @@ type UpdateLedgerUpdateLedgerInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns UpdateLedgerUpdateLedgerInternalError.Typename, and is useful for accessing the field via an interface.
@@ -5886,6 +7227,9 @@ func (v *UpdateLedgerUpdateLedgerInternalError) GetCode() string { return v.Code
 
 // GetMessage returns UpdateLedgerUpdateLedgerInternalError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerUpdateLedgerInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns UpdateLedgerUpdateLedgerInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerUpdateLedgerInternalError) GetRetryable() bool { return v.Retryable }
 
 // UpdateLedgerUpdateLedgerUpdateLedgerResponse includes the requested fields of the GraphQL interface UpdateLedgerResponse.
 //
@@ -6044,13 +7388,14 @@ func (v *__AddLedgerEntryInput) GetGroups() []LedgerEntryGroupInput { return v.G
 
 // __AddLedgerEntryRuntimeInput is used internally by genqlient
 type __AddLedgerEntryRuntimeInput struct {
-	Ik        string                  `json:"ik"`
-	EntryType string                  `json:"entryType"`
-	LedgerIk  string                  `json:"ledgerIk"`
-	Posted    *string                 `json:"posted"`
-	Lines     []LedgerLineInput       `json:"lines"`
-	Tags      []LedgerEntryTagInput   `json:"tags"`
-	Groups    []LedgerEntryGroupInput `json:"groups"`
+	Ik         string                  `json:"ik"`
+	EntryType  string                  `json:"entryType"`
+	LedgerIk   string                  `json:"ledgerIk"`
+	Posted     *string                 `json:"posted"`
+	Parameters *json.RawMessage        `json:"parameters"`
+	Lines      []LedgerLineInput       `json:"lines"`
+	Tags       []LedgerEntryTagInput   `json:"tags"`
+	Groups     []LedgerEntryGroupInput `json:"groups"`
 }
 
 // GetIk returns __AddLedgerEntryRuntimeInput.Ik, and is useful for accessing the field via an interface.
@@ -6064,6 +7409,9 @@ func (v *__AddLedgerEntryRuntimeInput) GetLedgerIk() string { return v.LedgerIk 
 
 // GetPosted returns __AddLedgerEntryRuntimeInput.Posted, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetPosted() *string { return v.Posted }
+
+// GetParameters returns __AddLedgerEntryRuntimeInput.Parameters, and is useful for accessing the field via an interface.
+func (v *__AddLedgerEntryRuntimeInput) GetParameters() *json.RawMessage { return v.Parameters }
 
 // GetLines returns __AddLedgerEntryRuntimeInput.Lines, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetLines() []LedgerLineInput { return v.Lines }
@@ -6101,6 +7449,30 @@ func (v *__CreateLedgerInput) GetLedger() CreateLedgerInput { return v.Ledger }
 
 // GetSchemaKey returns __CreateLedgerInput.SchemaKey, and is useful for accessing the field via an interface.
 func (v *__CreateLedgerInput) GetSchemaKey() string { return v.SchemaKey }
+
+// __DeleteCustomTxsInput is used internally by genqlient
+type __DeleteCustomTxsInput struct {
+	Txs []string `json:"txs"`
+}
+
+// GetTxs returns __DeleteCustomTxsInput.Txs, and is useful for accessing the field via an interface.
+func (v *__DeleteCustomTxsInput) GetTxs() []string { return v.Txs }
+
+// __DeleteLedgerInput is used internally by genqlient
+type __DeleteLedgerInput struct {
+	Ledger LedgerMatchInput `json:"ledger"`
+}
+
+// GetLedger returns __DeleteLedgerInput.Ledger, and is useful for accessing the field via an interface.
+func (v *__DeleteLedgerInput) GetLedger() LedgerMatchInput { return v.Ledger }
+
+// __DeleteSchemaInput is used internally by genqlient
+type __DeleteSchemaInput struct {
+	Schema SchemaMatchInput `json:"schema"`
+}
+
+// GetSchema returns __DeleteSchemaInput.Schema, and is useful for accessing the field via an interface.
+func (v *__DeleteSchemaInput) GetSchema() SchemaMatchInput { return v.Schema }
 
 // __GetLedgerAccountBalanceInput is used internally by genqlient
 type __GetLedgerAccountBalanceInput struct {
@@ -6370,11 +7742,12 @@ func (v *__ReconcileTxInput) GetGroups() []LedgerEntryGroupInput { return v.Grou
 
 // __ReconcileTxRuntimeInput is used internally by genqlient
 type __ReconcileTxRuntimeInput struct {
-	LedgerIk  string                  `json:"ledgerIk"`
-	EntryType string                  `json:"entryType"`
-	Lines     []LedgerLineInput       `json:"lines"`
-	Tags      []LedgerEntryTagInput   `json:"tags"`
-	Groups    []LedgerEntryGroupInput `json:"groups"`
+	LedgerIk   string                  `json:"ledgerIk"`
+	EntryType  string                  `json:"entryType"`
+	Lines      []LedgerLineInput       `json:"lines"`
+	Parameters *json.RawMessage        `json:"parameters"`
+	Tags       []LedgerEntryTagInput   `json:"tags"`
+	Groups     []LedgerEntryGroupInput `json:"groups"`
 }
 
 // GetLedgerIk returns __ReconcileTxRuntimeInput.LedgerIk, and is useful for accessing the field via an interface.
@@ -6386,11 +7759,22 @@ func (v *__ReconcileTxRuntimeInput) GetEntryType() string { return v.EntryType }
 // GetLines returns __ReconcileTxRuntimeInput.Lines, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetLines() []LedgerLineInput { return v.Lines }
 
+// GetParameters returns __ReconcileTxRuntimeInput.Parameters, and is useful for accessing the field via an interface.
+func (v *__ReconcileTxRuntimeInput) GetParameters() *json.RawMessage { return v.Parameters }
+
 // GetTags returns __ReconcileTxRuntimeInput.Tags, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetTags() []LedgerEntryTagInput { return v.Tags }
 
 // GetGroups returns __ReconcileTxRuntimeInput.Groups, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetGroups() []LedgerEntryGroupInput { return v.Groups }
+
+// __ReverseLedgerEntryInput is used internally by genqlient
+type __ReverseLedgerEntryInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __ReverseLedgerEntryInput.Id, and is useful for accessing the field via an interface.
+func (v *__ReverseLedgerEntryInput) GetId() string { return v.Id }
 
 // __StoreSchemaInput is used internally by genqlient
 type __StoreSchemaInput struct {
@@ -6477,6 +7861,7 @@ mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: S
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6526,8 +7911,8 @@ func AddLedgerEntry(
 
 // The mutation executed by AddLedgerEntryRuntime.
 const AddLedgerEntryRuntime_Operation = `
-mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk: SafeString!, $posted: DateTime, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
-	addLedgerEntry(ik: $ik, entry: {type:$entryType,ledger:{ik:$ledgerIk},posted:$posted,lines:$lines,tags:$tags,groups:$groups}) {
+mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk: SafeString!, $posted: DateTime, $parameters: JSON, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
+	addLedgerEntry(ik: $ik, entry: {type:$entryType,ledger:{ik:$ledgerIk},posted:$posted,lines:$lines,tags:$tags,groups:$groups,parameters:$parameters}) {
 		__typename
 		... on AddLedgerEntryResult {
 			isIkReplay
@@ -6549,6 +7934,7 @@ mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6560,6 +7946,7 @@ func AddLedgerEntryRuntime(
 	entryType string,
 	ledgerIk string,
 	posted *string,
+	parameters *json.RawMessage,
 	lines []LedgerLineInput,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
@@ -6568,13 +7955,14 @@ func AddLedgerEntryRuntime(
 		OpName: "AddLedgerEntryRuntime",
 		Query:  AddLedgerEntryRuntime_Operation,
 		Variables: &__AddLedgerEntryRuntimeInput{
-			Ik:        ik,
-			EntryType: entryType,
-			LedgerIk:  ledgerIk,
-			Posted:    posted,
-			Lines:     lines,
-			Tags:      tags,
-			Groups:    groups,
+			Ik:         ik,
+			EntryType:  entryType,
+			LedgerIk:   ledgerIk,
+			Posted:     posted,
+			Parameters: parameters,
+			Lines:      lines,
+			Tags:       tags,
+			Groups:     groups,
 		},
 	}
 	var client_ graphql.Client
@@ -6612,6 +8000,7 @@ mutation CreateCustomLink ($name: String!, $ik: SafeString!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6669,6 +8058,7 @@ mutation CreateLedger ($ik: SafeString!, $ledger: CreateLedgerInput!, $schemaKey
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -6697,6 +8087,158 @@ func CreateLedger(
 	}
 
 	data_ = &CreateLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by DeleteCustomTxs.
+const DeleteCustomTxs_Operation = `
+mutation DeleteCustomTxs ($txs: [ID!]!) {
+	deleteCustomTxs(txs: $txs) {
+		__typename
+		... on DeleteCustomTxsResult {
+			txs {
+				tx {
+					linkId
+					id
+					externalId
+					externalAccountId
+					amount
+					description
+					posted
+					deletedAt
+				}
+			}
+		}
+		... on Error {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func DeleteCustomTxs(
+	ctx_ auth.AuthenticatedContext,
+	txs []string,
+) (data_ *DeleteCustomTxsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "DeleteCustomTxs",
+		Query:  DeleteCustomTxs_Operation,
+		Variables: &__DeleteCustomTxsInput{
+			Txs: txs,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &DeleteCustomTxsResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by DeleteLedger.
+const DeleteLedger_Operation = `
+mutation DeleteLedger ($ledger: LedgerMatchInput!) {
+	deleteLedger(ledger: $ledger) {
+		__typename
+		... on DeleteLedgerResult {
+			success
+		}
+		... on Error {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func DeleteLedger(
+	ctx_ auth.AuthenticatedContext,
+	ledger LedgerMatchInput,
+) (data_ *DeleteLedgerResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "DeleteLedger",
+		Query:  DeleteLedger_Operation,
+		Variables: &__DeleteLedgerInput{
+			Ledger: ledger,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &DeleteLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by DeleteSchema.
+const DeleteSchema_Operation = `
+mutation DeleteSchema ($schema: SchemaMatchInput!) {
+	deleteSchema(schema: $schema) {
+		__typename
+		... on DeleteSchemaResult {
+			success
+		}
+		... on Error {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func DeleteSchema(
+	ctx_ auth.AuthenticatedContext,
+	schema SchemaMatchInput,
+) (data_ *DeleteSchemaResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "DeleteSchema",
+		Query:  DeleteSchema_Operation,
+		Variables: &__DeleteSchemaInput{
+			Schema: schema,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &DeleteSchemaResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -7399,6 +8941,7 @@ mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $parameters: 
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7444,8 +8987,8 @@ func ReconcileTx(
 
 // The mutation executed by ReconcileTxRuntime.
 const ReconcileTxRuntime_Operation = `
-mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
-	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,lines:$lines,tags:$tags,groups:$groups}) {
+mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines: [LedgerLineInput!]!, $parameters: JSON, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
+	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,lines:$lines,tags:$tags,groups:$groups,parameters:$parameters}) {
 		__typename
 		... on ReconcileTxResult {
 			entry {
@@ -7468,6 +9011,7 @@ mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7478,6 +9022,7 @@ func ReconcileTxRuntime(
 	ledgerIk string,
 	entryType string,
 	lines []LedgerLineInput,
+	parameters *json.RawMessage,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
 ) (data_ *ReconcileTxRuntimeResponse, err_ error) {
@@ -7485,11 +9030,12 @@ func ReconcileTxRuntime(
 		OpName: "ReconcileTxRuntime",
 		Query:  ReconcileTxRuntime_Operation,
 		Variables: &__ReconcileTxRuntimeInput{
-			LedgerIk:  ledgerIk,
-			EntryType: entryType,
-			Lines:     lines,
-			Tags:      tags,
-			Groups:    groups,
+			LedgerIk:   ledgerIk,
+			EntryType:  entryType,
+			Lines:      lines,
+			Parameters: parameters,
+			Tags:       tags,
+			Groups:     groups,
 		},
 	}
 	var client_ graphql.Client
@@ -7500,6 +9046,89 @@ func ReconcileTxRuntime(
 	}
 
 	data_ = &ReconcileTxRuntimeResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by ReverseLedgerEntry.
+const ReverseLedgerEntry_Operation = `
+mutation ReverseLedgerEntry ($id: ID!) {
+	reverseLedgerEntry(id: $id) {
+		__typename
+		... on ReverseLedgerEntryResult {
+			reversingLedgerEntry {
+				ik
+				id
+				created
+				posted
+				type
+				description
+				hidden
+				lines {
+					nodes {
+						id
+						amount
+						account {
+							path
+						}
+					}
+				}
+			}
+			reversedLedgerEntry {
+				ik
+				id
+				created
+				posted
+				type
+				description
+				hidden
+				lines {
+					nodes {
+						id
+						amount
+						account {
+							path
+						}
+					}
+				}
+			}
+			isIkReplay
+		}
+		... on Error {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func ReverseLedgerEntry(
+	ctx_ auth.AuthenticatedContext,
+	id string,
+) (data_ *ReverseLedgerEntryResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "ReverseLedgerEntry",
+		Query:  ReverseLedgerEntry_Operation,
+		Variables: &__ReverseLedgerEntryInput{
+			Id: id,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &ReverseLedgerEntryResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -7529,6 +9158,7 @@ mutation StoreSchema ($schema: SchemaInput!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7583,6 +9213,7 @@ mutation SyncCustomAccounts ($linkId: ID!, $accounts: [CustomAccountInput!]!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7640,6 +9271,7 @@ mutation SyncCustomTxs ($linkId: ID!, $txs: [CustomTxInput!]!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
@@ -7692,6 +9324,7 @@ mutation UpdateLedger ($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
 		... on Error {
 			code
 			message
+			retryable
 		}
 	}
 }
