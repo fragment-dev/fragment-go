@@ -14,9 +14,27 @@ mutation StoreSchema($schema: SchemaInput!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
+
+mutation DeleteSchema(
+  $schema: SchemaMatchInput!
+) {
+  deleteSchema(schema: $schema) {
+    __typename
+    ... on DeleteSchemaResult {
+      success
+    }
+    ... on Error {
+      code
+      message
+      retryable
+    }
+  }
+}
+
 
 mutation CreateLedger(
   $ik: SafeString!
@@ -40,6 +58,23 @@ mutation CreateLedger(
     ... on Error {
       code
       message
+      retryable
+    }
+  }
+}
+
+mutation DeleteLedger(
+  $ledger: LedgerMatchInput!
+) {
+  deleteLedger(ledger: $ledger) {
+    __typename
+    ... on DeleteLedgerResult {
+      success
+    }
+    ... on Error {
+      code
+      message
+      retryable
     }
   }
 }
@@ -85,6 +120,58 @@ mutation AddLedgerEntry(
     ... on Error {
       code
       message
+      retryable
+    }
+  }
+}
+
+mutation ReverseLedgerEntry(
+  $id: ID!
+) {
+  reverseLedgerEntry(id: $id) {
+    ... on ReverseLedgerEntryResult {
+      reversingLedgerEntry {
+        ik
+        id
+        created
+        posted
+        type
+        description
+        hidden
+        lines {
+          nodes {
+            id
+            amount
+            account {
+              path
+            }
+          }
+        }
+      }
+      reversedLedgerEntry {
+        ik
+        id
+        created
+        posted
+        type
+        description
+        hidden
+        lines {
+          nodes {
+            id
+            amount
+            account {
+              path
+            }
+          }
+        }
+      }
+      isIkReplay
+    }
+    ... on Error {
+      code
+      message
+      retryable
     }
   }
 }
@@ -94,6 +181,7 @@ mutation AddLedgerEntryRuntime(
   $entryType: String!
   $ledgerIk: SafeString!
   $posted: DateTime
+  $parameters: JSON
   $lines: [LedgerLineInput!]!
   $tags: [LedgerEntryTagInput!]
   $groups: [LedgerEntryGroupInput!]
@@ -107,6 +195,7 @@ mutation AddLedgerEntryRuntime(
       lines: $lines
       tags: $tags
       groups: $groups
+      parameters: $parameters
     }
   ) {
     __typename
@@ -130,6 +219,7 @@ mutation AddLedgerEntryRuntime(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -172,6 +262,7 @@ mutation ReconcileTx(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -180,6 +271,7 @@ mutation ReconcileTxRuntime(
   $ledgerIk: SafeString!
   $entryType: String!
   $lines: [LedgerLineInput!]!
+  $parameters: JSON
   $tags: [LedgerEntryTagInput!]
   $groups: [LedgerEntryGroupInput!]
 ) {
@@ -190,6 +282,7 @@ mutation ReconcileTxRuntime(
       lines: $lines
       tags: $tags
       groups: $groups
+      parameters: $parameters
     }
   ) {
     __typename
@@ -214,6 +307,7 @@ mutation ReconcileTxRuntime(
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -274,6 +368,7 @@ mutation UpdateLedger($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -291,6 +386,7 @@ mutation CreateCustomLink($name: String!, $ik: SafeString!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -312,6 +408,7 @@ mutation SyncCustomAccounts($linkId: ID!, $accounts: [CustomAccountInput!]!) {
     ... on Error {
       code
       message
+      retryable
     }
   }
 }
@@ -334,6 +431,32 @@ mutation SyncCustomTxs($linkId: ID!, $txs: [CustomTxInput!]!) {
     ... on Error {
       code
       message
+      retryable
+    }
+  }
+}
+
+mutation DeleteCustomTxs($txs: [ID!]!) {
+  deleteCustomTxs(txs: $txs) {
+    __typename
+    ... on DeleteCustomTxsResult {
+      txs {
+        tx {
+          linkId
+          id
+          externalId
+          externalAccountId
+          amount
+          description
+          posted
+          deletedAt
+        }
+      }
+    }
+    ... on Error {
+      code
+      message
+      retryable
     }
   }
 }
@@ -543,52 +666,6 @@ query GetLedgerAccountBalance(
   }
 }
 
-query ListLedgerEntryGroupBalances(
-  $ledgerIk: SafeString!
-  $groupKey: SafeString!
-  $groupValue: SafeString!
-  $consistencyMode: ReadBalanceConsistencyMode = use_account
-  $after: String
-  $before: String
-  $first: Int
-  $last: Int
-  $filter: LedgerEntryGroupBalanceFilterSet
-) {
-  ledgerEntryGroup(ledgerEntryGroup: {
-    ledger: { ik: $ledgerIk },
-    key: $groupKey,
-    value: $groupValue,
-  }) {
-    key
-    value
-    created
-    balances(
-      after: $after,
-      before: $before,
-      first: $first,
-      last: $last,
-      filter: $filter,
-    ){
-      nodes {
-        account {
-          path
-        }
-        currency {
-          code
-          customCurrencyId
-        }
-        ownBalance(consistencyMode: $consistencyMode)
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-        hasPreviousPage
-        startCursor
-      }
-    }
-  }
-}
-
 query GetSchema($key: SafeString!, $version: Int) {
   schema(schema: { key: $key, version: $version }) {
     key
@@ -642,5 +719,51 @@ query GetWorkspace {
   workspace {
     id
     name
+  }
+}
+
+query ListLedgerEntryGroupBalances(
+  $ledgerIk: SafeString!
+  $groupKey: SafeString!
+  $groupValue: SafeString!
+  $consistencyMode: ReadBalanceConsistencyMode = use_account
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+  $filter: LedgerEntryGroupBalanceFilterSet
+) {
+  ledgerEntryGroup(ledgerEntryGroup: {
+    ledger: { ik: $ledgerIk },
+    key: $groupKey,
+    value: $groupValue,
+  }) {
+    key
+    value
+    created
+    balances(
+      after: $after,
+      before: $before,
+      first: $first,
+      last: $last,
+      filter: $filter,
+    ){
+      nodes {
+        account {
+          path
+        }
+        currency {
+          code
+          customCurrencyId
+        }
+        ownBalance(consistencyMode: $consistencyMode)
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
+    }
   }
 }
