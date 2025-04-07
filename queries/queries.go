@@ -699,6 +699,285 @@ func (v *ChartOfAccountsInput) GetDefaultCurrency() *CurrencyMatchInput { return
 // GetDefaultCurrencyMode returns ChartOfAccountsInput.DefaultCurrencyMode, and is useful for accessing the field via an interface.
 func (v *ChartOfAccountsInput) GetDefaultCurrencyMode() *CurrencyMode { return v.DefaultCurrencyMode }
 
+// CreateCustomCurrencyCreateCustomCurrencyBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type CreateCustomCurrencyCreateCustomCurrencyBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreateCustomCurrencyCreateCustomCurrencyBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreateCustomCurrencyCreateCustomCurrencyBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns CreateCustomCurrencyCreateCustomCurrencyBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreateCustomCurrencyCreateCustomCurrencyBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse includes the requested fields of the GraphQL interface CreateCustomCurrencyResponse.
+//
+// CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse is implemented by the following types:
+// CreateCustomCurrencyCreateCustomCurrencyBadRequestError
+// CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult
+// CreateCustomCurrencyCreateCustomCurrencyInternalError
+type CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse interface {
+	implementsGraphQLInterfaceCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *CreateCustomCurrencyCreateCustomCurrencyBadRequestError) implementsGraphQLInterfaceCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse() {
+}
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult) implementsGraphQLInterfaceCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse() {
+}
+func (v *CreateCustomCurrencyCreateCustomCurrencyInternalError) implementsGraphQLInterfaceCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse() {
+}
+
+func __unmarshalCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse(b []byte, v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(CreateCustomCurrencyCreateCustomCurrencyBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "CreateCustomCurrencyResult":
+		*v = new(CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(CreateCustomCurrencyCreateCustomCurrencyInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing CreateCustomCurrencyResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse(v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreateCustomCurrencyCreateCustomCurrencyBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateCustomCurrencyCreateCustomCurrencyBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult:
+		typename = "CreateCustomCurrencyResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateCustomCurrencyCreateCustomCurrencyInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateCustomCurrencyCreateCustomCurrencyInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse: "%T"`, v)
+	}
+}
+
+// CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult includes the requested fields of the GraphQL type CreateCustomCurrencyResult.
+type CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult struct {
+	Typename *string `json:"__typename"`
+	// The Currency that was created.
+	CustomCurrency CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency `json:"customCurrency"`
+}
+
+// GetTypename returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult.Typename, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCustomCurrency returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult.CustomCurrency, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResult) GetCustomCurrency() CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency {
+	return v.CustomCurrency
+}
+
+// CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency includes the requested fields of the GraphQL type Currency.
+type CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency struct {
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
+	Code CurrencyCode `json:"code"`
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
+	CustomCurrencyId *string `json:"customCurrencyId"`
+	// The number of decimal places this currency goes to. For example, United States Dollars have a precision of 2 (i.e. 100 cents in a dollar), whereas the Jordanian Dinar has a precision of 3. This is used for display purposes.
+	Precision int `json:"precision"`
+	// A human readable name for the currency (e.g. United States Dollar). This is used for display purposes.
+	Name string `json:"name"`
+	// The currency code for custom currencies. This is only set if 'currency' is set to CUSTOM. It can be up to 32 characters long.
+	CustomCode *string `json:"customCode"`
+}
+
+// GetCode returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency.Code, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency) GetCode() CurrencyCode {
+	return v.Code
+}
+
+// GetCustomCurrencyId returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency.CustomCurrencyId, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency) GetCustomCurrencyId() *string {
+	return v.CustomCurrencyId
+}
+
+// GetPrecision returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency.Precision, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency) GetPrecision() int {
+	return v.Precision
+}
+
+// GetName returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency.Name, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency) GetName() string {
+	return v.Name
+}
+
+// GetCustomCode returns CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency.CustomCode, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCurrency) GetCustomCode() *string {
+	return v.CustomCode
+}
+
+// CreateCustomCurrencyCreateCustomCurrencyInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type CreateCustomCurrencyCreateCustomCurrencyInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreateCustomCurrencyCreateCustomCurrencyInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreateCustomCurrencyCreateCustomCurrencyInternalError.Code, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns CreateCustomCurrencyCreateCustomCurrencyInternalError.Message, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreateCustomCurrencyCreateCustomCurrencyInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyCreateCustomCurrencyInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreateCustomCurrencyResponse is returned by CreateCustomCurrency on success.
+type CreateCustomCurrencyResponse struct {
+	// Creates a custom currency.
+	CreateCustomCurrency CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse `json:"-"`
+}
+
+// GetCreateCustomCurrency returns CreateCustomCurrencyResponse.CreateCustomCurrency, and is useful for accessing the field via an interface.
+func (v *CreateCustomCurrencyResponse) GetCreateCustomCurrency() CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse {
+	return v.CreateCustomCurrency
+}
+
+func (v *CreateCustomCurrencyResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateCustomCurrencyResponse
+		CreateCustomCurrency json.RawMessage `json:"createCustomCurrency"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateCustomCurrencyResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.CreateCustomCurrency
+		src := firstPass.CreateCustomCurrency
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreateCustomCurrencyResponse.CreateCustomCurrency: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreateCustomCurrencyResponse struct {
+	CreateCustomCurrency json.RawMessage `json:"createCustomCurrency"`
+}
+
+func (v *CreateCustomCurrencyResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateCustomCurrencyResponse) __premarshalJSON() (*__premarshalCreateCustomCurrencyResponse, error) {
+	var retval __premarshalCreateCustomCurrencyResponse
+
+	{
+
+		dst := &retval.CreateCustomCurrency
+		src := v.CreateCustomCurrency
+		var err error
+		*dst, err = __marshalCreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateCustomCurrencyResponse.CreateCustomCurrency: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 // CreateCustomLinkCreateCustomLinkBadRequestError includes the requested fields of the GraphQL type BadRequestError.
 // The GraphQL type's documentation follows.
 //
@@ -5632,7 +5911,7 @@ type SchemaLedgerEntryInput struct {
 	// You can filter on this field when querying for Ledger Entries. See the docs on [LedgerEntryFilterSet](https://fragment.dev/api-reference/api-types#filter-types-ledgerentriesfilterset)
 	Type string `json:"type"`
 	// Experimental: This field is not yet supported.
-	Version *int `json:"version"`
+	TypeVersion *int `json:"typeVersion"`
 }
 
 // GetConditions returns SchemaLedgerEntryInput.Conditions, and is useful for accessing the field via an interface.
@@ -5658,8 +5937,8 @@ func (v *SchemaLedgerEntryInput) GetTags() []SchemaLedgerEntryTagInput { return 
 // GetType returns SchemaLedgerEntryInput.Type, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetType() string { return v.Type }
 
-// GetVersion returns SchemaLedgerEntryInput.Version, and is useful for accessing the field via an interface.
-func (v *SchemaLedgerEntryInput) GetVersion() *int { return v.Version }
+// GetTypeVersion returns SchemaLedgerEntryInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerEntryInput) GetTypeVersion() *int { return v.TypeVersion }
 
 // A tag associated with a Ledger Entry type.
 type SchemaLedgerEntryTagInput struct {
@@ -6805,6 +7084,8 @@ type UpdateLedgerEntryUpdateLedgerEntryBadRequestError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns UpdateLedgerEntryUpdateLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
@@ -6816,6 +7097,9 @@ func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetCode() string { r
 // GetMessage returns UpdateLedgerEntryUpdateLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetMessage() string { return v.Message }
 
+// GetRetryable returns UpdateLedgerEntryUpdateLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
 // UpdateLedgerEntryUpdateLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
 // The GraphQL type's documentation follows.
 //
@@ -6826,6 +7110,8 @@ type UpdateLedgerEntryUpdateLedgerEntryInternalError struct {
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
 }
 
 // GetTypename returns UpdateLedgerEntryUpdateLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
@@ -6836,6 +7122,9 @@ func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) GetCode() string { ret
 
 // GetMessage returns UpdateLedgerEntryUpdateLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns UpdateLedgerEntryUpdateLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryUpdateLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
 
 // UpdateLedgerEntryUpdateLedgerEntryUpdateLedgerEntryResponse includes the requested fields of the GraphQL interface UpdateLedgerEntryResponse.
 //
@@ -7356,13 +7645,14 @@ func (v *UpdateLedgerUpdateLedgerUpdateLedgerResultLedger) GetName() string { re
 
 // __AddLedgerEntryInput is used internally by genqlient
 type __AddLedgerEntryInput struct {
-	Ik         string                  `json:"ik"`
-	LedgerIk   string                  `json:"ledgerIk"`
-	EntryType  string                  `json:"entryType"`
-	Posted     *string                 `json:"posted"`
-	Parameters json.RawMessage         `json:"parameters"`
-	Tags       []LedgerEntryTagInput   `json:"tags"`
-	Groups     []LedgerEntryGroupInput `json:"groups"`
+	Ik          string                  `json:"ik"`
+	LedgerIk    string                  `json:"ledgerIk"`
+	EntryType   string                  `json:"entryType"`
+	TypeVersion *int                    `json:"typeVersion"`
+	Posted      *string                 `json:"posted"`
+	Parameters  json.RawMessage         `json:"parameters"`
+	Tags        []LedgerEntryTagInput   `json:"tags"`
+	Groups      []LedgerEntryGroupInput `json:"groups"`
 }
 
 // GetIk returns __AddLedgerEntryInput.Ik, and is useful for accessing the field via an interface.
@@ -7373,6 +7663,9 @@ func (v *__AddLedgerEntryInput) GetLedgerIk() string { return v.LedgerIk }
 
 // GetEntryType returns __AddLedgerEntryInput.EntryType, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryInput) GetEntryType() string { return v.EntryType }
+
+// GetTypeVersion returns __AddLedgerEntryInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *__AddLedgerEntryInput) GetTypeVersion() *int { return v.TypeVersion }
 
 // GetPosted returns __AddLedgerEntryInput.Posted, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryInput) GetPosted() *string { return v.Posted }
@@ -7388,14 +7681,14 @@ func (v *__AddLedgerEntryInput) GetGroups() []LedgerEntryGroupInput { return v.G
 
 // __AddLedgerEntryRuntimeInput is used internally by genqlient
 type __AddLedgerEntryRuntimeInput struct {
-	Ik         string                  `json:"ik"`
-	EntryType  string                  `json:"entryType"`
-	LedgerIk   string                  `json:"ledgerIk"`
-	Posted     *string                 `json:"posted"`
-	Parameters *json.RawMessage        `json:"parameters"`
-	Lines      []LedgerLineInput       `json:"lines"`
-	Tags       []LedgerEntryTagInput   `json:"tags"`
-	Groups     []LedgerEntryGroupInput `json:"groups"`
+	Ik          string                  `json:"ik"`
+	EntryType   string                  `json:"entryType"`
+	TypeVersion *int                    `json:"typeVersion"`
+	LedgerIk    string                  `json:"ledgerIk"`
+	Posted      *string                 `json:"posted"`
+	Lines       []LedgerLineInput       `json:"lines"`
+	Tags        []LedgerEntryTagInput   `json:"tags"`
+	Groups      []LedgerEntryGroupInput `json:"groups"`
 }
 
 // GetIk returns __AddLedgerEntryRuntimeInput.Ik, and is useful for accessing the field via an interface.
@@ -7404,14 +7697,14 @@ func (v *__AddLedgerEntryRuntimeInput) GetIk() string { return v.Ik }
 // GetEntryType returns __AddLedgerEntryRuntimeInput.EntryType, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetEntryType() string { return v.EntryType }
 
+// GetTypeVersion returns __AddLedgerEntryRuntimeInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *__AddLedgerEntryRuntimeInput) GetTypeVersion() *int { return v.TypeVersion }
+
 // GetLedgerIk returns __AddLedgerEntryRuntimeInput.LedgerIk, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetLedgerIk() string { return v.LedgerIk }
 
 // GetPosted returns __AddLedgerEntryRuntimeInput.Posted, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetPosted() *string { return v.Posted }
-
-// GetParameters returns __AddLedgerEntryRuntimeInput.Parameters, and is useful for accessing the field via an interface.
-func (v *__AddLedgerEntryRuntimeInput) GetParameters() *json.RawMessage { return v.Parameters }
 
 // GetLines returns __AddLedgerEntryRuntimeInput.Lines, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetLines() []LedgerLineInput { return v.Lines }
@@ -7421,6 +7714,26 @@ func (v *__AddLedgerEntryRuntimeInput) GetTags() []LedgerEntryTagInput { return 
 
 // GetGroups returns __AddLedgerEntryRuntimeInput.Groups, and is useful for accessing the field via an interface.
 func (v *__AddLedgerEntryRuntimeInput) GetGroups() []LedgerEntryGroupInput { return v.Groups }
+
+// __CreateCustomCurrencyInput is used internally by genqlient
+type __CreateCustomCurrencyInput struct {
+	Id         string `json:"id"`
+	Name       string `json:"name"`
+	Precision  int    `json:"precision"`
+	CustomCode string `json:"customCode"`
+}
+
+// GetId returns __CreateCustomCurrencyInput.Id, and is useful for accessing the field via an interface.
+func (v *__CreateCustomCurrencyInput) GetId() string { return v.Id }
+
+// GetName returns __CreateCustomCurrencyInput.Name, and is useful for accessing the field via an interface.
+func (v *__CreateCustomCurrencyInput) GetName() string { return v.Name }
+
+// GetPrecision returns __CreateCustomCurrencyInput.Precision, and is useful for accessing the field via an interface.
+func (v *__CreateCustomCurrencyInput) GetPrecision() int { return v.Precision }
+
+// GetCustomCode returns __CreateCustomCurrencyInput.CustomCode, and is useful for accessing the field via an interface.
+func (v *__CreateCustomCurrencyInput) GetCustomCode() string { return v.CustomCode }
 
 // __CreateCustomLinkInput is used internally by genqlient
 type __CreateCustomLinkInput struct {
@@ -7718,11 +8031,12 @@ func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetOwnBalancesConsistenc
 
 // __ReconcileTxInput is used internally by genqlient
 type __ReconcileTxInput struct {
-	LedgerIk   string                  `json:"ledgerIk"`
-	EntryType  string                  `json:"entryType"`
-	Parameters json.RawMessage         `json:"parameters"`
-	Tags       []LedgerEntryTagInput   `json:"tags"`
-	Groups     []LedgerEntryGroupInput `json:"groups"`
+	LedgerIk    string                  `json:"ledgerIk"`
+	EntryType   string                  `json:"entryType"`
+	TypeVersion *int                    `json:"typeVersion"`
+	Parameters  json.RawMessage         `json:"parameters"`
+	Tags        []LedgerEntryTagInput   `json:"tags"`
+	Groups      []LedgerEntryGroupInput `json:"groups"`
 }
 
 // GetLedgerIk returns __ReconcileTxInput.LedgerIk, and is useful for accessing the field via an interface.
@@ -7730,6 +8044,9 @@ func (v *__ReconcileTxInput) GetLedgerIk() string { return v.LedgerIk }
 
 // GetEntryType returns __ReconcileTxInput.EntryType, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxInput) GetEntryType() string { return v.EntryType }
+
+// GetTypeVersion returns __ReconcileTxInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *__ReconcileTxInput) GetTypeVersion() *int { return v.TypeVersion }
 
 // GetParameters returns __ReconcileTxInput.Parameters, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxInput) GetParameters() json.RawMessage { return v.Parameters }
@@ -7742,12 +8059,12 @@ func (v *__ReconcileTxInput) GetGroups() []LedgerEntryGroupInput { return v.Grou
 
 // __ReconcileTxRuntimeInput is used internally by genqlient
 type __ReconcileTxRuntimeInput struct {
-	LedgerIk   string                  `json:"ledgerIk"`
-	EntryType  string                  `json:"entryType"`
-	Lines      []LedgerLineInput       `json:"lines"`
-	Parameters *json.RawMessage        `json:"parameters"`
-	Tags       []LedgerEntryTagInput   `json:"tags"`
-	Groups     []LedgerEntryGroupInput `json:"groups"`
+	LedgerIk    string                  `json:"ledgerIk"`
+	EntryType   string                  `json:"entryType"`
+	TypeVersion *int                    `json:"typeVersion"`
+	Lines       []LedgerLineInput       `json:"lines"`
+	Tags        []LedgerEntryTagInput   `json:"tags"`
+	Groups      []LedgerEntryGroupInput `json:"groups"`
 }
 
 // GetLedgerIk returns __ReconcileTxRuntimeInput.LedgerIk, and is useful for accessing the field via an interface.
@@ -7756,11 +8073,11 @@ func (v *__ReconcileTxRuntimeInput) GetLedgerIk() string { return v.LedgerIk }
 // GetEntryType returns __ReconcileTxRuntimeInput.EntryType, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetEntryType() string { return v.EntryType }
 
+// GetTypeVersion returns __ReconcileTxRuntimeInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *__ReconcileTxRuntimeInput) GetTypeVersion() *int { return v.TypeVersion }
+
 // GetLines returns __ReconcileTxRuntimeInput.Lines, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetLines() []LedgerLineInput { return v.Lines }
-
-// GetParameters returns __ReconcileTxRuntimeInput.Parameters, and is useful for accessing the field via an interface.
-func (v *__ReconcileTxRuntimeInput) GetParameters() *json.RawMessage { return v.Parameters }
 
 // GetTags returns __ReconcileTxRuntimeInput.Tags, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetTags() []LedgerEntryTagInput { return v.Tags }
@@ -7838,8 +8155,8 @@ func (v *__UpdateLedgerInput) GetUpdate() UpdateLedgerInput { return v.Update }
 
 // The mutation executed by AddLedgerEntry.
 const AddLedgerEntry_Operation = `
-mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: String!, $posted: DateTime, $parameters: JSON!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
-	addLedgerEntry(ik: $ik, entry: {ledger:{ik:$ledgerIk},type:$entryType,posted:$posted,parameters:$parameters,tags:$tags,groups:$groups}) {
+mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: String!, $typeVersion: Int, $posted: DateTime, $parameters: JSON!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
+	addLedgerEntry(ik: $ik, entry: {ledger:{ik:$ledgerIk},type:$entryType,typeVersion:$typeVersion,posted:$posted,parameters:$parameters,tags:$tags,groups:$groups}) {
 		__typename
 		... on AddLedgerEntryResult {
 			isIkReplay
@@ -7858,7 +8175,12 @@ mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: S
 				}
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -7872,6 +8194,7 @@ func AddLedgerEntry(
 	ik string,
 	ledgerIk string,
 	entryType string,
+	typeVersion *int,
 	posted *string,
 	parameters json.RawMessage,
 	tags []LedgerEntryTagInput,
@@ -7881,13 +8204,14 @@ func AddLedgerEntry(
 		OpName: "AddLedgerEntry",
 		Query:  AddLedgerEntry_Operation,
 		Variables: &__AddLedgerEntryInput{
-			Ik:         ik,
-			LedgerIk:   ledgerIk,
-			EntryType:  entryType,
-			Posted:     posted,
-			Parameters: parameters,
-			Tags:       tags,
-			Groups:     groups,
+			Ik:          ik,
+			LedgerIk:    ledgerIk,
+			EntryType:   entryType,
+			TypeVersion: typeVersion,
+			Posted:      posted,
+			Parameters:  parameters,
+			Tags:        tags,
+			Groups:      groups,
 		},
 	}
 	var client_ graphql.Client
@@ -7911,8 +8235,8 @@ func AddLedgerEntry(
 
 // The mutation executed by AddLedgerEntryRuntime.
 const AddLedgerEntryRuntime_Operation = `
-mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk: SafeString!, $posted: DateTime, $parameters: JSON, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
-	addLedgerEntry(ik: $ik, entry: {type:$entryType,ledger:{ik:$ledgerIk},posted:$posted,lines:$lines,tags:$tags,groups:$groups,parameters:$parameters}) {
+mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $typeVersion: Int, $ledgerIk: SafeString!, $posted: DateTime, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
+	addLedgerEntry(ik: $ik, entry: {type:$entryType,typeVersion:$typeVersion,ledger:{ik:$ledgerIk},posted:$posted,lines:$lines,tags:$tags,groups:$groups}) {
 		__typename
 		... on AddLedgerEntryResult {
 			isIkReplay
@@ -7931,7 +8255,12 @@ mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $ledgerIk
 				}
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -7944,9 +8273,9 @@ func AddLedgerEntryRuntime(
 	ctx_ auth.AuthenticatedContext,
 	ik string,
 	entryType string,
+	typeVersion *int,
 	ledgerIk string,
 	posted *string,
-	parameters *json.RawMessage,
 	lines []LedgerLineInput,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
@@ -7955,14 +8284,14 @@ func AddLedgerEntryRuntime(
 		OpName: "AddLedgerEntryRuntime",
 		Query:  AddLedgerEntryRuntime_Operation,
 		Variables: &__AddLedgerEntryRuntimeInput{
-			Ik:         ik,
-			EntryType:  entryType,
-			LedgerIk:   ledgerIk,
-			Posted:     posted,
-			Parameters: parameters,
-			Lines:      lines,
-			Tags:       tags,
-			Groups:     groups,
+			Ik:          ik,
+			EntryType:   entryType,
+			TypeVersion: typeVersion,
+			LedgerIk:    ledgerIk,
+			Posted:      posted,
+			Lines:       lines,
+			Tags:        tags,
+			Groups:      groups,
 		},
 	}
 	var client_ graphql.Client
@@ -7973,6 +8302,70 @@ func AddLedgerEntryRuntime(
 	}
 
 	data_ = &AddLedgerEntryRuntimeResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by CreateCustomCurrency.
+const CreateCustomCurrency_Operation = `
+mutation CreateCustomCurrency ($id: SafeString!, $name: String!, $precision: Int!, $customCode: String!) {
+	createCustomCurrency(customCurrency: {customCurrencyId:$id,name:$name,precision:$precision,customCode:$customCode}) {
+		__typename
+		... on CreateCustomCurrencyResult {
+			customCurrency {
+				code
+				customCurrencyId
+				precision
+				name
+				customCode
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func CreateCustomCurrency(
+	ctx_ auth.AuthenticatedContext,
+	id string,
+	name string,
+	precision int,
+	customCode string,
+) (data_ *CreateCustomCurrencyResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "CreateCustomCurrency",
+		Query:  CreateCustomCurrency_Operation,
+		Variables: &__CreateCustomCurrencyInput{
+			Id:         id,
+			Name:       name,
+			Precision:  precision,
+			CustomCode: customCode,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &CreateCustomCurrencyResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -7997,7 +8390,12 @@ mutation CreateCustomLink ($name: String!, $ik: SafeString!) {
 			}
 			isIkReplay
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -8055,7 +8453,12 @@ mutation CreateLedger ($ik: SafeString!, $ledger: CreateLedgerInput!, $schemaKey
 			}
 			isIkReplay
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -8117,7 +8520,12 @@ mutation DeleteCustomTxs ($txs: [ID!]!) {
 				}
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -8164,7 +8572,12 @@ mutation DeleteLedger ($ledger: LedgerMatchInput!) {
 		... on DeleteLedgerResult {
 			success
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -8211,7 +8624,12 @@ mutation DeleteSchema ($schema: SchemaMatchInput!) {
 		... on DeleteSchemaResult {
 			success
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -8917,8 +9335,8 @@ func ListMultiCurrencyLedgerAccountBalances(
 
 // The mutation executed by ReconcileTx.
 const ReconcileTx_Operation = `
-mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $parameters: JSON!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
-	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,parameters:$parameters,tags:$tags,groups:$groups}) {
+mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $typeVersion: Int, $parameters: JSON!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
+	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,typeVersion:$typeVersion,parameters:$parameters,tags:$tags,groups:$groups}) {
 		__typename
 		... on ReconcileTxResult {
 			entry {
@@ -8938,7 +9356,12 @@ mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $parameters: 
 				externalTxId
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -8951,6 +9374,7 @@ func ReconcileTx(
 	ctx_ auth.AuthenticatedContext,
 	ledgerIk string,
 	entryType string,
+	typeVersion *int,
 	parameters json.RawMessage,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
@@ -8959,11 +9383,12 @@ func ReconcileTx(
 		OpName: "ReconcileTx",
 		Query:  ReconcileTx_Operation,
 		Variables: &__ReconcileTxInput{
-			LedgerIk:   ledgerIk,
-			EntryType:  entryType,
-			Parameters: parameters,
-			Tags:       tags,
-			Groups:     groups,
+			LedgerIk:    ledgerIk,
+			EntryType:   entryType,
+			TypeVersion: typeVersion,
+			Parameters:  parameters,
+			Tags:        tags,
+			Groups:      groups,
 		},
 	}
 	var client_ graphql.Client
@@ -8987,8 +9412,8 @@ func ReconcileTx(
 
 // The mutation executed by ReconcileTxRuntime.
 const ReconcileTxRuntime_Operation = `
-mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines: [LedgerLineInput!]!, $parameters: JSON, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
-	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,lines:$lines,tags:$tags,groups:$groups,parameters:$parameters}) {
+mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $typeVersion: Int, $lines: [LedgerLineInput!]!, $tags: [LedgerEntryTagInput!], $groups: [LedgerEntryGroupInput!]) {
+	reconcileTx(entry: {ledger:{ik:$ledgerIk},type:$entryType,typeVersion:$typeVersion,lines:$lines,tags:$tags,groups:$groups}) {
 		__typename
 		... on ReconcileTxResult {
 			entry {
@@ -9008,7 +9433,12 @@ mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $lines
 				externalTxId
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -9021,8 +9451,8 @@ func ReconcileTxRuntime(
 	ctx_ auth.AuthenticatedContext,
 	ledgerIk string,
 	entryType string,
+	typeVersion *int,
 	lines []LedgerLineInput,
-	parameters *json.RawMessage,
 	tags []LedgerEntryTagInput,
 	groups []LedgerEntryGroupInput,
 ) (data_ *ReconcileTxRuntimeResponse, err_ error) {
@@ -9030,12 +9460,12 @@ func ReconcileTxRuntime(
 		OpName: "ReconcileTxRuntime",
 		Query:  ReconcileTxRuntime_Operation,
 		Variables: &__ReconcileTxRuntimeInput{
-			LedgerIk:   ledgerIk,
-			EntryType:  entryType,
-			Lines:      lines,
-			Parameters: parameters,
-			Tags:       tags,
-			Groups:     groups,
+			LedgerIk:    ledgerIk,
+			EntryType:   entryType,
+			TypeVersion: typeVersion,
+			Lines:       lines,
+			Tags:        tags,
+			Groups:      groups,
 		},
 	}
 	var client_ graphql.Client
@@ -9101,7 +9531,12 @@ mutation ReverseLedgerEntry ($id: ID!) {
 			}
 			isIkReplay
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -9155,7 +9590,12 @@ mutation StoreSchema ($schema: SchemaInput!) {
 				}
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -9210,7 +9650,12 @@ mutation SyncCustomAccounts ($linkId: ID!, $accounts: [CustomAccountInput!]!) {
 				}
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -9268,7 +9713,12 @@ mutation SyncCustomTxs ($linkId: ID!, $txs: [CustomTxInput!]!) {
 				posted
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -9321,7 +9771,12 @@ mutation UpdateLedger ($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
 				name
 			}
 		}
-		... on Error {
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
 			code
 			message
 			retryable
@@ -9393,9 +9848,15 @@ mutation UpdateLedgerEntry ($entryIk: SafeString!, $ledgerIk: SafeString!, $upda
 				}
 			}
 		}
-		... on Error {
+		... on BadRequestError {
 			code
 			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
 		}
 	}
 }
