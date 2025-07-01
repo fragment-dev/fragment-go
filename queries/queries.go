@@ -3170,11 +3170,34 @@ func (v *GroupBalanceAccountFilter) GetPath() *StringMatchFilter { return v.Path
 
 // Filter for finding entries by group membership
 type GroupFilter struct {
-	// Find entries that are members of a group with all of these group keys
+	// Find groups that exactly match this group
+	EqualTo *GroupMatchInput `json:"equalTo"`
+	// Find groups that match any of these groups
+	In []GroupMatchInput `json:"in"`
+	// Find groups with a specific key
+	KeyEqualTo *string `json:"keyEqualTo"`
+	// Find groups with any of these keys
 	KeyIn []string `json:"keyIn"`
-	// Find entries that do not match this predicate
+	// Find groups that do not match this predicate
 	Not *GroupNotFilter `json:"not"`
+	// Find groups that do not exactly match this group
+	NotEqualTo *GroupMatchInput `json:"notEqualTo"`
+	// Find groups that do not match any of these groups
+	NotIn []GroupMatchInput `json:"notIn"`
+	// Find groups that do not have a specific key
+	NotKeyEqualTo *string `json:"notKeyEqualTo"`
+	// Find groups that do not have any of these keys
+	NotKeyIn []string `json:"notKeyIn"`
 }
+
+// GetEqualTo returns GroupFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetEqualTo() *GroupMatchInput { return v.EqualTo }
+
+// GetIn returns GroupFilter.In, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetIn() []GroupMatchInput { return v.In }
+
+// GetKeyEqualTo returns GroupFilter.KeyEqualTo, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetKeyEqualTo() *string { return v.KeyEqualTo }
 
 // GetKeyIn returns GroupFilter.KeyIn, and is useful for accessing the field via an interface.
 func (v *GroupFilter) GetKeyIn() []string { return v.KeyIn }
@@ -3182,14 +3205,59 @@ func (v *GroupFilter) GetKeyIn() []string { return v.KeyIn }
 // GetNot returns GroupFilter.Not, and is useful for accessing the field via an interface.
 func (v *GroupFilter) GetNot() *GroupNotFilter { return v.Not }
 
-// Filter for finding entries that do not match this predicate
+// GetNotEqualTo returns GroupFilter.NotEqualTo, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetNotEqualTo() *GroupMatchInput { return v.NotEqualTo }
+
+// GetNotIn returns GroupFilter.NotIn, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetNotIn() []GroupMatchInput { return v.NotIn }
+
+// GetNotKeyEqualTo returns GroupFilter.NotKeyEqualTo, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetNotKeyEqualTo() *string { return v.NotKeyEqualTo }
+
+// GetNotKeyIn returns GroupFilter.NotKeyIn, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetNotKeyIn() []string { return v.NotKeyIn }
+
+// Input type for matching a specific group by key and value
+type GroupMatchInput struct {
+	// The key of the group to match
+	Key string `json:"key"`
+	// The value of the group to match
+	Value string `json:"value"`
+}
+
+// GetKey returns GroupMatchInput.Key, and is useful for accessing the field via an interface.
+func (v *GroupMatchInput) GetKey() string { return v.Key }
+
+// GetValue returns GroupMatchInput.Value, and is useful for accessing the field via an interface.
+func (v *GroupMatchInput) GetValue() string { return v.Value }
+
+// DEPRECATED: Use GroupFilter and notKeyIn or notKeyEqualTo instead. Filter for finding entries that do not match this predicate
 type GroupNotFilter struct {
-	// Find entries that are not members of all of these groups. This is an AND filter.
+	// DEPRECATED: Find entries that are not members of all of these groups. This is an AND filter.
 	KeyIn []string `json:"keyIn"`
 }
 
 // GetKeyIn returns GroupNotFilter.KeyIn, and is useful for accessing the field via an interface.
 func (v *GroupNotFilter) GetKeyIn() []string { return v.KeyIn }
+
+// A condition that must be met on an `Int96` field.
+type Int96ConditionInput struct {
+	// Amount must exactly match this value. You may not specify this alongside `gte` or `lte`.
+	Eq *string `json:"eq"`
+	// Amount must be greater than or equal to this value.
+	Gte *string `json:"gte"`
+	// Amount must be less than or equal to this value.
+	Lte *string `json:"lte"`
+}
+
+// GetEq returns Int96ConditionInput.Eq, and is useful for accessing the field via an interface.
+func (v *Int96ConditionInput) GetEq() *string { return v.Eq }
+
+// GetGte returns Int96ConditionInput.Gte, and is useful for accessing the field via an interface.
+func (v *Int96ConditionInput) GetGte() *string { return v.Gte }
+
+// GetLte returns Int96ConditionInput.Lte, and is useful for accessing the field via an interface.
+func (v *Int96ConditionInput) GetLte() *string { return v.Lte }
 
 type Int96Filter struct {
 	// Must exactly equal this Int96 value
@@ -3213,6 +3281,15 @@ func (v *Int96Filter) GetLte() *string { return v.Lte }
 
 // GetNe returns Int96Filter.Ne, and is useful for accessing the field via an interface.
 func (v *Int96Filter) GetNe() *string { return v.Ne }
+
+// A set of conditions that a Ledger Account must meet for an operation to succeed.
+type LedgerAccountConditionInput struct {
+	// A condition that the ownBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](https://fragment.dev/read-balances) for more on the different types of Ledger Account balances.
+	OwnBalance Int96ConditionInput `json:"ownBalance"`
+}
+
+// GetOwnBalance returns LedgerAccountConditionInput.OwnBalance, and is useful for accessing the field via an interface.
+func (v *LedgerAccountConditionInput) GetOwnBalance() Int96ConditionInput { return v.OwnBalance }
 
 // The payload configuring the consistency for this Ledger Account.
 // See [Configure consistency](https://fragment.dev/docs/configure-consistency).
@@ -3326,6 +3403,8 @@ type LedgerEntriesFilterSet struct {
 	Tag *TagFilter `json:"tag"`
 	// Use this to filter Ledger Entries by type. Ledger Entry types are defined in Schemas.
 	Type *StringFilter `json:"type"`
+	// Use this to filter Ledger Entries by their type version.
+	TypeVersion *StringFilter `json:"typeVersion"`
 }
 
 // GetDate returns LedgerEntriesFilterSet.Date, and is useful for accessing the field via an interface.
@@ -3354,6 +3433,37 @@ func (v *LedgerEntriesFilterSet) GetTag() *TagFilter { return v.Tag }
 
 // GetType returns LedgerEntriesFilterSet.Type, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetType() *StringFilter { return v.Type }
+
+// GetTypeVersion returns LedgerEntriesFilterSet.TypeVersion, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetTypeVersion() *StringFilter { return v.TypeVersion }
+
+// A set of pre-conditions and post-conditions that a Ledger Account balance must meet for an operation to succeed. You must specify at least one of `precondition` or `postcondition` for each condition.
+type LedgerEntryConditionInput struct {
+	// The Ledger Account that must satisfy the provided conditions.
+	Account LedgerAccountMatchInput `json:"account"`
+	// For Ledger Accounts in the `multi` currency mode, you must specify the currency of the balance affected by the condition. You only need to specify this field for multi-currency accounts.
+	Currency *CurrencyMatchInput `json:"currency"`
+	// The conditions that must hold after the operation.
+	Postcondition *LedgerAccountConditionInput `json:"postcondition"`
+	// The conditions that must hold prior to the operation.
+	Precondition *LedgerAccountConditionInput `json:"precondition"`
+}
+
+// GetAccount returns LedgerEntryConditionInput.Account, and is useful for accessing the field via an interface.
+func (v *LedgerEntryConditionInput) GetAccount() LedgerAccountMatchInput { return v.Account }
+
+// GetCurrency returns LedgerEntryConditionInput.Currency, and is useful for accessing the field via an interface.
+func (v *LedgerEntryConditionInput) GetCurrency() *CurrencyMatchInput { return v.Currency }
+
+// GetPostcondition returns LedgerEntryConditionInput.Postcondition, and is useful for accessing the field via an interface.
+func (v *LedgerEntryConditionInput) GetPostcondition() *LedgerAccountConditionInput {
+	return v.Postcondition
+}
+
+// GetPrecondition returns LedgerEntryConditionInput.Precondition, and is useful for accessing the field via an interface.
+func (v *LedgerEntryConditionInput) GetPrecondition() *LedgerAccountConditionInput {
+	return v.Precondition
+}
 
 type LedgerEntryFilter struct {
 	// Result must be the specified Ledger Entry.
@@ -3399,6 +3509,60 @@ func (v *LedgerEntryGroupInput) GetKey() string { return v.Key }
 
 // GetValue returns LedgerEntryGroupInput.Value, and is useful for accessing the field via an interface.
 func (v *LedgerEntryGroupInput) GetValue() string { return v.Value }
+
+// Ledger Entries are limited to 30 Ledger Lines.
+type LedgerEntryInput struct {
+	// Conditions that must be satisfied to post this Ledger Entry. The Ledger Entry will reject with a BadRequestError if any condition is not met. You can only add a condition on a Ledger Account containing a Line in this Ledger Entry.
+	Conditions []LedgerEntryConditionInput `json:"conditions"`
+	// If specified, will also be used as the description for LedgerLines unless they specify their own description.
+	Description *string `json:"description"`
+	// Adds this Ledger Entry to this set of Ledger Entry Groups
+	Groups []LedgerEntryGroupInput `json:"groups"`
+	// The Ledger to which to post this Ledger Entry. Must be linked to a Schema that defines the provided Ledger Entry type.
+	Ledger *LedgerMatchInput `json:"ledger"`
+	// The Ledger Lines to create as part of this Ledger Entry. This cannot be used with Ledger Entries that have a 'type' i.e.  Ledger Entries defined in the Schema. This can be useful during non-routine operations such as an incident. It is not recommended to use 'lines' during routine operations.
+	Lines []LedgerLineInput `json:"lines"`
+	// Parameters to be included in a templated Ledger Entry. All provided parameters must be present in the typed Ledger Entry within the Schema linked to the provided Ledger.
+	Parameters *json.RawMessage `json:"parameters"`
+	// ISO 8601 timestamp to post this Ledger Entry e.g. "2021-01-01" or "2021-01-01T16:45:00Z". Will error out if supplied to reconcileTx or createOrder since the transaction timestamp will be used instead
+	Posted *string `json:"posted"`
+	// A set of tags attached to this Ledger Entry.
+	Tags []LedgerEntryTagInput `json:"tags"`
+	// The type of the Ledger Entry. Must be defined in the Schema linked to the Ledger specified below.
+	Type *string `json:"type"`
+	// Experimental: This field is reserved for an upcoming feature and is not yet supported.
+	TypeVersion *int `json:"typeVersion"`
+}
+
+// GetConditions returns LedgerEntryInput.Conditions, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetConditions() []LedgerEntryConditionInput { return v.Conditions }
+
+// GetDescription returns LedgerEntryInput.Description, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetDescription() *string { return v.Description }
+
+// GetGroups returns LedgerEntryInput.Groups, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetGroups() []LedgerEntryGroupInput { return v.Groups }
+
+// GetLedger returns LedgerEntryInput.Ledger, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetLedger() *LedgerMatchInput { return v.Ledger }
+
+// GetLines returns LedgerEntryInput.Lines, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetLines() []LedgerLineInput { return v.Lines }
+
+// GetParameters returns LedgerEntryInput.Parameters, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetParameters() *json.RawMessage { return v.Parameters }
+
+// GetPosted returns LedgerEntryInput.Posted, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetPosted() *string { return v.Posted }
+
+// GetTags returns LedgerEntryInput.Tags, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetTags() []LedgerEntryTagInput { return v.Tags }
+
+// GetType returns LedgerEntryInput.Type, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetType() *string { return v.Type }
+
+// GetTypeVersion returns LedgerEntryInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *LedgerEntryInput) GetTypeVersion() *int { return v.TypeVersion }
 
 // Specify a Ledger Entry by using `id`.
 type LedgerEntryMatchInput struct {
@@ -3541,6 +3705,27 @@ const (
 
 var AllLedgerTypes = []LedgerTypes{
 	LedgerTypesDouble,
+}
+
+// The type of Link an external account belongs to.
+type LinkType string
+
+const (
+	// A Custom Link
+	LinkTypeCustomlink LinkType = "CustomLink"
+	// An Increase Link
+	LinkTypeIncreaselink LinkType = "IncreaseLink"
+	// A Stripe Link
+	LinkTypeStripelink LinkType = "StripeLink"
+	// A Unit Link
+	LinkTypeUnitlink LinkType = "UnitLink"
+)
+
+var AllLinkType = []LinkType{
+	LinkTypeCustomlink,
+	LinkTypeIncreaselink,
+	LinkTypeStripelink,
+	LinkTypeUnitlink,
 }
 
 // ListLedgerAccountBalancesLedger includes the requested fields of the GraphQL type Ledger.
@@ -4454,6 +4639,629 @@ type ListMultiCurrencyLedgerAccountBalancesResponse struct {
 // GetLedger returns ListMultiCurrencyLedgerAccountBalancesResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiCurrencyLedgerAccountBalancesLedger {
 	return v.Ledger
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type MigrateLedgerEntryMigrateLedgerEntryBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns MigrateLedgerEntryMigrateLedgerEntryBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns MigrateLedgerEntryMigrateLedgerEntryBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns MigrateLedgerEntryMigrateLedgerEntryBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns MigrateLedgerEntryMigrateLedgerEntryBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// MigrateLedgerEntryMigrateLedgerEntryInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type MigrateLedgerEntryMigrateLedgerEntryInternalError struct {
+	Typename *string `json:"__typename"`
+	// The HTTP status code corresponding to the error
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns MigrateLedgerEntryMigrateLedgerEntryInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns MigrateLedgerEntryMigrateLedgerEntryInternalError.Code, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns MigrateLedgerEntryMigrateLedgerEntryInternalError.Message, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns MigrateLedgerEntryMigrateLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse includes the requested fields of the GraphQL interface MigrateLedgerEntryResponse.
+//
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse is implemented by the following types:
+// MigrateLedgerEntryMigrateLedgerEntryBadRequestError
+// MigrateLedgerEntryMigrateLedgerEntryInternalError
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse interface {
+	implementsGraphQLInterfaceMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *MigrateLedgerEntryMigrateLedgerEntryBadRequestError) implementsGraphQLInterfaceMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse() {
+}
+func (v *MigrateLedgerEntryMigrateLedgerEntryInternalError) implementsGraphQLInterfaceMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse() {
+}
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult) implementsGraphQLInterfaceMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse() {
+}
+
+func __unmarshalMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse(b []byte, v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(MigrateLedgerEntryMigrateLedgerEntryBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(MigrateLedgerEntryMigrateLedgerEntryInternalError)
+		return json.Unmarshal(b, *v)
+	case "MigrateLedgerEntryResult":
+		*v = new(MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing MigrateLedgerEntryResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse(v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *MigrateLedgerEntryMigrateLedgerEntryBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MigrateLedgerEntryMigrateLedgerEntryBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *MigrateLedgerEntryMigrateLedgerEntryInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MigrateLedgerEntryMigrateLedgerEntryInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult:
+		typename = "MigrateLedgerEntryResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse: "%T"`, v)
+	}
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult includes the requested fields of the GraphQL type MigrateLedgerEntryResult.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult struct {
+	Typename *string `json:"__typename"`
+	// The reversal Ledger Entry that was posted to reverse the Ledger Entry being migrated
+	ReversingLedgerEntry MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry `json:"reversingLedgerEntry"`
+	// The Ledger Entry that was migrated
+	ReversedLedgerEntry MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry `json:"reversedLedgerEntry"`
+	// The new Ledger Entry posted as a result of the migration
+	NewLedgerEntry MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry `json:"newLedgerEntry"`
+	// Whether this migration was an IK replay or not
+	IsIkReplay bool `json:"isIkReplay"`
+}
+
+// GetTypename returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult.Typename, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetReversingLedgerEntry returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult.ReversingLedgerEntry, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult) GetReversingLedgerEntry() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry {
+	return v.ReversingLedgerEntry
+}
+
+// GetReversedLedgerEntry returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult.ReversedLedgerEntry, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult) GetReversedLedgerEntry() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry {
+	return v.ReversedLedgerEntry
+}
+
+// GetNewLedgerEntry returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult.NewLedgerEntry, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult) GetNewLedgerEntry() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry {
+	return v.NewLedgerEntry
+}
+
+// GetIsIkReplay returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult.IsIkReplay, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResult) GetIsIkReplay() bool {
+	return v.IsIkReplay
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry struct {
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// ISO-8601 timestamp of when this Ledger Entry was reversed.
+	ReversedAt *string `json:"reversedAt"`
+	// Indicates whether this Ledger Entry is hidden when listing Ledger Entries.
+	// Reversed and Reversal Ledger Entries are hidden by default because taken together they have no impact on a Ledger's balances.
+	Hidden bool `json:"hidden"`
+	// Lines posted in this Ledger Entry.
+	Lines MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetIk returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetId returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetPosted returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetType returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetDescription returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetReversedAt returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.ReversedAt, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetReversedAt() *string {
+	return v.ReversedAt
+}
+
+// GetHidden returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Hidden, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetHidden() bool {
+	return v.Hidden
+}
+
+// GetLines returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntry) GetLines() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnection) GetNodes() []MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultNewLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry struct {
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// ISO-8601 timestamp of when this Ledger Entry was reversed.
+	ReversedAt *string `json:"reversedAt"`
+	// Indicates whether this Ledger Entry is hidden when listing Ledger Entries.
+	// Reversed and Reversal Ledger Entries are hidden by default because taken together they have no impact on a Ledger's balances.
+	Hidden bool `json:"hidden"`
+	// Lines posted in this Ledger Entry.
+	Lines MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetIk returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetId returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetPosted returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetType returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetDescription returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetReversedAt returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.ReversedAt, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetReversedAt() *string {
+	return v.ReversedAt
+}
+
+// GetHidden returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Hidden, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetHidden() bool {
+	return v.Hidden
+}
+
+// GetLines returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntry) GetLines() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnection) GetNodes() []MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversedLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry struct {
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// ISO-8601 timestamp of when this Ledger Entry was reversed.
+	ReversedAt *string `json:"reversedAt"`
+	// Indicates whether this Ledger Entry is hidden when listing Ledger Entries.
+	// Reversed and Reversal Ledger Entries are hidden by default because taken together they have no impact on a Ledger's balances.
+	Hidden bool `json:"hidden"`
+	// Lines posted in this Ledger Entry.
+	Lines MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetIk returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetId returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetPosted returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetType returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetDescription returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetReversedAt returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.ReversedAt, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetReversedAt() *string {
+	return v.ReversedAt
+}
+
+// GetHidden returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Hidden, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetHidden() bool {
+	return v.Hidden
+}
+
+// GetLines returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntry) GetLines() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnection) GetNodes() []MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResultReversingLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// MigrateLedgerEntryResponse is returned by MigrateLedgerEntry on success.
+type MigrateLedgerEntryResponse struct {
+	// Migrate an existing Ledger Entry to a new type and typeVersion.
+	//
+	// Migrating a Ledger Entry will do the following:
+	// 1. Reverse the existing Ledger Entry
+	// 2. Post a new Ledger Entry with the new type, typeVersion, and parameters provided
+	MigrateLedgerEntry MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse `json:"-"`
+}
+
+// GetMigrateLedgerEntry returns MigrateLedgerEntryResponse.MigrateLedgerEntry, and is useful for accessing the field via an interface.
+func (v *MigrateLedgerEntryResponse) GetMigrateLedgerEntry() MigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse {
+	return v.MigrateLedgerEntry
+}
+
+func (v *MigrateLedgerEntryResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MigrateLedgerEntryResponse
+		MigrateLedgerEntry json.RawMessage `json:"migrateLedgerEntry"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MigrateLedgerEntryResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.MigrateLedgerEntry
+		src := firstPass.MigrateLedgerEntry
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal MigrateLedgerEntryResponse.MigrateLedgerEntry: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalMigrateLedgerEntryResponse struct {
+	MigrateLedgerEntry json.RawMessage `json:"migrateLedgerEntry"`
+}
+
+func (v *MigrateLedgerEntryResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MigrateLedgerEntryResponse) __premarshalJSON() (*__premarshalMigrateLedgerEntryResponse, error) {
+	var retval __premarshalMigrateLedgerEntryResponse
+
+	{
+
+		dst := &retval.MigrateLedgerEntry
+		src := v.MigrateLedgerEntry
+		var err error
+		*dst, err = __marshalMigrateLedgerEntryMigrateLedgerEntryMigrateLedgerEntryResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal MigrateLedgerEntryResponse.MigrateLedgerEntry: %w", err)
+		}
+	}
+	return &retval, nil
 }
 
 // The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
@@ -5594,6 +6402,8 @@ type SceneEntryInput struct {
 	Parameters *json.RawMessage `json:"parameters"`
 	// The type of the simulated Ledger Entry. Must match one of the types provided in schema.ledgerEntries.types.
 	Type string `json:"type"`
+	// The version of the Ledger Entry type.
+	TypeVersion *int `json:"typeVersion"`
 }
 
 // GetParameters returns SceneEntryInput.Parameters, and is useful for accessing the field via an interface.
@@ -5601,6 +6411,9 @@ func (v *SceneEntryInput) GetParameters() *json.RawMessage { return v.Parameters
 
 // GetType returns SceneEntryInput.Type, and is useful for accessing the field via an interface.
 func (v *SceneEntryInput) GetType() string { return v.Type }
+
+// GetTypeVersion returns SceneEntryInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *SceneEntryInput) GetTypeVersion() *int { return v.TypeVersion }
 
 type SceneEventInput struct {
 	// The simulated Ledger Entry.
@@ -5700,6 +6513,8 @@ type SchemaExternalAccountMatchInput struct {
 	Id *string `json:"id"`
 	// The FRAGMENT ID of the link
 	LinkId *string `json:"linkId"`
+	// The type of Link this external account belongs to. Must be one of: IncreaseLink, UnitLink, CustomLink, or StripeLink.
+	LinkType *LinkType `json:"linkType"`
 }
 
 // GetExternalId returns SchemaExternalAccountMatchInput.ExternalId, and is useful for accessing the field via an interface.
@@ -5710,6 +6525,9 @@ func (v *SchemaExternalAccountMatchInput) GetId() *string { return v.Id }
 
 // GetLinkId returns SchemaExternalAccountMatchInput.LinkId, and is useful for accessing the field via an interface.
 func (v *SchemaExternalAccountMatchInput) GetLinkId() *string { return v.LinkId }
+
+// GetLinkType returns SchemaExternalAccountMatchInput.LinkType, and is useful for accessing the field via an interface.
+func (v *SchemaExternalAccountMatchInput) GetLinkType() *LinkType { return v.LinkType }
 
 // Input to the API for creating a Schema.
 type SchemaInput struct {
@@ -5905,6 +6723,8 @@ type SchemaLedgerEntryInput struct {
 	Lines []SchemaLedgerLineInput `json:"lines"`
 	// Fixed partial set of parameters to be included in a templated Ledger Entry.
 	Parameters *json.RawMessage `json:"parameters"`
+	// The status of this Ledger Entry. Defaults to active.
+	Status *SchemaLedgerEntryStatus `json:"status"`
 	// Ledger Entries posted with this type will be associated with these tags.
 	Tags []SchemaLedgerEntryTagInput `json:"tags"`
 	// The type of this Ledger Entry. This is a stable, unique identifier for this entry. Uniqueness is enforced at the Schema level.
@@ -5931,6 +6751,9 @@ func (v *SchemaLedgerEntryInput) GetLines() []SchemaLedgerLineInput { return v.L
 // GetParameters returns SchemaLedgerEntryInput.Parameters, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetParameters() *json.RawMessage { return v.Parameters }
 
+// GetStatus returns SchemaLedgerEntryInput.Status, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerEntryInput) GetStatus() *SchemaLedgerEntryStatus { return v.Status }
+
 // GetTags returns SchemaLedgerEntryInput.Tags, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetTags() []SchemaLedgerEntryTagInput { return v.Tags }
 
@@ -5939,6 +6762,24 @@ func (v *SchemaLedgerEntryInput) GetType() string { return v.Type }
 
 // GetTypeVersion returns SchemaLedgerEntryInput.TypeVersion, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetTypeVersion() *int { return v.TypeVersion }
+
+// The status of a Ledger Entry.
+type SchemaLedgerEntryStatus string
+
+const (
+	// The Ledger Entry is active.
+	SchemaLedgerEntryStatusActive SchemaLedgerEntryStatus = "active"
+	// The Ledger Entry is archived.
+	SchemaLedgerEntryStatusArchived SchemaLedgerEntryStatus = "archived"
+	// The Ledger Entry is disabled.
+	SchemaLedgerEntryStatusDisabled SchemaLedgerEntryStatus = "disabled"
+)
+
+var AllSchemaLedgerEntryStatus = []SchemaLedgerEntryStatus{
+	SchemaLedgerEntryStatusActive,
+	SchemaLedgerEntryStatusArchived,
+	SchemaLedgerEntryStatusDisabled,
+}
 
 // A tag associated with a Ledger Entry type.
 type SchemaLedgerEntryTagInput struct {
@@ -6909,6 +7750,18 @@ type TagFilter struct {
 	EqualTo *TagMatchInput `json:"equalTo"`
 	// Matches tags based on a list of possible tag matches. The key and value are both matched exactly. Limited to 100 items maximum.
 	In []TagMatchInput `json:"in"`
+	// Matches tags where the key exactly equals the provided value.
+	KeyEqualTo *string `json:"keyEqualTo"`
+	// Matches tags where the key matches any of the provided values. Limited to 100 items maximum.
+	KeyIn []string `json:"keyIn"`
+	// Matches tags that do not equal the provided value. The key and value are both matched exactly.
+	NotEqualTo *TagMatchInput `json:"notEqualTo"`
+	// Matches tags that do not match any of the provided values. The key and value are both matched exactly. Limited to 100 items maximum.
+	NotIn []TagMatchInput `json:"notIn"`
+	// Matches tags where the key does not equal the provided value.
+	NotKeyEqualTo *string `json:"notKeyEqualTo"`
+	// Matches tags where the key does not match any of the provided values. Limited to 100 items maximum.
+	NotKeyIn []string `json:"notKeyIn"`
 }
 
 // GetContains returns TagFilter.Contains, and is useful for accessing the field via an interface.
@@ -6919,6 +7772,24 @@ func (v *TagFilter) GetEqualTo() *TagMatchInput { return v.EqualTo }
 
 // GetIn returns TagFilter.In, and is useful for accessing the field via an interface.
 func (v *TagFilter) GetIn() []TagMatchInput { return v.In }
+
+// GetKeyEqualTo returns TagFilter.KeyEqualTo, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetKeyEqualTo() *string { return v.KeyEqualTo }
+
+// GetKeyIn returns TagFilter.KeyIn, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetKeyIn() []string { return v.KeyIn }
+
+// GetNotEqualTo returns TagFilter.NotEqualTo, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetNotEqualTo() *TagMatchInput { return v.NotEqualTo }
+
+// GetNotIn returns TagFilter.NotIn, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetNotIn() []TagMatchInput { return v.NotIn }
+
+// GetNotKeyEqualTo returns TagFilter.NotKeyEqualTo, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetNotKeyEqualTo() *string { return v.NotKeyEqualTo }
+
+// GetNotKeyIn returns TagFilter.NotKeyIn, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetNotKeyIn() []string { return v.NotKeyIn }
 
 // Specifies a single tag that an entity is expected to have. You must specify both the key and the value.
 type TagMatchInput struct {
@@ -6992,6 +7863,8 @@ type UpdateLedgerEntryInput struct {
 	Groups []LedgerEntryGroupInput `json:"groups"`
 	// The list of Tags to add and/or update on this Ledger Entry.
 	Tags []LedgerEntryTagInput `json:"tags"`
+	// The list of Tags to remove from this Ledger Entry.
+	TagsToRemove []LedgerEntryTagInput `json:"tagsToRemove"`
 }
 
 // GetGroups returns UpdateLedgerEntryInput.Groups, and is useful for accessing the field via an interface.
@@ -6999,6 +7872,9 @@ func (v *UpdateLedgerEntryInput) GetGroups() []LedgerEntryGroupInput { return v.
 
 // GetTags returns UpdateLedgerEntryInput.Tags, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerEntryInput) GetTags() []LedgerEntryTagInput { return v.Tags }
+
+// GetTagsToRemove returns UpdateLedgerEntryInput.TagsToRemove, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryInput) GetTagsToRemove() []LedgerEntryTagInput { return v.TagsToRemove }
 
 // UpdateLedgerEntryResponse is returned by UpdateLedgerEntry on success.
 type UpdateLedgerEntryResponse struct {
@@ -8028,6 +8904,18 @@ func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetBalanceAt() *string {
 func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetOwnBalancesConsistencyMode() *ReadBalanceConsistencyMode {
 	return v.OwnBalancesConsistencyMode
 }
+
+// __MigrateLedgerEntryInput is used internally by genqlient
+type __MigrateLedgerEntryInput struct {
+	Id             string           `json:"id"`
+	NewLedgerEntry LedgerEntryInput `json:"newLedgerEntry"`
+}
+
+// GetId returns __MigrateLedgerEntryInput.Id, and is useful for accessing the field via an interface.
+func (v *__MigrateLedgerEntryInput) GetId() string { return v.Id }
+
+// GetNewLedgerEntry returns __MigrateLedgerEntryInput.NewLedgerEntry, and is useful for accessing the field via an interface.
+func (v *__MigrateLedgerEntryInput) GetNewLedgerEntry() LedgerEntryInput { return v.NewLedgerEntry }
 
 // __ReconcileTxInput is used internally by genqlient
 type __ReconcileTxInput struct {
@@ -9322,6 +10210,117 @@ func ListMultiCurrencyLedgerAccountBalances(
 	}
 
 	data_ = &ListMultiCurrencyLedgerAccountBalancesResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by MigrateLedgerEntry.
+const MigrateLedgerEntry_Operation = `
+mutation MigrateLedgerEntry ($id: ID!, $newLedgerEntry: LedgerEntryInput!) {
+	migrateLedgerEntry(input: {id:$id,newLedgerEntry:$newLedgerEntry}) {
+		__typename
+		... on MigrateLedgerEntryResult {
+			reversingLedgerEntry {
+				ik
+				id
+				created
+				posted
+				type
+				description
+				reversedAt
+				hidden
+				lines {
+					nodes {
+						id
+						amount
+						account {
+							path
+						}
+					}
+				}
+			}
+			reversedLedgerEntry {
+				ik
+				id
+				created
+				posted
+				type
+				description
+				reversedAt
+				hidden
+				lines {
+					nodes {
+						id
+						amount
+						account {
+							path
+						}
+					}
+				}
+			}
+			newLedgerEntry {
+				ik
+				id
+				created
+				posted
+				type
+				description
+				reversedAt
+				hidden
+				lines {
+					nodes {
+						id
+						amount
+						account {
+							path
+						}
+					}
+				}
+			}
+			isIkReplay
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func MigrateLedgerEntry(
+	ctx_ auth.AuthenticatedContext,
+	id string,
+	newLedgerEntry LedgerEntryInput,
+) (data_ *MigrateLedgerEntryResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "MigrateLedgerEntry",
+		Query:  MigrateLedgerEntry_Operation,
+		Variables: &__MigrateLedgerEntryInput{
+			Id:             id,
+			NewLedgerEntry: newLedgerEntry,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &MigrateLedgerEntryResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
