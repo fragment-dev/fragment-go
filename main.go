@@ -75,6 +75,7 @@ func main() {
 			"AlphaNumericString":  {Type: "string"},
 			"Date":                {Type: "string"},
 			"DateTime":            {Type: "string"},
+			"FirstMoment":         {Type: "string"},
 			"Int64":               {Type: "string"},
 			"Int96":               {Type: "string"},
 			"JSON":                {Type: "encoding/json.RawMessage"},
