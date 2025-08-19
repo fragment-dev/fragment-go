@@ -212,7 +212,7 @@ func (v *AddLedgerEntryAddLedgerEntryAddLedgerEntryResultLinesLedgerLineAccountL
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type AddLedgerEntryAddLedgerEntryBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -238,7 +238,7 @@ func (v *AddLedgerEntryAddLedgerEntryBadRequestError) GetRetryable() bool { retu
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type AddLedgerEntryAddLedgerEntryInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -535,7 +535,7 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryAddLedgerEntryResultLinesLedgerLineA
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type AddLedgerEntryRuntimeAddLedgerEntryBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -561,7 +561,7 @@ func (v *AddLedgerEntryRuntimeAddLedgerEntryBadRequestError) GetRetryable() bool
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type AddLedgerEntryRuntimeAddLedgerEntryInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -705,7 +705,7 @@ func (v *ChartOfAccountsInput) GetDefaultCurrencyMode() *CurrencyMode { return v
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type CreateCustomCurrencyCreateCustomCurrencyBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -880,7 +880,7 @@ func (v *CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCusto
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type CreateCustomCurrencyCreateCustomCurrencyInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -984,7 +984,7 @@ func (v *CreateCustomCurrencyResponse) __premarshalJSON() (*__premarshalCreateCu
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type CreateCustomLinkCreateCustomLinkBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -1145,7 +1145,7 @@ func (v *CreateCustomLinkCreateCustomLinkCreateCustomLinkResultLinkCustomLink) G
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type CreateCustomLinkCreateCustomLinkInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -1245,7 +1245,7 @@ func (v *CreateCustomLinkResponse) __premarshalJSON() (*__premarshalCreateCustom
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type CreateLedgerCreateLedgerBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -1420,7 +1420,7 @@ func (v *CreateLedgerCreateLedgerCreateLedgerResultLedgerSchema) GetKey() string
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type CreateLedgerCreateLedgerInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2016,7 +2016,7 @@ func (v *DateTimeFilter) GetBefore() *string { return v.Before }
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type DeleteCustomTxsDeleteCustomTxsBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2217,7 +2217,7 @@ func (v *DeleteCustomTxsDeleteCustomTxsDeleteCustomTxsResultTxsDeletedCustomTxTx
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type DeleteCustomTxsDeleteCustomTxsInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2317,7 +2317,7 @@ func (v *DeleteCustomTxsResponse) __premarshalJSON() (*__premarshalDeleteCustomT
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type DeleteLedgerDeleteLedgerBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2442,7 +2442,7 @@ func (v *DeleteLedgerDeleteLedgerDeleteLedgerResult) GetSuccess() bool { return 
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type DeleteLedgerDeleteLedgerInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2544,7 +2544,7 @@ func (v *DeleteLedgerResponse) __premarshalJSON() (*__premarshalDeleteLedgerResp
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type DeleteSchemaDeleteSchemaBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2669,7 +2669,7 @@ func (v *DeleteSchemaDeleteSchemaDeleteSchemaResult) GetSuccess() bool { return 
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type DeleteSchemaDeleteSchemaInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -2813,6 +2813,40 @@ type GetLedgerAccountBalanceResponse struct {
 
 // GetLedgerAccount returns GetLedgerAccountBalanceResponse.LedgerAccount, and is useful for accessing the field via an interface.
 func (v *GetLedgerAccountBalanceResponse) GetLedgerAccount() *GetLedgerAccountBalanceLedgerAccount {
+	return v.LedgerAccount
+}
+
+// GetLedgerAccountBalanceWithChildRollupLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type GetLedgerAccountBalanceWithChildRollupLedgerAccount struct {
+	Id string `json:"id"`
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+	// Total of all lines in this ledger account and child ledger accounts of the same currency as this ledger account
+	Balance string `json:"balance"`
+}
+
+// GetId returns GetLedgerAccountBalanceWithChildRollupLedgerAccount.Id, and is useful for accessing the field via an interface.
+func (v *GetLedgerAccountBalanceWithChildRollupLedgerAccount) GetId() string { return v.Id }
+
+// GetPath returns GetLedgerAccountBalanceWithChildRollupLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *GetLedgerAccountBalanceWithChildRollupLedgerAccount) GetPath() string { return v.Path }
+
+// GetBalance returns GetLedgerAccountBalanceWithChildRollupLedgerAccount.Balance, and is useful for accessing the field via an interface.
+func (v *GetLedgerAccountBalanceWithChildRollupLedgerAccount) GetBalance() string { return v.Balance }
+
+// GetLedgerAccountBalanceWithChildRollupResponse is returned by GetLedgerAccountBalanceWithChildRollup on success.
+type GetLedgerAccountBalanceWithChildRollupResponse struct {
+	// Get a Ledger Account by ID
+	LedgerAccount *GetLedgerAccountBalanceWithChildRollupLedgerAccount `json:"ledgerAccount"`
+}
+
+// GetLedgerAccount returns GetLedgerAccountBalanceWithChildRollupResponse.LedgerAccount, and is useful for accessing the field via an interface.
+func (v *GetLedgerAccountBalanceWithChildRollupResponse) GetLedgerAccount() *GetLedgerAccountBalanceWithChildRollupLedgerAccount {
 	return v.LedgerAccount
 }
 
@@ -3644,6 +3678,8 @@ var AllLedgerLinesConsistencyMode = []LedgerLinesConsistencyMode{
 type LedgerLinesFilterSet struct {
 	// Filter by the created timestamp of the Ledger Line. This is the wall-clock time when the Ledger Line was created.
 	Created *DateTimeFilter `json:"created"`
+	// Filter by the currency of the Ledger Line.
+	Currency *CurrencyFilter `json:"currency"`
 	// Filter by the posted date of the Ledger Line. This is identical to using `posted`, but only supports day-level granularity.
 	Date *DateFilter `json:"date"`
 	// Use this to filter Ledger Lines that were posted to this Ledger Account, using `reverseLedgerEntry`.
@@ -3661,6 +3697,9 @@ type LedgerLinesFilterSet struct {
 
 // GetCreated returns LedgerLinesFilterSet.Created, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetCreated() *DateTimeFilter { return v.Created }
+
+// GetCurrency returns LedgerLinesFilterSet.Currency, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetCurrency() *CurrencyFilter { return v.Currency }
 
 // GetDate returns LedgerLinesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetDate() *DateFilter { return v.Date }
@@ -4647,7 +4686,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type MigrateLedgerEntryMigrateLedgerEntryBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -4675,7 +4714,7 @@ func (v *MigrateLedgerEntryMigrateLedgerEntryBadRequestError) GetRetryable() boo
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type MigrateLedgerEntryMigrateLedgerEntryInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -5288,7 +5327,7 @@ var AllReadBalanceConsistencyMode = []ReadBalanceConsistencyMode{
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type ReconcileTxReconcileTxBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -5314,7 +5353,7 @@ func (v *ReconcileTxReconcileTxBadRequestError) GetRetryable() bool { return v.R
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type ReconcileTxReconcileTxInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -5604,7 +5643,7 @@ func (v *ReconcileTxResponse) __premarshalJSON() (*__premarshalReconcileTxRespon
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type ReconcileTxRuntimeReconcileTxBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -5630,7 +5669,7 @@ func (v *ReconcileTxRuntimeReconcileTxBadRequestError) GetRetryable() bool { ret
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type ReconcileTxRuntimeReconcileTxInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -6000,7 +6039,7 @@ func (v *ReverseLedgerEntryResponse) __premarshalJSON() (*__premarshalReverseLed
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type ReverseLedgerEntryReverseLedgerEntryBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -6028,7 +6067,7 @@ func (v *ReverseLedgerEntryReverseLedgerEntryBadRequestError) GetRetryable() boo
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type ReverseLedgerEntryReverseLedgerEntryInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -6605,6 +6644,8 @@ type SchemaLedgerAccountInput struct {
 	LinkedAccount *SchemaExternalAccountMatchInput `json:"linkedAccount"`
 	// The human-readable name of this Ledger Account.
 	Name *string `json:"name"`
+	// The status of this Ledger Account. Defaults to active.
+	Status *SchemaLedgerAccountStatus `json:"status"`
 	// Whether or not this Ledger Account should be templated.
 	Template *bool `json:"template"`
 	// The type of ledger account to create. Required if this is a top-level Ledger Account. If not provided, the type will be inferred from the parent.
@@ -6636,6 +6677,9 @@ func (v *SchemaLedgerAccountInput) GetLinkedAccount() *SchemaExternalAccountMatc
 // GetName returns SchemaLedgerAccountInput.Name, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountInput) GetName() *string { return v.Name }
 
+// GetStatus returns SchemaLedgerAccountInput.Status, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerAccountInput) GetStatus() *SchemaLedgerAccountStatus { return v.Status }
+
 // GetTemplate returns SchemaLedgerAccountInput.Template, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountInput) GetTemplate() *bool { return v.Template }
 
@@ -6654,6 +6698,24 @@ type SchemaLedgerAccountMatchInput struct {
 
 // GetPath returns SchemaLedgerAccountMatchInput.Path, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountMatchInput) GetPath() string { return v.Path }
+
+// The status of a Ledger Account.
+type SchemaLedgerAccountStatus string
+
+const (
+	// The Ledger Account is active.
+	SchemaLedgerAccountStatusActive SchemaLedgerAccountStatus = "active"
+	// The Ledger Account is archived.
+	SchemaLedgerAccountStatusArchived SchemaLedgerAccountStatus = "archived"
+	// The Ledger Account is disabled.
+	SchemaLedgerAccountStatusDisabled SchemaLedgerAccountStatus = "disabled"
+)
+
+var AllSchemaLedgerAccountStatus = []SchemaLedgerAccountStatus{
+	SchemaLedgerAccountStatusActive,
+	SchemaLedgerAccountStatusArchived,
+	SchemaLedgerAccountStatusDisabled,
+}
 
 // The Ledger Entries in your Schema.
 type SchemaLedgerEntriesInput struct {
@@ -6946,7 +7008,7 @@ func (v *StoreSchemaResponse) __premarshalJSON() (*__premarshalStoreSchemaRespon
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type StoreSchemaStoreSchemaBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -6972,7 +7034,7 @@ func (v *StoreSchemaStoreSchemaBadRequestError) GetRetryable() bool { return v.R
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type StoreSchemaStoreSchemaInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -7265,7 +7327,7 @@ func (v *SyncCustomAccountsResponse) __premarshalJSON() (*__premarshalSyncCustom
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type SyncCustomAccountsSyncCustomAccountsBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -7293,7 +7355,7 @@ func (v *SyncCustomAccountsSyncCustomAccountsBadRequestError) GetRetryable() boo
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type SyncCustomAccountsSyncCustomAccountsInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -7546,7 +7608,7 @@ func (v *SyncCustomTxsResponse) __premarshalJSON() (*__premarshalSyncCustomTxsRe
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type SyncCustomTxsSyncCustomTxsBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -7572,7 +7634,7 @@ func (v *SyncCustomTxsSyncCustomTxsBadRequestError) GetRetryable() bool { return
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type SyncCustomTxsSyncCustomTxsInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -7956,7 +8018,7 @@ func (v *UpdateLedgerEntryResponse) __premarshalJSON() (*__premarshalUpdateLedge
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type UpdateLedgerEntryUpdateLedgerEntryBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -7982,7 +8044,7 @@ func (v *UpdateLedgerEntryUpdateLedgerEntryBadRequestError) GetRetryable() bool 
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type UpdateLedgerEntryUpdateLedgerEntryInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -8350,7 +8412,7 @@ func (v *UpdateLedgerResponse) __premarshalJSON() (*__premarshalUpdateLedgerResp
 // Equivalent to an HTTP 400 - request either has missing or incorrect data
 type UpdateLedgerUpdateLedgerBadRequestError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -8376,7 +8438,7 @@ func (v *UpdateLedgerUpdateLedgerBadRequestError) GetRetryable() bool { return v
 // Equivalent to an HTTP 5XX - something went wrong with our API.
 type UpdateLedgerUpdateLedgerInternalError struct {
 	Typename *string `json:"__typename"`
-	// The HTTP status code corresponding to the error
+	// The status code of error. For example, 'ledger_not_found'.
 	Code string `json:"code"`
 	// The error message
 	Message string `json:"message"`
@@ -8690,6 +8752,28 @@ func (v *__GetLedgerAccountBalanceInput) GetBalanceAt() *string { return v.Balan
 func (v *__GetLedgerAccountBalanceInput) GetOwnBalanceConsistencyMode() *ReadBalanceConsistencyMode {
 	return v.OwnBalanceConsistencyMode
 }
+
+// __GetLedgerAccountBalanceWithChildRollupInput is used internally by genqlient
+type __GetLedgerAccountBalanceWithChildRollupInput struct {
+	Path            string              `json:"path"`
+	LedgerIk        string              `json:"ledgerIk"`
+	BalanceCurrency *CurrencyMatchInput `json:"balanceCurrency"`
+	BalanceAt       *string             `json:"balanceAt"`
+}
+
+// GetPath returns __GetLedgerAccountBalanceWithChildRollupInput.Path, and is useful for accessing the field via an interface.
+func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetPath() string { return v.Path }
+
+// GetLedgerIk returns __GetLedgerAccountBalanceWithChildRollupInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetBalanceCurrency returns __GetLedgerAccountBalanceWithChildRollupInput.BalanceCurrency, and is useful for accessing the field via an interface.
+func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetBalanceCurrency() *CurrencyMatchInput {
+	return v.BalanceCurrency
+}
+
+// GetBalanceAt returns __GetLedgerAccountBalanceWithChildRollupInput.BalanceAt, and is useful for accessing the field via an interface.
+func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetBalanceAt() *string { return v.BalanceAt }
 
 // __GetLedgerAccountLinesInput is used internally by genqlient
 type __GetLedgerAccountLinesInput struct {
@@ -9637,6 +9721,53 @@ func GetLedgerAccountBalance(
 	}
 
 	data_ = &GetLedgerAccountBalanceResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by GetLedgerAccountBalanceWithChildRollup.
+const GetLedgerAccountBalanceWithChildRollup_Operation = `
+query GetLedgerAccountBalanceWithChildRollup ($path: String!, $ledgerIk: SafeString!, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment) {
+	ledgerAccount(ledgerAccount: {ledger:{ik:$ledgerIk},path:$path}) {
+		id
+		path
+		balance(currency: $balanceCurrency, at: $balanceAt)
+	}
+}
+`
+
+func GetLedgerAccountBalanceWithChildRollup(
+	ctx_ auth.AuthenticatedContext,
+	path string,
+	ledgerIk string,
+	balanceCurrency *CurrencyMatchInput,
+	balanceAt *string,
+) (data_ *GetLedgerAccountBalanceWithChildRollupResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetLedgerAccountBalanceWithChildRollup",
+		Query:  GetLedgerAccountBalanceWithChildRollup_Operation,
+		Variables: &__GetLedgerAccountBalanceWithChildRollupInput{
+			Path:            path,
+			LedgerIk:        ledgerIk,
+			BalanceCurrency: balanceCurrency,
+			BalanceAt:       balanceAt,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &GetLedgerAccountBalanceWithChildRollupResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(

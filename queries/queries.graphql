@@ -155,6 +155,7 @@ mutation ReverseLedgerEntry(
   $id: ID!
 ) {
   reverseLedgerEntry(id: $id) {
+    __typename
     ... on ReverseLedgerEntryResult {
       reversingLedgerEntry {
         ik
@@ -215,6 +216,7 @@ mutation MigrateLedgerEntry(
     id: $id
     newLedgerEntry: $newLedgerEntry
   }) {
+    __typename
     ... on MigrateLedgerEntryResult {
       reversingLedgerEntry {
         ik
@@ -825,6 +827,23 @@ query GetLedgerAccountBalance(
     )
   }
 }
+
+query GetLedgerAccountBalanceWithChildRollup(
+  $path: String!
+  $ledgerIk: SafeString!
+  $balanceCurrency: CurrencyMatchInput
+  $balanceAt: LastMoment
+) {
+  ledgerAccount(ledgerAccount: { ledger: { ik: $ledgerIk }, path: $path }) {
+    id
+    path
+    balance(
+      currency: $balanceCurrency
+      at: $balanceAt
+    )
+  }
+}
+
 
 query GetSchema($key: SafeString!, $version: Int) {
   schema(schema: { key: $key, version: $version }) {
