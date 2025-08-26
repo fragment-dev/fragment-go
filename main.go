@@ -81,6 +81,7 @@ func main() {
 			"JSON":                {Type: "encoding/json.RawMessage"},
 			"JSONObject":          {Type: "encoding/json.RawMessage"},
 			"LastMoment":          {Type: "string"},
+			"Parameters":	       {Type: "encoding/json.RawMessage"},
 			"ParameterizedString": {Type: "string"},
 			"Period":              {Type: "string"},
 			"SafeString":          {Type: "string"},

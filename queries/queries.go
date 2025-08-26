@@ -2782,6 +2782,1045 @@ func (v *ExternalAccountMatchInput) GetId() *string { return v.Id }
 // GetLinkId returns ExternalAccountMatchInput.LinkId, and is useful for accessing the field via an interface.
 func (v *ExternalAccountMatchInput) GetLinkId() *string { return v.LinkId }
 
+// GetAccountDataMigrationsLedger includes the requested fields of the GraphQL type Ledger.
+// The GraphQL type's documentation follows.
+//
+// Ledgers are databases designed for managing money
+type GetAccountDataMigrationsLedger struct {
+	// Ledger Account data migrations affecting this Ledger.
+	LedgerAccountDataMigrations GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection `json:"ledgerAccountDataMigrations"`
+}
+
+// GetLedgerAccountDataMigrations returns GetAccountDataMigrationsLedger.LedgerAccountDataMigrations, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedger) GetLedgerAccountDataMigrations() GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection {
+	return v.LedgerAccountDataMigrations
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection includes the requested fields of the GraphQL type LedgerAccountDataMigrationConnection.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection struct {
+	// The current page of results
+	Nodes []GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration `json:"nodes"`
+	// Pagination info for this list.
+	PageInfo GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection) GetNodes() []GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection) GetPageInfo() GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration includes the requested fields of the GraphQL type LedgerAccountDataMigration.
+// The GraphQL type's documentation follows.
+//
+// Represents a data migration for a specific Ledger Account in a Ledger.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration struct {
+	// The path of the Ledger Account being migrated.
+	AccountPath string `json:"accountPath"`
+	// The status of the data migration.
+	Status LedgerDataMigrationStatus `json:"status"`
+	// Current active migration info (null if migration is inactive).
+	CurrentMigration *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry `json:"currentMigration"`
+	// The ledger entries to be migrated.
+	LedgerEntries GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
+	// The historical transitions of this migration.
+	History GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection `json:"history"`
+}
+
+// GetAccountPath returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration.AccountPath, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration) GetAccountPath() string {
+	return v.AccountPath
+}
+
+// GetStatus returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration.Status, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration) GetStatus() LedgerDataMigrationStatus {
+	return v.Status
+}
+
+// GetCurrentMigration returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration.CurrentMigration, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration) GetCurrentMigration() *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry {
+	return v.CurrentMigration
+}
+
+// GetLedgerEntries returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration.LedgerEntries, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration) GetLedgerEntries() GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection {
+	return v.LedgerEntries
+}
+
+// GetHistory returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration.History, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration) GetHistory() GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection {
+	return v.History
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry includes the requested fields of the GraphQL type LedgerDataMigrationHistoryEntry.
+// The GraphQL type's documentation follows.
+//
+// A single schema version in the migration history.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry struct {
+	// The schema version.
+	SchemaVersion int `json:"schemaVersion"`
+	// The current status of this schema version (active if it's the latest and migration is active, otherwise inactive).
+	Status LedgerDataMigrationStatus `json:"status"`
+}
+
+// GetSchemaVersion returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry.SchemaVersion, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry) GetSchemaVersion() int {
+	return v.SchemaVersion
+}
+
+// GetStatus returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry.Status, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry) GetStatus() LedgerDataMigrationStatus {
+	return v.Status
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection includes the requested fields of the GraphQL type LedgerDataMigrationHistoryConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of migration history entries.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection struct {
+	// The current page of results
+	Nodes []GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry `json:"nodes"`
+	// Pagination info for this list.
+	PageInfo GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection) GetNodes() []GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnection) GetPageInfo() GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry includes the requested fields of the GraphQL type LedgerDataMigrationHistoryEntry.
+// The GraphQL type's documentation follows.
+//
+// A single schema version in the migration history.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry struct {
+	// The schema version.
+	SchemaVersion int `json:"schemaVersion"`
+	// The current status of this schema version (active if it's the latest and migration is active, otherwise inactive).
+	Status LedgerDataMigrationStatus `json:"status"`
+}
+
+// GetSchemaVersion returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry.SchemaVersion, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry) GetSchemaVersion() int {
+	return v.SchemaVersion
+}
+
+// GetStatus returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry.Status, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry) GetStatus() LedgerDataMigrationStatus {
+	return v.Status
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection includes the requested fields of the GraphQL type LedgerEntriesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Entries
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection struct {
+	// The current page of results
+	Nodes []GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry `json:"nodes"`
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
+	PageInfo GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection) GetNodes() []GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection) GetPageInfo() GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry struct {
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The parameters used to post this Ledger Entry.
+	Parameters *json.RawMessage `json:"parameters"`
+}
+
+// GetId returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetType returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetPosted returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetParameters returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Parameters, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetParameters() *json.RawMessage {
+	return v.Parameters
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetAccountDataMigrationsResponse is returned by GetAccountDataMigrations on success.
+type GetAccountDataMigrationsResponse struct {
+	// Get a Ledger by ID
+	Ledger *GetAccountDataMigrationsLedger `json:"ledger"`
+}
+
+// GetLedger returns GetAccountDataMigrationsResponse.Ledger, and is useful for accessing the field via an interface.
+func (v *GetAccountDataMigrationsResponse) GetLedger() *GetAccountDataMigrationsLedger {
+	return v.Ledger
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedger includes the requested fields of the GraphQL type Ledger.
+// The GraphQL type's documentation follows.
+//
+// Ledgers are databases designed for managing money
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedger struct {
+	// Ledger Account data migrations affecting this Ledger.
+	LedgerAccountDataMigrations GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection `json:"ledgerAccountDataMigrations"`
+}
+
+// GetLedgerAccountDataMigrations returns GetEntriesToMigrateForLedgerAccountDataMigrationLedger.LedgerAccountDataMigrations, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedger) GetLedgerAccountDataMigrations() GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection {
+	return v.LedgerAccountDataMigrations
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection includes the requested fields of the GraphQL type LedgerAccountDataMigrationConnection.
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection struct {
+	// The current page of results
+	Nodes []GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration `json:"nodes"`
+}
+
+// GetNodes returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnection) GetNodes() []GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration {
+	return v.Nodes
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration includes the requested fields of the GraphQL type LedgerAccountDataMigration.
+// The GraphQL type's documentation follows.
+//
+// Represents a data migration for a specific Ledger Account in a Ledger.
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration struct {
+	// The ledger entries to be migrated.
+	LedgerEntries GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
+}
+
+// GetLedgerEntries returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration.LedgerEntries, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigration) GetLedgerEntries() GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection {
+	return v.LedgerEntries
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection includes the requested fields of the GraphQL type LedgerEntriesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Entries
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection struct {
+	// The current page of results
+	Nodes []GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry `json:"nodes"`
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
+	PageInfo GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection) GetNodes() []GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnection) GetPageInfo() GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry struct {
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// The version of the Ledger Entry type used when it was posted.
+	TypeVersion *int `json:"typeVersion"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// The parameters used to post this Ledger Entry.
+	Parameters *json.RawMessage `json:"parameters"`
+	// Lines posted in this Ledger Entry.
+	Lines GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetId returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetIk returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetType returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetTypeVersion returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.TypeVersion, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetTypeVersion() *int {
+	return v.TypeVersion
+}
+
+// GetDescription returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetPosted returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetCreated returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetParameters returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Parameters, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetParameters() *json.RawMessage {
+	return v.Parameters
+}
+
+// GetLines returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetLines() GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection) GetNodes() []GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetEntriesToMigrateForLedgerAccountDataMigrationResponse is returned by GetEntriesToMigrateForLedgerAccountDataMigration on success.
+type GetEntriesToMigrateForLedgerAccountDataMigrationResponse struct {
+	// Get a Ledger by ID
+	Ledger *GetEntriesToMigrateForLedgerAccountDataMigrationLedger `json:"ledger"`
+}
+
+// GetLedger returns GetEntriesToMigrateForLedgerAccountDataMigrationResponse.Ledger, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerAccountDataMigrationResponse) GetLedger() *GetEntriesToMigrateForLedgerAccountDataMigrationLedger {
+	return v.Ledger
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedger includes the requested fields of the GraphQL type Ledger.
+// The GraphQL type's documentation follows.
+//
+// Ledgers are databases designed for managing money
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedger struct {
+	// Ledger Entry data migrations affecting this Ledger.
+	LedgerEntryDataMigrations GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection `json:"ledgerEntryDataMigrations"`
+}
+
+// GetLedgerEntryDataMigrations returns GetEntriesToMigrateForLedgerEntryDataMigrationLedger.LedgerEntryDataMigrations, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedger) GetLedgerEntryDataMigrations() GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection {
+	return v.LedgerEntryDataMigrations
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection includes the requested fields of the GraphQL type LedgerEntryDataMigrationConnection.
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection struct {
+	// The current page of results
+	Nodes []GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration `json:"nodes"`
+}
+
+// GetNodes returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection) GetNodes() []GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration {
+	return v.Nodes
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration includes the requested fields of the GraphQL type LedgerEntryDataMigration.
+// The GraphQL type's documentation follows.
+//
+// Represents a data migration for a specific entry type in a Ledger.
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration struct {
+	// The ledger entries to be migrated.
+	LedgerEntries GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
+}
+
+// GetLedgerEntries returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.LedgerEntries, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetLedgerEntries() GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection {
+	return v.LedgerEntries
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection includes the requested fields of the GraphQL type LedgerEntriesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Entries
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection struct {
+	// The current page of results
+	Nodes []GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry `json:"nodes"`
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
+	PageInfo GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection) GetNodes() []GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection) GetPageInfo() GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry struct {
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// The version of the Ledger Entry type used when it was posted.
+	TypeVersion *int `json:"typeVersion"`
+	// Description posted for this Ledger Entry.
+	Description *string `json:"description"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+	// The parameters used to post this Ledger Entry.
+	Parameters *json.RawMessage `json:"parameters"`
+	// Lines posted in this Ledger Entry.
+	Lines GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection `json:"lines"`
+}
+
+// GetId returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetIk returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetType returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetTypeVersion returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.TypeVersion, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetTypeVersion() *int {
+	return v.TypeVersion
+}
+
+// GetDescription returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Description, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetDescription() *string {
+	return v.Description
+}
+
+// GetPosted returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetCreated returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// GetParameters returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Parameters, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetParameters() *json.RawMessage {
+	return v.Parameters
+}
+
+// GetLines returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Lines, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetLines() GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection {
+	return v.Lines
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection includes the requested fields of the GraphQL type LedgerLinesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Lines
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection struct {
+	// The current page of results
+	Nodes []GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine `json:"nodes"`
+}
+
+// GetNodes returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnection) GetNodes() []GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine {
+	return v.Nodes
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLine) GetAccount() GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntryLinesLedgerLinesConnectionNodesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetEntriesToMigrateForLedgerEntryDataMigrationResponse is returned by GetEntriesToMigrateForLedgerEntryDataMigration on success.
+type GetEntriesToMigrateForLedgerEntryDataMigrationResponse struct {
+	// Get a Ledger by ID
+	Ledger *GetEntriesToMigrateForLedgerEntryDataMigrationLedger `json:"ledger"`
+}
+
+// GetLedger returns GetEntriesToMigrateForLedgerEntryDataMigrationResponse.Ledger, and is useful for accessing the field via an interface.
+func (v *GetEntriesToMigrateForLedgerEntryDataMigrationResponse) GetLedger() *GetEntriesToMigrateForLedgerEntryDataMigrationLedger {
+	return v.Ledger
+}
+
+// GetEntryDataMigrationsLedger includes the requested fields of the GraphQL type Ledger.
+// The GraphQL type's documentation follows.
+//
+// Ledgers are databases designed for managing money
+type GetEntryDataMigrationsLedger struct {
+	// Ledger Entry data migrations affecting this Ledger.
+	LedgerEntryDataMigrations GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection `json:"ledgerEntryDataMigrations"`
+}
+
+// GetLedgerEntryDataMigrations returns GetEntryDataMigrationsLedger.LedgerEntryDataMigrations, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedger) GetLedgerEntryDataMigrations() GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection {
+	return v.LedgerEntryDataMigrations
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection includes the requested fields of the GraphQL type LedgerEntryDataMigrationConnection.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection struct {
+	// The current page of results
+	Nodes []GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration `json:"nodes"`
+	// Pagination info for this list.
+	PageInfo GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection) GetNodes() []GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnection) GetPageInfo() GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration includes the requested fields of the GraphQL type LedgerEntryDataMigration.
+// The GraphQL type's documentation follows.
+//
+// Represents a data migration for a specific entry type in a Ledger.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration struct {
+	// The entry type being migrated.
+	EntryType string `json:"entryType"`
+	// The version of the entry type being migrated.
+	TypeVersion int `json:"typeVersion"`
+	// The status of the data migration.
+	Status LedgerDataMigrationStatus `json:"status"`
+	// Current active migration info (null if migration is inactive).
+	CurrentMigration *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry `json:"currentMigration"`
+	// The ledger entries to be migrated.
+	LedgerEntries GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection `json:"ledgerEntries"`
+	// The historical transitions of this migration.
+	History GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection `json:"history"`
+}
+
+// GetEntryType returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.EntryType, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetEntryType() string {
+	return v.EntryType
+}
+
+// GetTypeVersion returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.TypeVersion, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetTypeVersion() int {
+	return v.TypeVersion
+}
+
+// GetStatus returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.Status, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetStatus() LedgerDataMigrationStatus {
+	return v.Status
+}
+
+// GetCurrentMigration returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.CurrentMigration, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetCurrentMigration() *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry {
+	return v.CurrentMigration
+}
+
+// GetLedgerEntries returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.LedgerEntries, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetLedgerEntries() GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection {
+	return v.LedgerEntries
+}
+
+// GetHistory returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration.History, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigration) GetHistory() GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection {
+	return v.History
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry includes the requested fields of the GraphQL type LedgerDataMigrationHistoryEntry.
+// The GraphQL type's documentation follows.
+//
+// A single schema version in the migration history.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry struct {
+	// The schema version.
+	SchemaVersion int `json:"schemaVersion"`
+	// The current status of this schema version (active if it's the latest and migration is active, otherwise inactive).
+	Status LedgerDataMigrationStatus `json:"status"`
+}
+
+// GetSchemaVersion returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry.SchemaVersion, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry) GetSchemaVersion() int {
+	return v.SchemaVersion
+}
+
+// GetStatus returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry.Status, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationCurrentMigrationLedgerDataMigrationHistoryEntry) GetStatus() LedgerDataMigrationStatus {
+	return v.Status
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection includes the requested fields of the GraphQL type LedgerDataMigrationHistoryConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of migration history entries.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection struct {
+	// The current page of results
+	Nodes []GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry `json:"nodes"`
+	// Pagination info for this list.
+	PageInfo GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection) GetNodes() []GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnection) GetPageInfo() GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry includes the requested fields of the GraphQL type LedgerDataMigrationHistoryEntry.
+// The GraphQL type's documentation follows.
+//
+// A single schema version in the migration history.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry struct {
+	// The schema version.
+	SchemaVersion int `json:"schemaVersion"`
+	// The current status of this schema version (active if it's the latest and migration is active, otherwise inactive).
+	Status LedgerDataMigrationStatus `json:"status"`
+}
+
+// GetSchemaVersion returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry.SchemaVersion, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry) GetSchemaVersion() int {
+	return v.SchemaVersion
+}
+
+// GetStatus returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry.Status, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionNodesLedgerDataMigrationHistoryEntry) GetStatus() LedgerDataMigrationStatus {
+	return v.Status
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection includes the requested fields of the GraphQL type LedgerEntriesConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Ledger Entries
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection struct {
+	// The current page of results
+	Nodes []GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry `json:"nodes"`
+	// The [pagination info](https://fragment.dev/api-reference/api-types#connection-types-pageinfo) for this list
+	PageInfo GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection) GetNodes() []GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry {
+	return v.Nodes
+}
+
+// GetPageInfo returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnection) GetPageInfo() GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo {
+	return v.PageInfo
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry struct {
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// The parameters used to post this Ledger Entry.
+	Parameters *json.RawMessage `json:"parameters"`
+}
+
+// GetId returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetType returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetPosted returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetParameters returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry.Parameters, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionNodesLedgerEntry) GetParameters() *json.RawMessage {
+	return v.Parameters
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// GetEntryDataMigrationsResponse is returned by GetEntryDataMigrations on success.
+type GetEntryDataMigrationsResponse struct {
+	// Get a Ledger by ID
+	Ledger *GetEntryDataMigrationsLedger `json:"ledger"`
+}
+
+// GetLedger returns GetEntryDataMigrationsResponse.Ledger, and is useful for accessing the field via an interface.
+func (v *GetEntryDataMigrationsResponse) GetLedger() *GetEntryDataMigrationsLedger { return v.Ledger }
+
 // GetLedgerAccountBalanceLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
 // The GraphQL type's documentation follows.
 //
@@ -3361,6 +4400,21 @@ func (v *LedgerAccountConsistencyConfigInput) GetOwnBalanceUpdates() *BalanceUpd
 	return v.OwnBalanceUpdates
 }
 
+type LedgerAccountDataMigrationsFilterSet struct {
+	// Filter by Ledger Account path.
+	AccountPath *StringFilter `json:"accountPath"`
+	// Filter by the status of the data migration.
+	Status *LedgerDataMigrationStatus `json:"status"`
+}
+
+// GetAccountPath returns LedgerAccountDataMigrationsFilterSet.AccountPath, and is useful for accessing the field via an interface.
+func (v *LedgerAccountDataMigrationsFilterSet) GetAccountPath() *StringFilter { return v.AccountPath }
+
+// GetStatus returns LedgerAccountDataMigrationsFilterSet.Status, and is useful for accessing the field via an interface.
+func (v *LedgerAccountDataMigrationsFilterSet) GetStatus() *LedgerDataMigrationStatus {
+	return v.Status
+}
+
 // The consistency configuration for a specific Ledger Entry Group in this account.
 type LedgerAccountGroupConsistencyConfigInput struct {
 	// The group key for this configuration.
@@ -3418,6 +4472,21 @@ var AllLedgerAccountTypes = []LedgerAccountTypes{
 	LedgerAccountTypesExpense,
 	LedgerAccountTypesIncome,
 	LedgerAccountTypesLiability,
+}
+
+// The status of a ledger data migration.
+type LedgerDataMigrationStatus string
+
+const (
+	// The migration is active.
+	LedgerDataMigrationStatusActive LedgerDataMigrationStatus = "active"
+	// The migration is inactive.
+	LedgerDataMigrationStatusInactive LedgerDataMigrationStatus = "inactive"
+)
+
+var AllLedgerDataMigrationStatus = []LedgerDataMigrationStatus{
+	LedgerDataMigrationStatusActive,
+	LedgerDataMigrationStatusInactive,
 }
 
 type LedgerEntriesFilterSet struct {
@@ -3498,6 +4567,24 @@ func (v *LedgerEntryConditionInput) GetPostcondition() *LedgerAccountConditionIn
 func (v *LedgerEntryConditionInput) GetPrecondition() *LedgerAccountConditionInput {
 	return v.Precondition
 }
+
+type LedgerEntryDataMigrationsFilterSet struct {
+	// Filter by Ledger Entry type.
+	EntryType *StringFilter `json:"entryType"`
+	// Filter by the status of the data migration.
+	Status *LedgerDataMigrationStatus `json:"status"`
+	// Filter by Ledger Entry type version.
+	TypeVersion *StringFilter `json:"typeVersion"`
+}
+
+// GetEntryType returns LedgerEntryDataMigrationsFilterSet.EntryType, and is useful for accessing the field via an interface.
+func (v *LedgerEntryDataMigrationsFilterSet) GetEntryType() *StringFilter { return v.EntryType }
+
+// GetStatus returns LedgerEntryDataMigrationsFilterSet.Status, and is useful for accessing the field via an interface.
+func (v *LedgerEntryDataMigrationsFilterSet) GetStatus() *LedgerDataMigrationStatus { return v.Status }
+
+// GetTypeVersion returns LedgerEntryDataMigrationsFilterSet.TypeVersion, and is useful for accessing the field via an interface.
+func (v *LedgerEntryDataMigrationsFilterSet) GetTypeVersion() *StringFilter { return v.TypeVersion }
 
 type LedgerEntryFilter struct {
 	// Result must be the specified Ledger Entry.
@@ -8725,6 +9812,138 @@ type __DeleteSchemaInput struct {
 // GetSchema returns __DeleteSchemaInput.Schema, and is useful for accessing the field via an interface.
 func (v *__DeleteSchemaInput) GetSchema() SchemaMatchInput { return v.Schema }
 
+// __GetAccountDataMigrationsInput is used internally by genqlient
+type __GetAccountDataMigrationsInput struct {
+	LedgerIk string                                `json:"ledgerIk"`
+	Filter   *LedgerAccountDataMigrationsFilterSet `json:"filter"`
+	After    *string                               `json:"after"`
+	Before   *string                               `json:"before"`
+	First    *int                                  `json:"first"`
+	Last     *int                                  `json:"last"`
+}
+
+// GetLedgerIk returns __GetAccountDataMigrationsInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetAccountDataMigrationsInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetFilter returns __GetAccountDataMigrationsInput.Filter, and is useful for accessing the field via an interface.
+func (v *__GetAccountDataMigrationsInput) GetFilter() *LedgerAccountDataMigrationsFilterSet {
+	return v.Filter
+}
+
+// GetAfter returns __GetAccountDataMigrationsInput.After, and is useful for accessing the field via an interface.
+func (v *__GetAccountDataMigrationsInput) GetAfter() *string { return v.After }
+
+// GetBefore returns __GetAccountDataMigrationsInput.Before, and is useful for accessing the field via an interface.
+func (v *__GetAccountDataMigrationsInput) GetBefore() *string { return v.Before }
+
+// GetFirst returns __GetAccountDataMigrationsInput.First, and is useful for accessing the field via an interface.
+func (v *__GetAccountDataMigrationsInput) GetFirst() *int { return v.First }
+
+// GetLast returns __GetAccountDataMigrationsInput.Last, and is useful for accessing the field via an interface.
+func (v *__GetAccountDataMigrationsInput) GetLast() *int { return v.Last }
+
+// __GetEntriesToMigrateForLedgerAccountDataMigrationInput is used internally by genqlient
+type __GetEntriesToMigrateForLedgerAccountDataMigrationInput struct {
+	LedgerIk    string  `json:"ledgerIk"`
+	AccountPath string  `json:"accountPath"`
+	After       *string `json:"after"`
+	Before      *string `json:"before"`
+	First       *int    `json:"first"`
+	Last        *int    `json:"last"`
+}
+
+// GetLedgerIk returns __GetEntriesToMigrateForLedgerAccountDataMigrationInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerAccountDataMigrationInput) GetLedgerIk() string {
+	return v.LedgerIk
+}
+
+// GetAccountPath returns __GetEntriesToMigrateForLedgerAccountDataMigrationInput.AccountPath, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerAccountDataMigrationInput) GetAccountPath() string {
+	return v.AccountPath
+}
+
+// GetAfter returns __GetEntriesToMigrateForLedgerAccountDataMigrationInput.After, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerAccountDataMigrationInput) GetAfter() *string { return v.After }
+
+// GetBefore returns __GetEntriesToMigrateForLedgerAccountDataMigrationInput.Before, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerAccountDataMigrationInput) GetBefore() *string {
+	return v.Before
+}
+
+// GetFirst returns __GetEntriesToMigrateForLedgerAccountDataMigrationInput.First, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerAccountDataMigrationInput) GetFirst() *int { return v.First }
+
+// GetLast returns __GetEntriesToMigrateForLedgerAccountDataMigrationInput.Last, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerAccountDataMigrationInput) GetLast() *int { return v.Last }
+
+// __GetEntriesToMigrateForLedgerEntryDataMigrationInput is used internally by genqlient
+type __GetEntriesToMigrateForLedgerEntryDataMigrationInput struct {
+	LedgerIk    string  `json:"ledgerIk"`
+	EntryType   string  `json:"entryType"`
+	TypeVersion string  `json:"typeVersion"`
+	After       *string `json:"after"`
+	Before      *string `json:"before"`
+	First       *int    `json:"first"`
+	Last        *int    `json:"last"`
+}
+
+// GetLedgerIk returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetLedgerIk() string {
+	return v.LedgerIk
+}
+
+// GetEntryType returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.EntryType, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetEntryType() string {
+	return v.EntryType
+}
+
+// GetTypeVersion returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetTypeVersion() string {
+	return v.TypeVersion
+}
+
+// GetAfter returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.After, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetAfter() *string { return v.After }
+
+// GetBefore returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.Before, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetBefore() *string { return v.Before }
+
+// GetFirst returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.First, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetFirst() *int { return v.First }
+
+// GetLast returns __GetEntriesToMigrateForLedgerEntryDataMigrationInput.Last, and is useful for accessing the field via an interface.
+func (v *__GetEntriesToMigrateForLedgerEntryDataMigrationInput) GetLast() *int { return v.Last }
+
+// __GetEntryDataMigrationsInput is used internally by genqlient
+type __GetEntryDataMigrationsInput struct {
+	LedgerIk string                              `json:"ledgerIk"`
+	Filter   *LedgerEntryDataMigrationsFilterSet `json:"filter"`
+	After    *string                             `json:"after"`
+	Before   *string                             `json:"before"`
+	First    *int                                `json:"first"`
+	Last     *int                                `json:"last"`
+}
+
+// GetLedgerIk returns __GetEntryDataMigrationsInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetEntryDataMigrationsInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetFilter returns __GetEntryDataMigrationsInput.Filter, and is useful for accessing the field via an interface.
+func (v *__GetEntryDataMigrationsInput) GetFilter() *LedgerEntryDataMigrationsFilterSet {
+	return v.Filter
+}
+
+// GetAfter returns __GetEntryDataMigrationsInput.After, and is useful for accessing the field via an interface.
+func (v *__GetEntryDataMigrationsInput) GetAfter() *string { return v.After }
+
+// GetBefore returns __GetEntryDataMigrationsInput.Before, and is useful for accessing the field via an interface.
+func (v *__GetEntryDataMigrationsInput) GetBefore() *string { return v.Before }
+
+// GetFirst returns __GetEntryDataMigrationsInput.First, and is useful for accessing the field via an interface.
+func (v *__GetEntryDataMigrationsInput) GetFirst() *int { return v.First }
+
+// GetLast returns __GetEntryDataMigrationsInput.Last, and is useful for accessing the field via an interface.
+func (v *__GetEntryDataMigrationsInput) GetLast() *int { return v.Last }
+
 // __GetLedgerAccountBalanceInput is used internally by genqlient
 type __GetLedgerAccountBalanceInput struct {
 	Path                      string                      `json:"path"`
@@ -9629,6 +10848,347 @@ func DeleteSchema(
 	}
 
 	data_ = &DeleteSchemaResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by GetAccountDataMigrations.
+const GetAccountDataMigrations_Operation = `
+query GetAccountDataMigrations ($ledgerIk: SafeString!, $filter: LedgerAccountDataMigrationsFilterSet, $after: String, $before: String, $first: Int, $last: Int) {
+	ledger(ledger: {ik:$ledgerIk}) {
+		ledgerAccountDataMigrations(first: $first, after: $after, before: $before, last: $last, filter: $filter) {
+			nodes {
+				accountPath
+				status
+				currentMigration {
+					schemaVersion
+					status
+				}
+				ledgerEntries {
+					nodes {
+						id
+						type
+						posted
+						parameters
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+						hasPreviousPage
+						startCursor
+					}
+				}
+				history {
+					nodes {
+						schemaVersion
+						status
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+						hasPreviousPage
+						startCursor
+					}
+				}
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+				hasPreviousPage
+				startCursor
+			}
+		}
+	}
+}
+`
+
+func GetAccountDataMigrations(
+	ctx_ auth.AuthenticatedContext,
+	ledgerIk string,
+	filter *LedgerAccountDataMigrationsFilterSet,
+	after *string,
+	before *string,
+	first *int,
+	last *int,
+) (data_ *GetAccountDataMigrationsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetAccountDataMigrations",
+		Query:  GetAccountDataMigrations_Operation,
+		Variables: &__GetAccountDataMigrationsInput{
+			LedgerIk: ledgerIk,
+			Filter:   filter,
+			After:    after,
+			Before:   before,
+			First:    first,
+			Last:     last,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &GetAccountDataMigrationsResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by GetEntriesToMigrateForLedgerAccountDataMigration.
+const GetEntriesToMigrateForLedgerAccountDataMigration_Operation = `
+query GetEntriesToMigrateForLedgerAccountDataMigration ($ledgerIk: SafeString!, $accountPath: String!, $after: String, $before: String, $first: Int, $last: Int) {
+	ledger(ledger: {ik:$ledgerIk}) {
+		ledgerAccountDataMigrations(filter: {accountPath:{equalTo:$accountPath}}) {
+			nodes {
+				ledgerEntries(first: $first, after: $after, last: $last, before: $before) {
+					nodes {
+						id
+						ik
+						type
+						typeVersion
+						description
+						posted
+						created
+						parameters
+						lines {
+							nodes {
+								id
+								amount
+								account {
+									path
+								}
+							}
+						}
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+						hasPreviousPage
+						startCursor
+					}
+				}
+			}
+		}
+	}
+}
+`
+
+func GetEntriesToMigrateForLedgerAccountDataMigration(
+	ctx_ auth.AuthenticatedContext,
+	ledgerIk string,
+	accountPath string,
+	after *string,
+	before *string,
+	first *int,
+	last *int,
+) (data_ *GetEntriesToMigrateForLedgerAccountDataMigrationResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetEntriesToMigrateForLedgerAccountDataMigration",
+		Query:  GetEntriesToMigrateForLedgerAccountDataMigration_Operation,
+		Variables: &__GetEntriesToMigrateForLedgerAccountDataMigrationInput{
+			LedgerIk:    ledgerIk,
+			AccountPath: accountPath,
+			After:       after,
+			Before:      before,
+			First:       first,
+			Last:        last,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &GetEntriesToMigrateForLedgerAccountDataMigrationResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by GetEntriesToMigrateForLedgerEntryDataMigration.
+const GetEntriesToMigrateForLedgerEntryDataMigration_Operation = `
+query GetEntriesToMigrateForLedgerEntryDataMigration ($ledgerIk: SafeString!, $entryType: String!, $typeVersion: String!, $after: String, $before: String, $first: Int, $last: Int) {
+	ledger(ledger: {ik:$ledgerIk}) {
+		ledgerEntryDataMigrations(filter: {entryType:{equalTo:$entryType},typeVersion:{equalTo:$typeVersion}}) {
+			nodes {
+				ledgerEntries(first: $first, after: $after, last: $last, before: $before) {
+					nodes {
+						id
+						ik
+						type
+						typeVersion
+						description
+						posted
+						created
+						parameters
+						lines {
+							nodes {
+								id
+								amount
+								account {
+									path
+								}
+							}
+						}
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+						hasPreviousPage
+						startCursor
+					}
+				}
+			}
+		}
+	}
+}
+`
+
+func GetEntriesToMigrateForLedgerEntryDataMigration(
+	ctx_ auth.AuthenticatedContext,
+	ledgerIk string,
+	entryType string,
+	typeVersion string,
+	after *string,
+	before *string,
+	first *int,
+	last *int,
+) (data_ *GetEntriesToMigrateForLedgerEntryDataMigrationResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetEntriesToMigrateForLedgerEntryDataMigration",
+		Query:  GetEntriesToMigrateForLedgerEntryDataMigration_Operation,
+		Variables: &__GetEntriesToMigrateForLedgerEntryDataMigrationInput{
+			LedgerIk:    ledgerIk,
+			EntryType:   entryType,
+			TypeVersion: typeVersion,
+			After:       after,
+			Before:      before,
+			First:       first,
+			Last:        last,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &GetEntriesToMigrateForLedgerEntryDataMigrationResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by GetEntryDataMigrations.
+const GetEntryDataMigrations_Operation = `
+query GetEntryDataMigrations ($ledgerIk: SafeString!, $filter: LedgerEntryDataMigrationsFilterSet, $after: String, $before: String, $first: Int, $last: Int) {
+	ledger(ledger: {ik:$ledgerIk}) {
+		ledgerEntryDataMigrations(first: $first, after: $after, before: $before, last: $last, filter: $filter) {
+			nodes {
+				entryType
+				typeVersion
+				status
+				currentMigration {
+					schemaVersion
+					status
+				}
+				ledgerEntries {
+					nodes {
+						id
+						type
+						posted
+						parameters
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+						hasPreviousPage
+						startCursor
+					}
+				}
+				history {
+					nodes {
+						schemaVersion
+						status
+					}
+					pageInfo {
+						hasNextPage
+						endCursor
+						hasPreviousPage
+						startCursor
+					}
+				}
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+				hasPreviousPage
+				startCursor
+			}
+		}
+	}
+}
+`
+
+func GetEntryDataMigrations(
+	ctx_ auth.AuthenticatedContext,
+	ledgerIk string,
+	filter *LedgerEntryDataMigrationsFilterSet,
+	after *string,
+	before *string,
+	first *int,
+	last *int,
+) (data_ *GetEntryDataMigrationsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetEntryDataMigrations",
+		Query:  GetEntryDataMigrations_Operation,
+		Variables: &__GetEntryDataMigrationsInput{
+			LedgerIk: ledgerIk,
+			Filter:   filter,
+			After:    after,
+			Before:   before,
+			First:    first,
+			Last:     last,
+		},
+	}
+	var client_ graphql.Client
+
+	client_, err_ = client.NewClient(ctx_)
+	if err_ != nil {
+		return nil, err_
+	}
+
+	data_ = &GetEntryDataMigrationsResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
