@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -41,9 +42,10 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 	// If the token has expired, get a new one.
 	if c.clock.Now().After(token.ExpiresAt) {
 		token, err := auth.GetToken(
-			c.AuthenticatedContext,
+			context.Background(),
 			c.AuthenticatedContext.GetTokenParams(),
-			nil)
+			c.Client,
+		)
 		if err != nil {
 			return nil, err
 		}
