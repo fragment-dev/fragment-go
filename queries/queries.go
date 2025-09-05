@@ -845,7 +845,7 @@ type CreateCustomCurrencyCreateCustomCurrencyCreateCustomCurrencyResultCustomCur
 	Precision int `json:"precision"`
 	// A human readable name for the currency (e.g. United States Dollar). This is used for display purposes.
 	Name string `json:"name"`
-	// The currency code for custom currencies. This is only set if 'currency' is set to CUSTOM. It can be up to 32 characters long.
+	// The currency code for custom currencies. This is only set if 'currency' is set to CUSTOM. It can be up to 36 characters long.
 	CustomCode *string `json:"customCode"`
 }
 
