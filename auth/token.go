@@ -12,11 +12,13 @@ import (
 	"time"
 )
 
+type contextKey string
+
 const (
 	expiryTimeSkew int64 = 120
 
-	TokenParamsContextKey = "tokenParams"
-	TokenContextKey       = "token"
+	TokenParamsContextKey contextKey = "tokenParams"
+	TokenContextKey       contextKey = "token"
 )
 
 // GetTokenParams defines the parameters required to get an access token.
