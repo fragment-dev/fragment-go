@@ -29,11 +29,11 @@ func main() {
   authenticatedContext, err := auth.GetAuthenticatedContext(
     context.Background(),
     &auth.GetTokenParams{
-      ClientId:     "Client ID from Dashboard",
+      ClientID:     "Client ID from Dashboard",
       ClientSecret: "Client Secret from Dashboard",
       Scope:        "OAuth Scope from Dashboard",
-      AuthUrl:      "OAuth URL from Dashboard",
-      ApiUrl:       "API URL from Dashboard",
+      AuthURL:      "OAuth URL from Dashboard",
+      ApiURL:       "API URL from Dashboard",
     },
   )
   
@@ -134,13 +134,13 @@ import (
 
 type UserFundsAccountParameters struct {
 	FundingAmount string `json:"funding_amount"`
-	UserId        string `json:"user_id"`
+	UserID        string `json:"user_id"`
 }
 
 func main() {
 	serializedParams, _ := json.Marshal(&UserFundsAccountParameters{
 		FundingAmount: "100",
-		UserId:        "user-1",
+		UserID:        "user-1",
 	})
 
 	var posted string = "1968-01-01T16:45:00Z"

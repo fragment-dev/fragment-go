@@ -3,11 +3,11 @@ package auth
 import "context"
 
 type TokenParams interface {
-	GetClientId() string
+	GetClientID() string
 	GetClientSecret() string
 	GetScope() string
-	GetAuthUrl() string
-	GetApiUrl() string
+	GetAuthURL() string
+	GetApiURL() string
 
 	IsValid() error
 }

@@ -13,11 +13,11 @@ func main() {
 	fmt.Println("Running fragment-go SDK example.")
 
 	authenticatedContext, err := auth.GetAuthenticatedContext(context.Background(), &auth.GetTokenParams{
-		ClientId:     "<API Client ID>",
+		ClientID:     "<API Client ID>",
 		ClientSecret: "<API Client Secret>",
 		Scope:        "<OAuth Scope>",
-		AuthUrl:      "<OAuth URL>",
-		ApiUrl:       "<API URL>",
+		AuthURL:      "<OAuth URL>",
+		ApiURL:       "<API URL>",
 	})
 	if err != nil {
 		fmt.Println("Failed to get authenticated context.")
