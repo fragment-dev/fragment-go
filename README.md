@@ -193,3 +193,79 @@ func main() {
 	fmt.Println("Latest balance of account is: ", response.LedgerAccount.OwnBalance)
 }
 ```
+
+### Update the Account and Ledger Schema
+
+To [post](https://fragment.dev/api-reference/api-mutations#storeschema) an updated Ledger and Account Schema:
+
+``` go
+package main
+
+import (
+	"fmt"
+
+	"github.com/fragment-dev/fragment-go/queries"
+)
+
+func main() {
+	// Define the schema with chart of accounts and ledger entries
+	schema := queries.SchemaInput{
+		Key:  "my-schema",
+		Name: stringPtr("My Updated Schema"),
+		ChartOfAccounts: queries.ChartOfAccountsInput{
+			DefaultCurrencyMode: queries.CurrencyModeMulti,
+			Accounts: []queries.SchemaLedgerAccountInput{
+				{
+					Key:  "assets",
+					Name: stringPtr("Assets"),
+					Type: &queries.LedgerAccountTypesAsset,
+				},
+				{
+					Key:  "assets:cash",
+					Name: stringPtr("Cash"),
+					Type: &queries.LedgerAccountTypesAsset,
+				},
+				{
+					Key:  "liabilities",
+					Name: stringPtr("Liabilities"),
+					Type: &queries.LedgerAccountTypesLiability,
+				},
+				{
+					Key:  "liabilities:user",
+					Name: stringPtr("User Accounts"),
+					Type: &queries.LedgerAccountTypesLiability,
+				},
+			},
+		},
+		LedgerEntries: &queries.SchemaLedgerEntriesInput{
+			Types: []queries.SchemaLedgerEntryInput{
+				{
+					Type:        "user_funds_account",
+					Description: stringPtr("User deposits funds into their account"),
+					Lines: []queries.SchemaLedgerLineInput{
+						{
+							Account: queries.SchemaLedgerAccountMatchInput{
+								Path: stringPtr("assets:cash"),
+							},
+							Amount: stringPtr("{{ amount }}"),
+						},
+						{
+							Account: queries.SchemaLedgerAccountMatchInput{
+								Path: stringPtr("liabilities:user:{{ .user_id }}"),
+							},
+							Amount: stringPtr("{{ amount }}"),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	response, _ := queries.StoreSchema(authenticatedContext, schema)
+}
+
+// Helper function to convert string to *string
+func stringPtr(s string) *string {
+	return &s
+}
+```

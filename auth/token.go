@@ -44,7 +44,7 @@ func (gtp *GetTokenParams) GetClientID() string {
 	return gtp.ClientID
 }
 
-func (gtp *GetTokenParams) GetClientSecret() string {
+func (gtp *GetTokenParams) getClientSecret() string {
 	return gtp.ClientSecret
 }
 
@@ -123,7 +123,7 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 	var sb strings.Builder
 	sb.WriteString(params.GetClientID())
 	sb.WriteByte(':')
-	sb.WriteString(params.GetClientSecret())
+	sb.WriteString(params.getClientSecret())
 
 	encodedAuthURL := base64.StdEncoding.EncodeToString([]byte(sb.String()))
 

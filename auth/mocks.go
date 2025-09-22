@@ -10,7 +10,7 @@ func (mtp MockTokenParams) GetClientID() string {
 	return "test_client_id"
 }
 
-func (mtp MockTokenParams) GetClientSecret() string {
+func (mtp MockTokenParams) getClientSecret() string {
 	return "test_client_secret"
 }
 

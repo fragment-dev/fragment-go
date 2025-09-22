@@ -4,7 +4,7 @@ import "context"
 
 type TokenParams interface {
 	GetClientID() string
-	GetClientSecret() string
+	getClientSecret() string
 	GetScope() string
 	GetAuthURL() string
 	GetApiURL() string
