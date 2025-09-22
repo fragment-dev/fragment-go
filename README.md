@@ -29,11 +29,11 @@ func main() {
   authenticatedContext, err := auth.GetAuthenticatedContext(
     context.Background(),
     &auth.GetTokenParams{
-      ClientId:     "Client ID from Dashboard",
+      ClientID:     "Client ID from Dashboard",
       ClientSecret: "Client Secret from Dashboard",
       Scope:        "OAuth Scope from Dashboard",
-      AuthUrl:      "OAuth URL from Dashboard",
-      ApiUrl:       "API URL from Dashboard",
+      AuthURL:      "OAuth URL from Dashboard",
+      ApiURL:       "API URL from Dashboard",
     },
   )
   
@@ -134,13 +134,13 @@ import (
 
 type UserFundsAccountParameters struct {
 	FundingAmount string `json:"funding_amount"`
-	UserId        string `json:"user_id"`
+	UserID        string `json:"user_id"`
 }
 
 func main() {
 	serializedParams, _ := json.Marshal(&UserFundsAccountParameters{
 		FundingAmount: "100",
-		UserId:        "user-1",
+		UserID:        "user-1",
 	})
 
 	var posted string = "1968-01-01T16:45:00Z"
@@ -191,5 +191,72 @@ func main() {
 	)
 
 	fmt.Println("Latest balance of account is: ", response.LedgerAccount.OwnBalance)
+}
+```
+
+### Read a Schema
+
+To get a Schema from your Workspace:
+
+``` go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+
+	"github.com/fragment-dev/fragment-go/queries"
+)
+
+func main() {
+	data, err := queries.GetSchema(authenticatedContext, "test-schema", nil)
+	if err != nil {
+		fmt.Println("Failed to get schema.")
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	// Marshal the entire response to pretty JSON
+	jsonData, err := json.MarshalIndent(data.Schema.Version.Json, "", "  ")
+	if err != nil {
+		fmt.Printf("Error marshaling to JSON: %v\n", err)
+		os.Exit(1)
+	}
+    # Save the Schema as a file in your repository
+	err = os.WriteFile("fragment-schema.json", jsonData, 0644)
+	if err != nil {
+		fmt.Printf("Error writing file: %v\n", err)
+		os.Exit(1)
+	}
+}
+```
+
+### Store a Schema
+
+To [store](https://fragment.dev/api-reference/api-mutations#storeschema) a new version of your Schema:
+
+``` go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+
+	"github.com/fragment-dev/fragment-go/queries"
+)
+
+func main() {
+    // Read and unmarshal the JSON into SchemaInput
+    jsonData, _ := os.ReadFile("fragment-schema.json")
+    
+    var schemaInput queries.SchemaInput
+    json.Unmarshal(jsonData, &schemaInput)
+    
+    // Set the name since it's not on the JSON object
+    schemaInput.Name = &schemaInput.Key
+    
+    response, _ := queries.StoreSchema(authenticatedContext, schemaInput)
 }
 ```

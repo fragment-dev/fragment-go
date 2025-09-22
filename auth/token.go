@@ -12,18 +12,20 @@ import (
 	"time"
 )
 
+type contextKey string
+
 const (
 	expiryTimeSkew int64 = 120
 
-	TokenParamsContextKey = "tokenParams"
-	TokenContextKey       = "token"
+	TokenParamsContextKey contextKey = "tokenParams"
+	TokenContextKey       contextKey = "token"
 )
 
 // GetTokenParams defines the parameters required to get an access token.
 type GetTokenParams struct {
 	// The client ID of the application.
 	// Required: true
-	ClientId string `json:"client_id"`
+	ClientID string `json:"client_id"`
 	// The client secret of the application.
 	// Required: true
 	ClientSecret string `json:"client_secret"`
@@ -32,17 +34,17 @@ type GetTokenParams struct {
 	Scope string `json:"scope"`
 	// The URL of the token endpoint.
 	// Required: true
-	AuthUrl string `json:"auth_url"`
+	AuthURL string `json:"auth_url"`
 	// The API URL for this token.
 	// Required: true
-	ApiUrl string `json:"api_url"`
+	ApiURL string `json:"api_url"`
 }
 
-func (gtp *GetTokenParams) GetClientId() string {
-	return gtp.ClientId
+func (gtp *GetTokenParams) GetClientID() string {
+	return gtp.ClientID
 }
 
-func (gtp *GetTokenParams) GetClientSecret() string {
+func (gtp *GetTokenParams) getClientSecret() string {
 	return gtp.ClientSecret
 }
 
@@ -50,16 +52,16 @@ func (gtp *GetTokenParams) GetScope() string {
 	return gtp.Scope
 }
 
-func (gtp *GetTokenParams) GetAuthUrl() string {
-	return gtp.AuthUrl
+func (gtp *GetTokenParams) GetAuthURL() string {
+	return gtp.AuthURL
 }
 
-func (gtp *GetTokenParams) GetApiUrl() string {
-	return gtp.ApiUrl
+func (gtp *GetTokenParams) GetApiURL() string {
+	return gtp.ApiURL
 }
 
 func (gtp *GetTokenParams) IsValid() error {
-	if !strings.HasSuffix(gtp.AuthUrl, "oauth2/token") {
+	if !strings.HasSuffix(gtp.AuthURL, "oauth2/token") {
 		return fmt.Errorf("The AuthURL must end with /oauth2/token")
 	}
 	return nil
@@ -119,18 +121,18 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 	}
 
 	var sb strings.Builder
-	sb.WriteString(params.GetClientId())
+	sb.WriteString(params.GetClientID())
 	sb.WriteByte(':')
-	sb.WriteString(params.GetClientSecret())
+	sb.WriteString(params.getClientSecret())
 
-	encodedAuthUrl := base64.StdEncoding.EncodeToString([]byte(sb.String()))
+	encodedAuthURL := base64.StdEncoding.EncodeToString([]byte(sb.String()))
 
 	data := url.Values{}
 	data.Set("grant_type", "client_credentials")
 	data.Set("scope", params.GetScope())
-	data.Set("client_id", params.GetClientId())
+	data.Set("client_id", params.GetClientID())
 
-	req, err := http.NewRequest(http.MethodPost, params.GetAuthUrl(), strings.NewReader(data.Encode()))
+	req, err := http.NewRequest(http.MethodPost, params.GetAuthURL(), strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +141,7 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 		req = req.WithContext(ctx)
 	}
 
-	req.Header.Add("Authorization", "Basic "+encodedAuthUrl)
+	req.Header.Add("Authorization", "Basic "+encodedAuthURL)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("User-Agent", "fragment-dev/fragment-go")
@@ -148,11 +150,16 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 		client = &http.Client{}
 	}
 	resp, err := client.Do(req)
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Received non-OK status")
-	}
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		body, bodyErr := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		if bodyErr != nil {
+			return nil, fmt.Errorf("received non-OK status: %d %s (failed to read response body: %v)", resp.StatusCode, resp.Status, bodyErr)
+		}
+		return nil, fmt.Errorf("received non-OK status: %d %s, response body: %s", resp.StatusCode, resp.Status, string(body))
 	}
 	defer resp.Body.Close()
 

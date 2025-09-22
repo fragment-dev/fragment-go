@@ -3,14 +3,14 @@ package auth
 // MockTokenParams implements the TokenParams interface for use
 // in tests.
 type MockTokenParams struct {
-	ServerUrl string
+	ServerURL string
 }
 
-func (mtp MockTokenParams) GetClientId() string {
+func (mtp MockTokenParams) GetClientID() string {
 	return "test_client_id"
 }
 
-func (mtp MockTokenParams) GetClientSecret() string {
+func (mtp MockTokenParams) getClientSecret() string {
 	return "test_client_secret"
 }
 
@@ -18,12 +18,12 @@ func (mtp MockTokenParams) GetScope() string {
 	return "*"
 }
 
-func (mtp MockTokenParams) GetAuthUrl() string {
-	return mtp.ServerUrl
+func (mtp MockTokenParams) GetAuthURL() string {
+	return mtp.ServerURL
 }
 
-func (mtp MockTokenParams) GetApiUrl() string {
-	return mtp.ServerUrl
+func (mtp MockTokenParams) GetApiURL() string {
+	return mtp.ServerURL
 }
 
 func (mtp MockTokenParams) IsValid() error {
