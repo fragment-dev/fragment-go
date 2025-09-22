@@ -223,7 +223,7 @@ func main() {
 		fmt.Printf("Error marshaling to JSON: %v\n", err)
 		os.Exit(1)
 	}
-
+    # Save the Schema as a file in your repository
 	err = os.WriteFile("fragment-schema.json", jsonData, 0644)
 	if err != nil {
 		fmt.Printf("Error writing file: %v\n", err)
