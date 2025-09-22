@@ -194,78 +194,75 @@ func main() {
 }
 ```
 
-### Update the Account and Ledger Schema
+### Read an Account and Ledger's Schema
 
-To [post](https://fragment.dev/api-reference/api-mutations#storeschema) an updated Ledger and Account Schema:
+To get a Ledger and Account Schema from your Workspace:
 
 ``` go
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/fragment-dev/fragment-go/queries"
 )
 
 func main() {
-	// Define the schema with chart of accounts and ledger entries
-	schema := queries.SchemaInput{
-		Key:  "my-schema",
-		Name: stringPtr("My Updated Schema"),
-		ChartOfAccounts: queries.ChartOfAccountsInput{
-			DefaultCurrencyMode: queries.CurrencyModeMulti,
-			Accounts: []queries.SchemaLedgerAccountInput{
-				{
-					Key:  "assets",
-					Name: stringPtr("Assets"),
-					Type: &queries.LedgerAccountTypesAsset,
-				},
-				{
-					Key:  "assets:cash",
-					Name: stringPtr("Cash"),
-					Type: &queries.LedgerAccountTypesAsset,
-				},
-				{
-					Key:  "liabilities",
-					Name: stringPtr("Liabilities"),
-					Type: &queries.LedgerAccountTypesLiability,
-				},
-				{
-					Key:  "liabilities:user",
-					Name: stringPtr("User Accounts"),
-					Type: &queries.LedgerAccountTypesLiability,
-				},
-			},
-		},
-		LedgerEntries: &queries.SchemaLedgerEntriesInput{
-			Types: []queries.SchemaLedgerEntryInput{
-				{
-					Type:        "user_funds_account",
-					Description: stringPtr("User deposits funds into their account"),
-					Lines: []queries.SchemaLedgerLineInput{
-						{
-							Account: queries.SchemaLedgerAccountMatchInput{
-								Path: stringPtr("assets:cash"),
-							},
-							Amount: stringPtr("{{ amount }}"),
-						},
-						{
-							Account: queries.SchemaLedgerAccountMatchInput{
-								Path: stringPtr("liabilities:user:{{ .user_id }}"),
-							},
-							Amount: stringPtr("{{ amount }}"),
-						},
-					},
-				},
-			},
-		},
+	data, err := queries.GetSchema(authenticatedContext, "test-schema", nil)
+	if err != nil {
+		fmt.Println("Failed to get schema.")
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
-	response, _ := queries.StoreSchema(authenticatedContext, schema)
-}
+	// Marshal the entire response to pretty JSON
+	jsonData, err := json.MarshalIndent(data.Schema.Version.Json, "", "  ")
+	if err != nil {
+		fmt.Printf("Error marshaling to JSON: %v\n", err)
+		os.Exit(1)
+	}
 
-// Helper function to convert string to *string
-func stringPtr(s string) *string {
-	return &s
+	err = os.WriteFile("fragment-schema.json", jsonData, 0644)
+	if err != nil {
+		fmt.Printf("Error writing file: %v\n", err)
+		os.Exit(1)
+	}
+}
+```
+
+### Update an Account and Ledger's Schema
+
+We recommend you update your schema directly in the Fragment Dashboard, but if you need to do this dynamically you can combine the example above and below to:
+
+1. Get a JSON of your schema
+2. Make updates as you need
+3. Post your updated JSON
+
+To [post](https://fragment.dev/api-reference/api-mutations#storeschema) the updates to your Ledger and Account Schema:
+
+``` go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+
+	"github.com/fragment-dev/fragment-go/queries"
+)
+
+func main() {
+    // Read and unmarshal the JSON into SchemaInput
+    jsonData, _ := os.ReadFile("fragment-schema.json")
+    
+    var schemaInput queries.SchemaInput
+    json.Unmarshal(jsonData, &schemaInput)
+    
+    // Set the name since it's not on the JSON object
+    schemaInput.Name = &schemaInput.Key
+    
+    response, _ := queries.StoreSchema(authenticatedContext, schemaInput)
 }
 ```
