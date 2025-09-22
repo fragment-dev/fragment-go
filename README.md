@@ -194,9 +194,9 @@ func main() {
 }
 ```
 
-### Read an Account and Ledger's Schema
+### Read a Schema
 
-To get a Ledger and Account Schema from your Workspace:
+To get a Schema from your Workspace:
 
 ``` go
 package main
