@@ -232,15 +232,9 @@ func main() {
 }
 ```
 
-### Update an Account and Ledger's Schema
+### Store a Schema
 
-We recommend you update your schema directly in the Fragment Dashboard, but if you need to do this dynamically you can combine the example above and below to:
-
-1. Get a JSON of your schema
-2. Make updates as you need
-3. Post your updated JSON
-
-To [post](https://fragment.dev/api-reference/api-mutations#storeschema) the updates to your Ledger and Account Schema:
+To [store](https://fragment.dev/api-reference/api-mutations#storeschema) a new version of your Schema:
 
 ``` go
 package main
