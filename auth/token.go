@@ -150,11 +150,16 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 		client = &http.Client{}
 	}
 	resp, err := client.Do(req)
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("received non-OK status: %d %s", resp.StatusCode, resp.Status)
-	}
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		body, bodyErr := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		if bodyErr != nil {
+			return nil, fmt.Errorf("received non-OK status: %d %s (failed to read response body: %v)", resp.StatusCode, resp.Status, bodyErr)
+		}
+		return nil, fmt.Errorf("received non-OK status: %d %s, response body: %s", resp.StatusCode, resp.Status, string(body))
 	}
 	defer resp.Body.Close()
 
