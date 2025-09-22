@@ -2782,6 +2782,59 @@ func (v *ExternalAccountMatchInput) GetId() *string { return v.Id }
 // GetLinkId returns ExternalAccountMatchInput.LinkId, and is useful for accessing the field via an interface.
 func (v *ExternalAccountMatchInput) GetLinkId() *string { return v.LinkId }
 
+// A Flow in a Schema. Flows define sequences of Ledger Entries and other Flows that are reconciled together.
+type FlowInput struct {
+	// The path to the clearing account for this Flow.
+	ClearingAccountPath string `json:"clearingAccountPath"`
+	// Human-readable description of the Flow.
+	Description *string `json:"description"`
+	// The entries that make up this Flow.
+	Entries []FlowKeyInput `json:"entries"`
+	// The flows that are linked to this Flow.
+	Flows []FlowKeyInput `json:"flows"`
+	// The initializing entry for this Flow.
+	InitializingEntry FlowKeyInput `json:"initializingEntry"`
+	// The type of this Flow. This combined with its typeVersion is a stable, unique identifier for this flow.
+	Type string `json:"type"`
+	// The version of this Flow type.
+	TypeVersion int `json:"typeVersion"`
+}
+
+// GetClearingAccountPath returns FlowInput.ClearingAccountPath, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetClearingAccountPath() string { return v.ClearingAccountPath }
+
+// GetDescription returns FlowInput.Description, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetDescription() *string { return v.Description }
+
+// GetEntries returns FlowInput.Entries, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetEntries() []FlowKeyInput { return v.Entries }
+
+// GetFlows returns FlowInput.Flows, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetFlows() []FlowKeyInput { return v.Flows }
+
+// GetInitializingEntry returns FlowInput.InitializingEntry, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetInitializingEntry() FlowKeyInput { return v.InitializingEntry }
+
+// GetType returns FlowInput.Type, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetType() string { return v.Type }
+
+// GetTypeVersion returns FlowInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *FlowInput) GetTypeVersion() int { return v.TypeVersion }
+
+// A key used to identify Entries or Flows in an Flow
+type FlowKeyInput struct {
+	// The type of the Entry or Flow
+	Type string `json:"type"`
+	// The version of the Entry or Flow type.
+	TypeVersion int `json:"typeVersion"`
+}
+
+// GetType returns FlowKeyInput.Type, and is useful for accessing the field via an interface.
+func (v *FlowKeyInput) GetType() string { return v.Type }
+
+// GetTypeVersion returns FlowKeyInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *FlowKeyInput) GetTypeVersion() int { return v.TypeVersion }
+
 // GetAccountDataMigrationsLedger includes the requested fields of the GraphQL type Ledger.
 // The GraphQL type's documentation follows.
 //
@@ -7661,6 +7714,8 @@ type SchemaInput struct {
 	ChartOfAccounts ChartOfAccountsInput `json:"chartOfAccounts"`
 	// The consistency configuration for this Schema.
 	ConsistencyConfig *SchemaConsistencyConfigInput `json:"consistencyConfig"`
+	// Experimental: Any flows associated with this Schema. This field is not yet supported.
+	Flows []FlowInput `json:"flows"`
 	// The key of the Schema. This is a stable, unique identifier for the Schema. Uniqueness is enforced at the Workspace level.
 	Key string `json:"key"`
 	// The Ledger Entries to add to the Schema.
@@ -7678,6 +7733,9 @@ func (v *SchemaInput) GetChartOfAccounts() ChartOfAccountsInput { return v.Chart
 func (v *SchemaInput) GetConsistencyConfig() *SchemaConsistencyConfigInput {
 	return v.ConsistencyConfig
 }
+
+// GetFlows returns SchemaInput.Flows, and is useful for accessing the field via an interface.
+func (v *SchemaInput) GetFlows() []FlowInput { return v.Flows }
 
 // GetKey returns SchemaInput.Key, and is useful for accessing the field via an interface.
 func (v *SchemaInput) GetKey() string { return v.Key }
@@ -7879,7 +7937,7 @@ type SchemaLedgerEntryInput struct {
 	// The type of this Ledger Entry. This is a stable, unique identifier for this entry. Uniqueness is enforced at the Schema level.
 	// You can filter on this field when querying for Ledger Entries. See the docs on [LedgerEntryFilterSet](https://fragment.dev/api-reference/api-types#filter-types-ledgerentriesfilterset)
 	Type string `json:"type"`
-	// Experimental: This field is not yet supported.
+	// The version of the Ledger Entry type.
 	TypeVersion *int `json:"typeVersion"`
 }
 
