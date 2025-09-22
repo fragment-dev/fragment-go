@@ -151,7 +151,7 @@ func GetToken(ctx context.Context, params TokenParams, client *http.Client) (*To
 	}
 	resp, err := client.Do(req)
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Received non-OK status")
+		return nil, fmt.Errorf("received non-OK status: %d %s", resp.StatusCode, resp.Status)
 	}
 	if err != nil {
 		return nil, err
