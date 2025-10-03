@@ -5,20 +5,20 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fragment-dev/fragment-go/auth"
+	"github.com/fragment-dev/fragment-go/client"
 	"github.com/fragment-dev/fragment-go/queries"
 )
 
 func main() {
-	fmt.Println("Running fragment-go SDK example.")
+	tokenParams := &client.GetTokenParams{
+		ClientID:     "cp1ti1h8ur4915t3ft6itr0rc",
+		ClientSecret: "1u8il886b8jclh6mb8iircmrv1bivh524r9v0173rhdihcbaacej",
+		Scope:        "https://api.fragment.dev/*",
+		AuthURL:      "https://auth.dev-us-east-1.engineering.fragment.dev/oauth2/token",
+		ApiURL:       "https://api.dev-us-east-1.engineering.fragment.dev/graphql",
+	}
 
-	authenticatedContext, err := auth.GetAuthenticatedContext(context.Background(), &auth.GetTokenParams{
-		ClientID:     "<API Client ID>",
-		ClientSecret: "<API Client Secret>",
-		Scope:        "<OAuth Scope>",
-		AuthURL:      "<OAuth URL>",
-		ApiURL:       "<API URL>",
-	})
+	graphqlClient, err := client.NewClient(tokenParams)
 	if err != nil {
 		fmt.Println("Failed to get authenticated context.")
 		fmt.Println(err)
@@ -26,7 +26,8 @@ func main() {
 	}
 
 	data, err := queries.CreateLedger(
-		authenticatedContext,
+		context.Background(),
+		graphqlClient,
 		"test-ledger",
 		queries.CreateLedgerInput{Name: "Test Ledger"},
 		"test-schema")

@@ -8,12 +8,7 @@ import (
 	"fmt"
 
 	"github.com/Khan/genqlient/graphql"
-	"github.com/fragment-dev/fragment-go/auth"
-	"github.com/fragment-dev/fragment-go/client"
 )
-
-// Check that context_type from genqlient.yaml implements context.Context.
-var _ context.Context = (auth.AuthenticatedContext)(nil)
 
 // AddLedgerEntryAddLedgerEntryAddLedgerEntryResponse includes the requested fields of the GraphQL interface AddLedgerEntryResponse.
 //
@@ -2763,6 +2758,20 @@ func (v *DeleteSchemaResponse) __premarshalJSON() (*__premarshalDeleteSchemaResp
 	return &retval, nil
 }
 
+// A key used to identify Entries in an group
+type EntryKeyInput struct {
+	// The type of the Entry
+	Type string `json:"type"`
+	// The version of the Entry
+	TypeVersion int `json:"typeVersion"`
+}
+
+// GetType returns EntryKeyInput.Type, and is useful for accessing the field via an interface.
+func (v *EntryKeyInput) GetType() string { return v.Type }
+
+// GetTypeVersion returns EntryKeyInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *EntryKeyInput) GetTypeVersion() int { return v.TypeVersion }
+
 // Specify an External Account by using `id`, or `linkId` and `externalId`.
 type ExternalAccountMatchInput struct {
 	// The external system's ID of the External Account. If this is specified, `linkId` is required. `id` is optional, but will be validated if provided.
@@ -2781,59 +2790,6 @@ func (v *ExternalAccountMatchInput) GetId() *string { return v.Id }
 
 // GetLinkId returns ExternalAccountMatchInput.LinkId, and is useful for accessing the field via an interface.
 func (v *ExternalAccountMatchInput) GetLinkId() *string { return v.LinkId }
-
-// A Flow in a Schema. Flows define sequences of Ledger Entries and other Flows that are reconciled together.
-type FlowInput struct {
-	// The path to the clearing account for this Flow.
-	ClearingAccountPath string `json:"clearingAccountPath"`
-	// Human-readable description of the Flow.
-	Description *string `json:"description"`
-	// The entries that make up this Flow.
-	Entries []FlowKeyInput `json:"entries"`
-	// The flows that are linked to this Flow.
-	Flows []FlowKeyInput `json:"flows"`
-	// The initializing entry for this Flow.
-	InitializingEntry FlowKeyInput `json:"initializingEntry"`
-	// The type of this Flow. This combined with its typeVersion is a stable, unique identifier for this flow.
-	Type string `json:"type"`
-	// The version of this Flow type.
-	TypeVersion int `json:"typeVersion"`
-}
-
-// GetClearingAccountPath returns FlowInput.ClearingAccountPath, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetClearingAccountPath() string { return v.ClearingAccountPath }
-
-// GetDescription returns FlowInput.Description, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetDescription() *string { return v.Description }
-
-// GetEntries returns FlowInput.Entries, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetEntries() []FlowKeyInput { return v.Entries }
-
-// GetFlows returns FlowInput.Flows, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetFlows() []FlowKeyInput { return v.Flows }
-
-// GetInitializingEntry returns FlowInput.InitializingEntry, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetInitializingEntry() FlowKeyInput { return v.InitializingEntry }
-
-// GetType returns FlowInput.Type, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetType() string { return v.Type }
-
-// GetTypeVersion returns FlowInput.TypeVersion, and is useful for accessing the field via an interface.
-func (v *FlowInput) GetTypeVersion() int { return v.TypeVersion }
-
-// A key used to identify Entries or Flows in an Flow
-type FlowKeyInput struct {
-	// The type of the Entry or Flow
-	Type string `json:"type"`
-	// The version of the Entry or Flow type.
-	TypeVersion int `json:"typeVersion"`
-}
-
-// GetType returns FlowKeyInput.Type, and is useful for accessing the field via an interface.
-func (v *FlowKeyInput) GetType() string { return v.Type }
-
-// GetTypeVersion returns FlowKeyInput.TypeVersion, and is useful for accessing the field via an interface.
-func (v *FlowKeyInput) GetTypeVersion() int { return v.TypeVersion }
 
 // GetAccountDataMigrationsLedger includes the requested fields of the GraphQL type Ledger.
 // The GraphQL type's documentation follows.
@@ -4343,6 +4299,35 @@ func (v *GroupFilter) GetNotKeyEqualTo() *string { return v.NotKeyEqualTo }
 // GetNotKeyIn returns GroupFilter.NotKeyIn, and is useful for accessing the field via an interface.
 func (v *GroupFilter) GetNotKeyIn() []string { return v.NotKeyIn }
 
+// A Group in a Schema. Group define sequences of Ledger Entries and can help with reconciliation tasks.
+type GroupInput struct {
+	// Human-readable description of the Group.
+	Description *string `json:"description"`
+	// The entries that make up this group.
+	Entries []EntryKeyInput `json:"entries"`
+	// The key of this Group. This combined with its value is a stable, unique identifier for this group.
+	Key string `json:"key"`
+	// The parameters that are used to enable reconciliation abilities in a group.
+	Reconciliation *GroupReconciliationParametersInput `json:"reconciliation"`
+	// The value of this Group, can be a parameterized string to allow for dynamic values.
+	Value string `json:"value"`
+}
+
+// GetDescription returns GroupInput.Description, and is useful for accessing the field via an interface.
+func (v *GroupInput) GetDescription() *string { return v.Description }
+
+// GetEntries returns GroupInput.Entries, and is useful for accessing the field via an interface.
+func (v *GroupInput) GetEntries() []EntryKeyInput { return v.Entries }
+
+// GetKey returns GroupInput.Key, and is useful for accessing the field via an interface.
+func (v *GroupInput) GetKey() string { return v.Key }
+
+// GetReconciliation returns GroupInput.Reconciliation, and is useful for accessing the field via an interface.
+func (v *GroupInput) GetReconciliation() *GroupReconciliationParametersInput { return v.Reconciliation }
+
+// GetValue returns GroupInput.Value, and is useful for accessing the field via an interface.
+func (v *GroupInput) GetValue() string { return v.Value }
+
 // Input type for matching a specific group by key and value
 type GroupMatchInput struct {
 	// The key of the group to match
@@ -4365,6 +4350,17 @@ type GroupNotFilter struct {
 
 // GetKeyIn returns GroupNotFilter.KeyIn, and is useful for accessing the field via an interface.
 func (v *GroupNotFilter) GetKeyIn() []string { return v.KeyIn }
+
+// A set of parameters that are used to enable reconciliation abilities in a group
+type GroupReconciliationParametersInput struct {
+	// The path to the clearing account for this group. A clearing account is an account that is used to indicate funds that are in transit. Also called a suspense account, pending account, or zero balance account.
+	ClearingAccountPath SchemaLedgerAccountMatchInput `json:"clearingAccountPath"`
+}
+
+// GetClearingAccountPath returns GroupReconciliationParametersInput.ClearingAccountPath, and is useful for accessing the field via an interface.
+func (v *GroupReconciliationParametersInput) GetClearingAccountPath() SchemaLedgerAccountMatchInput {
+	return v.ClearingAccountPath
+}
 
 // A condition that must be met on an `Int96` field.
 type Int96ConditionInput struct {
@@ -7714,8 +7710,8 @@ type SchemaInput struct {
 	ChartOfAccounts ChartOfAccountsInput `json:"chartOfAccounts"`
 	// The consistency configuration for this Schema.
 	ConsistencyConfig *SchemaConsistencyConfigInput `json:"consistencyConfig"`
-	// Experimental: Any flows associated with this Schema. This field is not yet supported.
-	Flows []FlowInput `json:"flows"`
+	// Any groups associated with this Schema.
+	Groups []GroupInput `json:"groups"`
 	// The key of the Schema. This is a stable, unique identifier for the Schema. Uniqueness is enforced at the Workspace level.
 	Key string `json:"key"`
 	// The Ledger Entries to add to the Schema.
@@ -7734,8 +7730,8 @@ func (v *SchemaInput) GetConsistencyConfig() *SchemaConsistencyConfigInput {
 	return v.ConsistencyConfig
 }
 
-// GetFlows returns SchemaInput.Flows, and is useful for accessing the field via an interface.
-func (v *SchemaInput) GetFlows() []FlowInput { return v.Flows }
+// GetGroups returns SchemaInput.Groups, and is useful for accessing the field via an interface.
+func (v *SchemaInput) GetGroups() []GroupInput { return v.Groups }
 
 // GetKey returns SchemaInput.Key, and is useful for accessing the field via an interface.
 func (v *SchemaInput) GetKey() string { return v.Key }
@@ -10439,7 +10435,8 @@ mutation AddLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: S
 `
 
 func AddLedgerEntry(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ik string,
 	ledgerIk string,
 	entryType string,
@@ -10462,12 +10459,6 @@ func AddLedgerEntry(
 			Tags:        tags,
 			Groups:      groups,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &AddLedgerEntryResponse{}
@@ -10519,7 +10510,8 @@ mutation AddLedgerEntryRuntime ($ik: SafeString!, $entryType: String!, $typeVers
 `
 
 func AddLedgerEntryRuntime(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ik string,
 	entryType string,
 	typeVersion *int,
@@ -10542,12 +10534,6 @@ func AddLedgerEntryRuntime(
 			Tags:        tags,
 			Groups:      groups,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &AddLedgerEntryRuntimeResponse{}
@@ -10591,7 +10577,8 @@ mutation CreateCustomCurrency ($id: SafeString!, $name: String!, $precision: Int
 `
 
 func CreateCustomCurrency(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 	name string,
 	precision int,
@@ -10606,12 +10593,6 @@ func CreateCustomCurrency(
 			Precision:  precision,
 			CustomCode: customCode,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &CreateCustomCurrencyResponse{}
@@ -10654,7 +10635,8 @@ mutation CreateCustomLink ($name: String!, $ik: SafeString!) {
 `
 
 func CreateCustomLink(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	name string,
 	ik string,
 ) (data_ *CreateCustomLinkResponse, err_ error) {
@@ -10665,12 +10647,6 @@ func CreateCustomLink(
 			Name: name,
 			Ik:   ik,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &CreateCustomLinkResponse{}
@@ -10717,7 +10693,8 @@ mutation CreateLedger ($ik: SafeString!, $ledger: CreateLedgerInput!, $schemaKey
 `
 
 func CreateLedger(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ik string,
 	ledger CreateLedgerInput,
 	schemaKey string,
@@ -10730,12 +10707,6 @@ func CreateLedger(
 			Ledger:    ledger,
 			SchemaKey: schemaKey,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &CreateLedgerResponse{}
@@ -10784,7 +10755,8 @@ mutation DeleteCustomTxs ($txs: [ID!]!) {
 `
 
 func DeleteCustomTxs(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	txs []string,
 ) (data_ *DeleteCustomTxsResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -10793,12 +10765,6 @@ func DeleteCustomTxs(
 		Variables: &__DeleteCustomTxsInput{
 			Txs: txs,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &DeleteCustomTxsResponse{}
@@ -10836,7 +10802,8 @@ mutation DeleteLedger ($ledger: LedgerMatchInput!) {
 `
 
 func DeleteLedger(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledger LedgerMatchInput,
 ) (data_ *DeleteLedgerResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -10845,12 +10812,6 @@ func DeleteLedger(
 		Variables: &__DeleteLedgerInput{
 			Ledger: ledger,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &DeleteLedgerResponse{}
@@ -10888,7 +10849,8 @@ mutation DeleteSchema ($schema: SchemaMatchInput!) {
 `
 
 func DeleteSchema(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	schema SchemaMatchInput,
 ) (data_ *DeleteSchemaResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -10897,12 +10859,6 @@ func DeleteSchema(
 		Variables: &__DeleteSchemaInput{
 			Schema: schema,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &DeleteSchemaResponse{}
@@ -10968,7 +10924,8 @@ query GetAccountDataMigrations ($ledgerIk: SafeString!, $filter: LedgerAccountDa
 `
 
 func GetAccountDataMigrations(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	filter *LedgerAccountDataMigrationsFilterSet,
 	after *string,
@@ -10987,12 +10944,6 @@ func GetAccountDataMigrations(
 			First:    first,
 			Last:     last,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetAccountDataMigrationsResponse{}
@@ -11047,7 +10998,8 @@ query GetEntriesToMigrateForLedgerAccountDataMigration ($ledgerIk: SafeString!, 
 `
 
 func GetEntriesToMigrateForLedgerAccountDataMigration(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	accountPath string,
 	after *string,
@@ -11066,12 +11018,6 @@ func GetEntriesToMigrateForLedgerAccountDataMigration(
 			First:       first,
 			Last:        last,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetEntriesToMigrateForLedgerAccountDataMigrationResponse{}
@@ -11126,7 +11072,8 @@ query GetEntriesToMigrateForLedgerEntryDataMigration ($ledgerIk: SafeString!, $e
 `
 
 func GetEntriesToMigrateForLedgerEntryDataMigration(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	entryType string,
 	typeVersion string,
@@ -11147,12 +11094,6 @@ func GetEntriesToMigrateForLedgerEntryDataMigration(
 			First:       first,
 			Last:        last,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetEntriesToMigrateForLedgerEntryDataMigrationResponse{}
@@ -11219,7 +11160,8 @@ query GetEntryDataMigrations ($ledgerIk: SafeString!, $filter: LedgerEntryDataMi
 `
 
 func GetEntryDataMigrations(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	filter *LedgerEntryDataMigrationsFilterSet,
 	after *string,
@@ -11238,12 +11180,6 @@ func GetEntryDataMigrations(
 			First:    first,
 			Last:     last,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetEntryDataMigrationsResponse{}
@@ -11272,7 +11208,8 @@ query GetLedger ($ik: SafeString!) {
 `
 
 func GetLedger(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ik string,
 ) (data_ *GetLedgerResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -11281,12 +11218,6 @@ func GetLedger(
 		Variables: &__GetLedgerInput{
 			Ik: ik,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetLedgerResponse{}
@@ -11313,7 +11244,8 @@ query GetLedgerAccountBalance ($path: String!, $ledgerIk: SafeString!, $balanceC
 `
 
 func GetLedgerAccountBalance(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	path string,
 	ledgerIk string,
 	balanceCurrency *CurrencyMatchInput,
@@ -11330,12 +11262,6 @@ func GetLedgerAccountBalance(
 			BalanceAt:                 balanceAt,
 			OwnBalanceConsistencyMode: ownBalanceConsistencyMode,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetLedgerAccountBalanceResponse{}
@@ -11362,7 +11288,8 @@ query GetLedgerAccountBalanceWithChildRollup ($path: String!, $ledgerIk: SafeStr
 `
 
 func GetLedgerAccountBalanceWithChildRollup(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	path string,
 	ledgerIk string,
 	balanceCurrency *CurrencyMatchInput,
@@ -11377,12 +11304,6 @@ func GetLedgerAccountBalanceWithChildRollup(
 			BalanceCurrency: balanceCurrency,
 			BalanceAt:       balanceAt,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetLedgerAccountBalanceWithChildRollupResponse{}
@@ -11423,7 +11344,8 @@ query GetLedgerAccountLines ($path: String!, $ledgerIk: SafeString!, $after: Str
 `
 
 func GetLedgerAccountLines(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	path string,
 	ledgerIk string,
 	after *string,
@@ -11442,12 +11364,6 @@ func GetLedgerAccountLines(
 			Before:   before,
 			Filter:   filter,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetLedgerAccountLinesResponse{}
@@ -11485,7 +11401,8 @@ query GetLedgerEntry ($ik: SafeString!, $ledgerIk: SafeString!) {
 `
 
 func GetLedgerEntry(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ik string,
 	ledgerIk string,
 ) (data_ *GetLedgerEntryResponse, err_ error) {
@@ -11496,12 +11413,6 @@ func GetLedgerEntry(
 			Ik:       ik,
 			LedgerIk: ledgerIk,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetLedgerEntryResponse{}
@@ -11532,7 +11443,8 @@ query GetSchema ($key: SafeString!, $version: Int) {
 `
 
 func GetSchema(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	key string,
 	version *int,
 ) (data_ *GetSchemaResponse, err_ error) {
@@ -11543,12 +11455,6 @@ func GetSchema(
 			Key:     key,
 			Version: version,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetSchemaResponse{}
@@ -11574,17 +11480,12 @@ query GetWorkspace {
 `
 
 func GetWorkspace(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 ) (data_ *GetWorkspaceResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetWorkspace",
 		Query:  GetWorkspace_Operation,
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &GetWorkspaceResponse{}
@@ -11630,7 +11531,8 @@ query ListLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first:
 `
 
 func ListLedgerAccountBalances(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	after *string,
 	first *int,
@@ -11651,12 +11553,6 @@ func ListLedgerAccountBalances(
 			BalanceAt:                 balanceAt,
 			OwnBalanceConsistencyMode: ownBalanceConsistencyMode,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ListLedgerAccountBalancesResponse{}
@@ -11699,7 +11595,8 @@ query ListLedgerAccounts ($ledgerIk: SafeString!, $after: String, $first: Int, $
 `
 
 func ListLedgerAccounts(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	after *string,
 	first *int,
@@ -11714,12 +11611,6 @@ func ListLedgerAccounts(
 			First:    first,
 			Before:   before,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ListLedgerAccountsResponse{}
@@ -11764,7 +11655,8 @@ query ListLedgerEntries ($ledgerIk: SafeString!, $after: String, $first: Int, $b
 `
 
 func ListLedgerEntries(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	after *string,
 	first *int,
@@ -11781,12 +11673,6 @@ func ListLedgerEntries(
 			Before:   before,
 			Filter:   filter,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ListLedgerEntriesResponse{}
@@ -11831,7 +11717,8 @@ query ListLedgerEntryGroupBalances ($ledgerIk: SafeString!, $groupKey: SafeStrin
 `
 
 func ListLedgerEntryGroupBalances(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	groupKey string,
 	groupValue string,
@@ -11856,12 +11743,6 @@ func ListLedgerEntryGroupBalances(
 			Last:            last,
 			Filter:          filter,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ListLedgerEntryGroupBalancesResponse{}
@@ -11931,7 +11812,8 @@ query ListMultiCurrencyLedgerAccountBalances ($ledgerIk: SafeString!, $after: St
 `
 
 func ListMultiCurrencyLedgerAccountBalances(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	after *string,
 	first *int,
@@ -11950,12 +11832,6 @@ func ListMultiCurrencyLedgerAccountBalances(
 			BalanceAt:                  balanceAt,
 			OwnBalancesConsistencyMode: ownBalancesConsistencyMode,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ListMultiCurrencyLedgerAccountBalancesResponse{}
@@ -12050,7 +11926,8 @@ mutation MigrateLedgerEntry ($id: ID!, $newLedgerEntry: LedgerEntryInput!) {
 `
 
 func MigrateLedgerEntry(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 	newLedgerEntry LedgerEntryInput,
 ) (data_ *MigrateLedgerEntryResponse, err_ error) {
@@ -12061,12 +11938,6 @@ func MigrateLedgerEntry(
 			Id:             id,
 			NewLedgerEntry: newLedgerEntry,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &MigrateLedgerEntryResponse{}
@@ -12119,7 +11990,8 @@ mutation ReconcileTx ($ledgerIk: SafeString!, $entryType: String!, $typeVersion:
 `
 
 func ReconcileTx(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	entryType string,
 	typeVersion *int,
@@ -12138,12 +12010,6 @@ func ReconcileTx(
 			Tags:        tags,
 			Groups:      groups,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ReconcileTxResponse{}
@@ -12196,7 +12062,8 @@ mutation ReconcileTxRuntime ($ledgerIk: SafeString!, $entryType: String!, $typeV
 `
 
 func ReconcileTxRuntime(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	entryType string,
 	typeVersion *int,
@@ -12215,12 +12082,6 @@ func ReconcileTxRuntime(
 			Tags:        tags,
 			Groups:      groups,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ReconcileTxRuntimeResponse{}
@@ -12294,7 +12155,8 @@ mutation ReverseLedgerEntry ($id: ID!) {
 `
 
 func ReverseLedgerEntry(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (data_ *ReverseLedgerEntryResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -12303,12 +12165,6 @@ func ReverseLedgerEntry(
 		Variables: &__ReverseLedgerEntryInput{
 			Id: id,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &ReverseLedgerEntryResponse{}
@@ -12353,7 +12209,8 @@ mutation StoreSchema ($schema: SchemaInput!) {
 `
 
 func StoreSchema(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	schema SchemaInput,
 ) (data_ *StoreSchemaResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -12362,12 +12219,6 @@ func StoreSchema(
 		Variables: &__StoreSchemaInput{
 			Schema: schema,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &StoreSchemaResponse{}
@@ -12413,7 +12264,8 @@ mutation SyncCustomAccounts ($linkId: ID!, $accounts: [CustomAccountInput!]!) {
 `
 
 func SyncCustomAccounts(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	linkId string,
 	accounts []CustomAccountInput,
 ) (data_ *SyncCustomAccountsResponse, err_ error) {
@@ -12424,12 +12276,6 @@ func SyncCustomAccounts(
 			LinkId:   linkId,
 			Accounts: accounts,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &SyncCustomAccountsResponse{}
@@ -12476,7 +12322,8 @@ mutation SyncCustomTxs ($linkId: ID!, $txs: [CustomTxInput!]!) {
 `
 
 func SyncCustomTxs(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	linkId string,
 	txs []CustomTxInput,
 ) (data_ *SyncCustomTxsResponse, err_ error) {
@@ -12487,12 +12334,6 @@ func SyncCustomTxs(
 			LinkId: linkId,
 			Txs:    txs,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &SyncCustomTxsResponse{}
@@ -12534,7 +12375,8 @@ mutation UpdateLedger ($ledgerIk: SafeString!, $update: UpdateLedgerInput!) {
 `
 
 func UpdateLedger(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	ledgerIk string,
 	update UpdateLedgerInput,
 ) (data_ *UpdateLedgerResponse, err_ error) {
@@ -12545,12 +12387,6 @@ func UpdateLedger(
 			LedgerIk: ledgerIk,
 			Update:   update,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &UpdateLedgerResponse{}
@@ -12611,7 +12447,8 @@ mutation UpdateLedgerEntry ($entryIk: SafeString!, $ledgerIk: SafeString!, $upda
 `
 
 func UpdateLedgerEntry(
-	ctx_ auth.AuthenticatedContext,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	entryIk string,
 	ledgerIk string,
 	update UpdateLedgerEntryInput,
@@ -12624,12 +12461,6 @@ func UpdateLedgerEntry(
 			LedgerIk: ledgerIk,
 			Update:   update,
 		},
-	}
-	var client_ graphql.Client
-
-	client_, err_ = client.NewClient(ctx_)
-	if err_ != nil {
-		return nil, err_
 	}
 
 	data_ = &UpdateLedgerEntryResponse{}
