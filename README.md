@@ -12,7 +12,7 @@ go get -u github.com/fragment-dev/fragment-go
 
 ## Usage
 
-To start issuing queries, you'll first need to create an `auth.AuthenticatedContext`. You can generate credentials using the Fragment [dashboard](https://dashboard.fragment.dev/go/s/api-clients).
+To start issuing queries, you'll first need to create a client with credentials. You can generate credentials using the Fragment [dashboard](https://dashboard.fragment.dev/go/s/api-clients).
 
 ``` go
 import (
@@ -20,15 +20,14 @@ import (
   "fmt"
   "os"
   
-  "github.com/fragment-dev/fragment-go/auth"
+  "github.com/fragment-dev/fragment-go/client"
   "github.com/fragment-dev/fragment-go/queries"
 )
 
 func main() {
-  // Create an authenticated context
-  authenticatedContext, err := auth.GetAuthenticatedContext(
-    context.Background(),
-    &auth.GetTokenParams{
+  // Create a client
+  graphqlClient, err := client.NewClient(
+    &client.GetTokenParams{
       ClientID:     "Client ID from Dashboard",
       ClientSecret: "Client Secret from Dashboard",
       Scope:        "OAuth Scope from Dashboard",
@@ -45,7 +44,7 @@ func main() {
   fmt.Println("Successfully Authenticated!")
   
   // Use one of the predefined queries available
-  response, _ := queries.GetLedger(authenticatedContext, "your-ledger-ik")
+  response, _ := queries.GetLedger(context.Background(), graphqlClient, "your-ledger-ik")
   if response.Ledger != nil {
     fmt.Println("Retrieved Ledger " + response.Ledger.GetName())
   }
@@ -100,12 +99,14 @@ This should generate a `queries.go` file in your current working directory. You 
 package main
 
 import (
+	"context"
 	"fmt"
 )
 
 func main() {
 	response, _ := GetLatestSchema(
-		authenticatedContext,
+		context.Background(),
+		graphqlClient,
 		"your-schema-key",
 	)
 
@@ -126,6 +127,7 @@ To [post](https://fragment.dev/docs#post-ledger-entries-post-to-the-api) a Ledge
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -145,7 +147,8 @@ func main() {
 
 	var posted string = "1968-01-01T16:45:00Z"
 	response, _ := queries.AddLedgerEntry(
-		authenticatedContext,
+		context.Background(),
+		graphqlClient,
 		"some-ik",
 		"your-ledger-ik",
 		"user_funds_account",
@@ -175,6 +178,7 @@ To read a Ledger Account's [balance](https://fragment.dev/docs#read-balances-lat
 package main
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/fragment-dev/fragment-go/queries"
@@ -182,7 +186,8 @@ import (
 
 func main() {
 	response, _ := queries.GetLedgerAccountBalance(
-		authenticatedContext,
+		context.Background(),
+		graphqlClient,
 		"liabilities/user:user-1/available",
 		"your-ledger-ik",
 		&queries.CurrencyMatchInput{queries.CurrencyCodeUsd, nil},
@@ -202,6 +207,7 @@ To get a Schema from your Workspace:
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -210,7 +216,7 @@ import (
 )
 
 func main() {
-	data, err := queries.GetSchema(authenticatedContext, "test-schema", nil)
+	data, err := queries.GetSchema(context.Background(), graphqlClient, "test-schema", nil)
 	if err != nil {
 		fmt.Println("Failed to get schema.")
 		fmt.Println(err)
@@ -240,6 +246,7 @@ To [store](https://fragment.dev/api-reference/api-mutations#storeschema) a new v
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -257,6 +264,6 @@ func main() {
     // Set the name since it's not on the JSON object
     schemaInput.Name = &schemaInput.Key
     
-    response, _ := queries.StoreSchema(authenticatedContext, schemaInput)
+    response, _ := queries.StoreSchema(context.Background(), graphqlClient, schemaInput)
 }
 ```
