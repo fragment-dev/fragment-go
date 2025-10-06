@@ -15,7 +15,7 @@ import (
 )
 
 type HttpClient struct {
-	client      *http.Client // Changed from embedded *http.Client to unexported field
+	client      *http.Client
 	tokenParams TokenParams
 	token       *Token
 	clock       Clock
