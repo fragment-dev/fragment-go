@@ -9,8 +9,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"github.com/fragment-dev/fragment-go/queries"
 )
 
 type mockAlwaysAfterClock struct{}
