@@ -275,7 +275,7 @@ func main() {
 - Token management is now handled by the client
 - The client and a generic `context.Context` are now passed to each query
 
-With this change, the SDK now conforms to Go standards regarding now to use a context.
+With this change, the SDK now conforms to the Go standards around context usage.
 
 In v2.0.0 you would have set up an `AuthenticatedContext` with your API credentials and then passed it into every query function:
 
