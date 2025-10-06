@@ -11,11 +11,11 @@ import (
 
 func main() {
 	tokenParams := &client.GetTokenParams{
-		ClientID:     "cp1ti1h8ur4915t3ft6itr0rc",
-		ClientSecret: "1u8il886b8jclh6mb8iircmrv1bivh524r9v0173rhdihcbaacej",
-		Scope:        "https://api.fragment.dev/*",
-		AuthURL:      "https://auth.dev-us-east-1.engineering.fragment.dev/oauth2/token",
-		ApiURL:       "https://api.dev-us-east-1.engineering.fragment.dev/graphql",
+		ClientID:     "<API Client ID>",
+		ClientSecret: "<API Client Secret>",
+		Scope:        "<OAuth Scope>",
+		AuthURL:      "<OAuth URL>",
+		ApiURL:       "<API URL>",
 	}
 
 	graphqlClient, err := client.NewClient(tokenParams)
