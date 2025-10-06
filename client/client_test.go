@@ -9,6 +9,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/fragment-dev/fragment-go/queries"
 )
 
 type mockAlwaysAfterClock struct{}
@@ -25,12 +27,7 @@ func (mockAlwaysBeforeClock) Now() time.Time {
 
 func getMockServer(t_ *testing.T) *httptest.Server {
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Return a 200 if the content type is not application/x-www-form-urlencoded
-		if r.Header.Get("Content-Type") != "application/x-www-form-urlencoded" {
-			w.WriteHeader(http.StatusOK)
-		} else {
-			w.WriteHeader(http.StatusForbidden)
-		}
+		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"access_token":"new_access_token","expires_in":3600}`))
 	}))
 }
@@ -60,42 +57,22 @@ func TestTokenRefresh(t *testing.T) {
 	}
 
 	// This should attempt to refresh the token because it's expired
-	// The mock server returns 403 for token refresh requests, so we expect an error
-	_, err = client.Do(&http.Request{URL: serverURL, Header: http.Header{}})
-	if err == nil {
-		t.Errorf("Expected error from token refresh, got nil")
-	}
-}
-
-func TestTokenSkipRefresh(t *testing.T) {
-	server := getMockServer(t)
-	defer server.Close()
-
-	tokenParams := &GetTokenParams{
-		ClientID:     "test_client_id",
-		ClientSecret: "test_client_secret",
-		Scope:        "*",
-		AuthURL:      server.URL + "/oauth2/token",
-		ApiURL:       server.URL,
-	}
-	client := newHttpClient(&mockAlwaysBeforeClock{}, tokenParams)
-
-	// Set a token that won't be expired (far in the future)
-	client.SetToken(&Token{
-		AccessToken: "valid_token",
-		ExpiresAt:   time.Unix(9999999999, 0),
-	})
-
-	serverURL, err := url.Parse(server.URL)
-	if err != nil {
-		t.Fatalf("Failed to parse server URL: %s", err)
-	}
-
-	// This should NOT attempt to refresh the token because it's still valid
-	// The mock server returns 200 for non-refresh requests
 	_, err = client.Do(&http.Request{URL: serverURL, Header: http.Header{}})
 	if err != nil {
 		t.Errorf("Expected no error, got: %s", err)
+	}
+	if client.GetToken().AccessToken != "new_access_token" {
+		t.Errorf("Expected client's access token to equal mock returned access token")
+	}
+
+	// The next attempt should skip refresh the token because it's still valid
+	currentToken := client.GetToken()
+	_, err = client.Do(&http.Request{URL: serverURL, Header: http.Header{}})
+	if err != nil {
+		t.Errorf("Expected no error, got: %s", err)
+	}
+	if currentToken != client.GetToken() {
+		t.Errorf("Expected client's token to stay the same")
 	}
 }
 

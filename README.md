@@ -12,7 +12,7 @@ go get -u github.com/fragment-dev/fragment-go
 
 ## Usage
 
-To start issuing queries, you'll first need to create a client with credentials. You can generate credentials using the Fragment [dashboard](https://dashboard.fragment.dev/go/s/api-clients).
+To start issuing queries, you'll first need to create a client with the API credentials. You can generate credentials using the Fragment [dashboard](https://dashboard.fragment.dev/go/s/api-clients).
 
 ``` go
 import (
@@ -267,3 +267,57 @@ func main() {
     response, _ := queries.StoreSchema(context.Background(), graphqlClient, schemaInput)
 }
 ```
+
+## Upgrading SDK Versions
+### Changes from v2.0.0 to v3.0.0
+
+- Removed `AuthenticatedContext` and replaced it with `client.NewClient()`
+- Token management is now handled by the client
+- The client and a generic `context.Context` are now passed to each query
+
+With this change, the SDK now conforms to Go standards regarding now to use a context.
+
+In v2.0.0 you would have set up an `AuthenticatedContext` with your API credentials and then passed it into every query function:
+
+```
+authenticatedContext, _ := auth.GetAuthenticatedContext(
+	  context.Background(),
+    &auth.GetTokenParams{
+		ClientID:     "<API Client ID>",
+		ClientSecret: "<API Client Secret>",
+		Scope:        "<OAuth Scope>",
+		AuthURL:      "<OAuth URL>",
+		ApiURL:       "<API URL>",
+	})
+
+	data, _ := queries.CreateLedger(
+		authenticatedContext,
+		"test-ledger",
+		queries.CreateLedgerInput{Name: "Test Ledger"},
+		"test-schema")
+```
+
+In v3.x, you'll now initialize a client with your API credentials and then passed it into every query function:
+
+```
+	tokenParams := &client.GetTokenParams{
+		ClientID:     "<API Client ID>",
+		ClientSecret: "<API Client Secret>",
+		Scope:        "<OAuth Scope>",
+		AuthURL:      "<OAuth URL>",
+		ApiURL:       "<API URL>",
+	}
+
+	graphqlClient, _ := client.NewClient(tokenParams)
+
+	data, _ := queries.CreateLedger(
+		context.Background(),
+		graphqlClient,
+		"test-ledger",
+		queries.CreateLedgerInput{Name: "Test Ledger"},
+		"test-schema")
+```
+
+### Changes from v1.20 to v2.0.0
+
+See details and how to fix breaking changes [here](https://github.com/fragment-dev/fragment-go/releases/tag/v2.0.0).
