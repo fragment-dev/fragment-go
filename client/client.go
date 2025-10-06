@@ -16,8 +16,8 @@ import (
 
 type HttpClient struct {
 	*http.Client
-	TokenParams TokenParams
-	Token       *Token
+	tokenParams TokenParams
+	token       *Token
 	clock       Clock
 }
 
@@ -38,41 +38,41 @@ func newHttpClient(clock Clock, tokenParams TokenParams) *HttpClient {
 	return &HttpClient{
 		Client:      &http.Client{}, // TODO can i unexport this and token params since we're using a getter pattern?
 		clock:       clock,
-		TokenParams: tokenParams,
+		tokenParams: tokenParams,
 	}
 }
 
 func (c *HttpClient) GetTokenParams() TokenParams {
-	return c.TokenParams.(*GetTokenParams)
+	return c.tokenParams.(*GetTokenParams)
 }
 
 func (c *HttpClient) GetToken() *Token {
-	return c.Token
+	return c.token
 }
 
 func (c *HttpClient) SetToken(token *Token) {
-	c.Token = token
+	c.token = token
 }
 
 // GetToken retrieves a fresh access token from the API.
 func (c *HttpClient) GenerateToken(ctx context.Context) (*Token, error) {
-	if err := c.TokenParams.IsValid(); err != nil {
+	if err := c.tokenParams.IsValid(); err != nil {
 		return nil, err
 	}
 
 	var sb strings.Builder
-	sb.WriteString(c.TokenParams.GetClientID())
+	sb.WriteString(c.tokenParams.GetClientID())
 	sb.WriteByte(':')
-	sb.WriteString(c.TokenParams.getClientSecret())
+	sb.WriteString(c.tokenParams.getClientSecret())
 
 	encodedAuthURL := base64.StdEncoding.EncodeToString([]byte(sb.String()))
 
 	data := url.Values{}
 	data.Set("grant_type", "client_credentials")
-	data.Set("scope", c.TokenParams.GetScope())
-	data.Set("client_id", c.TokenParams.GetClientID())
+	data.Set("scope", c.tokenParams.GetScope())
+	data.Set("client_id", c.tokenParams.GetClientID())
 
-	req, err := http.NewRequest(http.MethodPost, c.TokenParams.GetAuthURL(), strings.NewReader(data.Encode()))
+	req, err := http.NewRequest(http.MethodPost, c.tokenParams.GetAuthURL(), strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
 	}
