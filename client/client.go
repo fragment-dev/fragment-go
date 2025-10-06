@@ -15,7 +15,7 @@ import (
 )
 
 type HttpClient struct {
-	*http.Client
+	client      *http.Client // Changed from embedded *http.Client to unexported field
 	tokenParams TokenParams
 	token       *Token
 	clock       Clock
@@ -36,7 +36,7 @@ func newHttpClient(clock Clock, tokenParams TokenParams) *HttpClient {
 		clock = getClock()
 	}
 	return &HttpClient{
-		Client:      &http.Client{}, // TODO can i unexport this and token params since we're using a getter pattern?
+		client:      &http.Client{},
 		clock:       clock,
 		tokenParams: tokenParams,
 	}
@@ -86,10 +86,10 @@ func (c *HttpClient) GenerateToken(ctx context.Context) (*Token, error) {
 	req.Header.Add("Accept", "*/*")
 	req.Header.Add("User-Agent", "fragment-dev/fragment-go")
 
-	if c.Client == nil {
-		c.Client = &http.Client{}
+	if c.client == nil {
+		c.client = &http.Client{}
 	}
-	resp, err := c.Client.Do(req)
+	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
 
 	req.Header.Set("Authorization", "Bearer "+token.AccessToken)
 	req.Header.Set("X-Fragment-Client", "go-client")
-	return c.Client.Do(req)
+	return c.client.Do(req)
 }
 
 // NewClient creates a new GraphQL client with the provided authenticated context.
