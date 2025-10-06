@@ -67,10 +67,9 @@ func main() {
 	}
 
 	codegenConfig := &generate.Config{
-		Schema:       []string{schemaFile},
-		ContextType:  "github.com/fragment-dev/fragment-go/auth.AuthenticatedContext",
-		ClientGetter: "github.com/fragment-dev/fragment-go/client.NewClient",
-		Operations:   args.Inputs,
+		Schema:      []string{schemaFile},
+		Operations:  args.Inputs,
+		ContextType: "context.Context",
 		Bindings: map[string]*generate.TypeBinding{
 			"AlphaNumericString":  {Type: "string"},
 			"Date":                {Type: "string"},
@@ -81,7 +80,7 @@ func main() {
 			"JSON":                {Type: "encoding/json.RawMessage"},
 			"JSONObject":          {Type: "encoding/json.RawMessage"},
 			"LastMoment":          {Type: "string"},
-			"Parameters":	       {Type: "encoding/json.RawMessage"},
+			"Parameters":          {Type: "encoding/json.RawMessage"},
 			"ParameterizedString": {Type: "string"},
 			"Period":              {Type: "string"},
 			"SafeString":          {Type: "string"},
