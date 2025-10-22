@@ -2758,20 +2758,6 @@ func (v *DeleteSchemaResponse) __premarshalJSON() (*__premarshalDeleteSchemaResp
 	return &retval, nil
 }
 
-// A key used to identify Entries in an group
-type EntryKeyInput struct {
-	// The type of the Entry
-	Type string `json:"type"`
-	// The version of the Entry
-	TypeVersion int `json:"typeVersion"`
-}
-
-// GetType returns EntryKeyInput.Type, and is useful for accessing the field via an interface.
-func (v *EntryKeyInput) GetType() string { return v.Type }
-
-// GetTypeVersion returns EntryKeyInput.TypeVersion, and is useful for accessing the field via an interface.
-func (v *EntryKeyInput) GetTypeVersion() int { return v.TypeVersion }
-
 // Specify an External Account by using `id`, or `linkId` and `externalId`.
 type ExternalAccountMatchInput struct {
 	// The external system's ID of the External Account. If this is specified, `linkId` is required. `id` is optional, but will be validated if provided.
@@ -4303,30 +4289,20 @@ func (v *GroupFilter) GetNotKeyIn() []string { return v.NotKeyIn }
 type GroupInput struct {
 	// Human-readable description of the Group.
 	Description *string `json:"description"`
-	// The entries that make up this group.
-	Entries []EntryKeyInput `json:"entries"`
 	// The key of this Group. This combined with its value is a stable, unique identifier for this group.
 	Key string `json:"key"`
 	// The parameters that are used to enable reconciliation abilities in a group.
 	Reconciliation *GroupReconciliationParametersInput `json:"reconciliation"`
-	// The value of this Group, can be a parameterized string to allow for dynamic values.
-	Value string `json:"value"`
 }
 
 // GetDescription returns GroupInput.Description, and is useful for accessing the field via an interface.
 func (v *GroupInput) GetDescription() *string { return v.Description }
-
-// GetEntries returns GroupInput.Entries, and is useful for accessing the field via an interface.
-func (v *GroupInput) GetEntries() []EntryKeyInput { return v.Entries }
 
 // GetKey returns GroupInput.Key, and is useful for accessing the field via an interface.
 func (v *GroupInput) GetKey() string { return v.Key }
 
 // GetReconciliation returns GroupInput.Reconciliation, and is useful for accessing the field via an interface.
 func (v *GroupInput) GetReconciliation() *GroupReconciliationParametersInput { return v.Reconciliation }
-
-// GetValue returns GroupInput.Value, and is useful for accessing the field via an interface.
-func (v *GroupInput) GetValue() string { return v.Value }
 
 // Input type for matching a specific group by key and value
 type GroupMatchInput struct {
