@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fragment-dev/fragment-go/client"
-	"github.com/fragment-dev/fragment-go/queries"
+	"github.com/fragment-dev/fragment-go/v3/client"
+	"github.com/fragment-dev/fragment-go/v3/queries"
 )
 
 func main() {

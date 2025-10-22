@@ -7,7 +7,7 @@
 This library requires Go 1.20+.
 
 ``` shell
-go get -u github.com/fragment-dev/fragment-go
+go get -u github.com/fragment-dev/fragment-go/v3
 ```
 
 ## Usage
@@ -20,8 +20,8 @@ import (
   "fmt"
   "os"
   
-  "github.com/fragment-dev/fragment-go/client"
-  "github.com/fragment-dev/fragment-go/queries"
+  "github.com/fragment-dev/fragment-go/v3/client"
+  "github.com/fragment-dev/fragment-go/v3/queries"
 )
 
 func main() {
@@ -60,7 +60,7 @@ We appreciate feedback; please open an [issue](https://github.com/fragment-dev/f
 While the SDK comes with predefined GraphQL queries, you may want to customize these queries for your product. In order to do that, run:
 
 ``` shell
-go run github.com/fragment-dev/fragment-go \
+go run github.com/fragment-dev/fragment-go/v3 \
   --input <path-to-your-graphql-queries-file.graphql>
   --output <path-to-the-output.go>
   --package <package-name>
@@ -87,7 +87,7 @@ query GetLatestSchema($key: SafeString!) {
 Run the SDK codegen to generate the code for your GraphQL query.
 
 ``` shell
-go run github.com/fragment-dev/fragment-go \
+go run github.com/fragment-dev/fragment-go/v3 \
   --input queries.graphql
   --output queries.go
   --package main
@@ -131,7 +131,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/fragment-dev/fragment-go/queries"
+	"github.com/fragment-dev/fragment-go/v3/queries"
 )
 
 type UserFundsAccountParameters struct {
@@ -181,7 +181,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fragment-dev/fragment-go/queries"
+	"github.com/fragment-dev/fragment-go/v3/queries"
 )
 
 func main() {
@@ -212,7 +212,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fragment-dev/fragment-go/queries"
+	"github.com/fragment-dev/fragment-go/v3/queries"
 )
 
 func main() {
@@ -251,7 +251,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fragment-dev/fragment-go/queries"
+	"github.com/fragment-dev/fragment-go/v3/queries"
 )
 
 func main() {
