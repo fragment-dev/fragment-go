@@ -2,6 +2,8 @@
 
 [Fragment](https://fragment.dev) is the Ledger API for engineers that move money. Stop wrangling payment tables, debugging balance errors, and hacking together data pipelines. Start shipping the features that make a difference.
 
+> If you're upgrading from an earlier version, the module import path has changed to `github.com/fragment-dev/fragment-go/v3`. Update your imports to use `/v3` to get the latest version. See the [Upgrading SDK Versions](#upgrading-sdk-versions) section for details.
+
 ## Installation
 
 This library requires Go 1.20+.
