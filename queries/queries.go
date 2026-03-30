@@ -1563,6 +1563,8 @@ const (
 	CurrencyCodeByr     CurrencyCode = "BYR"
 	CurrencyCodeBzd     CurrencyCode = "BZD"
 	CurrencyCodeCad     CurrencyCode = "CAD"
+	CurrencyCodeCadc    CurrencyCode = "CADC"
+	CurrencyCodeCadt    CurrencyCode = "CADT"
 	CurrencyCodeCdf     CurrencyCode = "CDF"
 	CurrencyCodeChf     CurrencyCode = "CHF"
 	CurrencyCodeClp     CurrencyCode = "CLP"
@@ -1584,6 +1586,7 @@ const (
 	CurrencyCodeEtb     CurrencyCode = "ETB"
 	CurrencyCodeEth     CurrencyCode = "ETH"
 	CurrencyCodeEur     CurrencyCode = "EUR"
+	CurrencyCodeEurc    CurrencyCode = "EURC"
 	CurrencyCodeFjd     CurrencyCode = "FJD"
 	CurrencyCodeFkp     CurrencyCode = "FKP"
 	CurrencyCodeGbp     CurrencyCode = "GBP"
@@ -1693,6 +1696,7 @@ const (
 	CurrencyCodeUni     CurrencyCode = "UNI"
 	CurrencyCodeUsd     CurrencyCode = "USD"
 	CurrencyCodeUsdc    CurrencyCode = "USDC"
+	CurrencyCodeUsdg    CurrencyCode = "USDG"
 	CurrencyCodeUsdt    CurrencyCode = "USDT"
 	CurrencyCodeUyu     CurrencyCode = "UYU"
 	CurrencyCodeUzs     CurrencyCode = "UZS"
@@ -1741,6 +1745,8 @@ var AllCurrencyCode = []CurrencyCode{
 	CurrencyCodeByr,
 	CurrencyCodeBzd,
 	CurrencyCodeCad,
+	CurrencyCodeCadc,
+	CurrencyCodeCadt,
 	CurrencyCodeCdf,
 	CurrencyCodeChf,
 	CurrencyCodeClp,
@@ -1762,6 +1768,7 @@ var AllCurrencyCode = []CurrencyCode{
 	CurrencyCodeEtb,
 	CurrencyCodeEth,
 	CurrencyCodeEur,
+	CurrencyCodeEurc,
 	CurrencyCodeFjd,
 	CurrencyCodeFkp,
 	CurrencyCodeGbp,
@@ -1871,6 +1878,7 @@ var AllCurrencyCode = []CurrencyCode{
 	CurrencyCodeUni,
 	CurrencyCodeUsd,
 	CurrencyCodeUsdc,
+	CurrencyCodeUsdg,
 	CurrencyCodeUsdt,
 	CurrencyCodeUyu,
 	CurrencyCodeUzs,
@@ -3826,8 +3834,8 @@ type GetLedgerAccountBalanceLedgerAccount struct {
 	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
 	// this will be composed of the IKs of an account and its ancestors.
 	Path string `json:"path"`
-	// Total of all lines in this ledger account, excluding all child ledger accounts
-	OwnBalance string `json:"ownBalance"`
+	// Total of all lines in this ledger account and child ledger accounts of the same currency as this ledger account
+	Balance string `json:"balance"`
 }
 
 // GetId returns GetLedgerAccountBalanceLedgerAccount.Id, and is useful for accessing the field via an interface.
@@ -3836,8 +3844,8 @@ func (v *GetLedgerAccountBalanceLedgerAccount) GetId() string { return v.Id }
 // GetPath returns GetLedgerAccountBalanceLedgerAccount.Path, and is useful for accessing the field via an interface.
 func (v *GetLedgerAccountBalanceLedgerAccount) GetPath() string { return v.Path }
 
-// GetOwnBalance returns GetLedgerAccountBalanceLedgerAccount.OwnBalance, and is useful for accessing the field via an interface.
-func (v *GetLedgerAccountBalanceLedgerAccount) GetOwnBalance() string { return v.OwnBalance }
+// GetBalance returns GetLedgerAccountBalanceLedgerAccount.Balance, and is useful for accessing the field via an interface.
+func (v *GetLedgerAccountBalanceLedgerAccount) GetBalance() string { return v.Balance }
 
 // GetLedgerAccountBalanceResponse is returned by GetLedgerAccountBalance on success.
 type GetLedgerAccountBalanceResponse struct {
@@ -3847,40 +3855,6 @@ type GetLedgerAccountBalanceResponse struct {
 
 // GetLedgerAccount returns GetLedgerAccountBalanceResponse.LedgerAccount, and is useful for accessing the field via an interface.
 func (v *GetLedgerAccountBalanceResponse) GetLedgerAccount() *GetLedgerAccountBalanceLedgerAccount {
-	return v.LedgerAccount
-}
-
-// GetLedgerAccountBalanceWithChildRollupLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
-// The GraphQL type's documentation follows.
-//
-// A ledger account is a container for money
-type GetLedgerAccountBalanceWithChildRollupLedgerAccount struct {
-	Id string `json:"id"`
-	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
-	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
-	// this will be composed of the IKs of an account and its ancestors.
-	Path string `json:"path"`
-	// Total of all lines in this ledger account and child ledger accounts of the same currency as this ledger account
-	Balance string `json:"balance"`
-}
-
-// GetId returns GetLedgerAccountBalanceWithChildRollupLedgerAccount.Id, and is useful for accessing the field via an interface.
-func (v *GetLedgerAccountBalanceWithChildRollupLedgerAccount) GetId() string { return v.Id }
-
-// GetPath returns GetLedgerAccountBalanceWithChildRollupLedgerAccount.Path, and is useful for accessing the field via an interface.
-func (v *GetLedgerAccountBalanceWithChildRollupLedgerAccount) GetPath() string { return v.Path }
-
-// GetBalance returns GetLedgerAccountBalanceWithChildRollupLedgerAccount.Balance, and is useful for accessing the field via an interface.
-func (v *GetLedgerAccountBalanceWithChildRollupLedgerAccount) GetBalance() string { return v.Balance }
-
-// GetLedgerAccountBalanceWithChildRollupResponse is returned by GetLedgerAccountBalanceWithChildRollup on success.
-type GetLedgerAccountBalanceWithChildRollupResponse struct {
-	// Get a Ledger Account by ID
-	LedgerAccount *GetLedgerAccountBalanceWithChildRollupLedgerAccount `json:"ledgerAccount"`
-}
-
-// GetLedgerAccount returns GetLedgerAccountBalanceWithChildRollupResponse.LedgerAccount, and is useful for accessing the field via an interface.
-func (v *GetLedgerAccountBalanceWithChildRollupResponse) GetLedgerAccount() *GetLedgerAccountBalanceWithChildRollupLedgerAccount {
 	return v.LedgerAccount
 }
 
@@ -4238,6 +4212,8 @@ func (v *GroupBalanceAccountFilter) GetPath() *StringMatchFilter { return v.Path
 
 // Filter for finding entries by group membership
 type GroupFilter struct {
+	// Find entries that have ALL of the specified groups. Limited to 10 items maximum.
+	All []GroupMatchInput `json:"all"`
 	// Find groups that exactly match this group
 	EqualTo *GroupMatchInput `json:"equalTo"`
 	// Find groups that match any of these groups
@@ -4257,6 +4233,9 @@ type GroupFilter struct {
 	// Find groups that do not have any of these keys
 	NotKeyIn []string `json:"notKeyIn"`
 }
+
+// GetAll returns GroupFilter.All, and is useful for accessing the field via an interface.
+func (v *GroupFilter) GetAll() []GroupMatchInput { return v.All }
 
 // GetEqualTo returns GroupFilter.EqualTo, and is useful for accessing the field via an interface.
 func (v *GroupFilter) GetEqualTo() *GroupMatchInput { return v.EqualTo }
@@ -4383,11 +4362,16 @@ func (v *Int96Filter) GetNe() *string { return v.Ne }
 // A set of conditions that a Ledger Account must meet for an operation to succeed.
 type LedgerAccountConditionInput struct {
 	// A condition that the ownBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](https://fragment.dev/read-balances) for more on the different types of Ledger Account balances.
-	OwnBalance Int96ConditionInput `json:"ownBalance"`
+	OwnBalance *Int96ConditionInput `json:"ownBalance"`
+	// A condition that the totalBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](https://fragment.dev/read-balances) for more on the different types of Ledger Account balances.
+	TotalBalance *Int96ConditionInput `json:"totalBalance"`
 }
 
 // GetOwnBalance returns LedgerAccountConditionInput.OwnBalance, and is useful for accessing the field via an interface.
-func (v *LedgerAccountConditionInput) GetOwnBalance() Int96ConditionInput { return v.OwnBalance }
+func (v *LedgerAccountConditionInput) GetOwnBalance() *Int96ConditionInput { return v.OwnBalance }
+
+// GetTotalBalance returns LedgerAccountConditionInput.TotalBalance, and is useful for accessing the field via an interface.
+func (v *LedgerAccountConditionInput) GetTotalBalance() *Int96ConditionInput { return v.TotalBalance }
 
 // The payload configuring the consistency for this Ledger Account.
 // See [Configure consistency](https://fragment.dev/docs/configure-consistency).
@@ -4410,6 +4394,13 @@ type LedgerAccountConsistencyConfigInput struct {
 	//
 	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	OwnBalanceUpdates *BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
+	// EXPERIMENTAL: If set to `strong`, then a Ledger Account's `totalBalance` updates will be strongly consistent with the API response.
+	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
+	//
+	// Otherwise if unset or set to `eventual`, `totalBalance` updates are applied asynchronously and may not be immediately reflected in queries.
+	//
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	TotalBalanceUpdates *BalanceUpdateConsistencyMode `json:"totalBalanceUpdates"`
 }
 
 // GetGroups returns LedgerAccountConsistencyConfigInput.Groups, and is useful for accessing the field via an interface.
@@ -4423,6 +4414,11 @@ func (v *LedgerAccountConsistencyConfigInput) GetLines() *LedgerLinesConsistency
 // GetOwnBalanceUpdates returns LedgerAccountConsistencyConfigInput.OwnBalanceUpdates, and is useful for accessing the field via an interface.
 func (v *LedgerAccountConsistencyConfigInput) GetOwnBalanceUpdates() *BalanceUpdateConsistencyMode {
 	return v.OwnBalanceUpdates
+}
+
+// GetTotalBalanceUpdates returns LedgerAccountConsistencyConfigInput.TotalBalanceUpdates, and is useful for accessing the field via an interface.
+func (v *LedgerAccountConsistencyConfigInput) GetTotalBalanceUpdates() *BalanceUpdateConsistencyMode {
+	return v.TotalBalanceUpdates
 }
 
 type LedgerAccountDataMigrationsFilterSet struct {
@@ -4439,6 +4435,19 @@ func (v *LedgerAccountDataMigrationsFilterSet) GetAccountPath() *StringFilter { 
 func (v *LedgerAccountDataMigrationsFilterSet) GetStatus() *LedgerDataMigrationStatus {
 	return v.Status
 }
+
+type LedgerAccountFilter struct {
+	// Result must match the specified Ledger Account
+	EqualTo *LedgerAccountMatchInput `json:"equalTo"`
+	// Results can match any of specified Ledger Accounts
+	In []LedgerAccountMatchInput `json:"in"`
+}
+
+// GetEqualTo returns LedgerAccountFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *LedgerAccountFilter) GetEqualTo() *LedgerAccountMatchInput { return v.EqualTo }
+
+// GetIn returns LedgerAccountFilter.In, and is useful for accessing the field via an interface.
+func (v *LedgerAccountFilter) GetIn() []LedgerAccountMatchInput { return v.In }
 
 // The consistency configuration for a specific Ledger Entry Group in this account.
 type LedgerAccountGroupConsistencyConfigInput struct {
@@ -4753,6 +4762,8 @@ type LedgerLineInput struct {
 	Description *string `json:"description"`
 	// Optional identifier for Ledger Line. You can filter lines by key using [LedgerLinesFilterSet](https://fragment.dev/api-reference/api-types#filter-types-ledgerlinesfilterset).
 	Key *string `json:"key"`
+	// A set of tags attached to this Ledger Line.
+	Tags []LedgerEntryTagInput `json:"tags"`
 	// Required for reconcileTx to specify the transaction being reconciled, you can specify either the FRAGMENT ID or external ID of the transaction
 	Tx *TxMatchInput `json:"tx"`
 }
@@ -4771,6 +4782,9 @@ func (v *LedgerLineInput) GetDescription() *string { return v.Description }
 
 // GetKey returns LedgerLineInput.Key, and is useful for accessing the field via an interface.
 func (v *LedgerLineInput) GetKey() *string { return v.Key }
+
+// GetTags returns LedgerLineInput.Tags, and is useful for accessing the field via an interface.
+func (v *LedgerLineInput) GetTags() []LedgerEntryTagInput { return v.Tags }
 
 // GetTx returns LedgerLineInput.Tx, and is useful for accessing the field via an interface.
 func (v *LedgerLineInput) GetTx() *TxMatchInput { return v.Tx }
@@ -4800,11 +4814,20 @@ type LedgerLinesFilterSet struct {
 	IsReversed *bool `json:"isReversed"`
 	// Use this to filter Ledger Lines by key. Ledger Line keys are defined in Schemas.
 	Key *StringFilter `json:"key"`
+	// Specify which Ledger Account to read lines from. Required when querying lines via `Ledger.lines` without a `path` filter. Not allowed when querying via `LedgerAccount.lines`.
+	LedgerAccount *LedgerAccountFilter `json:"ledgerAccount"`
+	// A filter that string matches the account path. Wildcards ('*') can be used to return lines across multiple accounts.
+	// To search for all instances of a a Ledger Account template, use the `matches` filter  with an wildcard character in place of the template value e.g. `assets/user:*`. This returns lines from all instances of this template, interleaved by `posted` timestamp.
+	// To search for all descendant Ledger Accounts under a given path, use a trailing `/*` in the `matches` filter e.g. `assets/user:user-1>/*`. This returns lines from all descendants at any depth, but not lines from the parent account at `assets/user:user-1>`.
+	// Cannot be combined with `ledgerAccount` filter. Not allowed when querying via `LedgerAccount.lines`. You cannot use wildcards for both descendant and template instance matching in the same query.
+	Path *StringMatchFilter `json:"path"`
 	// Filter by the posted timestamp of the Ledger Line.
 	Posted *DateTimeFilter `json:"posted"`
 	// Use this filter to find hidden Ledger Lines.
-	ShowHidden *bool         `json:"showHidden"`
-	Type       *TxTypeFilter `json:"type"`
+	ShowHidden *bool `json:"showHidden"`
+	// Filter Ledger Lines by tag. Only matches lines that have the specified tags attached directly to them.
+	Tag  *TagFilter    `json:"tag"`
+	Type *TxTypeFilter `json:"type"`
 }
 
 // GetCreated returns LedgerLinesFilterSet.Created, and is useful for accessing the field via an interface.
@@ -4825,11 +4848,20 @@ func (v *LedgerLinesFilterSet) GetIsReversed() *bool { return v.IsReversed }
 // GetKey returns LedgerLinesFilterSet.Key, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetKey() *StringFilter { return v.Key }
 
+// GetLedgerAccount returns LedgerLinesFilterSet.LedgerAccount, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetLedgerAccount() *LedgerAccountFilter { return v.LedgerAccount }
+
+// GetPath returns LedgerLinesFilterSet.Path, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetPath() *StringMatchFilter { return v.Path }
+
 // GetPosted returns LedgerLinesFilterSet.Posted, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetPosted() *DateTimeFilter { return v.Posted }
 
 // GetShowHidden returns LedgerLinesFilterSet.ShowHidden, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetShowHidden() *bool { return v.ShowHidden }
+
+// GetTag returns LedgerLinesFilterSet.Tag, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetTag() *TagFilter { return v.Tag }
 
 // GetType returns LedgerLinesFilterSet.Type, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetType() *TxTypeFilter { return v.Type }
@@ -6415,6 +6447,26 @@ func (v *MigrateLedgerEntryResponse) __premarshalJSON() (*__premarshalMigrateLed
 	return &retval, nil
 }
 
+// Controls how lines are posted for a Ledger Entry.
+// New entries created via the dashboard default to `net_amounts`.
+// Existing entries without this field set are treated as `raw_lines`.
+type PostLinesAs string
+
+const (
+	// Lines targeting the same account, currency, and tx are aggregated into a single line with the net amount. Lines that sum to zero are skipped. If all lines sum to zero, no lines are skipped.
+	PostLinesAsNetAmounts PostLinesAs = "net_amounts"
+	// Lines are posted as-is without aggregation.
+	PostLinesAsRawLines PostLinesAs = "raw_lines"
+	// Lines with a zero amount are skipped, but lines are not aggregated. If all lines have a zero amount, no lines are skipped.
+	PostLinesAsSkipZeroLines PostLinesAs = "skip_zero_lines"
+)
+
+var AllPostLinesAs = []PostLinesAs{
+	PostLinesAsNetAmounts,
+	PostLinesAsRawLines,
+	PostLinesAsSkipZeroLines,
+}
+
 // The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type ReadBalanceConsistencyMode string
 
@@ -7607,10 +7659,15 @@ func (v *SceneInput) GetName() string { return v.Name }
 type SchemaConditionInput struct {
 	// A condition on the `ownBalance` of the Ledger Account.
 	OwnBalance *SchemaInt96ConditionInput `json:"ownBalance"`
+	// A condition on the `totalBalance` of the Ledger Account.
+	TotalBalance *SchemaInt96ConditionInput `json:"totalBalance"`
 }
 
 // GetOwnBalance returns SchemaConditionInput.OwnBalance, and is useful for accessing the field via an interface.
 func (v *SchemaConditionInput) GetOwnBalance() *SchemaInt96ConditionInput { return v.OwnBalance }
+
+// GetTotalBalance returns SchemaConditionInput.TotalBalance, and is useful for accessing the field via an interface.
+func (v *SchemaConditionInput) GetTotalBalance() *SchemaInt96ConditionInput { return v.TotalBalance }
 
 // The consistency configuration for entities created within Ledgers created by this Schema.
 //
@@ -7746,6 +7803,9 @@ func (v *SchemaInt96ConditionInput) GetLte() *string { return v.Lte }
 type SchemaLedgerAccountInput struct {
 	// Ledger Accounts to create as children of this Ledger Account. Ledger Accounts may be nested up to a maximum depth of 10.
 	Children []SchemaLedgerAccountInput `json:"children"`
+	// EXPERIMENTAL: Whether or not this Ledger Account is a Clearing Account.
+	// Clearing Accounts have balances that should tend to zero. They are used to track in-progress workflows and payments.
+	Clearing *bool `json:"clearing"`
 	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	ConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"consistencyConfig"`
 	// The currency of this Ledger Account. If this is not set, and `currencyMode` is
@@ -7771,6 +7831,9 @@ type SchemaLedgerAccountInput struct {
 
 // GetChildren returns SchemaLedgerAccountInput.Children, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountInput) GetChildren() []SchemaLedgerAccountInput { return v.Children }
+
+// GetClearing returns SchemaLedgerAccountInput.Clearing, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerAccountInput) GetClearing() *bool { return v.Clearing }
 
 // GetConsistencyConfig returns SchemaLedgerAccountInput.ConsistencyConfig, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountInput) GetConsistencyConfig() *LedgerAccountConsistencyConfigInput {
@@ -7854,6 +7917,9 @@ type SchemaLedgerEntryConditionInput struct {
 	Postcondition *SchemaConditionInput `json:"postcondition"`
 	// A `precondition` must be met before any Ledger Entry updates are applied.
 	Precondition *SchemaConditionInput `json:"precondition"`
+	// Repeated expansion configuration. When set, this condition is expanded at runtime for each element
+	// in the array parameter named by the key.
+	Repeated *SchemaRepeatedConfigInput `json:"repeated"`
 }
 
 // GetAccount returns SchemaLedgerEntryConditionInput.Account, and is useful for accessing the field via an interface.
@@ -7873,6 +7939,9 @@ func (v *SchemaLedgerEntryConditionInput) GetPostcondition() *SchemaConditionInp
 func (v *SchemaLedgerEntryConditionInput) GetPrecondition() *SchemaConditionInput {
 	return v.Precondition
 }
+
+// GetRepeated returns SchemaLedgerEntryConditionInput.Repeated, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerEntryConditionInput) GetRepeated() *SchemaRepeatedConfigInput { return v.Repeated }
 
 // A Ledger Entry Group associated with a Ledger Entry type.
 type SchemaLedgerEntryGroupInput struct {
@@ -7902,6 +7971,8 @@ type SchemaLedgerEntryInput struct {
 	Lines []SchemaLedgerLineInput `json:"lines"`
 	// Fixed partial set of parameters to be included in a templated Ledger Entry.
 	Parameters *json.RawMessage `json:"parameters"`
+	// Controls how lines are posted. When set to `net_amounts`, all lines targeting the same account, currency, and tx are aggregated into a single line with the net amount, and lines that sum to zero are skipped. When set to `skip_zero_lines`, lines with a zero amount are skipped but not aggregated. In both modes, if all lines are zero, no lines are skipped. When set to `raw_lines`, lines are posted as-is without aggregation. New entries created via the dashboard default to `net_amounts`. Existing entries without this field set are treated as `raw_lines`.
+	PostLinesAs *PostLinesAs `json:"postLinesAs"`
 	// The status of this Ledger Entry. Defaults to active.
 	Status *SchemaLedgerEntryStatus `json:"status"`
 	// Ledger Entries posted with this type will be associated with these tags.
@@ -7929,6 +8000,9 @@ func (v *SchemaLedgerEntryInput) GetLines() []SchemaLedgerLineInput { return v.L
 
 // GetParameters returns SchemaLedgerEntryInput.Parameters, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetParameters() *json.RawMessage { return v.Parameters }
+
+// GetPostLinesAs returns SchemaLedgerEntryInput.PostLinesAs, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerEntryInput) GetPostLinesAs() *PostLinesAs { return v.PostLinesAs }
 
 // GetStatus returns SchemaLedgerEntryInput.Status, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerEntryInput) GetStatus() *SchemaLedgerEntryStatus { return v.Status }
@@ -7988,6 +8062,11 @@ type SchemaLedgerLineInput struct {
 	Description *string `json:"description"`
 	// The key for the Ledger Line. Ledger Line keys must be unique within a Ledger Entry. Key can be filtered on as part of the LedgerLinesFilterSet.
 	Key string `json:"key"`
+	// Repeated expansion configuration. When set, this line is expanded at runtime for each element
+	// in the array parameter named by the key.
+	Repeated *SchemaRepeatedConfigInput `json:"repeated"`
+	// Tags to attach to this Ledger Line. Supports parameterized values via handlebars syntax.
+	Tags []SchemaLedgerEntryTagInput `json:"tags"`
 	// The external transaction to reconcile.
 	// This field is required if the Ledger Account being posted to is a Linked Ledger Account. Otherwise, this field is disallowed.
 	// It supports parameters in its attributes via handlebars syntax.
@@ -8011,6 +8090,12 @@ func (v *SchemaLedgerLineInput) GetDescription() *string { return v.Description 
 // GetKey returns SchemaLedgerLineInput.Key, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerLineInput) GetKey() string { return v.Key }
 
+// GetRepeated returns SchemaLedgerLineInput.Repeated, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerLineInput) GetRepeated() *SchemaRepeatedConfigInput { return v.Repeated }
+
+// GetTags returns SchemaLedgerLineInput.Tags, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerLineInput) GetTags() []SchemaLedgerEntryTagInput { return v.Tags }
+
 // GetTx returns SchemaLedgerLineInput.Tx, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerLineInput) GetTx() *SchemaTxMatchInput { return v.Tx }
 
@@ -8028,6 +8113,16 @@ func (v *SchemaMatchInput) GetKey() string { return v.Key }
 
 // GetVersion returns SchemaMatchInput.Version, and is useful for accessing the field via an interface.
 func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
+
+// Configuration for repeated expansion of a line or condition. The key names a client-supplied
+// array parameter whose elements each generate one copy of the line or condition at runtime.
+type SchemaRepeatedConfigInput struct {
+	// The key of the array parameter whose elements expand this line or condition.
+	Key string `json:"key"`
+}
+
+// GetKey returns SchemaRepeatedConfigInput.Key, and is useful for accessing the field via an interface.
+func (v *SchemaRepeatedConfigInput) GetKey() string { return v.Key }
 
 // Matches a transaction at an external system.
 // This is used to specify the transaction being reconciled into a Linked Ledger Account
@@ -8923,6 +9018,8 @@ func (v *SyncCustomTxsSyncCustomTxsSyncCustomTxsResultTxsTx) GetPosted() string 
 
 // Filters a result set based on the tags it contains.
 type TagFilter struct {
+	// Matches entries that have ALL of the specified tags. The key and value are both matched exactly. Limited to 10 items maximum.
+	All []TagMatchInput `json:"all"`
 	// Matches tag values based on the existence of the provided string within the tag value. The key is matched exactly.
 	Contains *TagMatchInput `json:"contains"`
 	// Matches tags based on the exact value provided. The key and value are both matched exactly.
@@ -8942,6 +9039,9 @@ type TagFilter struct {
 	// Matches tags where the key does not match any of the provided values. Limited to 100 items maximum.
 	NotKeyIn []string `json:"notKeyIn"`
 }
+
+// GetAll returns TagFilter.All, and is useful for accessing the field via an interface.
+func (v *TagFilter) GetAll() []TagMatchInput { return v.All }
 
 // GetContains returns TagFilter.Contains, and is useful for accessing the field via an interface.
 func (v *TagFilter) GetContains() *TagMatchInput { return v.Contains }
@@ -9976,11 +10076,11 @@ func (v *__GetEntryDataMigrationsInput) GetLast() *int { return v.Last }
 
 // __GetLedgerAccountBalanceInput is used internally by genqlient
 type __GetLedgerAccountBalanceInput struct {
-	Path                      string                      `json:"path"`
-	LedgerIk                  string                      `json:"ledgerIk"`
-	BalanceCurrency           *CurrencyMatchInput         `json:"balanceCurrency"`
-	BalanceAt                 *string                     `json:"balanceAt"`
-	OwnBalanceConsistencyMode *ReadBalanceConsistencyMode `json:"ownBalanceConsistencyMode"`
+	Path                   string                      `json:"path"`
+	LedgerIk               string                      `json:"ledgerIk"`
+	BalanceCurrency        *CurrencyMatchInput         `json:"balanceCurrency"`
+	BalanceAt              *string                     `json:"balanceAt"`
+	BalanceConsistencyMode *ReadBalanceConsistencyMode `json:"balanceConsistencyMode"`
 }
 
 // GetPath returns __GetLedgerAccountBalanceInput.Path, and is useful for accessing the field via an interface.
@@ -9997,32 +10097,10 @@ func (v *__GetLedgerAccountBalanceInput) GetBalanceCurrency() *CurrencyMatchInpu
 // GetBalanceAt returns __GetLedgerAccountBalanceInput.BalanceAt, and is useful for accessing the field via an interface.
 func (v *__GetLedgerAccountBalanceInput) GetBalanceAt() *string { return v.BalanceAt }
 
-// GetOwnBalanceConsistencyMode returns __GetLedgerAccountBalanceInput.OwnBalanceConsistencyMode, and is useful for accessing the field via an interface.
-func (v *__GetLedgerAccountBalanceInput) GetOwnBalanceConsistencyMode() *ReadBalanceConsistencyMode {
-	return v.OwnBalanceConsistencyMode
+// GetBalanceConsistencyMode returns __GetLedgerAccountBalanceInput.BalanceConsistencyMode, and is useful for accessing the field via an interface.
+func (v *__GetLedgerAccountBalanceInput) GetBalanceConsistencyMode() *ReadBalanceConsistencyMode {
+	return v.BalanceConsistencyMode
 }
-
-// __GetLedgerAccountBalanceWithChildRollupInput is used internally by genqlient
-type __GetLedgerAccountBalanceWithChildRollupInput struct {
-	Path            string              `json:"path"`
-	LedgerIk        string              `json:"ledgerIk"`
-	BalanceCurrency *CurrencyMatchInput `json:"balanceCurrency"`
-	BalanceAt       *string             `json:"balanceAt"`
-}
-
-// GetPath returns __GetLedgerAccountBalanceWithChildRollupInput.Path, and is useful for accessing the field via an interface.
-func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetPath() string { return v.Path }
-
-// GetLedgerIk returns __GetLedgerAccountBalanceWithChildRollupInput.LedgerIk, and is useful for accessing the field via an interface.
-func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetLedgerIk() string { return v.LedgerIk }
-
-// GetBalanceCurrency returns __GetLedgerAccountBalanceWithChildRollupInput.BalanceCurrency, and is useful for accessing the field via an interface.
-func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetBalanceCurrency() *CurrencyMatchInput {
-	return v.BalanceCurrency
-}
-
-// GetBalanceAt returns __GetLedgerAccountBalanceWithChildRollupInput.BalanceAt, and is useful for accessing the field via an interface.
-func (v *__GetLedgerAccountBalanceWithChildRollupInput) GetBalanceAt() *string { return v.BalanceAt }
 
 // __GetLedgerAccountLinesInput is used internally by genqlient
 type __GetLedgerAccountLinesInput struct {
@@ -10086,13 +10164,15 @@ func (v *__GetSchemaInput) GetVersion() *int { return v.Version }
 
 // __ListLedgerAccountBalancesInput is used internally by genqlient
 type __ListLedgerAccountBalancesInput struct {
-	LedgerIk                  string                      `json:"ledgerIk"`
-	After                     *string                     `json:"after"`
-	First                     *int                        `json:"first"`
-	Before                    *string                     `json:"before"`
-	BalanceCurrency           *CurrencyMatchInput         `json:"balanceCurrency"`
-	BalanceAt                 *string                     `json:"balanceAt"`
-	OwnBalanceConsistencyMode *ReadBalanceConsistencyMode `json:"ownBalanceConsistencyMode"`
+	LedgerIk                    string                      `json:"ledgerIk"`
+	After                       *string                     `json:"after"`
+	First                       *int                        `json:"first"`
+	Before                      *string                     `json:"before"`
+	BalanceCurrency             *CurrencyMatchInput         `json:"balanceCurrency"`
+	BalanceAt                   *string                     `json:"balanceAt"`
+	OwnBalanceConsistencyMode   *ReadBalanceConsistencyMode `json:"ownBalanceConsistencyMode"`
+	ChildBalanceConsistencyMode *ReadBalanceConsistencyMode `json:"childBalanceConsistencyMode"`
+	BalanceConsistencyMode      *ReadBalanceConsistencyMode `json:"balanceConsistencyMode"`
 }
 
 // GetLedgerIk returns __ListLedgerAccountBalancesInput.LedgerIk, and is useful for accessing the field via an interface.
@@ -10118,6 +10198,16 @@ func (v *__ListLedgerAccountBalancesInput) GetBalanceAt() *string { return v.Bal
 // GetOwnBalanceConsistencyMode returns __ListLedgerAccountBalancesInput.OwnBalanceConsistencyMode, and is useful for accessing the field via an interface.
 func (v *__ListLedgerAccountBalancesInput) GetOwnBalanceConsistencyMode() *ReadBalanceConsistencyMode {
 	return v.OwnBalanceConsistencyMode
+}
+
+// GetChildBalanceConsistencyMode returns __ListLedgerAccountBalancesInput.ChildBalanceConsistencyMode, and is useful for accessing the field via an interface.
+func (v *__ListLedgerAccountBalancesInput) GetChildBalanceConsistencyMode() *ReadBalanceConsistencyMode {
+	return v.ChildBalanceConsistencyMode
+}
+
+// GetBalanceConsistencyMode returns __ListLedgerAccountBalancesInput.BalanceConsistencyMode, and is useful for accessing the field via an interface.
+func (v *__ListLedgerAccountBalancesInput) GetBalanceConsistencyMode() *ReadBalanceConsistencyMode {
+	return v.BalanceConsistencyMode
 }
 
 // __ListLedgerAccountsInput is used internally by genqlient
@@ -10210,12 +10300,14 @@ func (v *__ListLedgerEntryGroupBalancesInput) GetFilter() *LedgerEntryGroupBalan
 
 // __ListMultiCurrencyLedgerAccountBalancesInput is used internally by genqlient
 type __ListMultiCurrencyLedgerAccountBalancesInput struct {
-	LedgerIk                   string                      `json:"ledgerIk"`
-	After                      *string                     `json:"after"`
-	First                      *int                        `json:"first"`
-	Before                     *string                     `json:"before"`
-	BalanceAt                  *string                     `json:"balanceAt"`
-	OwnBalancesConsistencyMode *ReadBalanceConsistencyMode `json:"ownBalancesConsistencyMode"`
+	LedgerIk                     string                      `json:"ledgerIk"`
+	After                        *string                     `json:"after"`
+	First                        *int                        `json:"first"`
+	Before                       *string                     `json:"before"`
+	BalanceAt                    *string                     `json:"balanceAt"`
+	OwnBalancesConsistencyMode   *ReadBalanceConsistencyMode `json:"ownBalancesConsistencyMode"`
+	ChildBalancesConsistencyMode *ReadBalanceConsistencyMode `json:"childBalancesConsistencyMode"`
+	BalancesConsistencyMode      *ReadBalanceConsistencyMode `json:"balancesConsistencyMode"`
 }
 
 // GetLedgerIk returns __ListMultiCurrencyLedgerAccountBalancesInput.LedgerIk, and is useful for accessing the field via an interface.
@@ -10236,6 +10328,16 @@ func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetBalanceAt() *string {
 // GetOwnBalancesConsistencyMode returns __ListMultiCurrencyLedgerAccountBalancesInput.OwnBalancesConsistencyMode, and is useful for accessing the field via an interface.
 func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetOwnBalancesConsistencyMode() *ReadBalanceConsistencyMode {
 	return v.OwnBalancesConsistencyMode
+}
+
+// GetChildBalancesConsistencyMode returns __ListMultiCurrencyLedgerAccountBalancesInput.ChildBalancesConsistencyMode, and is useful for accessing the field via an interface.
+func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetChildBalancesConsistencyMode() *ReadBalanceConsistencyMode {
+	return v.ChildBalancesConsistencyMode
+}
+
+// GetBalancesConsistencyMode returns __ListMultiCurrencyLedgerAccountBalancesInput.BalancesConsistencyMode, and is useful for accessing the field via an interface.
+func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetBalancesConsistencyMode() *ReadBalanceConsistencyMode {
+	return v.BalancesConsistencyMode
 }
 
 // __MigrateLedgerEntryInput is used internally by genqlient
@@ -11210,11 +11312,11 @@ func GetLedger(
 
 // The query executed by GetLedgerAccountBalance.
 const GetLedgerAccountBalance_Operation = `
-query GetLedgerAccountBalance ($path: String!, $ledgerIk: SafeString!, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment, $ownBalanceConsistencyMode: ReadBalanceConsistencyMode) {
+query GetLedgerAccountBalance ($path: String!, $ledgerIk: SafeString!, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment, $balanceConsistencyMode: ReadBalanceConsistencyMode) {
 	ledgerAccount(ledgerAccount: {ledger:{ik:$ledgerIk},path:$path}) {
 		id
 		path
-		ownBalance(currency: $balanceCurrency, at: $balanceAt, consistencyMode: $ownBalanceConsistencyMode)
+		balance(currency: $balanceCurrency, at: $balanceAt, consistencyMode: $balanceConsistencyMode)
 	}
 }
 `
@@ -11226,63 +11328,21 @@ func GetLedgerAccountBalance(
 	ledgerIk string,
 	balanceCurrency *CurrencyMatchInput,
 	balanceAt *string,
-	ownBalanceConsistencyMode *ReadBalanceConsistencyMode,
+	balanceConsistencyMode *ReadBalanceConsistencyMode,
 ) (data_ *GetLedgerAccountBalanceResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "GetLedgerAccountBalance",
 		Query:  GetLedgerAccountBalance_Operation,
 		Variables: &__GetLedgerAccountBalanceInput{
-			Path:                      path,
-			LedgerIk:                  ledgerIk,
-			BalanceCurrency:           balanceCurrency,
-			BalanceAt:                 balanceAt,
-			OwnBalanceConsistencyMode: ownBalanceConsistencyMode,
+			Path:                   path,
+			LedgerIk:               ledgerIk,
+			BalanceCurrency:        balanceCurrency,
+			BalanceAt:              balanceAt,
+			BalanceConsistencyMode: balanceConsistencyMode,
 		},
 	}
 
 	data_ = &GetLedgerAccountBalanceResponse{}
-	resp_ := &graphql.Response{Data: data_}
-
-	err_ = client_.MakeRequest(
-		ctx_,
-		req_,
-		resp_,
-	)
-
-	return data_, err_
-}
-
-// The query executed by GetLedgerAccountBalanceWithChildRollup.
-const GetLedgerAccountBalanceWithChildRollup_Operation = `
-query GetLedgerAccountBalanceWithChildRollup ($path: String!, $ledgerIk: SafeString!, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment) {
-	ledgerAccount(ledgerAccount: {ledger:{ik:$ledgerIk},path:$path}) {
-		id
-		path
-		balance(currency: $balanceCurrency, at: $balanceAt)
-	}
-}
-`
-
-func GetLedgerAccountBalanceWithChildRollup(
-	ctx_ context.Context,
-	client_ graphql.Client,
-	path string,
-	ledgerIk string,
-	balanceCurrency *CurrencyMatchInput,
-	balanceAt *string,
-) (data_ *GetLedgerAccountBalanceWithChildRollupResponse, err_ error) {
-	req_ := &graphql.Request{
-		OpName: "GetLedgerAccountBalanceWithChildRollup",
-		Query:  GetLedgerAccountBalanceWithChildRollup_Operation,
-		Variables: &__GetLedgerAccountBalanceWithChildRollupInput{
-			Path:            path,
-			LedgerIk:        ledgerIk,
-			BalanceCurrency: balanceCurrency,
-			BalanceAt:       balanceAt,
-		},
-	}
-
-	data_ = &GetLedgerAccountBalanceWithChildRollupResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -11478,7 +11538,7 @@ func GetWorkspace(
 
 // The query executed by ListLedgerAccountBalances.
 const ListLedgerAccountBalances_Operation = `
-query ListLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment, $ownBalanceConsistencyMode: ReadBalanceConsistencyMode) {
+query ListLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $balanceCurrency: CurrencyMatchInput, $balanceAt: LastMoment, $ownBalanceConsistencyMode: ReadBalanceConsistencyMode, $childBalanceConsistencyMode: ReadBalanceConsistencyMode, $balanceConsistencyMode: ReadBalanceConsistencyMode) {
 	ledger(ledger: {ik:$ledgerIk}) {
 		id
 		ik
@@ -11492,8 +11552,8 @@ query ListLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first:
 				type
 				created
 				ownBalance(currency: $balanceCurrency, at: $balanceAt, consistencyMode: $ownBalanceConsistencyMode)
-				childBalance(currency: $balanceCurrency, at: $balanceAt)
-				balance(currency: $balanceCurrency, at: $balanceAt)
+				childBalance(currency: $balanceCurrency, at: $balanceAt, consistencyMode: $childBalanceConsistencyMode)
+				balance(currency: $balanceCurrency, at: $balanceAt, consistencyMode: $balanceConsistencyMode)
 			}
 			pageInfo {
 				hasNextPage
@@ -11516,18 +11576,22 @@ func ListLedgerAccountBalances(
 	balanceCurrency *CurrencyMatchInput,
 	balanceAt *string,
 	ownBalanceConsistencyMode *ReadBalanceConsistencyMode,
+	childBalanceConsistencyMode *ReadBalanceConsistencyMode,
+	balanceConsistencyMode *ReadBalanceConsistencyMode,
 ) (data_ *ListLedgerAccountBalancesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListLedgerAccountBalances",
 		Query:  ListLedgerAccountBalances_Operation,
 		Variables: &__ListLedgerAccountBalancesInput{
-			LedgerIk:                  ledgerIk,
-			After:                     after,
-			First:                     first,
-			Before:                    before,
-			BalanceCurrency:           balanceCurrency,
-			BalanceAt:                 balanceAt,
-			OwnBalanceConsistencyMode: ownBalanceConsistencyMode,
+			LedgerIk:                    ledgerIk,
+			After:                       after,
+			First:                       first,
+			Before:                      before,
+			BalanceCurrency:             balanceCurrency,
+			BalanceAt:                   balanceAt,
+			OwnBalanceConsistencyMode:   ownBalanceConsistencyMode,
+			ChildBalanceConsistencyMode: childBalanceConsistencyMode,
+			BalanceConsistencyMode:      balanceConsistencyMode,
 		},
 	}
 
@@ -11735,7 +11799,7 @@ func ListLedgerEntryGroupBalances(
 
 // The query executed by ListMultiCurrencyLedgerAccountBalances.
 const ListMultiCurrencyLedgerAccountBalances_Operation = `
-query ListMultiCurrencyLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $balanceAt: LastMoment, $ownBalancesConsistencyMode: ReadBalanceConsistencyMode) {
+query ListMultiCurrencyLedgerAccountBalances ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $balanceAt: LastMoment, $ownBalancesConsistencyMode: ReadBalanceConsistencyMode, $childBalancesConsistencyMode: ReadBalanceConsistencyMode, $balancesConsistencyMode: ReadBalanceConsistencyMode) {
 	ledger(ledger: {ik:$ledgerIk}) {
 		id
 		ik
@@ -11757,7 +11821,7 @@ query ListMultiCurrencyLedgerAccountBalances ($ledgerIk: SafeString!, $after: St
 						amount
 					}
 				}
-				childBalances(at: $balanceAt) {
+				childBalances(at: $balanceAt, consistencyMode: $childBalancesConsistencyMode) {
 					nodes {
 						currency {
 							code
@@ -11766,7 +11830,7 @@ query ListMultiCurrencyLedgerAccountBalances ($ledgerIk: SafeString!, $after: St
 						amount
 					}
 				}
-				balances(at: $balanceAt) {
+				balances(at: $balanceAt, consistencyMode: $balancesConsistencyMode) {
 					nodes {
 						currency {
 							code
@@ -11796,17 +11860,21 @@ func ListMultiCurrencyLedgerAccountBalances(
 	before *string,
 	balanceAt *string,
 	ownBalancesConsistencyMode *ReadBalanceConsistencyMode,
+	childBalancesConsistencyMode *ReadBalanceConsistencyMode,
+	balancesConsistencyMode *ReadBalanceConsistencyMode,
 ) (data_ *ListMultiCurrencyLedgerAccountBalancesResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "ListMultiCurrencyLedgerAccountBalances",
 		Query:  ListMultiCurrencyLedgerAccountBalances_Operation,
 		Variables: &__ListMultiCurrencyLedgerAccountBalancesInput{
-			LedgerIk:                   ledgerIk,
-			After:                      after,
-			First:                      first,
-			Before:                     before,
-			BalanceAt:                  balanceAt,
-			OwnBalancesConsistencyMode: ownBalancesConsistencyMode,
+			LedgerIk:                     ledgerIk,
+			After:                        after,
+			First:                        first,
+			Before:                       before,
+			BalanceAt:                    balanceAt,
+			OwnBalancesConsistencyMode:   ownBalancesConsistencyMode,
+			ChildBalancesConsistencyMode: childBalancesConsistencyMode,
+			BalancesConsistencyMode:      balancesConsistencyMode,
 		},
 	}
 
