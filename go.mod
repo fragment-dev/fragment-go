@@ -1,4 +1,4 @@
-module github.com/fragment-dev/fragment-go/v3
+module github.com/fragment-dev/fragment-go/v4
 
 go 1.22.5
 
