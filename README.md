@@ -272,7 +272,24 @@ func main() {
 
 ## Upgrading SDK Versions
 ### Changes from v3.0.0 to v4.0.0
-- Module import path updated to `/v4`: Update all imports from `github.com/fragment-dev/fragment-go/v3` to `github.com/fragment-dev/fragment-go/v4`
+
+#### Changes in this version
+
+- `GetLedgerAccountBalance` now returns total `balance` (self + children) instead of `ownBalance`
+- `GetLedgerAccountBalanceWithChildRollup` has been removed
+- `ListLedgerAccountBalances` and `ListMultiCurrencyLedgerAccountBalances` now accept `consistencyMode` on `childBalance`, `childBalances`, `balance`, and `balances` fields
+
+#### How to Upgrade
+
+1. Upgrade your schema to use total balance consistency.
+   1. Edit your schema JSON. Change `ownBalanceUpdates` to `totalBalanceUpdates` in ledger account consistency config. Change `ownBalance` to `totalBalance` in entry conditions. A schema can have only one of `ownBalanceUpdates` or `totalBalanceUpdates`.
+   2. Deploy the new schema.
+2. You can now set `consistencyConfig.totalBalanceUpdates: strong` on any account in the tree, and its balance will be strongly consistent.
+3. Upgrade your Fragment SDK to the latest version.
+   1. Update imports from `github.com/fragment-dev/fragment-go/v3` to `github.com/fragment-dev/fragment-go/v4`.
+   2. `GetLedgerAccountBalance` now returns total `balance` (self + children) instead of `ownBalance`.
+   3. Change `$ownBalanceConsistencyMode` to `$balanceConsistencyMode`.
+   4. Use `GetLedgerAccountBalance` instead of `GetLedgerAccountBalanceWithChildRollup`.
 
 ### Changes from v2.0.0 to v3.0.0
 
