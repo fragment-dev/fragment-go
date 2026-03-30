@@ -271,7 +271,7 @@ func main() {
 ```
 
 ## Upgrading SDK Versions
-### Changes from v3.0.0 to v4.0.0
+### Changes from v3.1.0 to v4.0.0
 
 #### Changes in this version
 
@@ -290,6 +290,9 @@ func main() {
    2. `GetLedgerAccountBalance` now returns total `balance` (self + children) instead of `ownBalance`.
    3. Change `$ownBalanceConsistencyMode` to `$balanceConsistencyMode`.
    4. Use `GetLedgerAccountBalance` instead of `GetLedgerAccountBalanceWithChildRollup`.
+
+### Changes in v3.1.0
+- Module import path updated to `/v3`: Update all imports from `github.com/fragment-dev/fragment-go` to `github.com/fragment-dev/fragment-go/v3`
 
 ### Changes from v2.0.0 to v3.0.0
 
