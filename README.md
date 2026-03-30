@@ -2,14 +2,14 @@
 
 [Fragment](https://fragment.dev) is the Ledger API for engineers that move money. Stop wrangling payment tables, debugging balance errors, and hacking together data pipelines. Start shipping the features that make a difference.
 
-> We've upgraded the module import path to `github.com/fragment-dev/fragment-go/v3`. The `github.com/fragment-dev/fragment-go` module is no longer supported. Update your imports to use `/v3` to get the latest version. See the [Upgrading SDK Versions](#upgrading-sdk-versions) section for details.
+> We've upgraded the module import path to `github.com/fragment-dev/fragment-go/v4`. Use `/v4` for the latest version, or keep using `/v3` for the previous major version. See the [Upgrading SDK Versions](#upgrading-sdk-versions) section for details.
 
 ## Installation
 
 This library requires Go 1.20+.
 
 ``` shell
-go get -u github.com/fragment-dev/fragment-go/v3
+go get -u github.com/fragment-dev/fragment-go/v4
 ```
 
 ## Usage
@@ -22,8 +22,8 @@ import (
   "fmt"
   "os"
   
-  "github.com/fragment-dev/fragment-go/v3/client"
-  "github.com/fragment-dev/fragment-go/v3/queries"
+  "github.com/fragment-dev/fragment-go/v4/client"
+  "github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 func main() {
@@ -62,7 +62,7 @@ We appreciate feedback; please open an [issue](https://github.com/fragment-dev/f
 While the SDK comes with predefined GraphQL queries, you may want to customize these queries for your product. In order to do that, run:
 
 ``` shell
-go run github.com/fragment-dev/fragment-go/v3 \
+go run github.com/fragment-dev/fragment-go/v4 \
   --input <path-to-your-graphql-queries-file.graphql>
   --output <path-to-the-output.go>
   --package <package-name>
@@ -89,7 +89,7 @@ query GetLatestSchema($key: SafeString!) {
 Run the SDK codegen to generate the code for your GraphQL query.
 
 ``` shell
-go run github.com/fragment-dev/fragment-go/v3 \
+go run github.com/fragment-dev/fragment-go/v4 \
   --input queries.graphql
   --output queries.go
   --package main
@@ -133,7 +133,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/fragment-dev/fragment-go/v3/queries"
+	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 type UserFundsAccountParameters struct {
@@ -183,7 +183,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fragment-dev/fragment-go/v3/queries"
+	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 func main() {
@@ -214,7 +214,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fragment-dev/fragment-go/v3/queries"
+	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 func main() {
@@ -253,7 +253,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fragment-dev/fragment-go/v3/queries"
+	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 func main() {
@@ -271,8 +271,28 @@ func main() {
 ```
 
 ## Upgrading SDK Versions
+### Changes from v3.1.0 to v4.0.0
+
+#### Changes in this version
+
+- `GetLedgerAccountBalance` now returns total `balance` (self + children) instead of `ownBalance`
+- `GetLedgerAccountBalanceWithChildRollup` has been removed
+- `ListLedgerAccountBalances` and `ListMultiCurrencyLedgerAccountBalances` now accept `consistencyMode` on `childBalance`, `childBalances`, `balance`, and `balances` fields
+
+#### How to Upgrade
+
+1. Upgrade your schema to use total balance consistency.
+   1. Edit your schema JSON. Change `ownBalanceUpdates` to `totalBalanceUpdates` in ledger account consistency config. Change `ownBalance` to `totalBalance` in entry conditions. A schema can have only one of `ownBalanceUpdates` or `totalBalanceUpdates`.
+   2. Deploy the new schema.
+2. You can now set `consistencyConfig.totalBalanceUpdates: strong` on any account in the tree, and its balance will be strongly consistent.
+3. Upgrade your Fragment SDK to the latest version.
+   1. Update imports from `github.com/fragment-dev/fragment-go/v3` to `github.com/fragment-dev/fragment-go/v4`.
+   2. `GetLedgerAccountBalance` now returns total `balance` (self + children) instead of `ownBalance`.
+   3. Change `$ownBalanceConsistencyMode` to `$balanceConsistencyMode`.
+   4. Use `GetLedgerAccountBalance` instead of `GetLedgerAccountBalanceWithChildRollup`.
+
 ### Changes in v3.1.0
- - Module import path updated to `/v3`: Update all imports from `github.com/fragment-dev/fragment-go` to `github.com/fragment-dev/fragment-go/v3` 
+- Module import path updated to `/v3`: Update all imports from `github.com/fragment-dev/fragment-go` to `github.com/fragment-dev/fragment-go/v3`
 
 ### Changes from v2.0.0 to v3.0.0
 
