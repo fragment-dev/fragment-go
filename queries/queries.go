@@ -10,6 +10,428 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError includes the requested fields of the GraphQL type AddLedgerEntriesError.
+// The GraphQL type's documentation follows.
+//
+// Error returned when one or more Ledger Entries in the batch could not be added.
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_entry_batch_operation_failed'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+	// The list of errors for each Ledger Entry that was responsible for the batch's failure.
+	Errors []AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError `json:"errors"`
+}
+
+// GetTypename returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError.Typename, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError.Code, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError) GetCode() string { return v.Code }
+
+// GetMessage returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError.Message, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// GetErrors returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError.Errors, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError) GetErrors() []AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError {
+	return v.Errors
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError includes the requested fields of the GraphQL type AddLedgerEntryError.
+// The GraphQL type's documentation follows.
+//
+// Error details for a single Ledger Entry that was responsible for the batch's failure.
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError struct {
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) of the Ledger Entry
+	Ik string `json:"ik"`
+	// The status code of error. For example, 'ledger_entry_too_many_lines'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetIk returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError.Ik, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError) GetIk() string {
+	return v.Ik
+}
+
+// GetCode returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError.Code, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError.Message, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesErrorErrorsAddLedgerEntryError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse includes the requested fields of the GraphQL interface AddLedgerEntriesResponse.
+//
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse is implemented by the following types:
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult
+// AddLedgerEntriesAddLedgerEntriesBadRequestError
+// AddLedgerEntriesAddLedgerEntriesInternalError
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse interface {
+	implementsGraphQLInterfaceAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError) implementsGraphQLInterfaceAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse() {
+}
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult) implementsGraphQLInterfaceAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse() {
+}
+func (v *AddLedgerEntriesAddLedgerEntriesBadRequestError) implementsGraphQLInterfaceAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse() {
+}
+func (v *AddLedgerEntriesAddLedgerEntriesInternalError) implementsGraphQLInterfaceAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse() {
+}
+
+func __unmarshalAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse(b []byte, v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "AddLedgerEntriesError":
+		*v = new(AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError)
+		return json.Unmarshal(b, *v)
+	case "AddLedgerEntriesResult":
+		*v = new(AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult)
+		return json.Unmarshal(b, *v)
+	case "BadRequestError":
+		*v = new(AddLedgerEntriesAddLedgerEntriesBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(AddLedgerEntriesAddLedgerEntriesInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing AddLedgerEntriesResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse(v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError:
+		typename = "AddLedgerEntriesError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError
+		}{typename, v}
+		return json.Marshal(result)
+	case *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult:
+		typename = "AddLedgerEntriesResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *AddLedgerEntriesAddLedgerEntriesBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*AddLedgerEntriesAddLedgerEntriesBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *AddLedgerEntriesAddLedgerEntriesInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*AddLedgerEntriesAddLedgerEntriesInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse: "%T"`, v)
+	}
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult includes the requested fields of the GraphQL type AddLedgerEntriesResult.
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult struct {
+	Typename *string `json:"__typename"`
+	// The added Ledger Entries, in the same order as the input
+	Results []AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult `json:"results"`
+}
+
+// GetTypename returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult.Typename, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetResults returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult.Results, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult) GetResults() []AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult {
+	return v.Results
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult includes the requested fields of the GraphQL type AddLedgerEntryResult.
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult struct {
+	// True if this request successfully completed before and the previous response is being returned
+	IsIkReplay bool `json:"isIkReplay"`
+	// The ledger entry that was posted
+	Entry AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry `json:"entry"`
+	// The ledger lines that were created in that entry
+	Lines []AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine `json:"lines"`
+}
+
+// GetIsIkReplay returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult.IsIkReplay, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult) GetIsIkReplay() bool {
+	return v.IsIkReplay
+}
+
+// GetEntry returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult.Entry, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult) GetEntry() AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry {
+	return v.Entry
+}
+
+// GetLines returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult.Lines, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResult) GetLines() []AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine {
+	return v.Lines
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry includes the requested fields of the GraphQL type LedgerEntry.
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry struct {
+	// The type of the Ledger Entry.
+	Type *string `json:"type"`
+	// The ID of this LedgerEntry.
+	Id string `json:"id"`
+	// The idempotency key used to post this ledger entry
+	Ik string `json:"ik"`
+	// ISO-8601 timestamp this LedgerEntry posted to its Ledger.
+	Posted string `json:"posted"`
+	// ISO-8601 timestamp this LedgerEntry was created in Fragment.
+	Created string `json:"created"`
+}
+
+// GetType returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry.Type, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry) GetType() *string {
+	return v.Type
+}
+
+// GetId returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry.Id, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry) GetId() string {
+	return v.Id
+}
+
+// GetIk returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry.Ik, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry) GetIk() string {
+	return v.Ik
+}
+
+// GetPosted returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry.Posted, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry) GetPosted() string {
+	return v.Posted
+}
+
+// GetCreated returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry.Created, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultEntryLedgerEntry) GetCreated() string {
+	return v.Created
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine includes the requested fields of the GraphQL type LedgerLine.
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine struct {
+	Id string `json:"id"`
+	// How much this line's LedgerAccount's balance changed in integer cents  (i.e. in USD 100 is 1 dollar, 100 cents)
+	Amount string `json:"amount"`
+	// LedgerAccount that contains this line
+	Account AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLineAccountLedgerAccount `json:"account"`
+}
+
+// GetId returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine.Id, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine) GetId() string {
+	return v.Id
+}
+
+// GetAmount returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine.Amount, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine) GetAmount() string {
+	return v.Amount
+}
+
+// GetAccount returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine.Account, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLine) GetAccount() AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLineAccountLedgerAccount {
+	return v.Account
+}
+
+// AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLineAccountLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLineAccountLedgerAccount struct {
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+}
+
+// GetPath returns AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLineAccountLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResultResultsAddLedgerEntryResultLinesLedgerLineAccountLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// AddLedgerEntriesAddLedgerEntriesBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type AddLedgerEntriesAddLedgerEntriesBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns AddLedgerEntriesAddLedgerEntriesBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns AddLedgerEntriesAddLedgerEntriesBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns AddLedgerEntriesAddLedgerEntriesBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntriesAddLedgerEntriesBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// AddLedgerEntriesAddLedgerEntriesInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type AddLedgerEntriesAddLedgerEntriesInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns AddLedgerEntriesAddLedgerEntriesInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns AddLedgerEntriesAddLedgerEntriesInternalError.Code, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns AddLedgerEntriesAddLedgerEntriesInternalError.Message, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns AddLedgerEntriesAddLedgerEntriesInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesAddLedgerEntriesInternalError) GetRetryable() bool { return v.Retryable }
+
+// AddLedgerEntriesResponse is returned by AddLedgerEntries on success.
+type AddLedgerEntriesResponse struct {
+	// Batch version of [addLedgerEntry](http://localhost:3001/api-reference/ledger-mutations#addledgerentry).
+	//
+	// Adds a batch of Ledger Entries in one synchronous and atomic transaction. Either every entry is added or none are.
+	AddLedgerEntries AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse `json:"-"`
+}
+
+// GetAddLedgerEntries returns AddLedgerEntriesResponse.AddLedgerEntries, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntriesResponse) GetAddLedgerEntries() AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse {
+	return v.AddLedgerEntries
+}
+
+func (v *AddLedgerEntriesResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*AddLedgerEntriesResponse
+		AddLedgerEntries json.RawMessage `json:"addLedgerEntries"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.AddLedgerEntriesResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.AddLedgerEntries
+		src := firstPass.AddLedgerEntries
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal AddLedgerEntriesResponse.AddLedgerEntries: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalAddLedgerEntriesResponse struct {
+	AddLedgerEntries json.RawMessage `json:"addLedgerEntries"`
+}
+
+func (v *AddLedgerEntriesResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *AddLedgerEntriesResponse) __premarshalJSON() (*__premarshalAddLedgerEntriesResponse, error) {
+	var retval __premarshalAddLedgerEntriesResponse
+
+	{
+
+		dst := &retval.AddLedgerEntries
+		src := v.AddLedgerEntries
+		var err error
+		*dst, err = __marshalAddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal AddLedgerEntriesResponse.AddLedgerEntries: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 // AddLedgerEntryAddLedgerEntryAddLedgerEntryResponse includes the requested fields of the GraphQL interface AddLedgerEntryResponse.
 //
 // AddLedgerEntryAddLedgerEntryAddLedgerEntryResponse is implemented by the following types:
@@ -252,6 +674,19 @@ func (v *AddLedgerEntryAddLedgerEntryInternalError) GetMessage() string { return
 
 // GetRetryable returns AddLedgerEntryAddLedgerEntryInternalError.Retryable, and is useful for accessing the field via an interface.
 func (v *AddLedgerEntryAddLedgerEntryInternalError) GetRetryable() bool { return v.Retryable }
+
+type AddLedgerEntryInput struct {
+	// The [Ledger Entry](https://fragment.dev/api-reference/api-types#input-types-ledgerentryinput) to add
+	Entry LedgerEntryInput `json:"entry"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) for this Ledger Entry
+	Ik string `json:"ik"`
+}
+
+// GetEntry returns AddLedgerEntryInput.Entry, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryInput) GetEntry() LedgerEntryInput { return v.Entry }
+
+// GetIk returns AddLedgerEntryInput.Ik, and is useful for accessing the field via an interface.
+func (v *AddLedgerEntryInput) GetIk() string { return v.Ik }
 
 // AddLedgerEntryResponse is returned by AddLedgerEntry on success.
 type AddLedgerEntryResponse struct {
@@ -650,7 +1085,7 @@ func (v *AddLedgerEntryRuntimeResponse) __premarshalJSON() (*__premarshalAddLedg
 	return &retval, nil
 }
 
-// Used to configure the write-consistency of a Ledger Account's balance. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+// Used to configure the write-consistency of a Ledger Account's balance. See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 type BalanceUpdateConsistencyMode string
 
 const (
@@ -670,7 +1105,7 @@ type ChartOfAccountsInput struct {
 	// The default consistency configuration for all Ledger Accounts in this Schema.
 	// If a Ledger Account does not specify its own consistency configuration, it will use the default values provided here.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	DefaultConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"defaultConsistencyConfig"`
 	// The default currency of each Ledger Account in the Chart Of Accounts.
 	// It must be provided if `defaultCurrencyMode` is set to `single`.
@@ -1162,7 +1597,7 @@ func (v *CreateCustomLinkCreateCustomLinkInternalError) GetRetryable() bool { re
 
 // CreateCustomLinkResponse is returned by CreateCustomLink on success.
 type CreateCustomLinkResponse struct {
-	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/docs/sync-payments#custom-link)
+	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/guides/sync-payments#custom-link)
 	CreateCustomLink CreateCustomLinkCreateCustomLinkCreateCustomLinkResponse `json:"-"`
 }
 
@@ -1991,6 +2426,10 @@ type DateFilter struct {
 	EqualTo *string `json:"equalTo"`
 	// Must match one of the values provided. Limited to 100 items maximum.
 	In []string `json:"in"`
+	// Must fall within the given period. Supports a year (e.g. "2026") or a month (e.g. "2026-05"). To match a specific day, use `equalTo`. Cannot be combined with `withinBalanceUTCOffset`.
+	Within *string `json:"within"`
+	// Must fall within the given period, taking into account the Ledger's `balanceUTCOffset`. Supports a year (e.g. "2026") or a month (e.g. "2026-05"). Cannot be combined with `within`.
+	WithinBalanceUTCOffset *string `json:"withinBalanceUTCOffset"`
 }
 
 // GetEqualTo returns DateFilter.EqualTo, and is useful for accessing the field via an interface.
@@ -1998,6 +2437,12 @@ func (v *DateFilter) GetEqualTo() *string { return v.EqualTo }
 
 // GetIn returns DateFilter.In, and is useful for accessing the field via an interface.
 func (v *DateFilter) GetIn() []string { return v.In }
+
+// GetWithin returns DateFilter.Within, and is useful for accessing the field via an interface.
+func (v *DateFilter) GetWithin() *string { return v.Within }
+
+// GetWithinBalanceUTCOffset returns DateFilter.WithinBalanceUTCOffset, and is useful for accessing the field via an interface.
+func (v *DateFilter) GetWithinBalanceUTCOffset() *string { return v.WithinBalanceUTCOffset }
 
 // Filters a timestamp field between two moments in time
 type DateTimeFilter struct {
@@ -2925,7 +3370,7 @@ func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountD
 // GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3009,7 +3454,7 @@ func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountD
 // GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3040,7 +3485,7 @@ func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountD
 // GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3263,7 +3708,7 @@ func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountData
 // GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3486,7 +3931,7 @@ func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigr
 // GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3672,7 +4117,7 @@ func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMig
 // GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3756,7 +4201,7 @@ func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMig
 // GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3787,7 +4232,7 @@ func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMig
 // GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -3945,7 +4390,7 @@ func (v *GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionNodesLedger
 // GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -4374,32 +4819,32 @@ func (v *LedgerAccountConditionInput) GetOwnBalance() *Int96ConditionInput { ret
 func (v *LedgerAccountConditionInput) GetTotalBalance() *Int96ConditionInput { return v.TotalBalance }
 
 // The payload configuring the consistency for this Ledger Account.
-// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 type LedgerAccountConsistencyConfigInput struct {
 	// The consistency configuration for Ledger Entry Groups affecting this account.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	Groups []LedgerAccountGroupConsistencyConfigInput `json:"groups"`
 	// If set to `strong`, then a Ledger Account's `lines` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `lines` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	Lines *LedgerLinesConsistencyMode `json:"lines"`
 	// If set to `strong`, then a Ledger Account's `ownBalance` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	OwnBalanceUpdates *BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 	// EXPERIMENTAL: If set to `strong`, then a Ledger Account's `totalBalance` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `totalBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	TotalBalanceUpdates *BalanceUpdateConsistencyMode `json:"totalBalanceUpdates"`
 }
 
@@ -4458,7 +4903,7 @@ type LedgerAccountGroupConsistencyConfigInput struct {
 	//
 	// Otherwise if unset or set to `eventual`, Ledger Entry Group `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	OwnBalanceUpdates BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 }
 
@@ -4524,6 +4969,7 @@ var AllLedgerDataMigrationStatus = []LedgerDataMigrationStatus{
 }
 
 type LedgerEntriesFilterSet struct {
+	// Use this filter to filter Ledger Entries by their `posted` date.
 	Date *DateFilter `json:"date"`
 	// Use this to filter Ledger Entries by groups. The response will include entries that contain or do not contain specific groups.
 	Group *GroupFilter `json:"group"`
@@ -4533,7 +4979,8 @@ type LedgerEntriesFilterSet struct {
 	IsReversed *bool `json:"isReversed"`
 	// Use to filter Ledger Entries by their IDs or IKs.
 	LedgerEntry *LedgerEntryFilter `json:"ledgerEntry"`
-	Posted      *DateTimeFilter    `json:"posted"`
+	// Use this filter to filter Ledger Entries by their `posted` timestamp.
+	Posted *DateTimeFilter `json:"posted"`
 	// Use this filter to show hidden Ledger Entries.
 	ShowHidden *bool `json:"showHidden"`
 	// Use this to filter Ledger Entries by tags. The response will include entries that contain tags matching the filter.
@@ -4806,7 +5253,7 @@ type LedgerLinesFilterSet struct {
 	Created *DateTimeFilter `json:"created"`
 	// Filter by the currency of the Ledger Line.
 	Currency *CurrencyFilter `json:"currency"`
-	// Filter by the posted date of the Ledger Line. This is identical to using `posted`, but only supports day-level granularity.
+	// Use this filter to filter Ledger Lines by their `posted` date.
 	Date *DateFilter `json:"date"`
 	// Use this to filter Ledger Lines that were posted to this Ledger Account, using `reverseLedgerEntry`.
 	IsReversal *bool `json:"isReversal"`
@@ -4819,9 +5266,10 @@ type LedgerLinesFilterSet struct {
 	// A filter that string matches the account path. Wildcards ('*') can be used to return lines across multiple accounts.
 	// To search for all instances of a a Ledger Account template, use the `matches` filter  with an wildcard character in place of the template value e.g. `assets/user:*`. This returns lines from all instances of this template, interleaved by `posted` timestamp.
 	// To search for all descendant Ledger Accounts under a given path, use a trailing `/*` in the `matches` filter e.g. `assets/user:user-1>/*`. This returns lines from all descendants at any depth, but not lines from the parent account at `assets/user:user-1>`.
+	// To OR multiple `matches` patterns and get a single paginated list, use `matchesAny` — e.g. `matchesAny: ["assets/user:user-1/*", "assets/user:user-2/*"]` returns descendants of both prefixes interleaved by `posted` timestamp.
 	// Cannot be combined with `ledgerAccount` filter. Not allowed when querying via `LedgerAccount.lines`. You cannot use wildcards for both descendant and template instance matching in the same query.
 	Path *StringMatchFilter `json:"path"`
-	// Filter by the posted timestamp of the Ledger Line.
+	// Use this filter to filter Ledger Lines by their `posted` timestamp.
 	Posted *DateTimeFilter `json:"posted"`
 	// Use this filter to find hidden Ledger Lines.
 	ShowHidden *bool `json:"showHidden"`
@@ -5029,7 +5477,7 @@ func (v *ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNo
 // ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5165,7 +5613,7 @@ func (v *ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionNodesLedg
 // ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5320,7 +5768,7 @@ func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerE
 // ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5469,7 +5917,7 @@ func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBal
 // ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5785,7 +6233,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccount
 // ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -6467,7 +6915,7 @@ var AllPostLinesAs = []PostLinesAs{
 	PostLinesAsSkipZeroLines,
 }
 
-// The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+// The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 type ReadBalanceConsistencyMode string
 
 const (
@@ -6729,7 +7177,7 @@ func (v *ReconcileTxReconcileTxReconcileTxResultLinesLedgerLineAccountLedgerAcco
 
 // ReconcileTxResponse is returned by ReconcileTx on success.
 type ReconcileTxResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/guides/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -7051,7 +7499,7 @@ func (v *ReconcileTxRuntimeReconcileTxReconcileTxResultLinesLedgerLineAccountLed
 
 // ReconcileTxRuntimeResponse is returned by ReconcileTxRuntime on success.
 type ReconcileTxRuntimeResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/guides/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxRuntimeReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -7671,11 +8119,11 @@ func (v *SchemaConditionInput) GetTotalBalance() *SchemaInt96ConditionInput { re
 
 // The consistency configuration for entities created within Ledgers created by this Schema.
 //
-// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 type SchemaConsistencyConfigInput struct {
 	// The consistency mode for the Ledger Entries list query within Ledgers created by this Schema.
 	//
-	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	Entries *SchemaConsistencyMode `json:"entries"`
 }
 
@@ -7684,7 +8132,7 @@ func (v *SchemaConsistencyConfigInput) GetEntries() *SchemaConsistencyMode { ret
 
 // The consistency modes available for entities created within this Schema.
 //
-// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 type SchemaConsistencyMode string
 
 const (
@@ -7806,7 +8254,7 @@ type SchemaLedgerAccountInput struct {
 	// EXPERIMENTAL: Whether or not this Ledger Account is a Clearing Account.
 	// Clearing Accounts have balances that should tend to zero. They are used to track in-progress workflows and payments.
 	Clearing *bool `json:"clearing"`
-	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
+	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/guides/configure-consistency).
 	ConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"consistencyConfig"`
 	// The currency of this Ledger Account. If this is not set, and `currencyMode` is
 	// not set to `multi`, it is derived from the Chart of Accounts' default.
@@ -7821,6 +8269,8 @@ type SchemaLedgerAccountInput struct {
 	LinkedAccount *SchemaExternalAccountMatchInput `json:"linkedAccount"`
 	// The human-readable name of this Ledger Account.
 	Name *string `json:"name"`
+	// EXPERIMENTAL: Marks this as a Payment Account.
+	Payment *SchemaPaymentInput `json:"payment"`
 	// The status of this Ledger Account. Defaults to active.
 	Status *SchemaLedgerAccountStatus `json:"status"`
 	// Whether or not this Ledger Account should be templated.
@@ -7856,6 +8306,9 @@ func (v *SchemaLedgerAccountInput) GetLinkedAccount() *SchemaExternalAccountMatc
 
 // GetName returns SchemaLedgerAccountInput.Name, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountInput) GetName() *string { return v.Name }
+
+// GetPayment returns SchemaLedgerAccountInput.Payment, and is useful for accessing the field via an interface.
+func (v *SchemaLedgerAccountInput) GetPayment() *SchemaPaymentInput { return v.Payment }
 
 // GetStatus returns SchemaLedgerAccountInput.Status, and is useful for accessing the field via an interface.
 func (v *SchemaLedgerAccountInput) GetStatus() *SchemaLedgerAccountStatus { return v.Status }
@@ -8071,7 +8524,7 @@ type SchemaLedgerLineInput struct {
 	// This field is required if the Ledger Account being posted to is a Linked Ledger Account. Otherwise, this field is disallowed.
 	// It supports parameters in its attributes via handlebars syntax.
 	//
-	// See the docs on [reconciling payments](https://fragment.dev/docs/reconcile-payments).
+	// See the docs on [reconciling payments](https://fragment.dev/guides/reconcile-payments).
 	Tx *SchemaTxMatchInput `json:"tx"`
 }
 
@@ -8113,6 +8566,14 @@ func (v *SchemaMatchInput) GetKey() string { return v.Key }
 
 // GetVersion returns SchemaMatchInput.Version, and is useful for accessing the field via an interface.
 func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
+
+// EXPERIMENTAL: Marks a Ledger Account as a Payment Account.
+type SchemaPaymentInput struct {
+	Penguin bool `json:"penguin"`
+}
+
+// GetPenguin returns SchemaPaymentInput.Penguin, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentInput) GetPenguin() bool { return v.Penguin }
 
 // Configuration for repeated expansion of a line or condition. The key names a client-supplied
 // array parameter whose elements each generate one copy of the line or condition at runtime.
@@ -8445,6 +8906,8 @@ type StringMatchFilter struct {
 	In []string `json:"in"`
 	// Must match the provided pattern. Wildcards ("*") will match any substring
 	Matches *string `json:"matches"`
+	// Must match any one of the provided `matches` patterns, OR-ed together — results are returned as a single paginated list. Each entry uses the same wildcard grammar as `matches`. Cannot be combined with `matches`. Limited to 100 entries.
+	MatchesAny []string `json:"matchesAny"`
 }
 
 // GetContains returns StringMatchFilter.Contains, and is useful for accessing the field via an interface.
@@ -8459,9 +8922,12 @@ func (v *StringMatchFilter) GetIn() []string { return v.In }
 // GetMatches returns StringMatchFilter.Matches, and is useful for accessing the field via an interface.
 func (v *StringMatchFilter) GetMatches() *string { return v.Matches }
 
+// GetMatchesAny returns StringMatchFilter.MatchesAny, and is useful for accessing the field via an interface.
+func (v *StringMatchFilter) GetMatchesAny() []string { return v.MatchesAny }
+
 // SyncCustomAccountsResponse is returned by SyncCustomAccounts on success.
 type SyncCustomAccountsResponse struct {
-	// Once you've created a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
+	// Once you've created a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
 	SyncCustomAccounts SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResponse `json:"-"`
 }
 
@@ -8742,7 +9208,7 @@ func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExt
 
 // SyncCustomTxsResponse is returned by SyncCustomTxs on success.
 type SyncCustomTxsResponse struct {
-	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
+	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
 	SyncCustomTxs SyncCustomTxsSyncCustomTxsSyncCustomTxsResponse `json:"-"`
 }
 
@@ -9798,6 +10264,14 @@ func (v *UpdateLedgerUpdateLedgerUpdateLedgerResultLedger) GetIk() string { retu
 // GetName returns UpdateLedgerUpdateLedgerUpdateLedgerResultLedger.Name, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerUpdateLedgerUpdateLedgerResultLedger) GetName() string { return v.Name }
 
+// __AddLedgerEntriesInput is used internally by genqlient
+type __AddLedgerEntriesInput struct {
+	Entries []AddLedgerEntryInput `json:"entries"`
+}
+
+// GetEntries returns __AddLedgerEntriesInput.Entries, and is useful for accessing the field via an interface.
+func (v *__AddLedgerEntriesInput) GetEntries() []AddLedgerEntryInput { return v.Entries }
+
 // __AddLedgerEntryInput is used internally by genqlient
 type __AddLedgerEntryInput struct {
 	Ik          string                  `json:"ik"`
@@ -10475,6 +10949,80 @@ func (v *__UpdateLedgerInput) GetLedgerIk() string { return v.LedgerIk }
 
 // GetUpdate returns __UpdateLedgerInput.Update, and is useful for accessing the field via an interface.
 func (v *__UpdateLedgerInput) GetUpdate() UpdateLedgerInput { return v.Update }
+
+// The mutation executed by AddLedgerEntries.
+const AddLedgerEntries_Operation = `
+mutation AddLedgerEntries ($entries: [AddLedgerEntryInput!]!) {
+	addLedgerEntries(entries: $entries) {
+		__typename
+		... on AddLedgerEntriesResult {
+			results {
+				isIkReplay
+				entry {
+					type
+					id
+					ik
+					posted
+					created
+				}
+				lines {
+					id
+					amount
+					account {
+						path
+					}
+				}
+			}
+		}
+		... on AddLedgerEntriesError {
+			code
+			message
+			retryable
+			errors {
+				ik
+				code
+				message
+				retryable
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func AddLedgerEntries(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	entries []AddLedgerEntryInput,
+) (data_ *AddLedgerEntriesResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "AddLedgerEntries",
+		Query:  AddLedgerEntries_Operation,
+		Variables: &__AddLedgerEntriesInput{
+			Entries: entries,
+		},
+	}
+
+	data_ = &AddLedgerEntriesResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
 
 // The mutation executed by AddLedgerEntry.
 const AddLedgerEntry_Operation = `

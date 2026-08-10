@@ -83,6 +83,7 @@ func main() {
 			"Parameters":          {Type: "encoding/json.RawMessage"},
 			"ParameterizedString": {Type: "string"},
 			"Period":              {Type: "string"},
+			"PeriodFilter":        {Type: "string"},
 			"SafeString":          {Type: "string"},
 			"UTCOffset":           {Type: "string"},
 		},
