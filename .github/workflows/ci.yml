@@ -4,6 +4,12 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
 
+# Both jobs only read the repository: they check out, build and test. Nothing here
+# writes to the repo, comments on the pull request, or publishes anything, so the
+# default write-capable token is more authority than either needs.
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: CI

@@ -2,6 +2,14 @@ on:
   workflow_dispatch:
 
 name: Update SDK queries
+
+# This workflow pushes a branch and opens a pull request, but not with this token:
+# every write goes through the GitHub App token generated below, which it needs
+# anyway to reach fragment-dev/graphql-queries. GITHUB_TOKEN is used only to check
+# out this repository, so read access is all it requires.
+permissions:
+  contents: read
+
 jobs:
   updateQueries:
     runs-on: ubuntu-latest
