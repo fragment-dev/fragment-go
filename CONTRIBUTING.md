@@ -57,6 +57,22 @@ Each run stores a new version of the `fragment-go-livetest` Schema and creates a
 fresh Ledger, so runs cannot collide — but Ledgers accumulate. **Point these at a
 scratch Workspace, not production.**
 
+In CI they run as the `Live API tests` job in `.github/workflows/ci.yml`, once per
+pull request rather than once per Go version. The job reads the same five values
+from repository secrets:
+
+```shell
+gh secret set FRAGMENT_CLIENT_ID     --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_CLIENT_SECRET --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_SCOPE         --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_AUTH_URL      --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_API_URL       --repo fragment-dev/fragment-go
+```
+
+Pull requests from forks get no secrets, so the tests skip there and the job still
+passes. On a branch in this repository a skip is treated as a failure, so a deleted
+or renamed secret surfaces instead of quietly turning the job into a no-op.
+
 ## Opening a Pull Request
 
 When you're ready to contribute:
