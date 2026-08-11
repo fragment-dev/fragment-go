@@ -15,10 +15,16 @@ Section numbers refer to `shared-spec/typed-batch-entries.md`.
 | --- | --- |
 | `internal/typedentries/derive.go` | §2.1–2.5 derivation from `.graphql` operations |
 | `internal/typedentries/emit.go` | generates the `typed_payloads` package |
+| `internal/typedentries/golden_test.go` | the §2.6 snapshot test, and `-update` |
 | `main.go` (`addTypedPayloads`) | wires derivation into the codegen CLI |
 | `batch/batch.go` | `Entry` interface and the ordered, omitting JSON writer |
 | `queries/batch.go` | `AddTypedLedgerEntries`, `RawEntry` |
-| `internal/conformance/` | the shared fixtures, and the committed generated output |
+| `internal/conformance/` | the fixtures, the committed generated output, and the wire tests |
+| `internal/conformance/compile_test.go` | type-checks generated output for hostile inputs |
+
+The snapshot writer lives in `internal/typedentries` rather than next to the
+fixtures on purpose: `internal/conformance` imports the generated payloads, so it
+cannot compile while they are stale — which is exactly when they need rewriting.
 
 ## Section by section
 
@@ -32,21 +38,23 @@ Section numbers refer to `shared-spec/typed-batch-entries.md`.
 | 2.2 | Differing parameters | Warning, not an error — the spec makes erroring a MAY, and this usually means a stale `.graphql` rather than invalid input. `TestDuplicateIdentityWithDifferentParametersWarns`. |
 | 2.3 | Non-variable parameters skipped | `paramsOf` skips anything that is not `ast.Variable`. `TestNonVariableParametersAreSkipped`. |
 | 2.3 | Types from variable definitions | `op.VariableDefinitions.ForName`, never the field name. `TestParameterTypesComeFromVariableDefinitions`. |
-| 2.3 | Untyped fallback | `Payload.Untyped` emits a `json.RawMessage` field. `TestParametersWithoutInlineObjectFallBackToUntyped`. |
-| 2.3a | Common fields | `commonFieldDecls` in `emit.go`, a fixed list. Not derived from the operation. `lines` deliberately absent. |
+| 2.3 | Untyped fallback | `Payload.Untyped` emits a `json.RawMessage` field. `TestParametersWithoutInlineObjectFallBackToUntyped`, `TestUntypedParametersFallback`. |
+| 2.3 | Duplicate wire names | Dropped with a warning; two fields of one name would put the same key on the wire twice. `TestDuplicateWireNamesAreDropped`. |
+| 2.3a | Common fields | `CommonFields` in `derive.go`, a fixed list, with `reservedFieldNames` derived from it so the two cannot drift. Not derived from the operation. `lines` deliberately absent. `TestCommonFieldsAreFixed`, `TestCommonFieldsDoNotDriftFromReservedNames`. |
 | 2.4 | Source order | `paramsOf` appends in `Children` order; `batch.Object` preserves insertion order, which a Go map could not. `TestParameterOrderIsSourceOrder` in both packages. |
 | 2.5 | Name carries version | `payloadName` always appends `V<n>`. `TestPayloadNamesCarryTheirVersion`. |
 | 2.5 | Unpinned normalises to 1 | `typeVersionOf`. Applied to identity, name, and wire value alike. |
 | 2.5 | Local escaping | `escapeFields`; first occurrence keeps the plain name, later ones are suffixed. Warns on rename. |
-| 2.5 | Colliding names stay distinct | `TestCollidingFieldNamesStayDistinct`, plus `TestParametersCannotShadowCommonFields` for the `posted` case. |
+| 2.5 | Colliding names stay distinct | `TestCollidingFieldNamesStayDistinct`, plus `TestParametersCannotShadowCommonFields` for the `posted` case. Reserved names also cover the methods every payload declares, since a field cannot share a name with one. |
+| 2.5 | Identifiers are always legal | `exportedIdent` sanitises to letters and digits. An entry type is a free-form Schema string, so an unsanitised one would reach gofmt and fail the run. `TestAwkwardEntryTypesProduceValidIdentifiers`. |
 | 2.6 | Additive changes don't break callers | `TestNewOptionalParameterDoesNotRenameExistingFields`, `TestPayloadNamesCarryTheirVersion`. |
-| 2.6 | Go must require keyed literals | Leading `_ struct{}` on every payload. `TestUnkeyedLiteralDoesNotCompile`. |
+| 2.6 | Go must require keyed literals | Leading `_ struct{}` on every payload. `TestUnkeyedLiteralDoesNotCompile`, which builds from a separate package because the rule is cross-package only. |
 | 2.6 | Snapshot test | `TestGeneratedPayloadsAreCurrent` diffs regenerated output against the committed files in `internal/conformance/f00N/`. |
 | 3.1 | Shape and entry order | Generated `MarshalJSON`; `TestEntryOrderPreserved`. |
-| 3.2 | Unset omitted, never null | `batch.SetOpt` / `batch.SetSlice`. `omitempty` is not used anywhere on this path. `TestUnsetIsOmittedNotNull`, `TestSetOptOmitsNilAndKeepsZeroValues`. |
+| 3.2 | Unset omitted, never null | `batch.SetOpt` / `batch.SetSlice`, dispatched on the Go type's shape rather than on required-ness, since a nullable list is a slice and not a pointer. `omitempty` is not used anywhere on this path. `TestUnsetIsOmittedNotNull`, `TestSetOptOmitsNilAndKeepsZeroValues`, `TestUntypedParametersOmittedWhenNil`. |
 | 3.3 | Verbatim wire names | `Param.WireName` is never transformed; escaping only touches `FieldName`. Fixture `003`. |
-| 3.4 | Baseline equivalence | Fixture comparison is parsed-JSON equality in `assertMatchesFixture`. |
-| 3.5 | Mixing raw and typed | `queries.RawEntry`. `TestMixingRawAndTypedEntries`. |
+| 3.4 | Baseline equivalence | Comparison is parsed-JSON equality in `assertJSONEqual`. |
+| 3.5 | Mixing raw and typed | `queries.RawEntry`. `TestMixingRawAndTypedEntries`, which asserts the full expected JSON so the asymmetry between the two is pinned. |
 | 3.6 | Everything accepted serialises | `AddTypedLedgerEntries` accepts only `batch.Entry`, whose sole method is the marshaller, so there is nothing acceptable that cannot serialise. |
 | 4 | Batch semantics | Inherited from the API. `AddTypedLedgerEntries` returns the union undisturbed and documents narrowing; `AddLedgerEntriesError.Errors` is surfaced per entry. |
 
@@ -60,7 +68,9 @@ Section numbers refer to `shared-spec/typed-batch-entries.md`.
 
 **What this SDK does:** the fixtures are copied into `internal/conformance/testdata/`
 and each case is written out by hand in `wire_test.go`, against generated output that
-is committed under `internal/conformance/f00N/`.
+is committed under `internal/conformance/f00N/`. Two local fixtures cover shapes the
+shared six do not: `007-cli-output` is real Fragment CLI output, the only input shape
+customers actually have, and `008-untyped-parameters` covers the §2.3 fallback.
 
 **Why:** Go cannot do it in one process. The payloads are generated source and must be
 compiled before anything can construct them, so a runner would need a build step
@@ -72,6 +82,39 @@ which is exactly the mapping the generator already knows statically.
 fixture. The `.graphql`, `case.json`, and `expected.json` files under
 `internal/conformance/testdata/` are copies, and re-syncing them is currently manual.
 The `updateSDKQueries` workflow does not yet fetch `shared-spec/`.
+
+### §2.3 — enum and input-object parameters are not typed precisely
+
+**What the spec asks:** a parameter's type comes from the matching variable
+definition.
+
+**What this SDK does:** scalars are typed precisely. A parameter whose Schema type
+is an enum or input object becomes `json.RawMessage`, with a warning naming the
+type.
+
+**Why:** genqlient emits such a type into the package it generated for *those*
+operations. The generated payloads live in a nested `typed_payloads` package and
+cannot import it — the generator knows that package's name but not its import
+path, since nothing on the command line gives it one. Referencing the SDK's
+`queries` copy is not a fallback either: genqlient only emits types its own
+operations reach, so `queries.EntryGroupMatchInput` does not exist. The previous
+behaviour emitted exactly that and did not compile.
+
+**In practice:** entry parameters are scalars. The Fragment CLI generates
+`String`, `Int64` and similar for every parameter in a Schema, so this affects
+hand-written operations only.
+
+### §2.3a — tags, groups and conditions use the SDK's input types
+
+A payload's `Tags`, `Groups` and `Conditions` are `[]queries.LedgerEntryTagInput`
+and friends, from the SDK's own `queries` package — not from the package the
+payloads were generated alongside, for the reason above.
+
+A customer generating with `--package fragment` therefore has both
+`fragment.LedgerEntryTagInput` and payloads wanting
+`queries.LedgerEntryTagInput`: structurally identical, mutually unassignable. The
+generated package doc and the README both say so, because the compile error does
+not explain itself.
 
 ### §3.2 — explicit null on a typed payload
 
@@ -121,6 +164,23 @@ Both are worth resolving upstream; neither blocked this work.
 ## Regenerating
 
 ```shell
-go test ./internal/conformance -update   # refresh the committed generated payloads
+go test ./internal/typedentries -update   # refresh the committed generated payloads
 go test ./...
 ```
+
+## A note on testing a generator
+
+Every codegen defect found in this work produced source that `gofmt` accepted and
+the Go compiler rejected, and each was initially masked by a test that supplied
+something the CLI does not — a scalar table containing `String`, or an expected
+`Param` value that encoded the bug.
+
+Two habits follow, and they are why `compile_test.go` and `main_test.go` exist:
+
+- **Build the generated output, do not just inspect it.** A test that asserts on
+  derived values or on emitted text cannot see a missing import, a field colliding
+  with a method, or a helper called with the wrong type.
+- **Feed tests the real inputs.** `main_test.go` reads the binding table from
+  `newCodegenConfig` rather than restating it, and the built-in scalars are
+  deliberately absent from every test table so the derivation has to resolve them
+  itself.

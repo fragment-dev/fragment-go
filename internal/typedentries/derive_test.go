@@ -281,12 +281,18 @@ func TestParameterTypesComeFromVariableDefinitions(t *testing.T) {
 		t.Fatalf("expected 1 payload, got %d", len(payloads))
 	}
 
+	// Kind is what decides how the field is written, and it follows the shape of
+	// the Go type rather than Required: a nullable list is a slice, not a
+	// pointer, so treating "not required" as "pointer" would emit a call that
+	// does not compile.
 	want := []Param{
-		{WireName: "required", FieldName: "Required", GoType: "string", Required: true},
-		{WireName: "optional", FieldName: "Optional", GoType: "*string", Required: false},
-		{WireName: "count", FieldName: "Count", GoType: "int", Required: true},
-		{WireName: "currency", FieldName: "Currency", GoType: "*queries.CurrencyMatchInput", Required: false},
-		{WireName: "tags", FieldName: "Tags2", GoType: "[]string", Required: false},
+		{WireName: "required", FieldName: "Required", GoType: "string", Kind: KindValue, Required: true},
+		{WireName: "optional", FieldName: "Optional", GoType: "*string", Kind: KindPointer, Required: false},
+		{WireName: "count", FieldName: "Count", GoType: "int", Kind: KindValue, Required: true},
+		// A non-scalar Schema type falls back to raw JSON, because the generated
+		// payloads cannot import the package genqlient emitted it into.
+		{WireName: "currency", FieldName: "Currency", GoType: "json.RawMessage", Kind: KindRaw, Required: false},
+		{WireName: "tags", FieldName: "Tags2", GoType: "[]string", Kind: KindSlice, Required: false},
 	}
 
 	got := payloads[0].Params
@@ -361,9 +367,9 @@ func TestParametersCannotShadowCommonFields(t *testing.T) {
 		}`)
 
 	for _, p := range payloads[0].Params {
-		for _, common := range commonFields {
-			if p.FieldName == common {
-				t.Errorf("parameter %q was assigned the common field name %s", p.WireName, common)
+		for _, reserved := range reservedFieldNames {
+			if p.FieldName == reserved {
+				t.Errorf("parameter %q was assigned the reserved field name %s", p.WireName, reserved)
 			}
 		}
 	}
@@ -388,6 +394,156 @@ func TestEntryTypesCollapsingOntoOneNameIsAnError(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "same Go identifier") {
 		t.Errorf("unexpected error: %v", err)
+	}
+}
+
+// TestCommonFieldsAreFixed pins the requirement that the common-field set comes
+// from LedgerEntryInput rather than from the source operation.
+//
+// This cannot be checked on the wire: an implementation that derived the set from
+// the operation would still produce the right JSON for any fixture whose operation
+// happens to bind those fields. The guarantee is about where the list comes from,
+// so the list itself is what has to be asserted.
+func TestCommonFieldsAreFixed(t *testing.T) {
+	var got []string
+	for _, f := range CommonFields {
+		got = append(got, f.Name)
+	}
+
+	want := []string{"Ik", "LedgerIk", "Posted", "Description", "Tags", "Groups", "Conditions"}
+	if len(got) != len(want) {
+		t.Fatalf("common fields = %v, want %v", got, want)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("common fields = %v, want %v", got, want)
+		}
+	}
+
+	// lines cannot be combined with an entry that has a type, so a payload must
+	// never offer it.
+	for _, f := range CommonFields {
+		if strings.EqualFold(f.Name, "lines") || strings.EqualFold(f.Wire, "lines") {
+			t.Error("lines must not be a common field: it cannot be used with a typed entry")
+		}
+	}
+}
+
+// TestCommonFieldsDoNotDriftFromReservedNames guards the pair of lists that have
+// to agree. Adding a common field without reserving its name would silently
+// reopen the collision class that TestParametersCannotShadowCommonFields covers.
+func TestCommonFieldsDoNotDriftFromReservedNames(t *testing.T) {
+	for _, f := range CommonFields {
+		if !isReserved(f.Name) {
+			t.Errorf("common field %s is not in reservedFieldNames, so a parameter could shadow it", f.Name)
+		}
+	}
+	for _, method := range generatedMethods {
+		if !isReserved(method) {
+			t.Errorf("generated method %s is not in reservedFieldNames, so a field could collide with it", method)
+		}
+	}
+}
+
+// TestVersionsBelowOneAreSkipped covers a version that parses but cannot be used.
+// Emitting it would produce an identifier like TV-3Entry and fail the whole run at
+// the formatting step.
+func TestVersionsBelowOneAreSkipped(t *testing.T) {
+	for _, version := range []string{"-3", "0"} {
+		t.Run(version, func(t *testing.T) {
+			payloads, warnings := derive(t, `
+				mutation A($ik: SafeString!, $ledgerIk: SafeString!, $a: String!) {
+				  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", typeVersion: `+version+`, parameters: {a: $a}}) { __typename }
+				}`)
+
+			if len(payloads) != 0 {
+				t.Fatalf("expected the operation to be skipped, got %+v", payloads)
+			}
+			if len(warnings) != 1 || !strings.Contains(warnings[0], "versions start at 1") {
+				t.Errorf("expected a warning about the version being too low, got %v", warnings)
+			}
+		})
+	}
+}
+
+// TestUnparseableVersionIsReportedAccurately covers an integer literal too large
+// for an int. Skipping it is right, but reporting it as "non-literal" would send a
+// reader looking for the wrong thing.
+func TestUnparseableVersionIsReportedAccurately(t *testing.T) {
+	_, warnings := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $a: String!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", typeVersion: 99999999999999999999, parameters: {a: $a}}) { __typename }
+		}`)
+
+	if len(warnings) != 1 || !strings.Contains(warnings[0], "not a usable integer") {
+		t.Errorf("expected a warning about the version not being usable, got %v", warnings)
+	}
+}
+
+// TestDuplicateWireNamesAreDropped covers two fields of the same name in one
+// parameters literal. Keeping both would put the same key on the wire twice, so
+// one of the caller's values would be silently discarded.
+func TestDuplicateWireNamesAreDropped(t *testing.T) {
+	payloads, warnings := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $a: String!, $b: String!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {amount: $a, amount: $b}}) { __typename }
+		}`)
+
+	params := payloads[0].Params
+	if len(params) != 1 {
+		t.Fatalf("expected the duplicate to be dropped, got %+v", params)
+	}
+	if len(warnings) != 1 || !strings.Contains(warnings[0], "more than once") {
+		t.Errorf("expected a warning about the duplicate, got %v", warnings)
+	}
+}
+
+// TestNonScalarParametersFallBackToRawJSON covers an enum or input object
+// parameter. genqlient emits such a type into the package it generated for these
+// operations, which the payloads cannot import, so typing it precisely is not
+// possible and raw JSON is the honest fallback.
+func TestNonScalarParametersFallBackToRawJSON(t *testing.T) {
+	payloads, warnings := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $g: EntryGroupMatchInput!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {g: $g}}) { __typename }
+		}`)
+
+	param := payloads[0].Params[0]
+	if param.GoType != "json.RawMessage" || param.Kind != KindRaw {
+		t.Errorf("got %+v, want json.RawMessage of KindRaw", param)
+	}
+	if len(warnings) != 1 || !strings.Contains(warnings[0], "not a scalar") {
+		t.Errorf("expected a warning explaining the fallback, got %v", warnings)
+	}
+}
+
+// TestAwkwardEntryTypesProduceValidIdentifiers covers entry types that are not
+// already identifier-shaped. An entry type is a free-form Schema string, and
+// anything unsanitised reaches gofmt and fails the whole run.
+func TestAwkwardEntryTypesProduceValidIdentifiers(t *testing.T) {
+	cases := map[string]string{
+		"user:funds":  "UserFundsV1Entry",
+		"123-numeric": "F123NumericV1Entry",
+		"amount+fee":  "AmountFeeV1Entry",
+		"café-entry":  "CaféEntryV1Entry",
+		"":            "FV1Entry",
+		"---":         "FV1Entry",
+	}
+
+	for entryType, want := range cases {
+		t.Run(entryType, func(t *testing.T) {
+			payloads, _ := derive(t, `
+				mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
+				  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "`+entryType+`"}) { __typename }
+				}`)
+
+			if len(payloads) != 1 {
+				t.Fatalf("expected 1 payload, got %d", len(payloads))
+			}
+			if payloads[0].GoName != want {
+				t.Errorf("GoName = %q, want %q", payloads[0].GoName, want)
+			}
+		})
 	}
 }
 

@@ -2,10 +2,12 @@
 //
 // The SDK's code generator derives a typed payload struct for every
 // (entry type, typeVersion) pair it finds in your GraphQL operations and emits
-// them into a typed_payloads package. Those payloads implement Entry and can be
-// passed to queries.AddTypedLedgerEntries to be committed as one atomic batch.
+// them into a typed_payloads package. Those payloads implement [Entry] and can
+// be passed to [github.com/fragment-dev/fragment-go/v4/queries.AddTypedLedgerEntries]
+// to be committed as one atomic batch.
 //
-// Nothing in this package is generated; the generated payloads depend on it.
+// Nothing here is generated, and you should not normally need to use [Object]
+// directly; the generated payloads depend on it.
 package batch
 
 import (
@@ -14,11 +16,13 @@ import (
 )
 
 // Entry is a single element of a batch. It is implemented by the generated
-// typed payloads and by queries.RawEntry.
+// typed payloads and by
+// [github.com/fragment-dev/fragment-go/v4/queries.RawEntry].
 //
-// FragmentBatchEntry is a marker so that an arbitrary json.Marshaler cannot be
-// passed to a batch by accident. It is exported only because generated payloads
-// live outside this package and so cannot implement an unexported method.
+// FragmentBatchEntry is a marker, so that an arbitrary [encoding/json.Marshaler]
+// cannot be passed to a batch by accident. It is exported only because generated
+// payloads live outside this package and so cannot implement an unexported
+// method.
 type Entry interface {
 	json.Marshaler
 	FragmentBatchEntry()
@@ -27,12 +31,21 @@ type Entry interface {
 // Object builds a JSON object while preserving the order in which fields are
 // added, and omitting fields that were never set.
 //
-// Field order matters for parameters: the spec requires them to appear in the
-// order they occur in the source operation, which a Go map cannot express.
-// Omission matters everywhere: a field the caller did not set must be absent
-// rather than null, so that an explicitly-null value stays distinguishable from
-// an unset one. encoding/json's omitempty cannot express that, since it also
-// drops "" , 0 and false.
+// Field order matters for parameters: the spec the generator implements requires
+// them to appear in the order they occur in the source operation, which a Go map
+// cannot express. Omission matters everywhere: a field the caller did not set
+// must be absent rather than null, so that an explicitly-null value stays
+// distinguishable from an unset one. encoding/json's omitempty cannot express
+// that, since it also drops "", 0 and false.
+//
+// Optional and slice fields are set with [SetOpt] and [SetSlice], which are
+// functions rather than methods because Go does not allow type parameters on
+// methods.
+//
+// Errors are accumulated rather than returned per call, in the manner of
+// [strings.Builder], and surfaced by [Object.MarshalJSON]. An Object is a
+// [encoding/json.Marshaler], so nesting one inside another is just
+// [Object.Set].
 type Object struct {
 	buf   bytes.Buffer
 	n     int
@@ -51,6 +64,12 @@ func (o *Object) key(name string) bool {
 	if o.err != nil {
 		return false
 	}
+	if o.ended {
+		// The object has already been encoded, so appending would write past the
+		// closing brace and silently produce invalid JSON.
+		o.err = errAfterMarshal
+		return false
+	}
 	if o.n > 0 {
 		o.buf.WriteByte(',')
 	}
@@ -66,7 +85,7 @@ func (o *Object) key(name string) bool {
 }
 
 // Set adds a field unconditionally. Use it for fields that are always present,
-// such as an entry's type and typeVersion.
+// such as an entry's type and typeVersion, and to nest another Object.
 func (o *Object) Set(name string, v any) {
 	if !o.key(name) {
 		return
@@ -77,15 +96,6 @@ func (o *Object) Set(name string, v any) {
 		return
 	}
 	o.buf.Write(b)
-}
-
-// SetRaw adds a field whose value is already encoded JSON, such as a nested
-// Object's Bytes.
-func (o *Object) SetRaw(name string, raw []byte) {
-	if !o.key(name) {
-		return
-	}
-	o.buf.Write(raw)
 }
 
 // SetSlice adds a field only when the slice is non-nil. An empty non-nil slice
@@ -107,8 +117,9 @@ func SetOpt[T any](o *Object, name string, v *T) {
 	o.Set(name, *v)
 }
 
-// Bytes closes the object and returns its encoding.
-func (o *Object) Bytes() ([]byte, error) {
+// MarshalJSON closes the object and returns its encoding, or the first error any
+// field encountered.
+func (o *Object) MarshalJSON() ([]byte, error) {
 	if o.err != nil {
 		return nil, o.err
 	}
@@ -118,3 +129,9 @@ func (o *Object) Bytes() ([]byte, error) {
 	}
 	return o.buf.Bytes(), nil
 }
+
+type marshalError string
+
+func (e marshalError) Error() string { return string(e) }
+
+const errAfterMarshal marshalError = "batch: Object was modified after being marshalled"

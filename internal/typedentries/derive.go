@@ -10,12 +10,32 @@ package typedentries
 
 import (
 	"fmt"
-	"sort"
+	"slices"
 	"strconv"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/vektah/gqlparser/v2/ast"
 	"github.com/vektah/gqlparser/v2/parser"
+)
+
+// ParamKind says how a parameter is written to the wire, which depends on the
+// shape of its Go type rather than on whether the Schema marked it required: a
+// nullable list is still a slice, and a slice is set differently from a pointer.
+type ParamKind int
+
+const (
+	// KindValue is a plain value, always written.
+	KindValue ParamKind = iota
+	// KindPointer is a pointer, written only when non-nil.
+	KindPointer
+	// KindSlice is a slice, written only when non-nil.
+	KindSlice
+	// KindRaw is already-encoded JSON, written verbatim when non-nil. It needs
+	// its own kind because json.RawMessage is a []byte: handing it to a generic
+	// slice helper would marshal it as base64 rather than as raw JSON.
+	KindRaw
 )
 
 // Param is one caller-supplied parameter of a typed payload.
@@ -29,6 +49,8 @@ type Param struct {
 	// GoType is the Go type of the field, a pointer when the parameter is
 	// optional.
 	GoType string
+	// Kind says how to write the field.
+	Kind ParamKind
 	// Required reports whether the operation declared the variable non-null.
 	Required bool
 }
@@ -50,22 +72,62 @@ type Payload struct {
 	SourceOp string
 }
 
-// commonFields are the fields every payload carries regardless of entry type.
-// They are fixed by LedgerEntryInput and deliberately not derived from the
-// source operation: an operation binds only the fields the CLI chose to expose,
-// and that choice has already changed between CLI versions. Deriving the set
-// would invent a restriction the API does not have.
+// CommonField is a field every payload carries regardless of entry type.
+type CommonField struct {
+	Name string
+	Type string
+	// Wire is the name the field travels under, empty for fields that are not
+	// part of the entry object itself.
+	Wire string
+	Kind ParamKind
+	Doc  string
+}
+
+// CommonFields are the fields every payload carries. They are fixed by
+// LedgerEntryInput and deliberately not derived from the source operation: an
+// operation binds only the fields the CLI chose to expose, and that choice has
+// already changed between CLI versions. Deriving the set would invent a
+// restriction the API does not have.
 //
 // lines is absent on purpose. It cannot be combined with an entry that has a
 // type. type, typeVersion and parameters are derived rather than supplied.
-var commonFields = []string{
-	"Ik",
-	"LedgerIk",
-	"Posted",
-	"Description",
-	"Tags",
-	"Groups",
-	"Conditions",
+var CommonFields = []CommonField{
+	{"Ik", "string", "", KindValue,
+		"Ik is the idempotency key for this Ledger Entry."},
+	{"LedgerIk", "string", "", KindValue,
+		"LedgerIk identifies the Ledger to post this entry to."},
+	{"Posted", "*string", "posted", KindPointer,
+		"Posted is an ISO 8601 timestamp, for example \"2021-01-01T16:45:00Z\". Leave nil to omit it."},
+	{"Description", "*string", "description", KindPointer,
+		"Description is also used for this entry's Ledger Lines unless they set their own. Leave nil to omit it."},
+	{"Tags", "[]queries.LedgerEntryTagInput", "tags", KindSlice,
+		"Tags attached to this Ledger Entry. Leave nil to omit it."},
+	{"Groups", "[]queries.LedgerEntryGroupInput", "groups", KindSlice,
+		"Groups this Ledger Entry is added to. Leave nil to omit it."},
+	{"Conditions", "[]queries.LedgerEntryConditionInput", "conditions", KindSlice,
+		"Conditions that must hold for this Ledger Entry to post. The whole batch rejects if any is not met. Leave nil to omit it."},
+}
+
+// generatedMethods are the methods every payload declares. A field may not share
+// a name with one of them, or the generated struct would not compile.
+var generatedMethods = []string{"MarshalJSON", "FragmentBatchEntry"}
+
+// reservedFieldNames is every identifier a derived parameter must not land on.
+var reservedFieldNames = func() []string {
+	names := make([]string, 0, len(CommonFields)+len(generatedMethods)+1)
+	for _, f := range CommonFields {
+		names = append(names, f.Name)
+	}
+	names = append(names, generatedMethods...)
+	// Parameters is the field an untyped payload carries; reserving it keeps a
+	// parameter literally named "parameters" from colliding with it.
+	return append(names, "Parameters")
+}()
+
+// identity is a payload's identity, the pair the API guarantees is unique.
+type identity struct {
+	Type    string
+	Version int
 }
 
 // Derive reads every operation in the given sources and returns one payload per
@@ -78,7 +140,7 @@ func Derive(sources []*ast.Source, scalars map[string]string) ([]Payload, []stri
 	var (
 		payloads []Payload
 		warnings []string
-		index    = map[string]int{}
+		index    = map[identity]int{}
 	)
 
 	for _, src := range sources {
@@ -93,24 +155,22 @@ func Derive(sources []*ast.Source, scalars map[string]string) ([]Payload, []stri
 				continue
 			}
 
-			version, ok := typeVersionOf(entry)
-			if !ok {
-				// Identity is (type, typeVersion), and a non-literal version
-				// leaves it undefined. Treating it as absent would pin the
-				// payload to version 1 even though the operation accepts any
-				// version, so skip rather than guess.
-				warnings = append(warnings, fmt.Sprintf(
-					"operation %q has a non-literal typeVersion; skipping, as its (type, typeVersion) identity cannot be determined",
-					op.Name))
+			version, versionErr := typeVersionOf(entry)
+			if versionErr != "" {
+				// Identity is (type, typeVersion), so a version we cannot read
+				// leaves it undefined. Defaulting to 1 would pin the payload to
+				// version 1 even where the operation accepts any, so skip
+				// rather than guess.
+				warnings = append(warnings, fmt.Sprintf("operation %q %s; skipping it", op.Name, versionErr))
 				continue
 			}
 
 			entryType := entry.Children.ForName("type").Raw
-			key := entryType + "\x00" + strconv.Itoa(version)
+			id := identity{Type: entryType, Version: version}
 
-			params, untyped := paramsOf(op, entry, scalars)
+			params, untyped, paramWarnings := paramsOf(op, entry, scalars)
 
-			if prev, seen := index[key]; seen {
+			if prev, seen := index[id]; seen {
 				// The CLI and API guarantee no two entries share a
 				// (type, typeVersion), so duplicates necessarily describe the
 				// same model and the first wins. Differing parameters mean the
@@ -124,12 +184,12 @@ func Derive(sources []*ast.Source, scalars map[string]string) ([]Payload, []stri
 				continue
 			}
 
-			nameWarnings := escapeFields(params)
-			for _, w := range nameWarnings {
+			paramWarnings = append(paramWarnings, assignFieldNames(params)...)
+			for _, w := range paramWarnings {
 				warnings = append(warnings, fmt.Sprintf("%s v%d: %s", entryType, version, w))
 			}
 
-			index[key] = len(payloads)
+			index[id] = len(payloads)
 			payloads = append(payloads, Payload{
 				Type:        entryType,
 				TypeVersion: version,
@@ -182,34 +242,41 @@ func recognize(op *ast.OperationDefinition) (*ast.Value, bool) {
 // version 1 server-side rather than to the latest. Normalising here keeps the
 // generated name and the wire value from disagreeing.
 //
-// The second result is false when a version is present but is not an integer
-// literal, leaving the payload's identity undefined.
-func typeVersionOf(entry *ast.Value) (int, bool) {
+// The second result is a non-empty explanation when the version cannot be used,
+// leaving the payload's identity undefined.
+func typeVersionOf(entry *ast.Value) (int, string) {
 	v := entry.Children.ForName("typeVersion")
 	if v == nil {
-		return 1, true
+		return 1, ""
 	}
 	if v.Kind != ast.IntValue {
-		return 0, false
+		return 0, "has a non-literal typeVersion, so its (type, typeVersion) identity cannot be determined"
 	}
 	n, err := strconv.Atoi(v.Raw)
 	if err != nil {
-		return 0, false
+		return 0, fmt.Sprintf("has a typeVersion of %s, which is not a usable integer", v.Raw)
 	}
-	return n, true
+	if n < 1 {
+		return 0, fmt.Sprintf("has a typeVersion of %d, but versions start at 1", n)
+	}
+	return n, ""
 }
 
 // paramsOf extracts the caller-supplied parameters, in source order.
-func paramsOf(op *ast.OperationDefinition, entry *ast.Value, scalars map[string]string) ([]Param, bool) {
+func paramsOf(op *ast.OperationDefinition, entry *ast.Value, scalars map[string]string) ([]Param, bool, []string) {
 	obj := entry.Children.ForName("parameters")
 	if obj == nil || obj.Kind != ast.ObjectValue {
 		// Either no parameters at all, or bound to a variable so their
 		// individual types are not visible here. Either way there is nothing to
 		// type, and the payload falls back to an untyped map.
-		return nil, true
+		return nil, true, nil
 	}
 
-	var params []Param
+	var (
+		params   []Param
+		warnings []string
+		seen     = map[string]bool{}
+	)
 	for _, child := range obj.Children {
 		if child.Value.Kind != ast.Variable {
 			// The operation fixes this value, so it is not something the caller
@@ -220,15 +287,30 @@ func paramsOf(op *ast.OperationDefinition, entry *ast.Value, scalars map[string]
 		if def == nil || def.Type == nil {
 			continue
 		}
+		if seen[child.Name] {
+			// Two fields of the same name in one parameters literal. Emitting
+			// both would put the same key on the wire twice, so one value would
+			// be discarded by whichever end read it last.
+			warnings = append(warnings, fmt.Sprintf(
+				"parameter %q appears more than once; keeping the first", child.Name))
+			continue
+		}
+		seen[child.Name] = true
+
 		// Type and required-ness come from the variable definition, never from
 		// the field name.
+		goType, kind, typeWarning := goType(def.Type, scalars)
+		if typeWarning != "" {
+			warnings = append(warnings, fmt.Sprintf("parameter %q %s", child.Name, typeWarning))
+		}
 		params = append(params, Param{
 			WireName: child.Name,
-			GoType:   goType(def.Type, scalars),
+			GoType:   goType,
+			Kind:     kind,
 			Required: def.Type.NonNull,
 		})
 	}
-	return params, false
+	return params, false, warnings
 }
 
 // builtinScalars are the scalars every GraphQL schema has. They are not in the
@@ -246,11 +328,15 @@ var builtinScalars = map[string]string{
 // goType maps a GraphQL type to its Go equivalent, matching what genqlient
 // generates for the same type: optional values are pointers, and lists are
 // slices whether or not they are nullable.
-func goType(t *ast.Type, scalars map[string]string) string {
+//
+// The third result is a non-empty explanation when the type could not be
+// represented precisely.
+func goType(t *ast.Type, scalars map[string]string) (string, ParamKind, string) {
 	if t.Elem != nil {
 		// A slice already has a nil value, so genqlient does not add a pointer
 		// for a nullable list and neither do we.
-		return "[]" + goType(t.Elem, scalars)
+		inner, _, warning := goType(t.Elem, scalars)
+		return "[]" + inner, KindSlice, warning
 	}
 
 	base, ok := scalars[t.NamedType]
@@ -258,27 +344,31 @@ func goType(t *ast.Type, scalars map[string]string) string {
 		base, ok = builtinScalars[t.NamedType]
 	}
 	if !ok {
-		// Not a scalar, so it is an enum or input object, which genqlient emits
-		// into the SDK's queries package under its Schema name.
-		base = "queries." + t.NamedType
+		// An enum or input object. genqlient emits it into the package it
+		// generated for these operations, which the payloads cannot import: the
+		// generator knows that package's name but not its import path. Falling
+		// back to raw JSON keeps the generated code compiling, at the cost of
+		// typing for this one parameter.
+		return "json.RawMessage", KindRaw, fmt.Sprintf(
+			"has Schema type %s, which is not a scalar, so it is typed as json.RawMessage", t.NamedType)
 	}
 	if t.NonNull {
-		return base
+		return base, KindValue, ""
 	}
-	return "*" + base
+	return "*" + base, KindPointer, ""
 }
 
-// escapeFields assigns each parameter a legal, unique Go field name.
+// assignFieldNames gives each parameter a legal, unique Go field name.
 //
-// Names must not collide with each other or with the common fields every
-// payload carries, and the first occurrence in source order keeps the plain
-// name. Escaping is purely local: WireName is untouched, so each parameter
-// still carries its own value to the API.
-func escapeFields(params []Param) []string {
+// Names must not collide with each other, with the common fields every payload
+// carries, or with the methods every payload declares, and the first occurrence
+// in source order keeps the plain name. Escaping is purely local: WireName is
+// untouched, so each parameter still carries its own value to the API.
+func assignFieldNames(params []Param) []string {
 	var warnings []string
 	taken := map[string]bool{}
-	for _, f := range commonFields {
-		taken[f] = true
+	for _, name := range reservedFieldNames {
+		taken[name] = true
 	}
 
 	for i := range params {
@@ -298,29 +388,31 @@ func escapeFields(params []Param) []string {
 	return warnings
 }
 
-// exportedIdent converts a Schema name to an exported Go identifier, splitting
-// on the separators Fragment entry types and parameters use.
+// exportedIdent converts a Schema name to an exported Go identifier. It splits on
+// the separators Fragment entry types and parameters use, drops anything that
+// cannot appear in an identifier, and capitalises each part.
+//
+// Sanitising here rather than trusting the input matters: an entry type is a
+// free-form Schema string, and a stray character would otherwise reach gofmt and
+// fail the whole run with a parse error about generated source.
 func exportedIdent(s string) string {
 	parts := strings.FieldsFunc(s, func(r rune) bool {
-		return r == '_' || r == '-' || r == '.' || r == ' ' || r == '/'
+		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
 	})
+
 	var b strings.Builder
 	for _, p := range parts {
-		r := []rune(p)
-		b.WriteString(strings.ToUpper(string(r[0])))
-		if len(r) > 1 {
-			b.WriteString(string(r[1:]))
-		}
+		first, size := utf8.DecodeRuneInString(p)
+		b.WriteRune(unicode.ToUpper(first))
+		b.WriteString(p[size:])
 	}
+
 	out := b.String()
-	if out == "" || !isLetter(rune(out[0])) {
+	if first, _ := utf8.DecodeRuneInString(out); out == "" || !unicode.IsLetter(first) {
+		// A Go identifier cannot start with a digit, and must not be empty.
 		out = "F" + out
 	}
 	return out
-}
-
-func isLetter(r rune) bool {
-	return (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z')
 }
 
 // payloadName builds a payload's struct name. The version is always present, so
@@ -354,10 +446,10 @@ func duplicateGoNames(payloads []Payload) []string {
 	var out []string
 	for _, types := range byName {
 		if len(types) > 1 {
-			sort.Strings(types)
+			slices.Sort(types)
 			out = append(out, strings.Join(types, " and "))
 		}
 	}
-	sort.Strings(out)
+	slices.Sort(out)
 	return out
 }

@@ -12,16 +12,18 @@
 package typed_payloads
 
 import (
+	"encoding/json"
+
 	"github.com/fragment-dev/fragment-go/v4/batch"
 	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
-// OptionalV1Entry is the "optional" Ledger Entry, version 1.
+// UntypedV1Entry is the "untyped" Ledger Entry, version 1.
 //
 // Fields must be set by name. An unkeyed literal will not compile, which is
 // deliberate: two parameters of the same type could otherwise be swapped by
 // reordering them, and the mistake would be silent.
-type OptionalV1Entry struct {
+type UntypedV1Entry struct {
 	// Prevents an unkeyed composite literal, which would let parameters be
 	// supplied positionally.
 	_ struct{}
@@ -44,40 +46,35 @@ type OptionalV1Entry struct {
 	// rejects if any is not met. Leave nil to omit it.
 	Conditions []queries.LedgerEntryConditionInput
 
-	// The parameters of this entry type, in Schema order.
-
-	// Required is the "required" parameter.
-	Required string
-
-	// Optional is the "optional" parameter. Optional; leave nil to omit it.
-	Optional *string
+	// Parameters for this entry type could not be typed from the source operation,
+	// which did not bind them individually. Supply encoded JSON, or leave nil to
+	// omit it.
+	Parameters json.RawMessage
 }
 
-// FragmentBatchEntry marks OptionalV1Entry as usable in a batch.
-func (OptionalV1Entry) FragmentBatchEntry() {}
+// FragmentBatchEntry marks UntypedV1Entry as usable in a batch.
+func (UntypedV1Entry) FragmentBatchEntry() {}
 
 // MarshalJSON encodes the entry as an AddLedgerEntryInput.
 //
 // Fields the caller did not set are omitted rather than sent as null, and
 // parameters keep the order they have in the Schema.
-func (e OptionalV1Entry) MarshalJSON() ([]byte, error) {
+func (e UntypedV1Entry) MarshalJSON() ([]byte, error) {
 	ledger := batch.NewObject()
 	ledger.Set("ik", e.LedgerIk)
 
-	params := batch.NewObject()
-	params.Set("required", e.Required)
-	batch.SetOpt(params, "optional", e.Optional)
-
 	entry := batch.NewObject()
 	entry.Set("ledger", ledger)
-	entry.Set("type", "optional")
+	entry.Set("type", "untyped")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
 	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
 	batch.SetSlice(entry, "conditions", e.Conditions)
-	entry.Set("parameters", params)
+	if e.Parameters != nil {
+		entry.Set("parameters", e.Parameters)
+	}
 
 	out := batch.NewObject()
 	out.Set("ik", e.Ik)

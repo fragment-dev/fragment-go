@@ -19,16 +19,28 @@ import (
 	f004 "github.com/fragment-dev/fragment-go/v4/internal/conformance/f004/typed_payloads"
 	f005 "github.com/fragment-dev/fragment-go/v4/internal/conformance/f005/typed_payloads"
 	f006 "github.com/fragment-dev/fragment-go/v4/internal/conformance/f006/typed_payloads"
+	f008 "github.com/fragment-dev/fragment-go/v4/internal/conformance/f008/typed_payloads"
 )
 
-// capturingClient records the request instead of sending it, so a test can
-// inspect exactly what would go on the wire.
+// capturingClient encodes the request's variables and records the result instead
+// of sending it, so a test can inspect exactly what would go on the wire.
+//
+// It marshals rather than just storing the request because that is what a real
+// transport does: an encoding failure has to surface as an error from
+// MakeRequest, or a test could never tell a broken payload from a working one.
 type capturingClient struct {
-	req *graphql.Request
+	req  *graphql.Request
+	body []byte
 }
 
 func (c *capturingClient) MakeRequest(_ context.Context, req *graphql.Request, _ *graphql.Response) error {
 	c.req = req
+
+	body, err := json.Marshal(req.Variables)
+	if err != nil {
+		return err
+	}
+	c.body = body
 	return nil
 }
 
@@ -51,12 +63,7 @@ func wireOf(t *testing.T, entries ...batch.Entry) []byte {
 	if client.req.OpName != "AddLedgerEntries" {
 		t.Errorf("OpName = %q, want AddLedgerEntries", client.req.OpName)
 	}
-
-	encoded, err := json.Marshal(client.req.Variables)
-	if err != nil {
-		t.Fatalf("marshalling variables: %v", err)
-	}
-	return encoded
+	return client.body
 }
 
 // assertMatchesFixture compares against the fixture's expected.json under the
@@ -70,19 +77,26 @@ func assertMatchesFixture(t *testing.T, fixture string, got []byte) {
 	if err != nil {
 		t.Fatalf("reading %s: %v", path, err)
 	}
+	assertJSONEqual(t, wantRaw, got)
+}
+
+// assertJSONEqual compares two encodings under the baseline profile: the same
+// keys, nesting and values, with key order unconstrained.
+func assertJSONEqual(t *testing.T, wantRaw, gotRaw []byte) {
+	t.Helper()
 
 	var want, have any
 	if err := json.Unmarshal(wantRaw, &want); err != nil {
-		t.Fatalf("parsing %s: %v", path, err)
+		t.Fatalf("parsing expected JSON: %v\n%s", err, wantRaw)
 	}
-	if err := json.Unmarshal(got, &have); err != nil {
-		t.Fatalf("parsing produced JSON: %v\n%s", err, got)
+	if err := json.Unmarshal(gotRaw, &have); err != nil {
+		t.Fatalf("parsing produced JSON: %v\n%s", err, gotRaw)
 	}
 
 	if !reflect.DeepEqual(want, have) {
 		wantPretty, _ := json.MarshalIndent(want, "", "  ")
 		havePretty, _ := json.MarshalIndent(have, "", "  ")
-		t.Errorf("wire JSON does not match %s\n\nwant:\n%s\n\ngot:\n%s", path, wantPretty, havePretty)
+		t.Errorf("wire JSON does not match\n\nwant:\n%s\n\ngot:\n%s", wantPretty, havePretty)
 	}
 }
 
@@ -92,8 +106,7 @@ func assertMatchesFixture(t *testing.T, fixture string, got []byte) {
 // output of the generator, so this still exercises real generated code.
 func TestFixtures(t *testing.T) {
 	t.Run("001-basic", func(t *testing.T) {
-		// Recognition, nesting, and parameter extraction. The operation also
-		// fixes a non-variable parameter, which must not become a field.
+		// Recognition, nesting, and parameter extraction.
 		got := wireOf(t, f001.AuthCaptureV1Entry{
 			Ik:            "ik-1",
 			LedgerIk:      "prod",
@@ -207,7 +220,11 @@ func TestUnsetIsOmittedNotNull(t *testing.T) {
 	}
 	// Matched as JSON keys, not bare substrings: this fixture's entry type is
 	// itself named "optional", so a substring check would match its value.
-	for _, key := range []string{"optional", "posted", "description", "tags", "groups", "conditions", "lines"} {
+	//
+	// lines is not in this list. It is never emitted by any code path, so
+	// asserting its absence here would pass whatever the code did; that
+	// requirement is covered by TestCommonFieldsAreFixed instead.
+	for _, key := range []string{"optional", "posted", "description", "tags", "groups", "conditions"} {
 		if contains(got, `"`+key+`":`) {
 			t.Errorf("unset field %q should be absent, got: %s", key, got)
 		}
@@ -236,7 +253,7 @@ func TestEntryOrderPreserved(t *testing.T) {
 // typed payloads their unset fields are sent as null; that asymmetry is
 // deliberate and is what makes a raw entry the way to send an explicit null.
 func TestMixingRawAndTypedEntries(t *testing.T) {
-	got := string(wireOf(t,
+	got := wireOf(t,
 		f001.AuthCaptureV1Entry{Ik: "typed", LedgerIk: "prod", UserId: "u", CaptureAmount: "1"},
 		queries.RawEntry{Input: queries.AddLedgerEntryInput{
 			Ik: "raw",
@@ -245,14 +262,82 @@ func TestMixingRawAndTypedEntries(t *testing.T) {
 				Type:   ptr("auth_capture"),
 			},
 		}},
-	))
+	)
 
-	if !contains(got, `"typed"`) || !contains(got, `"raw"`) {
-		t.Errorf("both entries should be present, got: %s", got)
+	// Asserted in full rather than by substring, so that a change to either
+	// entry's nesting or to the order between them fails. Note the asymmetry:
+	// the typed entry omits what was not set, while the raw entry spells out
+	// every LedgerEntryInput field as null. That is the point of a raw entry.
+	const want = `{
+	  "entries": [
+	    {"ik": "typed",
+	     "entry": {"ledger": {"ik": "prod"}, "type": "auth_capture", "typeVersion": 1,
+	               "parameters": {"user_id": "u", "capture_amount": "1"}}},
+	    {"ik": "raw",
+	     "entry": {"conditions": null, "description": null, "groups": null,
+	               "ledger": {"id": null, "ik": "prod"}, "lines": null,
+	               "parameters": null, "posted": null, "tags": null,
+	               "type": "auth_capture", "typeVersion": null}}
+	  ]
+	}`
+
+	assertJSONEqual(t, []byte(want), got)
+}
+
+// TestUntypedParametersFallback covers the payload emitted for an operation whose
+// parameters are bound as a whole rather than individually. The shared fixtures
+// have no such case, so without this the fallback is never marshalled.
+func TestUntypedParametersFallback(t *testing.T) {
+	got := wireOf(t, f008.UntypedV1Entry{
+		Ik:         "u-1",
+		LedgerIk:   "prod",
+		Parameters: json.RawMessage(`{"amount":"100"}`),
+	})
+
+	const want = `{"entries": [{"ik": "u-1", "entry": {"ledger": {"ik": "prod"},
+	  "type": "untyped", "typeVersion": 1, "parameters": {"amount": "100"}}}]}`
+	assertJSONEqual(t, []byte(want), got)
+}
+
+// TestUntypedParametersOmittedWhenNil checks that raw JSON follows the same
+// omission rule as everything else, and in particular that a nil RawMessage does
+// not become the literal null its []byte nature would suggest.
+func TestUntypedParametersOmittedWhenNil(t *testing.T) {
+	got := string(wireOf(t, f008.UntypedV1Entry{Ik: "u-1", LedgerIk: "prod"}))
+
+	if contains(got, `"parameters":`) || contains(got, "null") {
+		t.Errorf("unset parameters should be absent, got: %s", got)
 	}
-	if !contains(got, "null") {
-		t.Errorf("a raw entry is expected to serialize its unset fields as null, got: %s", got)
+}
+
+// TestEmptyBatch checks that a batch with no entries serializes as an empty array
+// rather than null, which a nil slice would produce.
+func TestEmptyBatch(t *testing.T) {
+	got := string(wireOf(t))
+	if got != `{"entries":[]}` {
+		t.Errorf("got %s, want {\"entries\":[]}", got)
 	}
+}
+
+// TestMarshalErrorReachesTheCaller checks that a failure inside a nested object
+// propagates out through the batch rather than producing truncated JSON.
+func TestMarshalErrorReachesTheCaller(t *testing.T) {
+	client := &capturingClient{}
+	_, err := queries.AddTypedLedgerEntries(context.Background(), client, brokenEntry{})
+	if err == nil {
+		t.Error("expected the marshalling error to reach the caller")
+	}
+}
+
+// brokenEntry is an Entry whose marshalling always fails.
+type brokenEntry struct{}
+
+func (brokenEntry) FragmentBatchEntry() {}
+
+func (brokenEntry) MarshalJSON() ([]byte, error) {
+	o := batch.NewObject()
+	o.Set("bad", func() {}) // funcs cannot be marshalled
+	return o.MarshalJSON()
 }
 
 func contains(haystack, needle string) bool { return index(haystack, needle) >= 0 }

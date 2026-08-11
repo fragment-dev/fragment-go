@@ -10,6 +10,7 @@ import (
 
 	"github.com/Khan/genqlient/generate"
 	"github.com/alexflint/go-arg"
+	"github.com/bmatcuk/doublestar/v4"
 	"github.com/vektah/gqlparser/v2/ast"
 
 	"github.com/fragment-dev/fragment-go/v4/internal/typedentries"
@@ -57,37 +58,70 @@ func downloadSchemaToTempFile() (string, error) {
 // ownership of --output and so that callers can never write an unkeyed literal
 // of a payload. Nothing is added when the operations contain no typed entries.
 func addTypedPayloads(generated map[string][]byte, args cliArgs, bindings map[string]*generate.TypeBinding) error {
-	sources := make([]*ast.Source, 0, len(args.Inputs))
-	for _, input := range args.Inputs {
-		content, err := os.ReadFile(input)
-		if err != nil {
-			return err
-		}
-		sources = append(sources, &ast.Source{Name: input, Input: string(content)})
-	}
-
-	scalars := make(map[string]string, len(bindings))
-	for name, binding := range bindings {
-		scalars[name] = goTypeOfBinding(binding.Type)
-	}
-
-	payloads, warnings, err := typedentries.Derive(sources, scalars)
-	for _, w := range warnings {
-		fmt.Println("warning: " + w)
-	}
+	sources, err := readOperations(args.Inputs)
 	if err != nil {
 		return err
 	}
 
+	payloads, warnings, err := typedentries.Derive(sources, scalarBindings(bindings))
+	for _, w := range warnings {
+		fmt.Fprintln(os.Stderr, "warning: "+w)
+	}
+	if err != nil {
+		return err
+	}
+	if len(payloads) == 0 {
+		return nil
+	}
+
 	source, err := typedentries.Emit(payloads)
-	if err != nil || source == nil {
+	if err != nil {
 		return err
 	}
 
 	path := filepath.Join(filepath.Dir(args.Output), typedentries.PackageName, typedentries.PackageName+".go")
 	generated[path] = source
-	fmt.Printf("Derived %d typed Ledger Entry payload(s) into %s.\n", len(payloads), path)
+	fmt.Fprintf(os.Stderr, "Derived %d typed Ledger Entry payload(s) into %s.\n", len(payloads), path)
 	return nil
+}
+
+// readOperations loads the operation documents named by --input.
+//
+// Each input is expanded as a glob, because that is what genqlient does with the
+// same values: reading them literally would break a pattern such as
+// 'queries/*.graphql', which worked before typed payloads existed.
+func readOperations(inputs []string) ([]*ast.Source, error) {
+	var sources []*ast.Source
+	for _, input := range inputs {
+		matches, err := doublestar.FilepathGlob(input)
+		if err != nil {
+			return nil, fmt.Errorf("expanding %s: %w", input, err)
+		}
+		if len(matches) == 0 {
+			// Not necessarily a mistake: genqlient has already validated the
+			// inputs by this point, so an empty expansion here means the
+			// pattern matched nothing that still exists.
+			continue
+		}
+		for _, match := range matches {
+			content, err := os.ReadFile(match)
+			if err != nil {
+				return nil, err
+			}
+			sources = append(sources, &ast.Source{Name: match, Input: string(content)})
+		}
+	}
+	return sources, nil
+}
+
+// scalarBindings converts genqlient's binding table into the GraphQL-to-Go scalar
+// map the derivation needs.
+func scalarBindings(bindings map[string]*generate.TypeBinding) map[string]string {
+	scalars := make(map[string]string, len(bindings))
+	for name, binding := range bindings {
+		scalars[name] = goTypeOfBinding(binding.Type)
+	}
+	return scalars
 }
 
 // goTypeOfBinding turns a genqlient binding into the type name that appears in
@@ -120,31 +154,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	codegenConfig := &generate.Config{
-		Schema:      []string{schemaFile},
-		Operations:  args.Inputs,
-		ContextType: "context.Context",
-		Bindings: map[string]*generate.TypeBinding{
-			"AlphaNumericString":  {Type: "string"},
-			"Date":                {Type: "string"},
-			"DateTime":            {Type: "string"},
-			"FirstMoment":         {Type: "string"},
-			"Int64":               {Type: "string"},
-			"Int96":               {Type: "string"},
-			"JSON":                {Type: "encoding/json.RawMessage"},
-			"JSONObject":          {Type: "encoding/json.RawMessage"},
-			"LastMoment":          {Type: "string"},
-			"Parameters":          {Type: "encoding/json.RawMessage"},
-			"ParameterizedString": {Type: "string"},
-			"Period":              {Type: "string"},
-			"PeriodFilter":        {Type: "string"},
-			"SafeString":          {Type: "string"},
-			"UTCOffset":           {Type: "string"},
-		},
-		Optional:  "pointer",
-		Package:   args.PackageName,
-		Generated: args.Output,
-	}
+	codegenConfig := newCodegenConfig(args, schemaFile)
 
 	generated, err := generate.Generate(codegenConfig)
 	if err != nil {
@@ -171,5 +181,35 @@ func main() {
 	}
 
 	fmt.Println("Successfully generated client to " + args.Output + ".")
-	return
+}
+
+// newCodegenConfig builds the genqlient configuration. It is a function so that
+// tests can read the same binding table the CLI uses rather than a copy of it,
+// since a stand-in table is what hid two scalar bugs.
+func newCodegenConfig(args cliArgs, schemaFile string) *generate.Config {
+	return &generate.Config{
+		Schema:      []string{schemaFile},
+		Operations:  args.Inputs,
+		ContextType: "context.Context",
+		Bindings: map[string]*generate.TypeBinding{
+			"AlphaNumericString":  {Type: "string"},
+			"Date":                {Type: "string"},
+			"DateTime":            {Type: "string"},
+			"FirstMoment":         {Type: "string"},
+			"Int64":               {Type: "string"},
+			"Int96":               {Type: "string"},
+			"JSON":                {Type: "encoding/json.RawMessage"},
+			"JSONObject":          {Type: "encoding/json.RawMessage"},
+			"LastMoment":          {Type: "string"},
+			"Parameters":          {Type: "encoding/json.RawMessage"},
+			"ParameterizedString": {Type: "string"},
+			"Period":              {Type: "string"},
+			"PeriodFilter":        {Type: "string"},
+			"SafeString":          {Type: "string"},
+			"UTCOffset":           {Type: "string"},
+		},
+		Optional:  "pointer",
+		Package:   args.PackageName,
+		Generated: args.Output,
+	}
 }

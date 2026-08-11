@@ -8,7 +8,7 @@ func TestObjectPreservesInsertionOrder(t *testing.T) {
 	o.Set("alpha", "2")
 	o.Set("mike", "3")
 
-	got, err := o.Bytes()
+	got, err := o.MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func TestSetOptOmitsNilAndKeepsZeroValues(t *testing.T) {
 	SetOpt(o, "zero", &zero)
 	SetOpt(o, "false", &no)
 
-	got, err := o.Bytes()
+	got, err := o.MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func TestSetSliceDistinguishesNilFromEmpty(t *testing.T) {
 	SetSlice(o, "empty", []string{})
 	SetSlice(o, "full", []string{"a"})
 
-	got, err := o.Bytes()
+	got, err := o.MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,7 +61,7 @@ func TestSetSliceDistinguishesNilFromEmpty(t *testing.T) {
 }
 
 func TestEmptyObject(t *testing.T) {
-	got, err := NewObject().Bytes()
+	got, err := NewObject().MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -70,19 +70,16 @@ func TestEmptyObject(t *testing.T) {
 	}
 }
 
-func TestSetRawEmbedsNestedObject(t *testing.T) {
+func TestSetEmbedsNestedObject(t *testing.T) {
+	// An Object is a json.Marshaler, so nesting is just Set.
 	inner := NewObject()
 	inner.Set("ik", "prod")
-	innerJSON, err := inner.Bytes()
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	outer := NewObject()
-	outer.SetRaw("ledger", innerJSON)
+	outer.Set("ledger", inner)
 	outer.Set("type", "t")
 
-	got, err := outer.Bytes()
+	got, err := outer.MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,17 +89,16 @@ func TestSetRawEmbedsNestedObject(t *testing.T) {
 	}
 }
 
-func TestBytesIsIdempotent(t *testing.T) {
-	// A generated MarshalJSON may read Bytes more than once via a nested object;
-	// closing the brace twice would produce invalid JSON.
+func TestMarshalJSONIsIdempotent(t *testing.T) {
+	// Closing the brace twice would produce invalid JSON.
 	o := NewObject()
 	o.Set("a", 1)
 
-	first, err := o.Bytes()
+	first, err := o.MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
-	second, err := o.Bytes()
+	second, err := o.MarshalJSON()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -114,18 +110,34 @@ func TestBytesIsIdempotent(t *testing.T) {
 func TestMarshalErrorIsReported(t *testing.T) {
 	o := NewObject()
 	o.Set("bad", func() {}) // channels and funcs cannot be marshalled
-	if _, err := o.Bytes(); err == nil {
+	if _, err := o.MarshalJSON(); err == nil {
 		t.Error("expected an error for an unmarshallable value")
 	}
 }
 
+func TestSetAfterMarshalIsAnError(t *testing.T) {
+	// Appending after the closing brace has been written would produce invalid
+	// JSON, so it must be reported rather than silently corrupt the output.
+	o := NewObject()
+	o.Set("a", 1)
+	if _, err := o.MarshalJSON(); err != nil {
+		t.Fatal(err)
+	}
+
+	o.Set("b", 2)
+	got, err := o.MarshalJSON()
+	if err == nil {
+		t.Errorf("expected an error, got %s", got)
+	}
+}
+
 func TestErrorSuppressesLaterFields(t *testing.T) {
-	// Once a field has failed the buffer is not trustworthy, so Bytes must
+	// Once a field has failed the buffer is not trustworthy, so MarshalJSON must
 	// report the error rather than return partial JSON.
 	o := NewObject()
 	o.Set("bad", func() {})
 	o.Set("good", "value")
-	if _, err := o.Bytes(); err == nil {
+	if _, err := o.MarshalJSON(); err == nil {
 		t.Error("expected the earlier error to persist")
 	}
 }

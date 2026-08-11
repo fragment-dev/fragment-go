@@ -1,0 +1,6 @@
+# Not a shared fixture. Covers the fallback for an operation that binds
+# parameters as a whole rather than field by field, so their individual types
+# are not visible to the generator.
+mutation PostUntyped($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "untyped", parameters: $parameters}) { __typename }
+}
