@@ -265,19 +265,19 @@ func TestMixingRawAndTypedEntries(t *testing.T) {
 	)
 
 	// Asserted in full rather than by substring, so that a change to either
-	// entry's nesting or to the order between them fails. Note the asymmetry:
-	// the typed entry omits what was not set, while the raw entry spells out
-	// every LedgerEntryInput field as null. That is the point of a raw entry.
+	// entry's nesting or to the order between them fails.
+	//
+	// Both entries encode the Ledger the same way. They have to: the API resolves
+	// {"id":null,"ik":"prod"} as a different Ledger from {"ik":"prod"} and rejects
+	// a batch whose entries disagree, so a raw entry that kept its nulls could
+	// never be mixed with a typed one. Verified against a live API.
 	const want = `{
 	  "entries": [
 	    {"ik": "typed",
 	     "entry": {"ledger": {"ik": "prod"}, "type": "auth_capture", "typeVersion": 1,
 	               "parameters": {"user_id": "u", "capture_amount": "1"}}},
 	    {"ik": "raw",
-	     "entry": {"conditions": null, "description": null, "groups": null,
-	               "ledger": {"id": null, "ik": "prod"}, "lines": null,
-	               "parameters": null, "posted": null, "tags": null,
-	               "type": "auth_capture", "typeVersion": null}}
+	     "entry": {"ledger": {"ik": "prod"}, "type": "auth_capture"}}
 	  ]
 	}`
 

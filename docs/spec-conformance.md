@@ -54,9 +54,9 @@ cannot compile while they are stale — which is exactly when they need rewritin
 | 3.2 | Unset omitted, never null | `batch.SetOpt` / `batch.SetSlice`, dispatched on the Go type's shape rather than on required-ness, since a nullable list is a slice and not a pointer. `omitempty` is not used anywhere on this path. `TestUnsetIsOmittedNotNull`, `TestSetOptOmitsNilAndKeepsZeroValues`, `TestUntypedParametersOmittedWhenNil`. |
 | 3.3 | Verbatim wire names | `Param.WireName` is never transformed; escaping only touches `FieldName`. Fixture `003`. |
 | 3.4 | Baseline equivalence | Comparison is parsed-JSON equality in `assertJSONEqual`. |
-| 3.5 | Mixing raw and typed | `queries.RawEntry`. `TestMixingRawAndTypedEntries`, which asserts the full expected JSON so the asymmetry between the two is pinned. |
+| 3.5 | Mixing raw and typed | `queries.RawEntry`, which omits unset fields so that both kinds encode a Ledger the same way — see the note below. `TestMixingRawAndTypedEntries`, `queries/batch_test.go`, and `TestAddTypedLedgerEntriesMixedWithRaw` against a live API. |
 | 3.6 | Everything accepted serialises | `AddTypedLedgerEntries` accepts only `batch.Entry`, whose sole method is the marshaller, so there is nothing acceptable that cannot serialise. |
-| 4 | Batch semantics | Inherited from the API. `AddTypedLedgerEntries` returns the union undisturbed and documents narrowing; `AddLedgerEntriesError.Errors` is surfaced per entry. |
+| 4 | Batch semantics | Inherited from the API, and verified live: `TestAddTypedLedgerEntriesReportsIkReplay` and `TestAddTypedLedgerEntriesIsAtomic` in `internal/livetest`. `AddLedgerEntriesError.Errors` is surfaced per entry, each carrying its `ik`. |
 
 ## Deviations
 
@@ -140,9 +140,45 @@ way to send a deliberate `null`.
 field, diverging from how the rest of the SDK models optionality for a case the fixtures
 do not exercise — `005-unset-omitted` tests only omission.
 
-**Workaround:** `queries.RawEntry`, which §3.5 already blesses for mixing untyped inputs
-into a batch. Raw entries serialize through the generated `AddLedgerEntryInput`, so their
-unset fields are sent as `null`.
+**Workaround:** none, and none is needed. `AddLedgerEntryInput` cannot express an
+explicit null either — a nil `*string` there means both "unset" and "null" with no
+way to tell them apart — so §3.2's distinction is not reachable from Go by any
+route. See the §3.5 note below for what that forced.
+
+### §3.5 — raw entries do not pass their nulls through
+
+**What the spec asks:** an SDK must allow raw and typed entries in the same batch,
+and notes that "raw inputs bypass §3.2 — a caller who explicitly passes `null` gets
+`null`, and this asymmetry is accepted."
+
+**What this SDK does:** `queries.RawEntry` omits unset fields, exactly as a typed
+payload does. Values inside `parameters` are passed through untouched, since those
+are the caller's own JSON.
+
+**Why:** the asymmetry the spec accepts turns out to make §3.5's MUST unsatisfiable
+in Go. Marshalling `AddLedgerEntryInput` directly encodes a `LedgerMatchInput` with
+only `ik` set as `{"id":null,"ik":"..."}`. The API resolves that as a *different*
+Ledger from the `{"ik":"..."}` a typed payload sends, and rejects the batch:
+
+```
+invalid_input_provided: Bad Request: entries[1] targets a different Ledger;
+all entries in a batch must target the same Ledger.
+```
+
+Both entries named the same Ledger. Found by `TestAddTypedLedgerEntriesMixedWithRaw`
+against a live API — it is not reproducible offline, since the JSON looks correct
+until the API interprets it.
+
+Nothing is given up by omitting the nulls. A nil `*string` in the generated input
+types means both "unset" and "null" with no way to distinguish them, so there is no
+explicit null a Go caller could have intended in the first place. The asymmetry
+§3.5 describes is not expressible in this language, and emitting it anyway only
+produced nulls nobody asked for.
+
+**Worth raising upstream**, since it affects the spec rather than just this SDK:
+§3.5's parenthetical assumes the asymmetry is harmless, and for a match input it is
+not. Either the spec should say raw inputs must still omit unset fields, or it
+should note that SDKs whose input types cannot omit are unable to satisfy §3.5.
 
 ### §3.4 — strict profile not adopted
 
@@ -155,6 +191,18 @@ nothing to be byte-equal *with* yet.
 
 If strict is adopted later, `batch.Object` already emits in a controlled order, so the
 change is the client plus canonical key ordering rather than a rewrite.
+
+## Answered by the live tests
+
+The shared specification lists as a known gap that "no behavior here has been
+verified against a live API. Server tolerance for an entry object with `lines` absent
+and `type` present is untested in every SDK."
+
+It is tested now, in `internal/livetest`, and the answer is that the API accepts it.
+`TestAddTypedLedgerEntries` posts a two-entry batch built from generated payloads and
+both entries commit with their lines materialised. Replay reporting and atomicity
+hold as specified. One thing did not work as the spec assumed — see the §3.5 note
+above.
 
 ## Ambiguities found while implementing
 

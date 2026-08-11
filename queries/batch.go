@@ -15,10 +15,8 @@ import (
 // RawEntry adapts an untyped [AddLedgerEntryInput] so it can be mixed into a
 // batch alongside generated typed payloads.
 //
-// Raw entries serialize through the generated input type, so unlike typed
-// payloads their unset fields are sent as null rather than omitted. That is the
-// escape hatch: use a raw entry when you need to send an explicit null, or an
-// entry with lines rather than a type, and a typed payload otherwise.
+// Use it for an entry the generated payloads cannot express: one with lines
+// rather than a type, or an entry type missing from your operations.
 type RawEntry struct {
 	Input AddLedgerEntryInput
 }
@@ -26,9 +24,64 @@ type RawEntry struct {
 // FragmentBatchEntry marks RawEntry as usable in a batch.
 func (RawEntry) FragmentBatchEntry() {}
 
-// MarshalJSON encodes the wrapped input as-is.
+// MarshalJSON encodes the wrapped input, omitting fields that were left unset.
+//
+// The generated input types carry no omitempty, so marshalling one directly
+// writes every field the caller did not set as an explicit null. That is not
+// merely noisy. A LedgerMatchInput with only ik set encodes as
+// {"id":null,"ik":"..."}, which the API resolves as a different Ledger from the
+// {"ik":"..."} a typed payload sends — so an entry naming the same Ledger is
+// rejected for naming a different one, and a batch cannot mix the two kinds.
+//
+// Nothing is lost by omitting them. A nil *string in these types means both
+// "unset" and "null" with no way to tell them apart, so there is no explicit
+// null for a Go caller to have intended. Values inside parameters are passed
+// through untouched, since those are the caller's own JSON.
 func (r RawEntry) MarshalJSON() ([]byte, error) {
-	return json.Marshal(r.Input)
+	encoded, err := json.Marshal(r.Input)
+	if err != nil {
+		return nil, err
+	}
+	return stripNulls(encoded, map[string]bool{"parameters": true})
+}
+
+// stripNulls removes null members from every JSON object in data, recursively.
+// The value of any field named in passthrough is kept verbatim.
+func stripNulls(data json.RawMessage, passthrough map[string]bool) (json.RawMessage, error) {
+	var object map[string]json.RawMessage
+	if err := json.Unmarshal(data, &object); err == nil && object != nil {
+		kept := make(map[string]json.RawMessage, len(object))
+		for name, value := range object {
+			if string(value) == "null" {
+				continue
+			}
+			if passthrough[name] {
+				kept[name] = value
+				continue
+			}
+			cleaned, err := stripNulls(value, passthrough)
+			if err != nil {
+				return nil, err
+			}
+			kept[name] = cleaned
+		}
+		return json.Marshal(kept)
+	}
+
+	var array []json.RawMessage
+	if err := json.Unmarshal(data, &array); err == nil && array != nil {
+		for i, element := range array {
+			cleaned, err := stripNulls(element, passthrough)
+			if err != nil {
+				return nil, err
+			}
+			array[i] = cleaned
+		}
+		return json.Marshal(array)
+	}
+
+	// A scalar, or JSON this function has no business rewriting.
+	return data, nil
 }
 
 type typedBatchVariables struct {
