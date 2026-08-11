@@ -147,6 +147,13 @@ route. See the §3.5 note below for what that forced.
 
 ### §3.5 — raw entries do not pass their nulls through
 
+**Status: proposed as a spec change**, not a standing deviation —
+[graphql-queries#15 (discussion)](https://github.com/fragment-dev/graphql-queries/pull/15#discussion_r3759146560).
+Nothing about this is Go-specific, so the wording should change rather than this
+SDK carrying an exception. If the suggestion is declined, this becomes a real
+deviation and fragment-go cannot satisfy §3.5.
+
+
 **What the spec asks:** an SDK must allow raw and typed entries in the same batch,
 and notes that "raw inputs bypass §3.2 — a caller who explicitly passes `null` gets
 `null`, and this asymmetry is accepted."
@@ -175,10 +182,10 @@ explicit null a Go caller could have intended in the first place. The asymmetry
 §3.5 describes is not expressible in this language, and emitting it anyway only
 produced nulls nobody asked for.
 
-**Worth raising upstream**, since it affects the spec rather than just this SDK:
-§3.5's parenthetical assumes the asymmetry is harmless, and for a match input it is
-not. Either the spec should say raw inputs must still omit unset fields, or it
-should note that SDKs whose input types cannot omit are unable to satisfy §3.5.
+**Raised upstream** with suggested wording: raw inputs must omit unset fields,
+exactly as §3.2 requires of typed payloads, and an SDK that *can* express a
+deliberate null may still send one for a genuinely nullable field. The permission
+and the MUST cannot both hold as currently written.
 
 ### §3.4 — strict profile not adopted
 
