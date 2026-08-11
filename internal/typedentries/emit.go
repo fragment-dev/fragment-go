@@ -17,10 +17,14 @@ const PackageName = "typed_payloads"
 const (
 	moduleImport = "github.com/fragment-dev/fragment-go/v4"
 	// queriesImport is where the generated payloads find the shared input types
-	// for tags, groups and conditions. Those are Schema types, identical in
-	// every generated package, so the payloads use the SDK's copy rather than
-	// the caller's, whose import path is not knowable from the generator's
-	// arguments.
+	// for tags, groups and conditions.
+	//
+	// One codegen run writes two packages: genqlient's client, into --output with
+	// the name given by --package, and these payloads into a typed_payloads
+	// package beside it. The payloads cannot import that sibling — the generator
+	// knows its package name but not its import path, since nothing on the
+	// command line gives it one — so they use the SDK's own copy of these Schema
+	// types instead.
 	queriesImport = moduleImport + "/queries"
 	batchImport   = moduleImport + "/batch"
 )

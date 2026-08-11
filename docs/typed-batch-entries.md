@@ -35,11 +35,12 @@ with no compile error and no runtime complaint. A leading `_ struct{}` field
 prevents that — but only from *outside* the declaring package, since Go allows
 positional assignment to unexported fields within it.
 
-So the guarantee depends entirely on the payloads not living in the caller's
-package. Emitting them into a package of their own is what makes it hold by
-construction rather than by convention. `keyed_literal_test.go` compiles a program
-in a separate package to prove it, and would pass vacuously if written any other
-way.
+So the guarantee depends entirely on the payloads not living in the same package as
+the code that constructs them. Emitting them into a package of their own is what
+makes it hold by construction rather than by convention — a customer generating with
+`--package main` and writing their calls in `main` would otherwise get no protection
+at all. `keyed_literal_test.go` compiles a program in a separate package to prove it,
+and would pass vacuously if written any other way.
 
 ### Unset fields are omitted, never sent as `null`
 
@@ -94,24 +95,35 @@ generator warns.
 A parameter whose Schema type is an enum or input object is typed as raw JSON, with
 a warning naming the type.
 
-genqlient emits such a type into the package it generated for *those* operations,
-which `typed_payloads` does not import. The SDK's own `queries` copy is not a
-substitute: genqlient only emits types its own operations reach, so
+To see why, it helps to be precise about what a codegen run produces. Given
+`--output gen/client.go --package gen`, it writes two packages:
+
+```
+gen/client.go                         package gen             genqlient's client
+gen/typed_payloads/typed_payloads.go  package typed_payloads  the payloads
+```
+
+genqlient emits an enum or input object into `gen`, the sibling package — and
+`typed_payloads` does not import it. The SDK's own `queries` copy is not a
+substitute either: genqlient only emits types its own operations reach, so
 `queries.EntryGroupMatchInput` does not exist, and emitting it was a compile error.
 
-The payloads *could* import the caller's package — it is in the same module, there
-is no cycle, and the import path is derivable from the enclosing `go.mod`. The
-generator does not, in exchange for not adding a filesystem-dependent path that
-fails when `--output` sits outside a module. In practice the CLI types every Schema
-parameter as `String!`, so this only affects hand-written operations.
+The payloads *could* import that sibling. It is in the same module, there is no
+cycle, and the import path is derivable by walking up to the enclosing `go.mod` —
+the generator knows the package's name from `--package` but not its path, since
+nothing on the command line gives it one. It does not, in exchange for avoiding a
+filesystem-dependent path that fails when `--output` sits outside a module.
+
+In practice the CLI types every Schema parameter as `String!`, so this only affects
+hand-written operations.
 
 ### `Tags`, `Groups` and `Conditions` use the SDK's input types
 
 They are `[]queries.LedgerEntryTagInput` and friends, from
-`github.com/fragment-dev/fragment-go/v4/queries` — not from the package the payloads
-were generated alongside. This one is forced: those types are absent from the
-caller's generated package unless their own operations happen to reference them, and
-the common-field set does not depend on that.
+`github.com/fragment-dev/fragment-go/v4/queries` — not from the sibling package
+genqlient wrote. This one is forced rather than chosen: those types are absent from
+that sibling unless the customer's own operations happen to reference them, and the
+common-field set does not depend on what their operations reference.
 
 A customer generating with `--package fragment` therefore has both
 `fragment.LedgerEntryTagInput` and payloads wanting `queries.LedgerEntryTagInput`:
