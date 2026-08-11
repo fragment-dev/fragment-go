@@ -1,0 +1,3 @@
+mutation PostReserved($ik: SafeString!, $ledgerIk: SafeString!, $type: String!, $class: String!, $json: String!, $posted_p: String!, $userId: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "reserved", parameters: {type: $type, class: $class, json: $json, posted: $posted_p, userId: $userId}}) { __typename }
+}

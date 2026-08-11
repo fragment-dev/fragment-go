@@ -1,0 +1,5 @@
+{"entries": [
+  {"type": "auth_capture",
+   "ik": "ik-1", "ledgerIk": "prod",
+   "parameters": {"user_id": "user-1", "capture_amount": "100"}}
+]}

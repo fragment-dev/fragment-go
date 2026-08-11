@@ -1,0 +1,3 @@
+mutation PostOrdered($ik: SafeString!, $ledgerIk: SafeString!, $alpha: String!, $bravo: String, $charlie: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "ordered", parameters: {alpha: $alpha, bravo: $bravo, charlie: $charlie}}) { __typename }
+}

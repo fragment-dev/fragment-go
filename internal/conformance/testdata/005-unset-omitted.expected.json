@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "entry": {
+        "ledger": {
+          "ik": "prod"
+        },
+        "parameters": {
+          "required": "yes"
+        },
+        "type": "optional",
+        "typeVersion": 1
+      },
+      "ik": "u-1"
+    }
+  ]
+}

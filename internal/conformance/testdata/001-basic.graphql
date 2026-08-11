@@ -1,0 +1,3 @@
+mutation PostAuthCapture($ik: SafeString!, $ledgerIk: SafeString!, $posted: DateTime, $user_id: String!, $capture_amount: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "auth_capture", posted: $posted, parameters: {user_id: $user_id, capture_amount: $capture_amount}}) { __typename }
+}

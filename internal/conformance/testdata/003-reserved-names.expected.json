@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "entry": {
+        "ledger": {
+          "ik": "prod"
+        },
+        "parameters": {
+          "type": "t",
+          "class": "c",
+          "json": "j",
+          "posted": "p",
+          "userId": "u"
+        },
+        "type": "reserved",
+        "typeVersion": 1
+      },
+      "ik": "r-1"
+    }
+  ]
+}

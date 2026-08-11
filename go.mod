@@ -7,6 +7,7 @@ toolchain go1.22.11
 require (
 	github.com/Khan/genqlient v0.8.0
 	github.com/alexflint/go-arg v1.4.3
+	github.com/vektah/gqlparser/v2 v2.5.19
 )
 
 require (
@@ -14,7 +15,6 @@ require (
 	github.com/alexflint/go-scalar v1.1.0 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/vektah/gqlparser/v2 v2.5.19 // indirect
 	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect

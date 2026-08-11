@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "entry": {
+        "ledger": {
+          "ik": "prod"
+        },
+        "parameters": {
+          "memo": "a&b <tag> café 日本"
+        },
+        "type": "text",
+        "typeVersion": 1
+      },
+      "ik": "t-1"
+    }
+  ]
+}

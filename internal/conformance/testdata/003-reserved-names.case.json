@@ -1,0 +1,4 @@
+{"entries": [
+  {"type": "reserved", "ik": "r-1", "ledgerIk": "prod",
+   "parameters": {"type": "t", "class": "c", "json": "j", "posted": "p", "userId": "u"}}
+]}

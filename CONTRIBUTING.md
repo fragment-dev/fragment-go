@@ -17,6 +17,25 @@ go run main.go \
   --package=queries
 ```
 
+### Typed batch Ledger Entry payloads
+
+Alongside the genqlient pass, the codegen derives a typed payload per Ledger Entry type
+and writes them to a `typed_payloads` package beside the generated client. The rules for
+that derivation are shared with the other Fragment SDKs and specified in
+[`fragment-dev/graphql-queries`](https://github.com/fragment-dev/graphql-queries).
+
+The generated output for the specification's fixtures is committed under
+`internal/conformance/`, and acts as both the snapshot test and the input to the wire
+tests. If you change the generator, review the diff and refresh it:
+
+```shell
+go test ./internal/conformance -update
+go test ./...
+```
+
+See [`docs/spec-conformance.md`](docs/spec-conformance.md) for the section-by-section
+mapping and the deviations this SDK carries.
+
 ## Opening a Pull Request
 
 When you're ready to contribute:

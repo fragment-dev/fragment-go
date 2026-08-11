@@ -1,0 +1,3 @@
+mutation PostText($ik: SafeString!, $ledgerIk: SafeString!, $memo: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "text", parameters: {memo: $memo}}) { __typename }
+}

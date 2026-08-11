@@ -172,6 +172,111 @@ func main() {
 }
 ```
 
+### Post a batch of Ledger Entries
+
+To post several Ledger Entries in one atomic batch, use `AddTypedLedgerEntries`. Unlike
+`AddLedgerEntry`, which takes parameters as an opaque `json.RawMessage`, a batch is built
+from typed payloads that the codegen derives from your Schema — so a missing or misspelled
+parameter is a compile error rather than an API error.
+
+Running the codegen (see [Using custom queries](#using-custom-queries)) produces a
+`typed_payloads` package next to your generated client, holding one struct per Ledger
+Entry type and version:
+
+``` shell
+go run github.com/fragment-dev/fragment-go/v4 \
+  --input queries.graphql \
+  --output fragment/client.go \
+  --package fragment
+# writes fragment/client.go and fragment/typed_payloads/typed_payloads.go
+```
+
+``` go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/fragment-dev/fragment-go/v4/queries"
+
+	"myapp/fragment/typed_payloads"
+)
+
+func main() {
+	posted := "1968-01-01T16:45:00Z"
+
+	response, err := queries.AddTypedLedgerEntries(
+		context.Background(),
+		graphqlClient,
+		typed_payloads.UserFundsAccountV1Entry{
+			Ik:            "ik-1",
+			LedgerIk:      "your-ledger-ik",
+			Posted:        &posted,
+			UserId:        "user-1",
+			FundingAmount: "100",
+		},
+		typed_payloads.AuthCaptureV2Entry{
+			Ik:            "ik-2",
+			LedgerIk:      "your-ledger-ik",
+			UserId:        "user-1",
+			CaptureAmount: "25",
+		},
+	)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	switch r := response.GetAddLedgerEntries().(type) {
+	case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult:
+		for _, result := range r.Results {
+			fmt.Println("Posted", result.Entry.Ik, "replay:", result.IsIkReplay)
+		}
+	case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError:
+		// One error per failing entry, each with the ik that identifies it.
+		for _, e := range r.Errors {
+			fmt.Println("Entry", e.Ik, "failed:", e.Message)
+		}
+	case *queries.AddLedgerEntriesAddLedgerEntriesBadRequestError:
+		fmt.Println("Bad request:", r.Message)
+	case *queries.AddLedgerEntriesAddLedgerEntriesInternalError:
+		fmt.Println("Internal error:", r.Message)
+	}
+}
+```
+
+A few things worth knowing:
+
+- **The batch is atomic.** Either every entry commits or none do, so there is no partial
+  state to reconcile after an error.
+- **Idempotency keys are per entry**, not per batch. Retrying a batch that partly
+  succeeded reports `IsIkReplay` on the entries that had already committed.
+- **Fields must be set by name.** An unkeyed struct literal will not compile. This is
+  deliberate: two parameters of the same type could otherwise be swapped by reordering
+  them, and nothing would catch it.
+- **Unset fields are omitted**, not sent as `null`.
+- **Struct names always carry a version**, so adding a new version of an entry type to
+  your Schema never renames the existing one.
+
+To mix an untyped entry into a batch — for a one-off entry with explicit `lines`, or to
+send a deliberate `null` — wrap it in `queries.RawEntry`:
+
+``` go
+response, err := queries.AddTypedLedgerEntries(
+	context.Background(),
+	graphqlClient,
+	typed_payloads.UserFundsAccountV1Entry{ /* ... */ },
+	queries.RawEntry{Input: queries.AddLedgerEntryInput{
+		Ik:    "ik-3",
+		Entry: queries.LedgerEntryInput{ /* ... */ },
+	}},
+)
+```
+
+The rules the codegen follows are shared across the Fragment SDKs; see
+[`docs/spec-conformance.md`](docs/spec-conformance.md) for how this one implements them.
+
 ### Read a Ledger Account's balance
 
 To read a Ledger Account's [balance](https://fragment.dev/docs#read-balances-latest):

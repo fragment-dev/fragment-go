@@ -6,9 +6,13 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/Khan/genqlient/generate"
 	"github.com/alexflint/go-arg"
+	"github.com/vektah/gqlparser/v2/ast"
+
+	"github.com/fragment-dev/fragment-go/v4/internal/typedentries"
 )
 
 type cliArgs struct {
@@ -42,6 +46,56 @@ func downloadSchemaToTempFile() (string, error) {
 	}
 
 	return tempFile.Name(), nil
+}
+
+// addTypedPayloads derives a typed payload per Ledger Entry type from the same
+// operations genqlient just generated from, and adds the result to the set of
+// files to write.
+//
+// The payloads go into a package of their own beside the generated client
+// rather than into the client file itself, so that genqlient keeps sole
+// ownership of --output and so that callers can never write an unkeyed literal
+// of a payload. Nothing is added when the operations contain no typed entries.
+func addTypedPayloads(generated map[string][]byte, args cliArgs, bindings map[string]*generate.TypeBinding) error {
+	sources := make([]*ast.Source, 0, len(args.Inputs))
+	for _, input := range args.Inputs {
+		content, err := os.ReadFile(input)
+		if err != nil {
+			return err
+		}
+		sources = append(sources, &ast.Source{Name: input, Input: string(content)})
+	}
+
+	scalars := make(map[string]string, len(bindings))
+	for name, binding := range bindings {
+		scalars[name] = goTypeOfBinding(binding.Type)
+	}
+
+	payloads, warnings, err := typedentries.Derive(sources, scalars)
+	for _, w := range warnings {
+		fmt.Println("warning: " + w)
+	}
+	if err != nil {
+		return err
+	}
+
+	source, err := typedentries.Emit(payloads)
+	if err != nil || source == nil {
+		return err
+	}
+
+	path := filepath.Join(filepath.Dir(args.Output), typedentries.PackageName, typedentries.PackageName+".go")
+	generated[path] = source
+	fmt.Printf("Derived %d typed Ledger Entry payload(s) into %s.\n", len(payloads), path)
+	return nil
+}
+
+// goTypeOfBinding turns a genqlient binding into the type name that appears in
+// generated source. Qualified bindings such as "encoding/json.RawMessage" are
+// written as the package's last element plus the type.
+func goTypeOfBinding(binding string) string {
+	i := strings.LastIndex(binding, "/")
+	return binding[i+1:]
 }
 
 func main() {
@@ -94,6 +148,11 @@ func main() {
 
 	generated, err := generate.Generate(codegenConfig)
 	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if err := addTypedPayloads(generated, args, codegenConfig.Bindings); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "entry": {
+        "ledger": {
+          "ik": "prod"
+        },
+        "parameters": {
+          "amount": "100"
+        },
+        "type": "user-funds-account",
+        "typeVersion": 1
+      },
+      "ik": "v1"
+    },
+    {
+      "entry": {
+        "ledger": {
+          "ik": "prod"
+        },
+        "parameters": {
+          "amount": "100",
+          "feeAmount": "3"
+        },
+        "type": "user-funds-account",
+        "typeVersion": 2
+      },
+      "ik": "v2"
+    }
+  ]
+}

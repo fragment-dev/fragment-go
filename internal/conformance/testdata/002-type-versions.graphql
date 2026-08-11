@@ -1,0 +1,7 @@
+mutation PostUserFundsAccount($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "user-funds-account", typeVersion: 1, parameters: {amount: $amount}}) { __typename }
+}
+
+mutation PostUserFundsAccount_v2($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!, $feeAmount: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "user-funds-account", typeVersion: 2, parameters: {amount: $amount, feeAmount: $feeAmount}}) { __typename }
+}

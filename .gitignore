@@ -5,3 +5,7 @@ tmp/
 
 fragment-go
 .go-version
+
+# Scratch dirs from the keyed-literal compile check; normally cleaned up by the
+# test itself, but left behind if it is interrupted.
+internal/conformance/keyedcheck-*

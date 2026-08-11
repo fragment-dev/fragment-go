@@ -1,0 +1,19 @@
+{
+  "entries": [
+    {
+      "entry": {
+        "ledger": {
+          "ik": "prod"
+        },
+        "parameters": {
+          "alpha": "1",
+          "bravo": "2",
+          "charlie": "3"
+        },
+        "type": "ordered",
+        "typeVersion": 1
+      },
+      "ik": "o-1"
+    }
+  ]
+}
