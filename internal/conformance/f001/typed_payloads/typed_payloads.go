@@ -13,7 +13,6 @@ package typed_payloads
 
 import (
 	"github.com/fragment-dev/fragment-go/v4/batch"
-	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 // AuthCaptureV1Entry is the "auth_capture" Ledger Entry, version 1.
@@ -33,16 +32,6 @@ type AuthCaptureV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
-	// Description is also used for this entry's Ledger Lines unless they set their
-	// own. Leave nil to omit it.
-	Description *string
-	// Tags attached to this Ledger Entry. Leave nil to omit it.
-	Tags []queries.LedgerEntryTagInput
-	// Groups this Ledger Entry is added to. Leave nil to omit it.
-	Groups []queries.LedgerEntryGroupInput
-	// Conditions that must hold for this Ledger Entry to post. The whole batch
-	// rejects if any is not met. Leave nil to omit it.
-	Conditions []queries.LedgerEntryConditionInput
 
 	// The parameters of this entry type, in Schema order.
 
@@ -73,10 +62,6 @@ func (e AuthCaptureV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "auth_capture")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
-	batch.SetOpt(entry, "description", e.Description)
-	batch.SetSlice(entry, "tags", e.Tags)
-	batch.SetSlice(entry, "groups", e.Groups)
-	batch.SetSlice(entry, "conditions", e.Conditions)
 	entry.Set("parameters", params)
 
 	out := batch.NewObject()

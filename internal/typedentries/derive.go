@@ -65,6 +65,9 @@ type Payload struct {
 	GoName string
 	// Params are in the order they appear in the source operation.
 	Params []Param
+	// Common are the entry-level fields this payload exposes: the structural ones
+	// every payload needs, plus those the source operation binds to a variable.
+	Common []CommonField
 	// Untyped is set when the operation gave no inline parameters object, in
 	// which case callers fall back to an untyped map.
 	Untyped bool
@@ -83,11 +86,12 @@ type CommonField struct {
 	Doc  string
 }
 
-// CommonFields are the fields every payload carries. They are fixed by
-// LedgerEntryInput and deliberately not derived from the source operation: an
-// operation binds only the fields the CLI chose to expose, and that choice has
-// already changed between CLI versions. Deriving the set would invent a
-// restriction the API does not have.
+// CommonFields is the catalogue of entry-level fields a payload may carry. Which
+// of them a given payload exposes is decided by commonFieldsOf.
+//
+// Fields with no Wire name are structural — an entry cannot be posted without
+// them — so they are always present. The rest appear only when the source
+// operation binds them.
 //
 // lines is absent on purpose. It cannot be combined with an entry that has a
 // type. type, typeVersion and parameters are derived rather than supplied.
@@ -111,6 +115,31 @@ var CommonFields = []CommonField{
 // generatedMethods are the methods every payload declares. A field may not share
 // a name with one of them, or the generated struct would not compile.
 var generatedMethods = []string{"MarshalJSON", "FragmentBatchEntry"}
+
+// commonFieldsOf returns the entry-level fields a payload exposes: the structural
+// ones, plus those the operation binds to a variable.
+//
+// A field bound to a fixed value is excluded for the same reason a fixed
+// parameter is: the operation, not the caller, decides it.
+//
+// Note that this makes a payload's surface follow what the operation binds, which
+// the shared specification tells SDKs not to do — see the deviation recorded in
+// docs/spec-conformance.md. Parameter naming is deliberately not affected:
+// reservedFieldNames still covers every name in CommonFields, so whether a
+// parameter is escaped does not change with the CLI's choice of bindings.
+func commonFieldsOf(entry *ast.Value) []CommonField {
+	var out []CommonField
+	for _, f := range CommonFields {
+		if f.Wire == "" {
+			out = append(out, f)
+			continue
+		}
+		if v := entry.Children.ForName(f.Wire); v != nil && v.Kind == ast.Variable {
+			out = append(out, f)
+		}
+	}
+	return out
+}
 
 // reservedFieldNames is every identifier a derived parameter must not land on.
 var reservedFieldNames = func() []string {
@@ -195,6 +224,7 @@ func Derive(sources []*ast.Source, scalars map[string]string) ([]Payload, []stri
 				TypeVersion: version,
 				GoName:      payloadName(entryType, version),
 				Params:      params,
+				Common:      commonFieldsOf(entry),
 				Untyped:     untyped,
 				SourceOp:    op.Name,
 			})

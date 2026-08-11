@@ -36,6 +36,27 @@ go test ./...
 See [`docs/spec-conformance.md`](docs/spec-conformance.md) for the section-by-section
 mapping and the deviations this SDK carries.
 
+### Live API tests
+
+`internal/livetest/` posts real Ledger Entries. Everything else in the repo stops at
+the request boundary, so these are what confirm the API accepts the entry shape a
+typed payload produces — an entry object with a `type` and no `lines`.
+
+They skip unless credentials are set, so `go test ./...` stays offline:
+
+```shell
+FRAGMENT_CLIENT_ID=... \
+FRAGMENT_CLIENT_SECRET=... \
+FRAGMENT_SCOPE=... \
+FRAGMENT_AUTH_URL=... \
+FRAGMENT_API_URL=... \
+  go test ./internal/livetest/ -v
+```
+
+Each run stores a new version of the `fragment-go-livetest` Schema and creates a
+fresh Ledger, so runs cannot collide — but Ledgers accumulate. **Point these at a
+scratch Workspace, not production.**
+
 ## Opening a Pull Request
 
 When you're ready to contribute:

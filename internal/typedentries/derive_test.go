@@ -397,20 +397,25 @@ func TestEntryTypesCollapsingOntoOneNameIsAnError(t *testing.T) {
 	}
 }
 
-// TestCommonFieldsAreFixed pins the requirement that the common-field set comes
-// from LedgerEntryInput rather than from the source operation.
-//
-// This cannot be checked on the wire: an implementation that derived the set from
-// the operation would still produce the right JSON for any fixture whose operation
-// happens to bind those fields. The guarantee is about where the list comes from,
-// so the list itself is what has to be asserted.
-func TestCommonFieldsAreFixed(t *testing.T) {
+// TestCommonFieldsFollowTheOperation covers this SDK's deviation from §2.3a: a
+// payload exposes only the entry-level fields its operation binds, rather than the
+// full LedgerEntryInput set.
+func TestCommonFieldsFollowTheOperation(t *testing.T) {
+	payloads, _ := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $posted: DateTime, $tags: [LedgerEntryTagInput!], $amount: String!) {
+		  addLedgerEntry(ik: $ik, entry: {
+		    ledger: {ik: $ledgerIk}, type: "t", posted: $posted, tags: $tags, parameters: {amount: $amount}
+		  }) { __typename }
+		}`)
+
 	var got []string
-	for _, f := range CommonFields {
+	for _, f := range payloads[0].Common {
 		got = append(got, f.Name)
 	}
 
-	want := []string{"Ik", "LedgerIk", "Posted", "Description", "Tags", "Groups", "Conditions"}
+	// Ik and LedgerIk are structural, so they are always present. posted and tags
+	// are bound; description, groups and conditions are not.
+	want := []string{"Ik", "LedgerIk", "Posted", "Tags"}
 	if len(got) != len(want) {
 		t.Fatalf("common fields = %v, want %v", got, want)
 	}
@@ -419,13 +424,72 @@ func TestCommonFieldsAreFixed(t *testing.T) {
 			t.Fatalf("common fields = %v, want %v", got, want)
 		}
 	}
+}
 
-	// lines cannot be combined with an entry that has a type, so a payload must
-	// never offer it.
+// TestStructuralCommonFieldsAreAlwaysPresent checks the floor. An entry cannot be
+// posted without an idempotency key and a Ledger, so those two do not depend on
+// what the operation binds.
+func TestStructuralCommonFieldsAreAlwaysPresent(t *testing.T) {
+	payloads, _ := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t"}) { __typename }
+		}`)
+
+	var got []string
+	for _, f := range payloads[0].Common {
+		got = append(got, f.Name)
+	}
+	if len(got) != 2 || got[0] != "Ik" || got[1] != "LedgerIk" {
+		t.Errorf("common fields = %v, want [Ik LedgerIk]", got)
+	}
+}
+
+// TestCommonFieldBoundToAFixedValueIsExcluded covers the case where the operation
+// decides the value rather than the caller, the same rule parameters follow.
+func TestCommonFieldBoundToAFixedValueIsExcluded(t *testing.T) {
+	payloads, _ := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", posted: "2020-01-01"}) { __typename }
+		}`)
+
+	for _, f := range payloads[0].Common {
+		if f.Name == "Posted" {
+			t.Error("Posted is fixed by the operation, so the caller must not supply it")
+		}
+	}
+}
+
+// TestLinesIsNeverACommonField pins the one LedgerEntryInput field a payload must
+// never offer: lines cannot be combined with an entry that has a type.
+func TestLinesIsNeverACommonField(t *testing.T) {
 	for _, f := range CommonFields {
 		if strings.EqualFold(f.Name, "lines") || strings.EqualFold(f.Wire, "lines") {
 			t.Error("lines must not be a common field: it cannot be used with a typed entry")
 		}
+	}
+}
+
+// TestParameterNamingIgnoresWhichCommonFieldsAreBound keeps escaping stable.
+//
+// Every name in CommonFields stays reserved whether or not the payload exposes it,
+// so a CLI upgrade that starts binding tags at the entry level cannot rename a
+// caller's tags parameter from Tags to Tags2.
+func TestParameterNamingIgnoresWhichCommonFieldsAreBound(t *testing.T) {
+	const withoutTags = `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $t: String!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {tags: $t}}) { __typename }
+		}`
+	const withTags = `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $t: String!, $tags: [LedgerEntryTagInput!]) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", tags: $tags, parameters: {tags: $t}}) { __typename }
+		}`
+
+	before, _ := derive(t, withoutTags)
+	after, _ := derive(t, withTags)
+
+	if before[0].Params[0].FieldName != after[0].Params[0].FieldName {
+		t.Errorf("binding tags at the entry level renamed the tags parameter from %q to %q",
+			before[0].Params[0].FieldName, after[0].Params[0].FieldName)
 	}
 }
 
