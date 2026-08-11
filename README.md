@@ -250,6 +250,12 @@ A few things worth knowing:
 
 - **The batch is atomic.** Either every entry commits or none do, so there is no partial
   state to reconcile after an error.
+- **A batch is limited to 30 Ledger Lines in total**, not 30 entries. How many entries
+  that allows depends on your entry types: one posting 2 lines fits 15 per batch, one
+  posting 6 lines fits 5. Exceeding it is a `BadRequestError`, and since the batch is
+  atomic that means nothing commits — so size your chunks by lines, not entries. The
+  SDK cannot check this for you: an entry type's line count lives in your Schema, not
+  in the generated operations.
 - **Idempotency keys are per entry**, not per batch. Retrying a batch that partly
   succeeded reports `IsIkReplay` on the entries that had already committed.
 - **Fields must be set by name.** An unkeyed struct literal will not compile. This is

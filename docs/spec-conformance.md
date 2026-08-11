@@ -57,6 +57,7 @@ cannot compile while they are stale — which is exactly when they need rewritin
 | 3.5 | Mixing raw and typed | `queries.RawEntry`, which omits unset fields so that both kinds encode a Ledger the same way — see the note below. `TestMixingRawAndTypedEntries`, `queries/batch_test.go`, and `TestAddTypedLedgerEntriesMixedWithRaw` against a live API. |
 | 3.6 | Everything accepted serialises | `AddTypedLedgerEntries` accepts only `batch.Entry`, whose sole method is the marshaller, so there is nothing acceptable that cannot serialise. |
 | 4 | Batch semantics | Inherited from the API, and verified live: `TestAddTypedLedgerEntriesReportsIkReplay` and `TestAddTypedLedgerEntriesIsAtomic` in `internal/livetest`. `AddLedgerEntriesError.Errors` is surfaced per entry, each carrying its `ik`. |
+| 4 | Batch size limit | Not enforced, and not enforceable: the API caps a batch at 30 Ledger Lines in total, but an entry type's line count is in the Schema rather than in the operations the generator reads. Documented in the README instead, since exceeding it fails the whole batch. |
 
 ## Deviations
 
