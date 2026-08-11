@@ -33,6 +33,9 @@ type OrderPlacedV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
@@ -94,6 +97,7 @@ func (e OrderPlacedV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "order_placed")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
 	batch.SetSlice(entry, "conditions", e.Conditions)
@@ -122,6 +126,9 @@ type OrderPlacedV2Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
@@ -187,6 +194,7 @@ func (e OrderPlacedV2Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "order_placed")
 	entry.Set("typeVersion", 2)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
 	batch.SetSlice(entry, "conditions", e.Conditions)
@@ -215,10 +223,16 @@ type CardSettleV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
 	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
 
 	// The parameters of this entry type, in Schema order.
 
@@ -257,8 +271,10 @@ func (e CardSettleV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "card_settle")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
 	entry.Set("parameters", params)
 
 	out := batch.NewObject()
@@ -285,10 +301,16 @@ type RestaurantPayoutInitiateV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
 	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
 
 	// The parameters of this entry type, in Schema order.
 
@@ -332,8 +354,10 @@ func (e RestaurantPayoutInitiateV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "restaurant_payout_initiate")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
 	entry.Set("parameters", params)
 
 	out := batch.NewObject()
@@ -360,10 +384,16 @@ type RestaurantPayoutSettleV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
 	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
 
 	// The parameters of this entry type, in Schema order.
 
@@ -402,8 +432,10 @@ func (e RestaurantPayoutSettleV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "restaurant_payout_settle")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
 	entry.Set("parameters", params)
 
 	out := batch.NewObject()
@@ -430,10 +462,16 @@ type DriverPayoutInitiateV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
 	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
 
 	// The parameters of this entry type, in Schema order.
 
@@ -476,8 +514,10 @@ func (e DriverPayoutInitiateV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "driver_payout_initiate")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
 	entry.Set("parameters", params)
 
 	out := batch.NewObject()
@@ -504,10 +544,16 @@ type DriverPayoutSettleV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
 	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
 
 	// The parameters of this entry type, in Schema order.
 
@@ -546,8 +592,10 @@ func (e DriverPayoutSettleV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "driver_payout_settle")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
 	entry.Set("parameters", params)
 
 	out := batch.NewObject()
@@ -574,6 +622,9 @@ type DisputePayoutInitiateV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
@@ -627,6 +678,7 @@ func (e DisputePayoutInitiateV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "dispute_payout_initiate")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
 	batch.SetSlice(entry, "conditions", e.Conditions)
@@ -656,6 +708,9 @@ type DisputePayoutSettleV1Entry struct {
 	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
 	// nil to omit it.
 	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
 	// Tags attached to this Ledger Entry. Leave nil to omit it.
 	Tags []queries.LedgerEntryTagInput
 	// Groups this Ledger Entry is added to. Leave nil to omit it.
@@ -705,6 +760,7 @@ func (e DisputePayoutSettleV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("type", "dispute_payout_settle")
 	entry.Set("typeVersion", 1)
 	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
 	batch.SetSlice(entry, "tags", e.Tags)
 	batch.SetSlice(entry, "groups", e.Groups)
 	batch.SetSlice(entry, "conditions", e.Conditions)

@@ -15,6 +15,7 @@ import (
 	"encoding/json"
 
 	"github.com/fragment-dev/fragment-go/v4/batch"
+	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 // UntypedV1Entry is the "untyped" Ledger Entry, version 1.
@@ -31,6 +32,19 @@ type UntypedV1Entry struct {
 	Ik string
 	// LedgerIk identifies the Ledger to post this entry to.
 	LedgerIk string
+	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
+	// nil to omit it.
+	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
+	// Tags attached to this Ledger Entry. Leave nil to omit it.
+	Tags []queries.LedgerEntryTagInput
+	// Groups this Ledger Entry is added to. Leave nil to omit it.
+	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
 
 	// Parameters for this entry type could not be typed from the source operation,
 	// which did not bind them individually. Supply encoded JSON, or leave nil to
@@ -53,6 +67,11 @@ func (e UntypedV1Entry) MarshalJSON() ([]byte, error) {
 	entry.Set("ledger", ledger)
 	entry.Set("type", "untyped")
 	entry.Set("typeVersion", 1)
+	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
+	batch.SetSlice(entry, "tags", e.Tags)
+	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
 	if e.Parameters != nil {
 		entry.Set("parameters", e.Parameters)
 	}

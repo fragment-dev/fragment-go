@@ -40,7 +40,7 @@ cannot compile while they are stale — which is exactly when they need rewritin
 | 2.3 | Types from variable definitions | `op.VariableDefinitions.ForName`, never the field name. `TestParameterTypesComeFromVariableDefinitions`. |
 | 2.3 | Untyped fallback | `Payload.Untyped` emits a `json.RawMessage` field. `TestParametersWithoutInlineObjectFallBackToUntyped`, `TestUntypedParametersFallback`. |
 | 2.3 | Duplicate wire names | Dropped with a warning; two fields of one name would put the same key on the wire twice. `TestDuplicateWireNamesAreDropped`. |
-| 2.3a | Common fields | **Deviation** — a payload exposes only the entry-level fields its operation binds. See below. `lines` is never exposed. |
+| 2.3a | Common fields | `CommonFields` in `derive.go`, a fixed list, with `reservedFieldNames` derived from it so the two cannot drift. Not derived from the operation. `lines` deliberately absent. `TestCommonFieldsAreFixed`, `TestCommonFieldsAreEmittedRegardlessOfWhatTheOperationBinds`, `TestCommonFieldsDoNotDriftFromReservedNames`. |
 | 2.4 | Source order | `paramsOf` appends in `Children` order; `batch.Object` preserves insertion order, which a Go map could not. `TestParameterOrderIsSourceOrder` in both packages. |
 | 2.5 | Name carries version | `payloadName` always appends `V<n>`. `TestPayloadNamesCarryTheirVersion`. |
 | 2.5 | Unpinned normalises to 1 | `typeVersionOf`. Applied to identity, name, and wire value alike. |
@@ -83,42 +83,6 @@ fixture. The `.graphql`, `case.json`, and `expected.json` files under
 `internal/conformance/testdata/` are copies, and re-syncing them is currently manual.
 The `updateSDKQueries` workflow does not yet fetch `shared-spec/`.
 
-### §2.3a — common fields follow the operation
-
-**What the spec asks:** a payload MUST expose all of `ik`, `ledger`, `posted`,
-`description`, `tags`, `groups` and `conditions`, and the set MUST NOT be derived
-from the source operation.
-
-**What this SDK does:** `ik` and `ledger` are always present, since an entry cannot
-be posted without them. `posted`, `description`, `tags`, `groups` and `conditions`
-appear only when the operation binds them to a variable — a field the operation
-fixes to a literal is excluded too, the same rule parameters follow
-(`commonFieldsOf` in `derive.go`).
-
-**Why:** a deliberate product decision — a payload should not offer fields the
-operation it came from cannot carry.
-
-**What it costs**, which is what §2.3a is warning about:
-
-- fragment-go payloads have a different surface from `fragment-python`,
-  `node-client` and `fragment-ruby` for the same Schema.
-- A CLI change to which entry fields it binds moves payload surfaces. The spec
-  notes this has already happened once: one generation binds `tags`, `groups` and
-  `conditions`, another binds `typeVersion` instead, and neither binds
-  `description`. A customer regenerating after a CLI upgrade can lose a field they
-  were setting.
-- `description` is currently unreachable from any typed payload, because no CLI
-  generation binds it. Use `queries.RawEntry` to set it.
-
-**What is protected:** parameter naming. `reservedFieldNames` still covers every
-name in `CommonFields` whether or not a payload exposes it, so a CLI upgrade that
-starts binding `tags` cannot rename a caller's `tags` parameter from `Tags` to
-`Tags2` (`TestParameterNamingIgnoresWhichCommonFieldsAreBound`).
-
-Tests: `TestCommonFieldsFollowTheOperation`,
-`TestStructuralCommonFieldsAreAlwaysPresent`,
-`TestCommonFieldBoundToAFixedValueIsExcluded`, `TestLinesIsNeverACommonField`.
-
 ### §2.3 — enum and input-object parameters are not typed precisely
 
 **What the spec asks:** a parameter's type comes from the matching variable
@@ -148,9 +112,9 @@ hand-written operations only.
 
 ### §2.3a — tags, groups and conditions use the SDK's input types
 
-When a payload does expose `Tags`, `Groups` or `Conditions`, they are
-`[]queries.LedgerEntryTagInput` and friends, from the SDK's own `queries` package —
-not from the package the payloads were generated alongside.
+A payload's `Tags`, `Groups` and `Conditions` are `[]queries.LedgerEntryTagInput`
+and friends, from the SDK's own `queries` package — not from the package the
+payloads were generated alongside.
 
 This one is forced rather than chosen: genqlient emits only the types its own
 operations reach, so those input types are absent from the customer's generated

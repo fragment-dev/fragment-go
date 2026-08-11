@@ -54,9 +54,7 @@ func Emit(payloads []Payload) ([]byte, error) {
 		b.WriteString("\t\"encoding/json\"\n\n")
 	}
 	fmt.Fprintf(&b, "\t%q\n", batchImport)
-	if needsQueries(payloads) {
-		fmt.Fprintf(&b, "\t%q\n", queriesImport)
-	}
+	fmt.Fprintf(&b, "\t%q\n", queriesImport)
 	b.WriteString(")\n")
 
 	for _, p := range payloads {
@@ -114,20 +112,6 @@ func needsJSON(payloads []Payload) bool {
 	return false
 }
 
-// needsQueries reports whether any payload names a type from the queries package.
-// Only the tags, groups and conditions fields do, and those appear only when an
-// operation binds them, so a file may not reference the package at all.
-func needsQueries(payloads []Payload) bool {
-	for _, p := range payloads {
-		for _, f := range p.Common {
-			if strings.Contains(f.Type, "queries.") {
-				return true
-			}
-		}
-	}
-	return false
-}
-
 func emitPayload(b *bytes.Buffer, p Payload) {
 	b.WriteString("\n")
 	comment(b, "", fmt.Sprintf("%s is the %q Ledger Entry, version %d.", p.GoName, p.Type, p.TypeVersion))
@@ -138,7 +122,7 @@ func emitPayload(b *bytes.Buffer, p Payload) {
 	comment(b, "\t", "Prevents an unkeyed composite literal, which would let parameters be supplied positionally.")
 	b.WriteString("\t_ struct{}\n\n")
 
-	for _, f := range p.Common {
+	for _, f := range CommonFields {
 		comment(b, "\t", f.Doc)
 		fmt.Fprintf(b, "\t%s %s\n", f.Name, f.Type)
 	}
@@ -221,7 +205,7 @@ func emitMarshal(b *bytes.Buffer, p Payload) {
 	b.WriteString("\tentry.Set(\"ledger\", ledger)\n")
 	fmt.Fprintf(b, "\tentry.Set(\"type\", %q)\n", p.Type)
 	fmt.Fprintf(b, "\tentry.Set(\"typeVersion\", %d)\n", p.TypeVersion)
-	for _, f := range p.Common {
+	for _, f := range CommonFields {
 		if f.Wire == "" {
 			continue
 		}

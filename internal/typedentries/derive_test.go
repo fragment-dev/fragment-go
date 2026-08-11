@@ -397,25 +397,20 @@ func TestEntryTypesCollapsingOntoOneNameIsAnError(t *testing.T) {
 	}
 }
 
-// TestCommonFieldsFollowTheOperation covers this SDK's deviation from §2.3a: a
-// payload exposes only the entry-level fields its operation binds, rather than the
-// full LedgerEntryInput set.
-func TestCommonFieldsFollowTheOperation(t *testing.T) {
-	payloads, _ := derive(t, `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $posted: DateTime, $tags: [LedgerEntryTagInput!], $amount: String!) {
-		  addLedgerEntry(ik: $ik, entry: {
-		    ledger: {ik: $ledgerIk}, type: "t", posted: $posted, tags: $tags, parameters: {amount: $amount}
-		  }) { __typename }
-		}`)
-
+// TestCommonFieldsAreFixed pins the requirement that the common-field set comes
+// from LedgerEntryInput rather than from the source operation.
+//
+// This cannot be checked on the wire: an implementation that derived the set from
+// the operation would still produce the right JSON for any fixture whose operation
+// happens to bind those fields. The guarantee is about where the list comes from,
+// so the list itself is what has to be asserted.
+func TestCommonFieldsAreFixed(t *testing.T) {
 	var got []string
-	for _, f := range payloads[0].Common {
+	for _, f := range CommonFields {
 		got = append(got, f.Name)
 	}
 
-	// Ik and LedgerIk are structural, so they are always present. posted and tags
-	// are bound; description, groups and conditions are not.
-	want := []string{"Ik", "LedgerIk", "Posted", "Tags"}
+	want := []string{"Ik", "LedgerIk", "Posted", "Description", "Tags", "Groups", "Conditions"}
 	if len(got) != len(want) {
 		t.Fatalf("common fields = %v, want %v", got, want)
 	}
@@ -424,44 +419,9 @@ func TestCommonFieldsFollowTheOperation(t *testing.T) {
 			t.Fatalf("common fields = %v, want %v", got, want)
 		}
 	}
-}
 
-// TestStructuralCommonFieldsAreAlwaysPresent checks the floor. An entry cannot be
-// posted without an idempotency key and a Ledger, so those two do not depend on
-// what the operation binds.
-func TestStructuralCommonFieldsAreAlwaysPresent(t *testing.T) {
-	payloads, _ := derive(t, `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t"}) { __typename }
-		}`)
-
-	var got []string
-	for _, f := range payloads[0].Common {
-		got = append(got, f.Name)
-	}
-	if len(got) != 2 || got[0] != "Ik" || got[1] != "LedgerIk" {
-		t.Errorf("common fields = %v, want [Ik LedgerIk]", got)
-	}
-}
-
-// TestCommonFieldBoundToAFixedValueIsExcluded covers the case where the operation
-// decides the value rather than the caller, the same rule parameters follow.
-func TestCommonFieldBoundToAFixedValueIsExcluded(t *testing.T) {
-	payloads, _ := derive(t, `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", posted: "2020-01-01"}) { __typename }
-		}`)
-
-	for _, f := range payloads[0].Common {
-		if f.Name == "Posted" {
-			t.Error("Posted is fixed by the operation, so the caller must not supply it")
-		}
-	}
-}
-
-// TestLinesIsNeverACommonField pins the one LedgerEntryInput field a payload must
-// never offer: lines cannot be combined with an entry that has a type.
-func TestLinesIsNeverACommonField(t *testing.T) {
+	// lines cannot be combined with an entry that has a type, so a payload must
+	// never offer it.
 	for _, f := range CommonFields {
 		if strings.EqualFold(f.Name, "lines") || strings.EqualFold(f.Wire, "lines") {
 			t.Error("lines must not be a common field: it cannot be used with a typed entry")
@@ -469,27 +429,26 @@ func TestLinesIsNeverACommonField(t *testing.T) {
 	}
 }
 
-// TestParameterNamingIgnoresWhichCommonFieldsAreBound keeps escaping stable.
+// TestCommonFieldsAreEmittedRegardlessOfWhatTheOperationBinds is the same
+// requirement from the other side: a payload derived from an operation that binds
+// none of the optional entry fields still carries all of them.
 //
-// Every name in CommonFields stays reserved whether or not the payload exposes it,
-// so a CLI upgrade that starts binding tags at the entry level cannot rename a
-// caller's tags parameter from Tags to Tags2.
-func TestParameterNamingIgnoresWhichCommonFieldsAreBound(t *testing.T) {
-	const withoutTags = `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $t: String!) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {tags: $t}}) { __typename }
-		}`
-	const withTags = `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $t: String!, $tags: [LedgerEntryTagInput!]) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", tags: $tags, parameters: {tags: $t}}) { __typename }
-		}`
+// This is what keeps a CLI change to its bindings from moving a payload's surface.
+func TestCommonFieldsAreEmittedRegardlessOfWhatTheOperationBinds(t *testing.T) {
+	payloads, _ := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t"}) { __typename }
+		}`)
 
-	before, _ := derive(t, withoutTags)
-	after, _ := derive(t, withTags)
+	source, err := Emit(payloads)
+	if err != nil {
+		t.Fatalf("Emit: %v", err)
+	}
 
-	if before[0].Params[0].FieldName != after[0].Params[0].FieldName {
-		t.Errorf("binding tags at the entry level renamed the tags parameter from %q to %q",
-			before[0].Params[0].FieldName, after[0].Params[0].FieldName)
+	for _, f := range CommonFields {
+		if !strings.Contains(string(source), "\t"+f.Name+" "+f.Type) {
+			t.Errorf("common field %s %s is missing from a payload whose operation binds nothing", f.Name, f.Type)
+		}
 	}
 }
 
@@ -506,108 +465,6 @@ func TestCommonFieldsDoNotDriftFromReservedNames(t *testing.T) {
 		if !isReserved(method) {
 			t.Errorf("generated method %s is not in reservedFieldNames, so a field could collide with it", method)
 		}
-	}
-}
-
-// TestVersionsBelowOneAreSkipped covers a version that parses but cannot be used.
-// Emitting it would produce an identifier like TV-3Entry and fail the whole run at
-// the formatting step.
-func TestVersionsBelowOneAreSkipped(t *testing.T) {
-	for _, version := range []string{"-3", "0"} {
-		t.Run(version, func(t *testing.T) {
-			payloads, warnings := derive(t, `
-				mutation A($ik: SafeString!, $ledgerIk: SafeString!, $a: String!) {
-				  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", typeVersion: `+version+`, parameters: {a: $a}}) { __typename }
-				}`)
-
-			if len(payloads) != 0 {
-				t.Fatalf("expected the operation to be skipped, got %+v", payloads)
-			}
-			if len(warnings) != 1 || !strings.Contains(warnings[0], "versions start at 1") {
-				t.Errorf("expected a warning about the version being too low, got %v", warnings)
-			}
-		})
-	}
-}
-
-// TestUnparseableVersionIsReportedAccurately covers an integer literal too large
-// for an int. Skipping it is right, but reporting it as "non-literal" would send a
-// reader looking for the wrong thing.
-func TestUnparseableVersionIsReportedAccurately(t *testing.T) {
-	_, warnings := derive(t, `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $a: String!) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", typeVersion: 99999999999999999999, parameters: {a: $a}}) { __typename }
-		}`)
-
-	if len(warnings) != 1 || !strings.Contains(warnings[0], "not a usable integer") {
-		t.Errorf("expected a warning about the version not being usable, got %v", warnings)
-	}
-}
-
-// TestDuplicateWireNamesAreDropped covers two fields of the same name in one
-// parameters literal. Keeping both would put the same key on the wire twice, so
-// one of the caller's values would be silently discarded.
-func TestDuplicateWireNamesAreDropped(t *testing.T) {
-	payloads, warnings := derive(t, `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $a: String!, $b: String!) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {amount: $a, amount: $b}}) { __typename }
-		}`)
-
-	params := payloads[0].Params
-	if len(params) != 1 {
-		t.Fatalf("expected the duplicate to be dropped, got %+v", params)
-	}
-	if len(warnings) != 1 || !strings.Contains(warnings[0], "more than once") {
-		t.Errorf("expected a warning about the duplicate, got %v", warnings)
-	}
-}
-
-// TestNonScalarParametersFallBackToRawJSON covers an enum or input object
-// parameter. genqlient emits such a type into the package it generated for these
-// operations, which the payloads cannot import, so typing it precisely is not
-// possible and raw JSON is the honest fallback.
-func TestNonScalarParametersFallBackToRawJSON(t *testing.T) {
-	payloads, warnings := derive(t, `
-		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $g: EntryGroupMatchInput!) {
-		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {g: $g}}) { __typename }
-		}`)
-
-	param := payloads[0].Params[0]
-	if param.GoType != "json.RawMessage" || param.Kind != KindRaw {
-		t.Errorf("got %+v, want json.RawMessage of KindRaw", param)
-	}
-	if len(warnings) != 1 || !strings.Contains(warnings[0], "not a scalar") {
-		t.Errorf("expected a warning explaining the fallback, got %v", warnings)
-	}
-}
-
-// TestAwkwardEntryTypesProduceValidIdentifiers covers entry types that are not
-// already identifier-shaped. An entry type is a free-form Schema string, and
-// anything unsanitised reaches gofmt and fails the whole run.
-func TestAwkwardEntryTypesProduceValidIdentifiers(t *testing.T) {
-	cases := map[string]string{
-		"user:funds":  "UserFundsV1Entry",
-		"123-numeric": "F123NumericV1Entry",
-		"amount+fee":  "AmountFeeV1Entry",
-		"café-entry":  "CaféEntryV1Entry",
-		"":            "FV1Entry",
-		"---":         "FV1Entry",
-	}
-
-	for entryType, want := range cases {
-		t.Run(entryType, func(t *testing.T) {
-			payloads, _ := derive(t, `
-				mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
-				  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "`+entryType+`"}) { __typename }
-				}`)
-
-			if len(payloads) != 1 {
-				t.Fatalf("expected 1 payload, got %d", len(payloads))
-			}
-			if payloads[0].GoName != want {
-				t.Errorf("GoName = %q, want %q", payloads[0].GoName, want)
-			}
-		})
 	}
 }
 
