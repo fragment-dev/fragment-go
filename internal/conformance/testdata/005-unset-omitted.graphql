@@ -1,3 +1,0 @@
-mutation PostOptional($ik: SafeString!, $ledgerIk: SafeString!, $posted: DateTime, $required: String!, $optional: String) {
-  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "optional", posted: $posted, parameters: {required: $required, optional: $optional}}) { __typename }
-}

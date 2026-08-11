@@ -1,11 +1,10 @@
 // Package livetest holds tests that talk to a real Fragment API.
 //
-// Everything else in this repo stops at the request boundary: the conformance
-// tests assert on the JSON a batch would send, using a client that encodes and
-// returns rather than transmits. That leaves one thing unverified, and the shared
-// specification calls it out as unverified in every SDK — whether the API accepts
-// an entry object with a type and no lines, which is the shape a typed payload
-// necessarily produces.
+// Everything else in this repo stops at the request boundary: the tests in
+// internal/generated assert on the JSON a batch would send, using a client that
+// encodes and returns rather than transmits. That leaves the one question those
+// cannot answer — whether the API accepts an entry object with a type and no
+// lines, which is the shape a typed payload necessarily produces.
 //
 // These tests answer that. They are skipped unless credentials are present, so
 // `go test ./...` stays offline by default:

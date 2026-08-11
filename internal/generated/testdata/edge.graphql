@@ -1,0 +1,41 @@
+# Not Fragment CLI output. A deliberately awkward operation set, kept as a
+# regression fixture for shapes the generator has to get right and that cli.graphql
+# does not contain.
+#
+# Every operation here is legal GraphQL that a hand-written .graphql could hold.
+# Where the CLI does produce a shape, this file uses the CLI's version of it rather
+# than an idealised one.
+
+# Two versions of one entry type. A payload's identity is (type, typeVersion), so
+# these must produce two distinct models with different parameter sets. Keying on
+# the type alone would drop one and post the wrong version.
+mutation PostUserFunds($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "user-funds", typeVersion: 1, parameters: {amount: $amount}}) { __typename }
+}
+
+mutation PostUserFundsV2($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!, $feeAmount: String!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "user-funds", typeVersion: 2, parameters: {amount: $amount, feeAmount: $feeAmount}}) { __typename }
+}
+
+# A parameter named "posted", which collides with the entry field of the same name.
+#
+# This is the CLI's real behaviour, not a hypothetical: it drops colliding names
+# when building the variable list but not when building the parameters block, so
+# the parameter binds to the predefined $posted that already feeds entry.posted.
+# One variable, two wire positions. The generator has to split them back apart, or
+# a caller cannot set the timestamp and the parameter independently.
+#
+# The parameters are also deliberately not in alphabetical order, and memo is
+# optional, so this covers source ordering and omission too.
+mutation PostReserved($ik: SafeString!, $posted: DateTime, $ledgerIk: SafeString!, $zulu: String!, $memo: String, $alpha: String!) {
+  addLedgerEntry(
+    ik: $ik
+    entry: {ledger: {ik: $ledgerIk}, type: "reserved", posted: $posted, parameters: {posted: $posted, zulu: $zulu, memo: $memo, alpha: $alpha}}
+  ) { __typename }
+}
+
+# Parameters bound as a whole rather than field by field, so their individual types
+# are not visible. The payload falls back to raw JSON.
+mutation PostRuntime($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "runtime", parameters: $parameters}) { __typename }
+}

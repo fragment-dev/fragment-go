@@ -44,9 +44,9 @@ func requireClient(t *testing.T) graphql.Client {
 }
 
 // storeSchema stores the marketplace template Schema, which is the Schema the
-// operations in internal/conformance/testdata/007-cli-output.graphql were
-// generated from — so the typed payloads under f007 describe exactly its entry
-// types.
+// operations in internal/generated/testdata/cli.graphql were
+// generated from — so the typed payloads under internal/generated/cli describe its
+// entry types exactly.
 func storeSchema(t *testing.T, ctx context.Context, c graphql.Client) {
 	t.Helper()
 

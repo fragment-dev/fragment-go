@@ -20,21 +20,26 @@ go run main.go \
 ### Typed batch Ledger Entry payloads
 
 Alongside the genqlient pass, the codegen derives a typed payload per Ledger Entry type
-and writes them to a `typed_payloads` package beside the generated client. The rules for
-that derivation are shared with the other Fragment SDKs and specified in
-[`fragment-dev/graphql-queries`](https://github.com/fragment-dev/graphql-queries).
+and writes them to a `typed_payloads` package beside the generated client.
 
-The generated output for the specification's fixtures is committed under
-`internal/conformance/`, and acts as both the snapshot test and the input to the wire
-tests. If you change the generator, review the diff and refresh it:
+Generated output for two operation documents is committed under `internal/generated/`:
+`cli.graphql` is real Fragment CLI output, and `edge.graphql` collects awkward shapes
+the CLI does not produce. Those committed packages are both the snapshot test and the
+input to the wire tests, and `go build ./...` type-checks them. If you change the
+generator, review the diff and refresh it:
 
 ```shell
-go test ./internal/conformance -update
+go test ./internal/typedentries -update
 go test ./...
 ```
 
-See [`docs/spec-conformance.md`](docs/spec-conformance.md) for the section-by-section
-mapping and the deviations this SDK carries.
+**`TestWireFormat` in `internal/generated/wire_test.go` is the reference for the wire
+format** — one batch, and the complete JSON it produces. It is written by hand, not
+regenerated, so changing the format takes a deliberate edit. Start there if you need to
+know what goes on the wire.
+
+See [`docs/typed-batch-entries.md`](docs/typed-batch-entries.md) for why the generator
+works the way it does, and for the limits it cannot enforce.
 
 ### Live API tests
 

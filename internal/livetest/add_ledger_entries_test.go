@@ -10,12 +10,12 @@ import (
 	"github.com/fragment-dev/fragment-go/v4/batch"
 	"github.com/fragment-dev/fragment-go/v4/queries"
 
-	f007 "github.com/fragment-dev/fragment-go/v4/internal/conformance/f007/typed_payloads"
+	cli "github.com/fragment-dev/fragment-go/v4/internal/generated/cli/typed_payloads"
 )
 
 // TestAddTypedLedgerEntries posts a batch built from the generated typed payloads.
 //
-// The payloads come from internal/conformance/f007, which this repo's own codegen
+// The payloads come from internal/generated/cli, which this repo's own codegen
 // derived from real Fragment CLI output for the same Schema this test stores. So
 // the test exercises the generator's product, not a hand-written approximation of
 // it.
@@ -33,7 +33,7 @@ func TestAddTypedLedgerEntries(t *testing.T) {
 
 	// Two entries of different types in one atomic batch: the order is placed,
 	// then the card settles against the receivable it created.
-	placed := f007.OrderPlacedV1Entry{
+	placed := cli.OrderPlacedV1Entry{
 		Ik:           "batch-placed-" + orderID,
 		LedgerIk:     ledgerIk,
 		Posted:       &posted,
@@ -47,7 +47,7 @@ func TestAddTypedLedgerEntries(t *testing.T) {
 		DriverId:     "driver-1",
 		Tags:         []queries.LedgerEntryTagInput{{Key: "source", Value: "livetest"}},
 	}
-	settled := f007.CardSettleV1Entry{
+	settled := cli.CardSettleV1Entry{
 		Ik:       "batch-settled-" + orderID,
 		LedgerIk: ledgerIk,
 		Posted:   &posted,
@@ -95,7 +95,7 @@ func TestAddTypedLedgerEntriesReportsIkReplay(t *testing.T) {
 	ledgerIk := setup(t, ctx, c)
 
 	orderID := uuid.NewString()
-	entry := f007.OrderPlacedV1Entry{
+	entry := cli.OrderPlacedV1Entry{
 		Ik:           "replay-" + orderID,
 		LedgerIk:     ledgerIk,
 		UserId:       "user-1",
@@ -131,7 +131,7 @@ func TestAddTypedLedgerEntriesMixedWithRaw(t *testing.T) {
 	ledgerIk := setup(t, ctx, c)
 
 	orderID := uuid.NewString()
-	typed := f007.OrderPlacedV1Entry{
+	typed := cli.OrderPlacedV1Entry{
 		Ik:           "mixed-typed-" + orderID,
 		LedgerIk:     ledgerIk,
 		UserId:       "user-1",
@@ -190,7 +190,7 @@ func TestAddTypedLedgerEntriesIsAtomic(t *testing.T) {
 	ledgerIk := setup(t, ctx, c)
 
 	orderID := uuid.NewString()
-	good := f007.OrderPlacedV1Entry{
+	good := cli.OrderPlacedV1Entry{
 		Ik:           "atomic-good-" + orderID,
 		LedgerIk:     ledgerIk,
 		UserId:       "user-1",

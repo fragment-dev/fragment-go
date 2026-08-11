@@ -9,50 +9,41 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
-// The shared specification asks each SDK for a runner over its fixtures. Go
-// cannot do that in one process: the payloads are generated source and have to
-// be compiled before anything can construct them. So each fixture's generated
-// output is committed under internal/conformance, and two tests cover between
-// them what a runner would.
+// Generated payloads are source, so nothing can construct one until it has been
+// compiled. That rules out a test that generates and then exercises in one pass,
+// so each fixture's output is committed under internal/generated instead and two
+// tests split the work:
 //
-//	this file                         regenerates each fixture and compares it to
-//	                                  the committed file, so any change to a
-//	                                  generated identifier or signature shows up
-//	                                  as a reviewable diff
-//	internal/conformance/wire_test.go constructs each fixture's batch from the
-//	                                  committed types and compares the JSON to
-//	                                  the fixture's expected.json
+//	this file                        regenerates each fixture and compares it to
+//	                                 the committed file, so a change to any
+//	                                 generated identifier or signature shows up as
+//	                                 a reviewable diff
+//	internal/generated/wire_test.go  builds batches from the committed types and
+//	                                 asserts the exact JSON they produce
 //
-// This lives here rather than in internal/conformance on purpose. That package's
-// wire test imports the generated payloads, so it cannot compile while they are
-// stale — which is exactly when the files need rewriting. Keeping the writer in
-// a package that does not import its own output means `-update` always works.
+// Committing the output has a second benefit: those packages are ordinary packages
+// in this module, so `go build ./...` type-checks the generator's product.
+//
+// This lives here rather than in internal/generated on purpose. That package's
+// tests import the generated payloads, so it cannot compile while they are stale —
+// which is exactly when the files need rewriting. Keeping the writer in a package
+// that does not import its own output means `-update` always works.
 //
 // Run `go test ./internal/typedentries -update` to refresh them.
 
 var update = flag.Bool("update", false, "rewrite the committed generated payloads")
 
-// fixtureDir is where the shared fixtures and the committed output live,
+// fixtureDir is where the operation documents and the committed output live,
 // relative to this package.
-const fixtureDir = "../conformance"
+const fixtureDir = "../generated"
 
-// fixtures maps each shared fixture to the directory its generated payloads are
-// committed under.
+// fixtures maps each operation document to the directory its generated payloads
+// are committed under.
 var fixtures = map[string]string{
-	"001-basic":          "f001",
-	"002-type-versions":  "f002",
-	"003-reserved-names": "f003",
-	"004-param-order":    "f004",
-	"005-unset-omitted":  "f005",
-	"006-non-ascii":      "f006",
-	// Not a shared fixture: real Fragment CLI output, kept because it is the only
-	// input shape customers actually have. It also exercises what the shared
-	// fixtures cannot — an operation that binds tags, groups and conditions as
-	// entry-level variables, which must not change the payload's field set.
-	"007-cli-output": "f007",
-	// Not a shared fixture: the untyped-parameters fallback, which the shared
-	// fixtures never exercise.
-	"008-untyped-parameters": "f008",
+	// Real Fragment CLI output: the only input shape customers actually have.
+	"cli": "cli",
+	// Hand-written awkward cases the CLI does not produce.
+	"edge": "edge",
 }
 
 func generatedPath(dir string) string {
@@ -88,9 +79,12 @@ func generateFixture(t *testing.T, fixture string) []byte {
 	return source
 }
 
-// TestGeneratedPayloadsAreCurrent is the snapshot test the specification
-// requires in place of a shared fixture for backward compatibility: generated
-// identifiers and signatures cannot change without a diff here.
+// TestGeneratedPayloadsAreCurrent is the snapshot test: generated identifiers and
+// signatures cannot change without a diff here.
+//
+// That matters because callers write those identifiers by hand. An accidental
+// rename is a breaking change for every call site, and nothing else in the test
+// suite would notice.
 func TestGeneratedPayloadsAreCurrent(t *testing.T) {
 	for fixture, dir := range fixtures {
 		t.Run(fixture, func(t *testing.T) {

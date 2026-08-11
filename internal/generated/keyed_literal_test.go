@@ -1,4 +1,4 @@
-package conformance
+package generated
 
 import (
 	"os"
@@ -25,10 +25,10 @@ import (
 func TestUnkeyedLiteralDoesNotCompile(t *testing.T) {
 	const program = `package main
 
-import f001 "github.com/fragment-dev/fragment-go/v4/internal/conformance/f001/typed_payloads"
+import cli "github.com/fragment-dev/fragment-go/v4/internal/generated/cli/typed_payloads"
 
 func main() {
-	_ = f001.AuthCaptureV1Entry{%s}
+	_ = cli.CardSettleV1Entry{%s}
 }
 `
 
@@ -39,12 +39,12 @@ func main() {
 	}{
 		{
 			name:        "keyed literal compiles",
-			fields:      `Ik: "ik-1", LedgerIk: "prod", UserId: "u", CaptureAmount: "1"`,
+			fields:      `Ik: "ik-1", LedgerIk: "prod", UserId: "u", OrderId: "o", Currency: "USD", Amount: "1"`,
 			wantCompile: true,
 		},
 		{
 			name:        "unkeyed literal is rejected",
-			fields:      `struct{}{}, "ik-1", "prod", nil, nil, nil, nil, nil, "u", "1"`,
+			fields:      `struct{}{}, "ik-1", "prod", nil, nil, nil, nil, nil, "u", "o", "USD", "1"`,
 			wantCompile: false,
 		},
 		{

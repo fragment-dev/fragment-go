@@ -1,4 +1,4 @@
-package conformance
+package generated
 
 import (
 	"fmt"
