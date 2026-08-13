@@ -8,5 +8,4 @@ fragment-go
 
 # Scratch dirs from the tests that compile generated code; normally cleaned up by
 # the tests themselves, but left behind if they are interrupted.
-internal/generated/keyedcheck-*
 internal/generated/compilecheck-*

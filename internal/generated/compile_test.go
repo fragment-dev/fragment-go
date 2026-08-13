@@ -160,14 +160,22 @@ func TestGeneratedSourceCompiles(t *testing.T) {
 				t.Fatalf("Emit: %v", err)
 			}
 
-			assertCompiles(t, source)
+			if output, err := buildInModule(t, typedentries.PackageName+".go", source); err != nil {
+				t.Errorf("generated source does not compile:\n%s\n--- source ---\n%s",
+					indent(output), numbered(string(source)))
+			}
 		})
 	}
 }
 
-// assertCompiles builds the generated source as a package inside this module,
-// which is the only way it can resolve the internal imports the payloads use.
-func assertCompiles(t *testing.T, source []byte) {
+// buildInModule writes source into a throwaway package inside this module, builds
+// it, and returns the compiler's output.
+//
+// Inside the module because everything under test lives under internal/, which
+// nothing outside the module may import. The -o keeps the binary of a main package
+// out of the working tree; it is accepted and ignored for a non-main package, which
+// is still type-checked.
+func buildInModule(t *testing.T, filename string, source []byte) (string, error) {
 	t.Helper()
 
 	dir, err := os.MkdirTemp(".", "compilecheck-")
@@ -176,16 +184,78 @@ func assertCompiles(t *testing.T, source []byte) {
 	}
 	t.Cleanup(func() { os.RemoveAll(dir) })
 
-	path := filepath.Join(dir, typedentries.PackageName+".go")
-	if err := os.WriteFile(path, source, 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, filename), source, 0o644); err != nil {
 		t.Fatal(err)
 	}
 
-	cmd := exec.Command("go", "build", "./"+dir)
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		t.Errorf("generated source does not compile:\n%s\n--- source ---\n%s",
-			indent(string(output)), numbered(string(source)))
+	output, err := exec.Command("go", "build", "-o", filepath.Join(dir, "out"), "./"+dir).CombinedOutput()
+	return string(output), err
+}
+
+// TestUnkeyedLiteralDoesNotCompile checks that parameters can only be supplied by
+// name.
+//
+// An unkeyed struct literal is legal Go, and in one reordering two parameters of
+// the same type swaps their values with no compile error and nothing at runtime to
+// notice. The generated payloads block it with a leading unexported `_ struct{}`
+// field, which makes an unkeyed literal illegal.
+//
+// The program is built in a package of its own, which is the only way to check
+// this: Go permits positional assignment to an unexported field from inside the
+// declaring package, so an assertion written in typed_payloads would pass while
+// telling us nothing. That is also why the generator emits payloads into a package
+// of their own rather than into the one genqlient wrote.
+func TestUnkeyedLiteralDoesNotCompile(t *testing.T) {
+	const program = `package main
+
+import cli "github.com/fragment-dev/fragment-go/v4/internal/generated/cli/typed_payloads"
+
+func main() {
+	_ = cli.CardSettleV1Entry{%s}
+}
+`
+
+	cases := []struct {
+		name        string
+		fields      string
+		wantCompile bool
+	}{
+		{
+			name:        "keyed literal compiles",
+			fields:      `Ik: "ik-1", LedgerIk: "prod", UserId: "u", OrderId: "o", Currency: "USD", Amount: "1"`,
+			wantCompile: true,
+		},
+		{
+			name:        "unkeyed literal is rejected",
+			fields:      `struct{}{}, "ik-1", "prod", nil, nil, nil, nil, nil, "u", "o", "USD", "1"`,
+			wantCompile: false,
+		},
+		{
+			name: "partial unkeyed literal is rejected",
+			// Go rejects an unkeyed literal that omits fields on its own, but
+			// this also confirms the caller cannot get partway there.
+			fields:      `struct{}{}, "ik-1", "prod"`,
+			wantCompile: false,
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			source := strings.Replace(program, "%s", tc.fields, 1)
+			output, err := buildInModule(t, "main.go", []byte(source))
+
+			switch {
+			case tc.wantCompile && err != nil:
+				t.Errorf("expected this to compile, but it failed:\n%s", indent(output))
+			case !tc.wantCompile && err == nil:
+				t.Error("expected a compile error, but the program built. Payloads are no longer protected against positional construction")
+			case !tc.wantCompile:
+				if !strings.Contains(output, "unexported field") &&
+					!strings.Contains(output, "too few values") {
+					t.Errorf("compile failed for an unexpected reason:\n%s", indent(output))
+				}
+			}
+		})
 	}
 }
 

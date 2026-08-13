@@ -39,8 +39,8 @@ So the guarantee depends entirely on the payloads not living in the same package
 the code that constructs them. Emitting them into a package of their own is what
 makes it hold by construction rather than by convention — a customer generating with
 `--package main` and writing their calls in `main` would otherwise get no protection
-at all. `keyed_literal_test.go` compiles a program in a separate package to prove it,
-and would pass vacuously if written any other way.
+at all. `TestUnkeyedLiteralDoesNotCompile` compiles a program in a separate package
+to prove it, and would pass vacuously if written any other way.
 
 ### Unset fields are omitted, never sent as `null`
 
@@ -175,8 +175,7 @@ chunks by lines.
 | Test | Why it exists |
 | --- | --- |
 | `internal/generated/wire_test.go` | `TestWireFormat` is the worked example — one batch, the complete JSON it produces. The canonical reference for the format. |
-| `internal/generated/compile_test.go` | Builds generated source for hostile operation sets. Every codegen defect found so far produced source `gofmt` accepted and the compiler rejected, so nothing short of building it would catch them. |
-| `internal/generated/keyed_literal_test.go` | Proves unkeyed literals fail, from a separate package. |
+| `internal/generated/compile_test.go` | Builds generated source for hostile operation sets, and proves an unkeyed literal fails from a separate package. Every codegen defect found so far produced source `gofmt` accepted and the compiler rejected, so nothing short of building it would catch them. |
 | `internal/typedentries/snapshot_test.go` | Snapshot: generated identifiers cannot change without a reviewable diff. Callers write those names by hand. |
 | `internal/typedentries/derive_test.go` | The derivation rules, case by case. |
 | `queries/batch_test.go` | `RawEntry` semantics, all of it discovered live. |
