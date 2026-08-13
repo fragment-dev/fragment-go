@@ -213,51 +213,7 @@ case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError:
 }
 ```
 
-Construct the entries in the batch using the typed payloads generated for your Schema, named `<EntryType>V<typeVersion>Entry`. Running the codegen (see [Using custom queries](#using-custom-queries)) writes them to a `typed_payloads` package beside your generated client. Fields must be set by name; an unkeyed literal will not compile.
-
-To post a Ledger Entry with lines [defined at runtime](https://fragment.dev/guides/post-ledger-entries#runtime-entries), set the `Lines` field that payloads for those entry types carry:
-
-``` go
-// The generated input types take pointers for optional fields.
-func ptr[T any](v T) *T { return &v }
-
-response, _ := queries.AddTypedLedgerEntries(
-	context.Background(),
-	graphqlClient,
-	typed_payloads.FundingSettlementRuntimeV1Entry{
-		Ik:       "some-ik-3",
-		LedgerIk: "your-ledger-ik",
-		Lines: []queries.LedgerLineInput{
-			{
-				Key:     ptr("funds_arrive_at_stripe"),
-				Account: queries.LedgerAccountMatchInput{Path: ptr("assets/banks/stripe")},
-				Amount:  ptr("100"),
-			},
-			{
-				Key:     ptr("increase_user_balance"),
-				Account: queries.LedgerAccountMatchInput{Path: ptr("liabilities/users:user-1/available")},
-				Amount:  ptr("100"),
-			},
-		},
-		Tags:   []queries.LedgerEntryTagInput{{Key: "service", Value: "funding-service"}},
-		Groups: []queries.LedgerEntryGroupInput{{Key: "user", Value: "user-1"}},
-	},
-)
-```
-
-An untyped entry can be mixed into the same batch with `queries.RawEntry`, for an entry type your operations do not cover:
-
-``` go
-response, _ := queries.AddTypedLedgerEntries(
-	context.Background(),
-	graphqlClient,
-	typed_payloads.UserFundsAccountV1Entry{ /* ... */ },
-	queries.RawEntry{Input: queries.AddLedgerEntryInput{
-		Ik:    "some-ik-4",
-		Entry: queries.LedgerEntryInput{ /* ... */ },
-	}},
-)
-```
+Construct the entries in the batch using the typed payloads generated for your Schema, named `<EntryType>V<typeVersion>Entry`. Running the [codegen](#using-custom-queries) writes them to a `typed_payloads` package beside your generated client. Fields must be set by name.
 
 ### Read a Ledger Account's balance
 
