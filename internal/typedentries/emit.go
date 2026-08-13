@@ -157,9 +157,8 @@ func emitPayload(b *bytes.Buffer, p Payload) {
 	emitMarshal(b, p)
 }
 
-// paramDoc describes a parameter, always naming the value it travels under. That
-// is the fact a reader most needs and cannot recover from the field name, since
-// even the routine case renames user_id to UserId.
+// Generate the doc comment for a parameter, including its original name from the
+// Schema and its optionality. Parameters can be rename to avoid collisions.
 func paramDoc(param Param) string {
 	doc := fmt.Sprintf("%s is the %q parameter.", param.FieldName, param.WireName)
 

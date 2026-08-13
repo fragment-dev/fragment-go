@@ -121,15 +121,27 @@ func TestRawEntryKeepsZeroValues(t *testing.T) {
 
 // TestRawEntryWithLines covers the case RawEntry exists for: an entry with lines
 // instead of a type, which no typed payload can express.
+//
+// Two lines rather than one, because a single-element slice cannot show that the
+// whole slice survives or that its order is preserved — and a real entry balances,
+// so a pair is the smallest honest example. Each line also leaves most of
+// LedgerLineInput unset, so this exercises null-stripping one level deeper than the
+// entry itself.
 func TestRawEntryWithLines(t *testing.T) {
 	raw := RawEntry{Input: AddLedgerEntryInput{
 		Ik: "raw-1",
 		Entry: LedgerEntryInput{
 			Ledger: &LedgerMatchInput{Ik: ptr("prod")},
-			Lines: []LedgerLineInput{{
-				Account: LedgerAccountMatchInput{Path: ptr("assets/cash")},
-				Amount:  ptr("100"),
-			}},
+			Lines: []LedgerLineInput{
+				{
+					Account: LedgerAccountMatchInput{Path: ptr("assets/cash")},
+					Amount:  ptr("100"),
+				},
+				{
+					Account: LedgerAccountMatchInput{Path: ptr("liabilities/user:user-1")},
+					Amount:  ptr("-100"),
+				},
+			},
 		},
 	}}
 
@@ -140,10 +152,34 @@ func TestRawEntryWithLines(t *testing.T) {
 	if strings.Contains(string(got), "null") {
 		t.Errorf("unset fields should be omitted, got: %s", got)
 	}
-	if !strings.Contains(string(got), `"amount":"100"`) {
-		t.Errorf("the line's amount went missing: %s", got)
+
+	var decoded struct {
+		Entry struct {
+			Lines []struct {
+				Account struct {
+					Path string `json:"path"`
+				} `json:"account"`
+				Amount string `json:"amount"`
+			} `json:"lines"`
+		} `json:"entry"`
 	}
-	if !strings.Contains(string(got), `"path":"assets/cash"`) {
-		t.Errorf("the line's account went missing: %s", got)
+	if err := json.Unmarshal(got, &decoded); err != nil {
+		t.Fatalf("parsing %s: %v", got, err)
+	}
+
+	want := []struct {
+		path, amount string
+	}{
+		{"assets/cash", "100"},
+		{"liabilities/user:user-1", "-100"},
+	}
+	if len(decoded.Entry.Lines) != len(want) {
+		t.Fatalf("got %d lines, want %d: %s", len(decoded.Entry.Lines), len(want), got)
+	}
+	for i, w := range want {
+		line := decoded.Entry.Lines[i]
+		if line.Account.Path != w.path || line.Amount != w.amount {
+			t.Errorf("line %d = %s %s, want %s %s", i, line.Account.Path, line.Amount, w.path, w.amount)
+		}
 	}
 }
