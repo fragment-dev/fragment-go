@@ -123,7 +123,7 @@ func main() {
 
 ### Post a Ledger Entry
 
-To [post](https://fragment.dev/docs#post-ledger-entries-post-to-the-api) a Ledger Entry defined in your schema:
+To [post](https://fragment.dev/guides/post-ledger-entries#post-to-the-api) a Ledger Entry defined in your schema:
 
 ``` go
 package main
@@ -174,75 +174,86 @@ func main() {
 
 ### Post a batch of Ledger Entries
 
-To post several Ledger Entries in one atomic batch, use `AddTypedLedgerEntries`.
-
-Running the codegen (see [Using custom queries](#using-custom-queries)) produces a
-`typed_payloads` package next to your generated client, holding one struct per Ledger
-Entry type in your Schema.
+To [post](https://fragment.dev/guides/post-ledger-entries#batch-ledger-entries) a batch of Ledger Entries atomically:
 
 ``` go
-package main
+import "myapp/fragment/typed_payloads"
 
-import (
-	"context"
-	"fmt"
+posted := "1968-01-01T16:45:00Z"
 
-	"github.com/fragment-dev/fragment-go/v4/queries"
-
-	"myapp/fragment/typed_payloads"
+response, _ := queries.AddTypedLedgerEntries(
+	context.Background(),
+	graphqlClient,
+	typed_payloads.UserFundsAccountV1Entry{
+		Ik:            "some-ik-1",
+		LedgerIk:      "your-ledger-ik",
+		Posted:        &posted,
+		UserId:        "user-1",
+		FundingAmount: "20000",
+	},
+	typed_payloads.UserFundsAccountV1Entry{
+		Ik:            "some-ik-2",
+		LedgerIk:      "your-ledger-ik",
+		Posted:        &posted,
+		UserId:        "user-2",
+		FundingAmount: "20000",
+	},
 )
 
-func main() {
-	posted := "1968-01-01T16:45:00Z"
-
-	response, err := queries.AddTypedLedgerEntries(
-		context.Background(),
-		graphqlClient,
-		typed_payloads.UserFundsAccountV1Entry{
-			Ik:            "ik-1",
-			LedgerIk:      "your-ledger-ik",
-			Posted:        &posted,
-			UserId:        "user-1",
-			FundingAmount: "100",
-		},
-		typed_payloads.AuthCaptureV2Entry{
-			Ik:            "ik-2",
-			LedgerIk:      "your-ledger-ik",
-			UserId:        "user-1",
-			CaptureAmount: "25",
-		},
-	)
-	if err != nil {
-		fmt.Println(err)
-		return
+switch r := response.GetAddLedgerEntries().(type) {
+case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult:
+	for _, result := range r.Results {
+		fmt.Println("Posted", result.Entry.Ik, "replay:", result.IsIkReplay)
 	}
-
-	switch r := response.GetAddLedgerEntries().(type) {
-	case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult:
-		for _, result := range r.Results {
-			fmt.Println("Posted", result.Entry.Ik, "replay:", result.IsIkReplay)
-		}
-	case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError:
-		// One error per failing entry, each with the ik that identifies it.
-		for _, e := range r.Errors {
-			fmt.Println("Entry", e.Ik, "failed:", e.Message)
-		}
-	case *queries.AddLedgerEntriesAddLedgerEntriesBadRequestError:
-		fmt.Println("Bad request:", r.Message)
-	case *queries.AddLedgerEntriesAddLedgerEntriesInternalError:
-		fmt.Println("Internal error:", r.Message)
+case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError:
+	// One error per failing entry, each with the ik that identifies it.
+	for _, e := range r.Errors {
+		fmt.Println("Entry", e.Ik, "failed:", e.Message)
 	}
 }
 ```
 
-Use `queries.RawEntry` to post a runtime Ledger Entry:
+Construct the entries in the batch using the typed payloads generated for your Schema, named `<EntryType>V<typeVersion>Entry`. Running the codegen (see [Using custom queries](#using-custom-queries)) writes them to a `typed_payloads` package beside your generated client. Fields must be set by name; an unkeyed literal will not compile.
+
+To post a Ledger Entry with lines [defined at runtime](https://fragment.dev/guides/post-ledger-entries#runtime-entries), set the `Lines` field that payloads for those entry types carry:
+
 ``` go
-response, err := queries.AddTypedLedgerEntries(
+// The generated input types take pointers for optional fields.
+func ptr[T any](v T) *T { return &v }
+
+response, _ := queries.AddTypedLedgerEntries(
+	context.Background(),
+	graphqlClient,
+	typed_payloads.FundingSettlementRuntimeV1Entry{
+		Ik:       "some-ik-3",
+		LedgerIk: "your-ledger-ik",
+		Lines: []queries.LedgerLineInput{
+			{
+				Key:     ptr("funds_arrive_at_stripe"),
+				Account: queries.LedgerAccountMatchInput{Path: ptr("assets/banks/stripe")},
+				Amount:  ptr("100"),
+			},
+			{
+				Key:     ptr("increase_user_balance"),
+				Account: queries.LedgerAccountMatchInput{Path: ptr("liabilities/users:user-1/available")},
+				Amount:  ptr("100"),
+			},
+		},
+		Tags:   []queries.LedgerEntryTagInput{{Key: "service", Value: "funding-service"}},
+		Groups: []queries.LedgerEntryGroupInput{{Key: "user", Value: "user-1"}},
+	},
+)
+```
+
+An untyped entry can be mixed into the same batch with `queries.RawEntry`, for an entry type your operations do not cover:
+
+``` go
+response, _ := queries.AddTypedLedgerEntries(
 	context.Background(),
 	graphqlClient,
 	typed_payloads.UserFundsAccountV1Entry{ /* ... */ },
 	queries.RawEntry{Input: queries.AddLedgerEntryInput{
-		Ik:    "ik-3",
+		Ik:    "some-ik-4",
 		Entry: queries.LedgerEntryInput{ /* ... */ },
 	}},
 )
@@ -250,7 +261,7 @@ response, err := queries.AddTypedLedgerEntries(
 
 ### Read a Ledger Account's balance
 
-To read a Ledger Account's [balance](https://fragment.dev/docs#read-balances-latest):
+To read a Ledger Account's [balance](https://fragment.dev/guides/read-balances#latest):
 
 ``` go
 package main
@@ -318,7 +329,7 @@ func main() {
 
 ### Store a Schema
 
-To [store](https://fragment.dev/api-reference/api-mutations#storeschema) a new version of your Schema:
+To [store](https://fragment.dev/api-reference/ledger-mutations#storeschema) a new version of your Schema:
 
 ``` go
 package main
