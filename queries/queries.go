@@ -5236,6 +5236,28 @@ func (v *LedgerLineInput) GetTags() []LedgerEntryTagInput { return v.Tags }
 // GetTx returns LedgerLineInput.Tx, and is useful for accessing the field via an interface.
 func (v *LedgerLineInput) GetTx() *TxMatchInput { return v.Tx }
 
+// Specify a Ledger Line by using `id`.
+type LedgerLineMatchInput struct {
+	// The FRAGMENT ID of the ledger line
+	Id string `json:"id"`
+}
+
+// GetId returns LedgerLineMatchInput.Id, and is useful for accessing the field via an interface.
+func (v *LedgerLineMatchInput) GetId() string { return v.Id }
+
+type LedgerLineTagInput struct {
+	// The key of this tag. Can be up to 128 characters long.
+	Key string `json:"key"`
+	// The value associated with this tag's key. Can be up to 128 characters long.
+	Value string `json:"value"`
+}
+
+// GetKey returns LedgerLineTagInput.Key, and is useful for accessing the field via an interface.
+func (v *LedgerLineTagInput) GetKey() string { return v.Key }
+
+// GetValue returns LedgerLineTagInput.Value, and is useful for accessing the field via an interface.
+func (v *LedgerLineTagInput) GetValue() string { return v.Value }
+
 type LedgerLinesConsistencyMode string
 
 const (
@@ -8199,6 +8221,8 @@ type SchemaInput struct {
 	LedgerEntries *SchemaLedgerEntriesInput `json:"ledgerEntries"`
 	// The human-readable name of the Schema.
 	Name *string `json:"name"`
+	// EXPERIMENTAL: The Payment Types to add to the Schema.
+	Payments *SchemaPaymentsInput `json:"payments"`
 	// Any scenes associated with this Schema.
 	Scenes []SceneInput `json:"scenes"`
 }
@@ -8222,6 +8246,9 @@ func (v *SchemaInput) GetLedgerEntries() *SchemaLedgerEntriesInput { return v.Le
 
 // GetName returns SchemaInput.Name, and is useful for accessing the field via an interface.
 func (v *SchemaInput) GetName() *string { return v.Name }
+
+// GetPayments returns SchemaInput.Payments, and is useful for accessing the field via an interface.
+func (v *SchemaInput) GetPayments() *SchemaPaymentsInput { return v.Payments }
 
 // GetScenes returns SchemaInput.Scenes, and is useful for accessing the field via an interface.
 func (v *SchemaInput) GetScenes() []SceneInput { return v.Scenes }
@@ -8567,6 +8594,51 @@ func (v *SchemaMatchInput) GetKey() string { return v.Key }
 // GetVersion returns SchemaMatchInput.Version, and is useful for accessing the field via an interface.
 func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
 
+// EXPERIMENTAL: The Ledger Entries a Payment Type posts as a payment moves
+// through its lifecycle, keyed by lifecycle transition.
+type SchemaPaymentAccountingInput struct {
+	// Posted when the payment enters processing. Optional.
+	Needs_confirmation_to_processing *SchemaPaymentEntryInput `json:"needs_confirmation_to_processing"`
+	// Posted when the payment settles. Every Payment Type must define it.
+	Processing_to_settled SchemaPaymentEntryInput `json:"processing_to_settled"`
+}
+
+// GetNeeds_confirmation_to_processing returns SchemaPaymentAccountingInput.Needs_confirmation_to_processing, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetNeeds_confirmation_to_processing() *SchemaPaymentEntryInput {
+	return v.Needs_confirmation_to_processing
+}
+
+// GetProcessing_to_settled returns SchemaPaymentAccountingInput.Processing_to_settled, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetProcessing_to_settled() SchemaPaymentEntryInput {
+	return v.Processing_to_settled
+}
+
+// EXPERIMENTAL: The Ledger Entry a Payment Type posts on a payment lifecycle event.
+type SchemaPaymentEntryInput struct {
+	// Human-readable description of the payment entry.
+	Description *string `json:"description"`
+	// The Ledger Lines in the payment entry.
+	Lines []SchemaPaymentLineInput `json:"lines"`
+}
+
+// GetDescription returns SchemaPaymentEntryInput.Description, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentEntryInput) GetDescription() *string { return v.Description }
+
+// GetLines returns SchemaPaymentEntryInput.Lines, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentEntryInput) GetLines() []SchemaPaymentLineInput { return v.Lines }
+
+// The status of a Payment Type.
+type SchemaPaymentEntryStatus string
+
+const (
+	// The Payment Type is active.
+	SchemaPaymentEntryStatusActive SchemaPaymentEntryStatus = "active"
+)
+
+var AllSchemaPaymentEntryStatus = []SchemaPaymentEntryStatus{
+	SchemaPaymentEntryStatusActive,
+}
+
 // EXPERIMENTAL: Marks a Ledger Account as a Payment Account.
 type SchemaPaymentInput struct {
 	Penguin bool `json:"penguin"`
@@ -8574,6 +8646,113 @@ type SchemaPaymentInput struct {
 
 // GetPenguin returns SchemaPaymentInput.Penguin, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentInput) GetPenguin() bool { return v.Penguin }
+
+// EXPERIMENTAL: A Ledger Line in a payment entry.
+type SchemaPaymentLineInput struct {
+	// The Ledger Account this line will be posted to.
+	// It supports parameters in its attributes via handlebars syntax.
+	Account SchemaLedgerAccountMatchInput `json:"account"`
+	// The amount of the line. It supports parameters via the handlebars syntax and addition (+) and subtraction (-).
+	Amount string `json:"amount"`
+	// The currency of the line. This is required if the Ledger Account has currencyMode multi.
+	// It supports parameters in its attributes via handlebars syntax.
+	Currency *SchemaCurrencyMatchInput `json:"currency"`
+	// Human-readable description of the line.
+	Description *string `json:"description"`
+	// The key for the line. Keys must be unique within a payment entry.
+	Key string `json:"key"`
+	// Marks this as a system-owned line. Fragment fills the amounts of system
+	// lines when the payment entry is posted.
+	System *SchemaSystemLineKind `json:"system"`
+}
+
+// GetAccount returns SchemaPaymentLineInput.Account, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentLineInput) GetAccount() SchemaLedgerAccountMatchInput { return v.Account }
+
+// GetAmount returns SchemaPaymentLineInput.Amount, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentLineInput) GetAmount() string { return v.Amount }
+
+// GetCurrency returns SchemaPaymentLineInput.Currency, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentLineInput) GetCurrency() *SchemaCurrencyMatchInput { return v.Currency }
+
+// GetDescription returns SchemaPaymentLineInput.Description, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentLineInput) GetDescription() *string { return v.Description }
+
+// GetKey returns SchemaPaymentLineInput.Key, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentLineInput) GetKey() string { return v.Key }
+
+// GetSystem returns SchemaPaymentLineInput.System, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentLineInput) GetSystem() *SchemaSystemLineKind { return v.System }
+
+// EXPERIMENTAL: The payment a Payment Type creates.
+type SchemaPaymentTypeDetailsInput struct {
+	// The amount requested for the payment, as a parameterized expression filled
+	// from createPayment parameters.
+	Amount string `json:"amount"`
+	// The direction the payment moves money.
+	Direction SchemaPaymentTypeDirection `json:"direction"`
+}
+
+// GetAmount returns SchemaPaymentTypeDetailsInput.Amount, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeDetailsInput) GetAmount() string { return v.Amount }
+
+// GetDirection returns SchemaPaymentTypeDetailsInput.Direction, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeDetailsInput) GetDirection() SchemaPaymentTypeDirection { return v.Direction }
+
+// The direction a Payment Type moves money.
+type SchemaPaymentTypeDirection string
+
+const (
+	// Money moves into the Payment Account.
+	SchemaPaymentTypeDirectionPayin SchemaPaymentTypeDirection = "payin"
+	// Money moves out of the Payment Account.
+	SchemaPaymentTypeDirectionPayout SchemaPaymentTypeDirection = "payout"
+)
+
+var AllSchemaPaymentTypeDirection = []SchemaPaymentTypeDirection{
+	SchemaPaymentTypeDirectionPayin,
+	SchemaPaymentTypeDirectionPayout,
+}
+
+// EXPERIMENTAL: A Payment Type in a Schema. All Payment Types defined in a
+// Schema must have a unique `type` and `typeVersion` pair.
+type SchemaPaymentTypeInput struct {
+	// The Ledger Entries posted as the payment moves through its lifecycle.
+	Accounting SchemaPaymentAccountingInput `json:"accounting"`
+	// The payment this Payment Type creates.
+	Payment SchemaPaymentTypeDetailsInput `json:"payment"`
+	// The status of this Payment Type.
+	Status SchemaPaymentEntryStatus `json:"status"`
+	// The type of this Payment Type. This is a stable, unique identifier for it.
+	// Uniqueness is enforced at the Schema level.
+	Type string `json:"type"`
+	// The version of the Payment Type.
+	TypeVersion int `json:"typeVersion"`
+}
+
+// GetAccounting returns SchemaPaymentTypeInput.Accounting, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeInput) GetAccounting() SchemaPaymentAccountingInput { return v.Accounting }
+
+// GetPayment returns SchemaPaymentTypeInput.Payment, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeInput) GetPayment() SchemaPaymentTypeDetailsInput { return v.Payment }
+
+// GetStatus returns SchemaPaymentTypeInput.Status, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeInput) GetStatus() SchemaPaymentEntryStatus { return v.Status }
+
+// GetType returns SchemaPaymentTypeInput.Type, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeInput) GetType() string { return v.Type }
+
+// GetTypeVersion returns SchemaPaymentTypeInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeInput) GetTypeVersion() int { return v.TypeVersion }
+
+// EXPERIMENTAL: The Payment Types in your Schema.
+type SchemaPaymentsInput struct {
+	// A list of Payment Type definitions.
+	Types []SchemaPaymentTypeInput `json:"types"`
+}
+
+// GetTypes returns SchemaPaymentsInput.Types, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentsInput) GetTypes() []SchemaPaymentTypeInput { return v.Types }
 
 // Configuration for repeated expansion of a line or condition. The key names a client-supplied
 // array parameter whose elements each generate one copy of the line or condition at runtime.
@@ -8584,6 +8763,22 @@ type SchemaRepeatedConfigInput struct {
 
 // GetKey returns SchemaRepeatedConfigInput.Key, and is useful for accessing the field via an interface.
 func (v *SchemaRepeatedConfigInput) GetKey() string { return v.Key }
+
+// Identifies a system-owned line in a payment entry. The amounts of system
+// lines are filled by Fragment when the payment entry is posted.
+type SchemaSystemLineKind string
+
+const (
+	// The line carrying the Fragment fee amount, posted to the Payment Account.
+	SchemaSystemLineKindPaymentFeeLine SchemaSystemLineKind = "payment_fee_line"
+	// The line carrying the settled payment amount, posted to the Payment Account.
+	SchemaSystemLineKindPaymentSettlementLine SchemaSystemLineKind = "payment_settlement_line"
+)
+
+var AllSchemaSystemLineKind = []SchemaSystemLineKind{
+	SchemaSystemLineKindPaymentFeeLine,
+	SchemaSystemLineKindPaymentSettlementLine,
+}
 
 // Matches a transaction at an external system.
 // This is used to specify the transaction being reconciled into a Linked Ledger Account
@@ -9606,6 +9801,8 @@ func (v *TxTypeFilter) GetIn() []TxType { return v.In }
 type UpdateLedgerEntryInput struct {
 	// The list of Groups to add to this Ledger Entry.
 	Groups []LedgerEntryGroupInput `json:"groups"`
+	// The list of Ledger Line updates to apply to Ledger Lines on this Ledger Entry.
+	LedgerLines []UpdateLedgerLineInput `json:"ledgerLines"`
 	// The list of Tags to add and/or update on this Ledger Entry.
 	Tags []LedgerEntryTagInput `json:"tags"`
 	// The list of Tags to remove from this Ledger Entry.
@@ -9614,6 +9811,9 @@ type UpdateLedgerEntryInput struct {
 
 // GetGroups returns UpdateLedgerEntryInput.Groups, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerEntryInput) GetGroups() []LedgerEntryGroupInput { return v.Groups }
+
+// GetLedgerLines returns UpdateLedgerEntryInput.LedgerLines, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerEntryInput) GetLedgerLines() []UpdateLedgerLineInput { return v.LedgerLines }
 
 // GetTags returns UpdateLedgerEntryInput.Tags, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerEntryInput) GetTags() []LedgerEntryTagInput { return v.Tags }
@@ -10014,6 +10214,24 @@ type UpdateLedgerInput struct {
 
 // GetName returns UpdateLedgerInput.Name, and is useful for accessing the field via an interface.
 func (v *UpdateLedgerInput) GetName() *string { return v.Name }
+
+type UpdateLedgerLineInput struct {
+	// The Ledger Line that is being updated. It must belong to the Ledger Entry being updated.
+	LedgerLine LedgerLineMatchInput `json:"ledgerLine"`
+	// The list of Tags to add and/or update on this Ledger Line.
+	Tags []LedgerLineTagInput `json:"tags"`
+	// The list of Tags to remove from this Ledger Line.
+	TagsToRemove []LedgerLineTagInput `json:"tagsToRemove"`
+}
+
+// GetLedgerLine returns UpdateLedgerLineInput.LedgerLine, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerLineInput) GetLedgerLine() LedgerLineMatchInput { return v.LedgerLine }
+
+// GetTags returns UpdateLedgerLineInput.Tags, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerLineInput) GetTags() []LedgerLineTagInput { return v.Tags }
+
+// GetTagsToRemove returns UpdateLedgerLineInput.TagsToRemove, and is useful for accessing the field via an interface.
+func (v *UpdateLedgerLineInput) GetTagsToRemove() []LedgerLineTagInput { return v.TagsToRemove }
 
 // UpdateLedgerResponse is returned by UpdateLedger on success.
 type UpdateLedgerResponse struct {
