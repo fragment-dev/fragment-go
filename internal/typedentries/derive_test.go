@@ -2,11 +2,14 @@ package typedentries
 
 import (
 	"os"
+	"reflect"
 	"slices"
 	"strings"
 	"testing"
 
 	"github.com/vektah/gqlparser/v2/ast"
+
+	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
 // scalars mirrors the generator's binding table, which lists only Fragment's own
@@ -473,35 +476,112 @@ func TestEntryTypesCollapsingOntoOneNameIsAnError(t *testing.T) {
 	}
 }
 
-// TestCommonFieldsAreFixed pins the requirement that the common-field set comes
-// from LedgerEntryInput rather than from the source operation.
+// notExposed lists the LedgerEntryInput fields a typed payload deliberately does
+// not offer as a settable field, each with the reason.
 //
-// This cannot be checked on the wire: an implementation that derived the set from
-// the operation would still produce the right JSON for any fixture whose operation
-// happens to bind those fields. The guarantee is about where the list comes from,
-// so the list itself is what has to be asserted.
-func TestCommonFieldsAreFixed(t *testing.T) {
-	var got []string
-	for _, f := range CommonFields {
-		got = append(got, f.Name)
-	}
+// Keeping the reasons here rather than in a comment is what lets
+// TestEveryLedgerEntryInputFieldIsAccountedFor treat the set as exhaustive: a field
+// is either exposed or listed here, and a new one is neither.
+var notExposed = map[string]string{
+	"type":        "derived from the operation's string literal",
+	"typeVersion": "derived from the operation, normalised to 1 when unpinned",
+	"parameters":  "derived from the operation's parameters object",
+	"ledger":      "exposed as the LedgerIk field, which the payload nests itself",
+	"lines":       "cannot be combined with an entry that has a type",
+}
 
-	want := []string{"Ik", "LedgerIk", "Posted", "Description", "Tags", "Groups", "Conditions"}
-	if len(got) != len(want) {
-		t.Fatalf("common fields = %v, want %v", got, want)
-	}
-	for i := range want {
-		if got[i] != want[i] {
-			t.Fatalf("common fields = %v, want %v", got, want)
+// TestEveryLedgerEntryInputFieldIsAccountedFor checks the common-field set against
+// the input type it is supposed to mirror.
+//
+// A payload's fields are fixed rather than derived from the source operation, which
+// leaves a gap nothing else closes: when LedgerEntryInput gains a field, callers
+// silently cannot set it, and every other test still passes because they only ever
+// assert on the fields that do exist.
+//
+// So this reflects over queries.LedgerEntryInput and requires each of its fields to
+// be either exposed by CommonFields or listed in notExposed with a reason. A new
+// field is neither, and fails here until somebody decides which it is.
+func TestEveryLedgerEntryInputFieldIsAccountedFor(t *testing.T) {
+	exposed := map[string]bool{}
+	for _, f := range CommonFields {
+		if f.Wire != "" {
+			exposed[f.Wire] = true
 		}
 	}
 
-	// lines cannot be combined with an entry that has a type, so a payload must
-	// never offer it.
+	inputType := reflect.TypeFor[queries.LedgerEntryInput]()
+	for i := range inputType.NumField() {
+		wire, _, _ := strings.Cut(inputType.Field(i).Tag.Get("json"), ",")
+		if wire == "" || wire == "-" {
+			continue
+		}
+
+		switch {
+		case exposed[wire] && notExposed[wire] != "":
+			t.Errorf("%s is both exposed and listed as not exposed", wire)
+		case exposed[wire], notExposed[wire] != "":
+			// Accounted for.
+		default:
+			t.Errorf("LedgerEntryInput.%s is neither exposed by a payload nor listed in "+
+				"notExposed. Add it to CommonFields so callers can set it, or to "+
+				"notExposed with the reason they cannot.", wire)
+		}
+	}
+
+	// The reverse direction: a common field naming something LedgerEntryInput does
+	// not have would be silently dropped by the API.
+	onInput := map[string]bool{}
+	for i := range inputType.NumField() {
+		wire, _, _ := strings.Cut(inputType.Field(i).Tag.Get("json"), ",")
+		onInput[wire] = true
+	}
+	for _, f := range CommonFields {
+		if f.Wire != "" && !onInput[f.Wire] {
+			t.Errorf("common field %s sends %q, which is not a field of LedgerEntryInput", f.Name, f.Wire)
+		}
+	}
+
+	// notExposed is only exhaustive if none of its entries has been removed from the
+	// input type, which would leave a stale exemption hiding a real gap.
+	for wire := range notExposed {
+		if !onInput[wire] {
+			t.Errorf("notExposed lists %q, which LedgerEntryInput no longer has", wire)
+		}
+	}
+}
+
+// TestStructuralFieldsComeFromAddLedgerEntryInput covers the two fields that are not
+// on LedgerEntryInput at all: ik is an argument of addLedgerEntry, and the Ledger is
+// nested inside the entry rather than named at the top level.
+func TestStructuralFieldsComeFromAddLedgerEntryInput(t *testing.T) {
+	var structural []string
+	for _, f := range CommonFields {
+		if f.Wire == "" {
+			structural = append(structural, f.Name)
+		}
+	}
+
+	want := []string{"Ik", "LedgerIk"}
+	if !slices.Equal(structural, want) {
+		t.Errorf("fields with no wire name = %v, want %v", structural, want)
+	}
+
+	if _, ok := reflect.TypeFor[queries.AddLedgerEntryInput]().FieldByName("Ik"); !ok {
+		t.Error("AddLedgerEntryInput has no Ik field; the payload's Ik has nowhere to go")
+	}
+}
+
+// TestLinesIsNeverACommonField pins the one LedgerEntryInput field a payload must
+// never offer: lines cannot be combined with an entry that has a type, so exposing
+// it would let a caller build an entry the API rejects.
+func TestLinesIsNeverACommonField(t *testing.T) {
 	for _, f := range CommonFields {
 		if strings.EqualFold(f.Name, "lines") || strings.EqualFold(f.Wire, "lines") {
 			t.Error("lines must not be a common field: it cannot be used with a typed entry")
 		}
+	}
+	if notExposed["lines"] == "" {
+		t.Error("lines should be listed in notExposed with its reason")
 	}
 }
 
