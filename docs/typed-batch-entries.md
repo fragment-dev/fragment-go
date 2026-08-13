@@ -177,7 +177,7 @@ chunks by lines.
 | `internal/generated/wire_test.go` | `TestWireFormat` is the worked example — one batch, the complete JSON it produces. The canonical reference for the format. |
 | `internal/generated/compile_test.go` | Builds generated source for hostile operation sets. Every codegen defect found so far produced source `gofmt` accepted and the compiler rejected, so nothing short of building it would catch them. |
 | `internal/generated/keyed_literal_test.go` | Proves unkeyed literals fail, from a separate package. |
-| `internal/typedentries/golden_test.go` | Snapshot: generated identifiers cannot change without a reviewable diff. Callers write those names by hand. |
+| `internal/typedentries/snapshot_test.go` | Snapshot: generated identifiers cannot change without a reviewable diff. Callers write those names by hand. |
 | `internal/typedentries/derive_test.go` | The derivation rules, case by case. |
 | `queries/batch_test.go` | `RawEntry` semantics, all of it discovered live. |
 | `batch/batch_test.go` | The JSON writer: insertion order, omission, error propagation. |

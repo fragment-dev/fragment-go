@@ -12,7 +12,7 @@ import (
 // question is not "does it contain something" but "is it exactly this".
 //
 // They complement rather than duplicate the two coarser checks elsewhere:
-// golden_test.go pins whole files for two realistic operation documents, and
+// snapshot_test.go pins whole files for two realistic operation documents, and
 // internal/generated/compile_test.go proves the output builds. Neither can say
 // where a change originated. These can.
 

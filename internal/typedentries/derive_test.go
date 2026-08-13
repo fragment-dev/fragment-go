@@ -493,12 +493,10 @@ var notExposed = map[string]string{
 // TestEveryLedgerEntryInputFieldIsAccountedFor checks the common-field set against
 // the input type it is supposed to mirror.
 //
-// A payload's fields are fixed rather than derived from the source operation, which
-// leaves a gap nothing else closes: when LedgerEntryInput gains a field, callers
-// silently cannot set it, and every other test still passes because they only ever
-// assert on the fields that do exist.
+// A payload's fields are fixed rather than derived from the source operation.
+// When LedgerEntryInput gains a field, callers silently cannot set it.
 //
-// So this reflects over queries.LedgerEntryInput and requires each of its fields to
+// This reflects over queries.LedgerEntryInput and requires each of its fields to
 // be either exposed by CommonFields or listed in notExposed with a reason. A new
 // field is neither, and fails here until somebody decides which it is.
 func TestEveryLedgerEntryInputFieldIsAccountedFor(t *testing.T) {
