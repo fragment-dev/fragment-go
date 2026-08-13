@@ -88,10 +88,22 @@ func TestGeneratedSourceCompiles(t *testing.T) {
 			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {meta: $meta, opt: $opt}}) { __typename }
 			}`,
 
-		// The untyped fallback carries a raw Parameters field instead.
+		// Parameters bound as a whole: the payload carries a raw Parameters field
+		// instead of derived ones.
 		"untyped parameters": `
 			mutation M($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON!) {
 			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: $parameters}) { __typename }
+			}`,
+
+		// An entry type with no parameters at all, spelled both ways. Neither gets
+		// a Parameters field, so both compile a payload whose only fields are the
+		// common ones.
+		"no parameters": `
+			mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
+			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "omitted"}) { __typename }
+			}
+			mutation B($ik: SafeString!, $ledgerIk: SafeString!) {
+			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "empty", parameters: {}}) { __typename }
 			}`,
 
 		// Entry types are free-form Schema strings and reach identifiers.

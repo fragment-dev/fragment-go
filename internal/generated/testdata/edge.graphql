@@ -39,3 +39,11 @@ mutation PostReserved($ik: SafeString!, $posted: DateTime, $ledgerIk: SafeString
 mutation PostRuntime($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON!) {
   addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "runtime", parameters: $parameters}) { __typename }
 }
+
+# An entry type that takes no parameters. The payload gets no parameters field —
+# there is nothing for a caller to supply — but still sends an empty parameters
+# object, so that omitting the field in the operation and writing `parameters: {}`
+# produce the same request.
+mutation PostFixed($ik: SafeString!, $ledgerIk: SafeString!) {
+  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "fixed"}) { __typename }
+}

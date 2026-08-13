@@ -88,7 +88,8 @@ func wireOf(t *testing.T, entries ...batch.Entry) []byte {
 //	3  a parameter colliding with a common field, source-ordered parameters, an
 //	   omitted optional one, and a non-ASCII value
 //	4  parameters the operation did not type, supplied as raw JSON
-//	5  a raw untyped entry, mixed into the same batch
+//	5  an entry type that takes no parameters
+//	6  a raw untyped entry, mixed into the same batch
 func TestWireFormat(t *testing.T) {
 	posted := "2026-01-01T00:00:00Z"
 	entryType := "card_settle"
@@ -140,11 +141,18 @@ func TestWireFormat(t *testing.T) {
 			Parameters: json.RawMessage(`{"anything":"goes"}`),
 		},
 
-		// 5. A raw entry. Its unset fields are omitted too, which is what lets it
+		// 5. An entry type with no parameters. There is no field to set, and the
+		//    empty parameters object is still sent.
+		edge.FixedV1Entry{
+			Ik:       "ik-5",
+			LedgerIk: "prod",
+		},
+
+		// 6. A raw entry. Its unset fields are omitted too, which is what lets it
 		//    share a batch with the typed payloads above: the API resolves
 		//    {"id":null,"ik":"prod"} as a different Ledger from {"ik":"prod"}.
 		queries.RawEntry{Input: queries.AddLedgerEntryInput{
-			Ik: "ik-5",
+			Ik: "ik-6",
 			Entry: queries.LedgerEntryInput{
 				Ledger:     &queries.LedgerMatchInput{Ik: ptr("prod")},
 				Type:       &entryType,
@@ -208,6 +216,15 @@ func TestWireFormat(t *testing.T) {
     },
     {
       "ik": "ik-5",
+      "entry": {
+        "ledger": {"ik": "prod"},
+        "type": "fixed",
+        "typeVersion": 1,
+        "parameters": {}
+      }
+    },
+    {
+      "ik": "ik-6",
       "entry": {
         "ledger": {"ik": "prod"},
         "type": "card_settle",

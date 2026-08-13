@@ -65,8 +65,12 @@ type Payload struct {
 	GoName string
 	// Params are in the order they appear in the source operation.
 	Params []Param
-	// Untyped is set when the operation gave no inline parameters object, in
-	// which case callers fall back to an untyped map.
+	// Untyped is set when the operation bound its parameters as a whole rather
+	// than field by field, so their individual types are not knowable and the
+	// caller supplies raw JSON instead.
+	//
+	// It is not set for an entry type that simply has no parameters: that payload
+	// is an ordinary typed one with an empty parameter set.
 	Untyped bool
 	// SourceOp is the operation the payload was derived from, for diagnostics.
 	SourceOp string
@@ -267,10 +271,17 @@ func typeVersionOf(entry *ast.Value) (int, string) {
 // paramsOf extracts the caller-supplied parameters, in source order.
 func paramsOf(op *ast.OperationDefinition, entry *ast.Value, scalars map[string]string) ([]Param, bool, []string) {
 	obj := entry.Children.ForName("parameters")
-	if obj == nil || obj.Kind != ast.ObjectValue {
-		// Either no parameters at all, or bound to a variable so their
-		// individual types are not visible here. Either way there is nothing to
-		// type, and the payload falls back to an untyped map.
+	if obj == nil {
+		// This entry type takes no parameters. That is not the same as parameters
+		// the generator could not type: there is nothing for the caller to supply,
+		// so the payload gets no parameters field at all rather than a raw one it
+		// would always leave empty.
+		return nil, false, nil
+	}
+	if obj.Kind != ast.ObjectValue {
+		// Bound as a whole, so the individual types are not visible here. The
+		// entry type does take parameters; the operation just does not say what
+		// they are, so the caller supplies them as raw JSON.
 		return nil, true, nil
 	}
 

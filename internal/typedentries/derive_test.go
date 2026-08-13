@@ -2,6 +2,7 @@ package typedentries
 
 import (
 	"os"
+	"slices"
 	"strings"
 	"testing"
 
@@ -114,9 +115,7 @@ func TestOperationNameIsIrrelevant(t *testing.T) {
 
 // TestUnpinnedVersionNormalisesToOne covers the requirement that an operation
 // pinning no typeVersion is treated as version 1 everywhere: identity, name and
-// wire value. An entry with no typeVersion resolves to 1 server-side rather than
-// to the latest version, so a payload named V1 that posted no version would
-// mislead anyone reading it.
+// wire value.
 func TestUnpinnedVersionNormalisesToOne(t *testing.T) {
 	payloads, _ := derive(t, `
 		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!) {
@@ -178,9 +177,11 @@ func TestDuplicateIdentityWithDifferentParametersWarns(t *testing.T) {
 	}
 }
 
-// TestDistinctVersionsAreDistinctPayloads covers the requirement that identity is
-// the (type, typeVersion) pair. Keying on the type alone would drop one version
-// and post the wrong parameters for it.
+// TestDistinctVersionsAreDistinctPayloads covers identity being the
+// (type, typeVersion) pair rather than the type alone.
+//
+// The parameter sets are what distinguish the two versions, so the test checks
+// that they are derived correctly.
 func TestDistinctVersionsAreDistinctPayloads(t *testing.T) {
 	payloads, _ := derive(t, `
 		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!) {
@@ -193,8 +194,41 @@ func TestDistinctVersionsAreDistinctPayloads(t *testing.T) {
 	if len(payloads) != 2 {
 		t.Fatalf("expected 2 payloads, got %d", len(payloads))
 	}
-	if payloads[0].GoName != "TV1Entry" || payloads[1].GoName != "TV2Entry" {
-		t.Errorf("names = %q, %q; want TV1Entry, TV2Entry", payloads[0].GoName, payloads[1].GoName)
+
+	want := []struct {
+		goName  string
+		version int
+		params  []Param
+	}{
+		{
+			goName:  "TV1Entry",
+			version: 1,
+			params: []Param{
+				{WireName: "amount", FieldName: "Amount", GoType: "string", Kind: KindValue, Required: true},
+			},
+		},
+		{
+			goName:  "TV2Entry",
+			version: 2,
+			params: []Param{
+				{WireName: "amount", FieldName: "Amount", GoType: "string", Kind: KindValue, Required: true},
+				{WireName: "fee", FieldName: "Fee", GoType: "string", Kind: KindValue, Required: true},
+			},
+		},
+	}
+
+	for i, w := range want {
+		got := payloads[i]
+
+		if got.GoName != w.goName {
+			t.Errorf("payload %d name = %q, want %q", i, got.GoName, w.goName)
+		}
+		if got.TypeVersion != w.version {
+			t.Errorf("payload %d version = %d, want %d", i, got.TypeVersion, w.version)
+		}
+		if !slices.Equal(got.Params, w.params) {
+			t.Errorf("payload %d (%s) parameters = %+v, want %+v", i, w.goName, got.Params, w.params)
+		}
 	}
 }
 
@@ -233,17 +267,43 @@ func TestNonVariableParametersAreSkipped(t *testing.T) {
 	}
 }
 
-// TestParametersWithoutInlineObjectFallBackToUntyped covers the requirement that a
-// payload is still emitted when the parameters cannot be typed individually.
-func TestParametersWithoutInlineObjectFallBackToUntyped(t *testing.T) {
+// TestParametersBoundAsAWholeFallBackToUntyped covers an operation that binds its
+// parameters to a single variable. The entry type does take parameters; the
+// operation just does not say what they are, so the caller supplies raw JSON.
+func TestParametersBoundAsAWholeFallBackToUntyped(t *testing.T) {
+	payloads, _ := derive(t, `
+		mutation A($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON!) {
+		  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: $parameters}) { __typename }
+		}`)
+
+	if len(payloads) != 1 {
+		t.Fatalf("expected 1 payload, got %d", len(payloads))
+	}
+	if !payloads[0].Untyped {
+		t.Error("expected the payload to fall back to untyped parameters")
+	}
+	if len(payloads[0].Params) != 0 {
+		t.Errorf("expected no derived parameters, got %+v", payloads[0].Params)
+	}
+}
+
+// TestEntryTypeWithNoParametersIsNotUntyped covers an entry type that takes no
+// parameters, whether the operation omits the parameters field or gives an empty
+// object.
+//
+// Both mean the same thing and must behave the same. Neither is the untyped
+// fallback: that exists for parameters the generator could not type, and treating
+// "there are none" as "I could not tell" hands the caller a raw JSON field there is
+// nothing to put in.
+func TestEntryTypeWithNoParametersIsNotUntyped(t *testing.T) {
 	for name, src := range map[string]string{
-		"parameters bound to a variable": `
-			mutation A($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON!) {
-			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: $parameters}) { __typename }
-			}`,
-		"no parameters at all": `
+		"parameters field omitted": `
 			mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
 			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t"}) { __typename }
+			}`,
+		"parameters is an empty object": `
+			mutation A($ik: SafeString!, $ledgerIk: SafeString!) {
+			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: {}}) { __typename }
 			}`,
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -251,8 +311,24 @@ func TestParametersWithoutInlineObjectFallBackToUntyped(t *testing.T) {
 			if len(payloads) != 1 {
 				t.Fatalf("expected 1 payload, got %d", len(payloads))
 			}
-			if !payloads[0].Untyped {
-				t.Error("expected the payload to fall back to untyped parameters")
+			if payloads[0].Untyped {
+				t.Error("an entry type with no parameters should not get the raw parameters field")
+			}
+			if len(payloads[0].Params) != 0 {
+				t.Errorf("expected no parameters, got %+v", payloads[0].Params)
+			}
+
+			// The two spellings have to produce identical source, or the generated
+			// API would depend on how the operation happened to be written.
+			source, err := Emit(payloads)
+			if err != nil {
+				t.Fatalf("Emit: %v", err)
+			}
+			if strings.Contains(string(source), "Parameters json.RawMessage") {
+				t.Errorf("payload should have no Parameters field:\n%s", source)
+			}
+			if !strings.Contains(string(source), `entry.Set("parameters", params)`) {
+				t.Errorf("expected an empty parameters object on the wire:\n%s", source)
 			}
 		})
 	}

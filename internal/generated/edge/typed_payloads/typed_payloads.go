@@ -294,3 +294,62 @@ func (e RuntimeV1Entry) MarshalJSON() ([]byte, error) {
 	out.Set("entry", entry)
 	return out.MarshalJSON()
 }
+
+// FixedV1Entry is the "fixed" Ledger Entry, version 1.
+//
+// Fields must be set by name. An unkeyed literal will not compile, which is
+// deliberate: two parameters of the same type could otherwise be swapped by
+// reordering them, and the mistake would be silent.
+type FixedV1Entry struct {
+	// Prevents an unkeyed composite literal, which would let parameters be
+	// supplied positionally.
+	_ struct{}
+
+	// Ik is the idempotency key for this Ledger Entry.
+	Ik string
+	// LedgerIk identifies the Ledger to post this entry to.
+	LedgerIk string
+	// Posted is an ISO 8601 timestamp, for example "2021-01-01T16:45:00Z". Leave
+	// nil to omit it.
+	Posted *string
+	// Description is also used for this entry's Ledger Lines unless they set their
+	// own. Leave nil to omit it.
+	Description *string
+	// Tags attached to this Ledger Entry. Leave nil to omit it.
+	Tags []queries.LedgerEntryTagInput
+	// Groups this Ledger Entry is added to. Leave nil to omit it.
+	Groups []queries.LedgerEntryGroupInput
+	// Conditions that must hold for this Ledger Entry to post. The whole batch
+	// rejects if any is not met. Leave nil to omit it.
+	Conditions []queries.LedgerEntryConditionInput
+}
+
+// FragmentBatchEntry marks FixedV1Entry as usable in a batch.
+func (FixedV1Entry) FragmentBatchEntry() {}
+
+// MarshalJSON encodes the entry as an AddLedgerEntryInput.
+//
+// Fields the caller did not set are omitted rather than sent as null, and
+// parameters keep the order they have in the Schema.
+func (e FixedV1Entry) MarshalJSON() ([]byte, error) {
+	ledger := batch.NewObject()
+	ledger.Set("ik", e.LedgerIk)
+
+	params := batch.NewObject()
+
+	entry := batch.NewObject()
+	entry.Set("ledger", ledger)
+	entry.Set("type", "fixed")
+	entry.Set("typeVersion", 1)
+	batch.SetOpt(entry, "posted", e.Posted)
+	batch.SetOpt(entry, "description", e.Description)
+	batch.SetSlice(entry, "tags", e.Tags)
+	batch.SetSlice(entry, "groups", e.Groups)
+	batch.SetSlice(entry, "conditions", e.Conditions)
+	entry.Set("parameters", params)
+
+	out := batch.NewObject()
+	out.Set("ik", e.Ik)
+	out.Set("entry", entry)
+	return out.MarshalJSON()
+}
