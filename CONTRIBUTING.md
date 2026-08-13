@@ -17,6 +17,67 @@ go run main.go \
   --package=queries
 ```
 
+### Typed batch Ledger Entry payloads
+
+Alongside the genqlient pass, the codegen derives a typed payload per Ledger Entry type
+and writes them to a `typed_payloads` package beside the generated client.
+
+Generated output for two operation documents is committed under `internal/generated/`:
+`cli.graphql` is real Fragment CLI output, and `edge.graphql` collects awkward shapes
+the CLI does not produce. Those committed packages are both the snapshot test and the
+input to the wire tests, and `go build ./...` type-checks them. If you change the
+generator, review the diff and refresh it:
+
+```shell
+go test ./internal/typedentries -update
+go test ./...
+```
+
+**`TestWireFormat` in `internal/generated/wire_test.go` is the reference for the wire
+format** — one batch, and the complete JSON it produces. It is written by hand, not
+regenerated, so changing the format takes a deliberate edit. Start there if you need to
+know what goes on the wire.
+
+See [`docs/typed-batch-entries.md`](docs/typed-batch-entries.md) for why the generator
+works the way it does, and for the limits it cannot enforce.
+
+### Live API tests
+
+`internal/livetest/` posts real Ledger Entries. Everything else in the repo stops at
+the request boundary, so these are what confirm the API accepts the entry shape a
+typed payload produces — an entry object with a `type` and no `lines`.
+
+They skip unless credentials are set, so `go test ./...` stays offline:
+
+```shell
+FRAGMENT_CLIENT_ID=... \
+FRAGMENT_CLIENT_SECRET=... \
+FRAGMENT_SCOPE=... \
+FRAGMENT_AUTH_URL=... \
+FRAGMENT_API_URL=... \
+  go test ./internal/livetest/ -v
+```
+
+Each run stores a new version of the `fragment-go-livetest` Schema and creates a
+fresh Ledger, so runs cannot collide — but Ledgers accumulate. **Point these at a
+scratch Workspace, not production.**
+
+In CI they run as the `Live API tests` job in `.github/workflows/ci.yml`, once per
+pull request rather than once per Go version. The job reads the same five values
+from repository secrets:
+
+```shell
+gh secret set FRAGMENT_CLIENT_ID     --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_CLIENT_SECRET --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_SCOPE         --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_AUTH_URL      --repo fragment-dev/fragment-go
+gh secret set FRAGMENT_API_URL       --repo fragment-dev/fragment-go
+```
+
+Pull requests from forks get no secrets, so the tests skip there and the job still
+passes. On a branch in this repository a skip is treated as a failure, so a deleted
+or renamed secret surfaces instead of quietly turning the job into a no-op.
+
 ## Opening a Pull Request
 
 When you're ready to contribute:

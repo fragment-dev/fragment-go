@@ -4,6 +4,12 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
 
+# Both jobs only read the repository: they check out, build and test. Nothing here
+# writes to the repo, comments on the pull request, or publishes anything, so the
+# default write-capable token is more authority than either needs.
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: CI
@@ -23,6 +29,9 @@ jobs:
           go-version: ${{ matrix.go }}
         id: go
 
+      # No FRAGMENT_* credentials here on purpose: internal/livetest skips itself
+      # without them, so this job stays offline and runs once per Go version. The
+      # live job below runs those tests once, against a real API.
       - name: Run tests
         run: |
           go test -cover -v ./...
@@ -44,3 +53,51 @@ jobs:
             --package=queries
           git diff --exit-code
           exit $?
+
+  live:
+    name: Live API tests
+    runs-on: ubuntu-latest
+    # Once, not per Go version: each run stores a Schema version and creates a
+    # Ledger in a real Workspace, and the tests exercise the API rather than
+    # anything version-specific.
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Run live API tests
+        run: |
+          go test -v ./internal/livetest/
+        env:
+          FRAGMENT_CLIENT_ID: ${{ secrets.FRAGMENT_CLIENT_ID }}
+          FRAGMENT_CLIENT_SECRET: ${{ secrets.FRAGMENT_CLIENT_SECRET }}
+          FRAGMENT_SCOPE: ${{ secrets.FRAGMENT_SCOPE }}
+          FRAGMENT_AUTH_URL: ${{ secrets.FRAGMENT_AUTH_URL }}
+          FRAGMENT_API_URL: ${{ secrets.FRAGMENT_API_URL }}
+
+      # Skipping is the correct outcome on a fork pull request, where secrets are
+      # unavailable, but it should not look like the tests passed. This fails the
+      # job when a run that *should* have credentials silently skipped instead —
+      # a deleted or renamed secret would otherwise go unnoticed.
+      - name: Fail if the live tests skipped on a branch that has secrets
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          if [ -z "${FRAGMENT_CLIENT_ID}" ]; then
+            echo "This pull request is from this repository, so the FRAGMENT_* secrets"
+            echo "should be set, but FRAGMENT_CLIENT_ID is empty."
+            echo
+            echo "Set them with:"
+            echo "  gh secret set FRAGMENT_CLIENT_ID --repo ${{ github.repository }}"
+            echo "  gh secret set FRAGMENT_CLIENT_SECRET --repo ${{ github.repository }}"
+            echo "  gh secret set FRAGMENT_SCOPE --repo ${{ github.repository }}"
+            echo "  gh secret set FRAGMENT_AUTH_URL --repo ${{ github.repository }}"
+            echo "  gh secret set FRAGMENT_API_URL --repo ${{ github.repository }}"
+            echo
+            echo "Point them at a scratch Workspace: every run creates a Ledger."
+            exit 1
+          fi
+        env:
+          FRAGMENT_CLIENT_ID: ${{ secrets.FRAGMENT_CLIENT_ID }}

@@ -123,7 +123,7 @@ func main() {
 
 ### Post a Ledger Entry
 
-To [post](https://fragment.dev/docs#post-ledger-entries-post-to-the-api) a Ledger Entry defined in your schema:
+To [post](https://fragment.dev/guides/post-ledger-entries#post-to-the-api) a Ledger Entry defined in your schema:
 
 ``` go
 package main
@@ -172,9 +172,52 @@ func main() {
 }
 ```
 
+### Post a batch of Ledger Entries
+
+To [post](https://fragment.dev/guides/post-ledger-entries#batch-ledger-entries) a batch of Ledger Entries atomically:
+
+``` go
+import "myapp/fragment/typed_payloads"
+
+posted := "1968-01-01T16:45:00Z"
+
+response, _ := queries.AddTypedLedgerEntries(
+	context.Background(),
+	graphqlClient,
+	typed_payloads.UserFundsAccountV1Entry{
+		Ik:            "some-ik-1",
+		LedgerIk:      "your-ledger-ik",
+		Posted:        &posted,
+		UserId:        "user-1",
+		FundingAmount: "20000",
+	},
+	typed_payloads.UserFundsAccountV1Entry{
+		Ik:            "some-ik-2",
+		LedgerIk:      "your-ledger-ik",
+		Posted:        &posted,
+		UserId:        "user-2",
+		FundingAmount: "20000",
+	},
+)
+
+switch r := response.GetAddLedgerEntries().(type) {
+case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResult:
+	for _, result := range r.Results {
+		fmt.Println("Posted", result.Entry.Ik, "replay:", result.IsIkReplay)
+	}
+case *queries.AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesError:
+	// One error per failing entry, each with the ik that identifies it.
+	for _, e := range r.Errors {
+		fmt.Println("Entry", e.Ik, "failed:", e.Message)
+	}
+}
+```
+
+Construct the entries in the batch using the typed payloads generated for your Schema, named `<EntryType>V<typeVersion>Entry`. Running the [codegen](#using-custom-queries) writes them to a `typed_payloads` package beside your generated client. Fields must be set by name.
+
 ### Read a Ledger Account's balance
 
-To read a Ledger Account's [balance](https://fragment.dev/docs#read-balances-latest):
+To read a Ledger Account's [balance](https://fragment.dev/guides/read-balances#latest):
 
 ``` go
 package main
@@ -242,7 +285,7 @@ func main() {
 
 ### Store a Schema
 
-To [store](https://fragment.dev/api-reference/api-mutations#storeschema) a new version of your Schema:
+To [store](https://fragment.dev/api-reference/ledger-mutations#storeschema) a new version of your Schema:
 
 ``` go
 package main
