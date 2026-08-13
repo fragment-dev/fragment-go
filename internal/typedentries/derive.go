@@ -65,6 +65,10 @@ type Payload struct {
 	GoName string
 	// Params are in the order they appear in the source operation.
 	Params []Param
+	// Lines is set when the operation binds the entry's lines to a variable, which
+	// is how a runtime entry type presents itself: a Schema entry type that
+	// declares no lines template requires them at post time instead.
+	Lines bool
 	// Untyped is set when the operation bound its parameters as a whole rather
 	// than field by field, so their individual types are not knowable and the
 	// caller supplies raw JSON instead.
@@ -95,8 +99,8 @@ type CommonField struct {
 // Deriving the set would invent a restriction the API does not have, and would
 // move a payload's surface whenever the CLI changed.
 //
-// lines is absent on purpose. It cannot be combined with an entry that has a
-// type. type, typeVersion and parameters are derived rather than supplied.
+// lines is not here because it is not common — see linesField. type, typeVersion
+// and parameters are derived from the operation rather than supplied.
 var CommonFields = []CommonField{
 	{"Ik", "string", "", KindValue,
 		"Ik is the idempotency key for this Ledger Entry."},
@@ -114,6 +118,19 @@ var CommonFields = []CommonField{
 		"Conditions that must hold for this Ledger Entry to post. The whole batch rejects if any is not met. Leave nil to omit it."},
 }
 
+// linesField is the entry's lines, exposed only on payloads whose operation binds
+// them. It is not in CommonFields because it is not common: a Schema entry type with
+// a lines template builds its own, and supplying lines for one is rejected.
+//
+// The Schema's own wording is the rule here — "if not provided, lines will be
+// required when posting a Typed Entry" — so an operation that binds lines is
+// describing an entry type that cannot be posted without them, and a payload
+// without the field could not post it at all.
+var linesField = CommonField{
+	"Lines", "[]queries.LedgerLineInput", "lines", KindSlice,
+	"Lines to post with this Ledger Entry. This entry type declares no lines of its own in the Schema, so they are required here.",
+}
+
 // generatedMethods are the methods every payload declares. A field may not share
 // a name with one of them, or the generated struct would not compile.
 var generatedMethods = []string{"MarshalJSON", "FragmentBatchEntry"}
@@ -124,6 +141,7 @@ var reservedFieldNames = func() []string {
 	for _, f := range CommonFields {
 		names = append(names, f.Name)
 	}
+	names = append(names, linesField.Name)
 	names = append(names, generatedMethods...)
 	// Parameters is the field an untyped payload carries; reserving it keeps a
 	// parameter literally named "parameters" from colliding with it.
@@ -175,6 +193,7 @@ func Derive(sources []*ast.Source, scalars map[string]string) ([]Payload, []stri
 			id := identity{Type: entryType, Version: version}
 
 			params, untyped, paramWarnings := paramsOf(op, entry, scalars)
+			lines := bindsLines(entry)
 
 			if prev, seen := index[id]; seen {
 				// The CLI and API guarantee no two entries share a
@@ -201,6 +220,7 @@ func Derive(sources []*ast.Source, scalars map[string]string) ([]Payload, []stri
 				TypeVersion: version,
 				GoName:      payloadName(entryType, version),
 				Params:      params,
+				Lines:       lines,
 				Untyped:     untyped,
 				SourceOp:    op.Name,
 			})
@@ -324,6 +344,14 @@ func paramsOf(op *ast.OperationDefinition, entry *ast.Value, scalars map[string]
 		})
 	}
 	return params, false, warnings
+}
+
+// bindsLines reports whether the operation lets the caller supply the entry's
+// lines. A fixed value is not the caller's to set, so only a variable counts —
+// the same rule parameters and the other entry fields follow.
+func bindsLines(entry *ast.Value) bool {
+	v := entry.Children.ForName("lines")
+	return v != nil && v.Kind == ast.Variable
 }
 
 // builtinScalars are the scalars every GraphQL schema has. They are not in the

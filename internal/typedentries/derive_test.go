@@ -487,7 +487,12 @@ var notExposed = map[string]string{
 	"typeVersion": "derived from the operation, normalised to 1 when unpinned",
 	"parameters":  "derived from the operation's parameters object",
 	"ledger":      "exposed as the LedgerIk field, which the payload nests itself",
-	"lines":       "cannot be combined with an entry that has a type",
+}
+
+// conditionallyExposed lists LedgerEntryInput fields a payload offers only for some
+// entry types, with what decides it.
+var conditionallyExposed = map[string]string{
+	"lines": "exposed when the operation binds them, which is how a runtime entry type presents itself",
 }
 
 // TestEveryLedgerEntryInputFieldIsAccountedFor checks the common-field set against
@@ -517,12 +522,12 @@ func TestEveryLedgerEntryInputFieldIsAccountedFor(t *testing.T) {
 		switch {
 		case exposed[wire] && notExposed[wire] != "":
 			t.Errorf("%s is both exposed and listed as not exposed", wire)
-		case exposed[wire], notExposed[wire] != "":
+		case exposed[wire], notExposed[wire] != "", conditionallyExposed[wire] != "":
 			// Accounted for.
 		default:
 			t.Errorf("LedgerEntryInput.%s is neither exposed by a payload nor listed in "+
-				"notExposed. Add it to CommonFields so callers can set it, or to "+
-				"notExposed with the reason they cannot.", wire)
+				"notExposed or conditionallyExposed. Add it to CommonFields so callers "+
+				"can always set it, or to one of those maps with the reason they cannot.", wire)
 		}
 	}
 
@@ -539,11 +544,13 @@ func TestEveryLedgerEntryInputFieldIsAccountedFor(t *testing.T) {
 		}
 	}
 
-	// notExposed is only exhaustive if none of its entries has been removed from the
-	// input type, which would leave a stale exemption hiding a real gap.
-	for wire := range notExposed {
-		if !onInput[wire] {
-			t.Errorf("notExposed lists %q, which LedgerEntryInput no longer has", wire)
+	// The exemptions are only exhaustive if none of them has been removed from the
+	// input type, which would leave a stale entry hiding a real gap.
+	for _, exempt := range []map[string]string{notExposed, conditionallyExposed} {
+		for wire := range exempt {
+			if !onInput[wire] {
+				t.Errorf("%q is listed as exempt, but LedgerEntryInput no longer has it", wire)
+			}
 		}
 	}
 }
@@ -569,17 +576,66 @@ func TestStructuralFieldsComeFromAddLedgerEntryInput(t *testing.T) {
 	}
 }
 
-// TestLinesIsNeverACommonField pins the one LedgerEntryInput field a payload must
-// never offer: lines cannot be combined with an entry that has a type, so exposing
-// it would let a caller build an entry the API rejects.
-func TestLinesIsNeverACommonField(t *testing.T) {
+// TestLinesFollowTheOperation covers the one entry field that is neither always
+// exposed nor never exposed.
+//
+// A Schema entry type that declares its own lines builds them from its template, and
+// supplying lines for one is rejected. An entry type that declares none requires them
+// at post time — "if not provided, lines will be required when posting a Typed
+// Entry" — and its operation says so by binding them to a variable. A payload without
+// the field could not post that entry at all.
+func TestLinesFollowTheOperation(t *testing.T) {
+	// Never a common field: it does not belong on payloads whose entry type has a
+	// lines template.
 	for _, f := range CommonFields {
 		if strings.EqualFold(f.Name, "lines") || strings.EqualFold(f.Wire, "lines") {
-			t.Error("lines must not be a common field: it cannot be used with a typed entry")
+			t.Error("lines must not be a common field: it does not apply to every entry type")
 		}
 	}
-	if notExposed["lines"] == "" {
-		t.Error("lines should be listed in notExposed with its reason")
+
+	cases := map[string]struct {
+		src       string
+		wantLines bool
+	}{
+		"bound to a variable": {
+			src: `
+				mutation A($ik: SafeString!, $ledgerIk: SafeString!, $lines: [LedgerLineInput!]!) {
+				  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "runtime", lines: $lines}) { __typename }
+				}`,
+			wantLines: true,
+		},
+		"not mentioned": {
+			src: `
+				mutation A($ik: SafeString!, $ledgerIk: SafeString!, $amount: String!) {
+				  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "templated", parameters: {amount: $amount}}) { __typename }
+				}`,
+			wantLines: false,
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			payloads, _ := derive(t, tc.src)
+			if len(payloads) != 1 {
+				t.Fatalf("expected 1 payload, got %d", len(payloads))
+			}
+			if payloads[0].Lines != tc.wantLines {
+				t.Errorf("Lines = %v, want %v", payloads[0].Lines, tc.wantLines)
+			}
+
+			source, err := Emit(payloads)
+			if err != nil {
+				t.Fatalf("Emit: %v", err)
+			}
+			hasField := strings.Contains(string(source), "Lines []queries.LedgerLineInput")
+			if hasField != tc.wantLines {
+				t.Errorf("Lines field present = %v, want %v:\n%s", hasField, tc.wantLines, source)
+			}
+			onWire := strings.Contains(string(source), `batch.SetSlice(entry, "lines", e.Lines)`)
+			if onWire != tc.wantLines {
+				t.Errorf("lines written to the wire = %v, want %v", onWire, tc.wantLines)
+			}
+		})
 	}
 }
 

@@ -54,8 +54,8 @@ reference note below.
 ### The common-field set is fixed, not derived from the operation
 
 Every payload carries `Ik`, `LedgerIk`, `Posted`, `Description`, `Tags`, `Groups`
-and `Conditions`, whether or not its source operation binds them. `lines` is never
-exposed, since it cannot be combined with an entry that has a type.
+and `Conditions`, whether or not its source operation binds them. `Lines` is the
+one exception, and is derived — see below.
 
 Deriving the set from the operation is tempting and wrong. An operation binds only
 the fields the CLI chose to expose, and that choice has already changed between CLI
@@ -71,6 +71,36 @@ the `parameters` block, so the parameter binds to the predefined `$posted` that
 already feeds `entry.posted` — one variable in two wire positions, which a caller
 cannot set independently. Because `Posted` exists regardless, the generator splits
 them back apart into `Posted` and `Posted2`. See `testdata/edge.graphql`.
+
+### `Lines` is derived, unlike the other entry fields
+
+A Schema entry type that declares its own `lines` builds them from its template, and
+supplying lines for one is rejected. An entry type that declares none requires them
+at post time — the Schema's wording is *"if not provided, lines will be required when
+posting a Typed Entry"* — and that is what the SDK's own `AddLedgerEntryRuntime`
+operation exists for.
+
+So `Lines` cannot be a common field: on a templated payload it would be a field that
+always fails, and on a runtime payload its absence would make the entry impossible to
+post. The operation is what distinguishes them — a runtime entry type's operation
+binds `lines` to a variable — so this is the one field the generator reads from the
+operation rather than fixing in advance.
+
+Note that the `LedgerEntryInput.lines` description in the published schema says lines
+"cannot be used with Ledger Entries that have a 'type'". Taken literally that would
+rule out runtime entry types entirely, and `AddLedgerEntryRuntime` binds a non-null
+`$lines` alongside a `type`, so the description is narrower than it reads: it is about
+overriding a template, not about runtime entry types.
+
+### Composite fields are stripped of nulls
+
+`Tags`, `Groups`, `Conditions` and `Lines` hold generated input structs, and those
+carry no `omitempty` — so marshalling one directly fills in every field the caller
+left unset. `batch.SetSlice` strips them.
+
+This is the same defect that broke a raw entry against the live API, one level deeper:
+a Ledger Line's account and a condition's account are *match* inputs, and the API
+resolves `{"id":null,"path":"x"}` as a different Account from `{"path":"x"}`.
 
 ### A payload's name always carries its version
 
@@ -179,6 +209,7 @@ chunks by lines.
 | `internal/typedentries/snapshot_test.go` | Snapshot: generated identifiers cannot change without a reviewable diff. Callers write those names by hand. |
 | `internal/typedentries/derive_test.go` | The derivation rules, case by case. |
 | `queries/batch_test.go` | `RawEntry` semantics, all of it discovered live. |
+| `batch/batch_test.go` (`SetSlice`) | Null-stripping for composite fields, which a match input makes load-bearing. |
 | `batch/batch_test.go` | The JSON writer: insertion order, omission, error propagation. |
 | `main_test.go` | The CLI wiring, reading the real binding table rather than a copy. |
 | `internal/livetest/` | A real API. See `CONTRIBUTING.md`. |

@@ -42,46 +42,7 @@ func (r RawEntry) MarshalJSON() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return stripNulls(encoded, map[string]bool{"parameters": true})
-}
-
-// stripNulls removes null members from every JSON object in data, recursively.
-// The value of any field named in passthrough is kept verbatim.
-func stripNulls(data json.RawMessage, passthrough map[string]bool) (json.RawMessage, error) {
-	var object map[string]json.RawMessage
-	if err := json.Unmarshal(data, &object); err == nil && object != nil {
-		kept := make(map[string]json.RawMessage, len(object))
-		for name, value := range object {
-			if string(value) == "null" {
-				continue
-			}
-			if passthrough[name] {
-				kept[name] = value
-				continue
-			}
-			cleaned, err := stripNulls(value, passthrough)
-			if err != nil {
-				return nil, err
-			}
-			kept[name] = cleaned
-		}
-		return json.Marshal(kept)
-	}
-
-	var array []json.RawMessage
-	if err := json.Unmarshal(data, &array); err == nil && array != nil {
-		for i, element := range array {
-			cleaned, err := stripNulls(element, passthrough)
-			if err != nil {
-				return nil, err
-			}
-			array[i] = cleaned
-		}
-		return json.Marshal(array)
-	}
-
-	// A scalar, or JSON this function has no business rewriting.
-	return data, nil
+	return batch.StripNulls(encoded, "parameters")
 }
 
 type typedBatchVariables struct {

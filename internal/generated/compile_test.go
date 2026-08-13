@@ -95,6 +95,13 @@ func TestGeneratedSourceCompiles(t *testing.T) {
 			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", parameters: $parameters}) { __typename }
 			}`,
 
+		// A runtime entry type binds its lines, so the payload gains a Lines field
+		// that templated entry types do not have.
+		"runtime entry with lines": `
+			mutation M($ik: SafeString!, $ledgerIk: SafeString!, $lines: [LedgerLineInput!]!) {
+			  addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "t", lines: $lines}) { __typename }
+			}`,
+
 		// An entry type with no parameters at all, spelled both ways. Neither gets
 		// a Parameters field, so both compile a payload whose only fields are the
 		// common ones.

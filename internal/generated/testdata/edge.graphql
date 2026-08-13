@@ -47,3 +47,13 @@ mutation PostRuntime($ik: SafeString!, $ledgerIk: SafeString!, $parameters: JSON
 mutation PostFixed($ik: SafeString!, $ledgerIk: SafeString!) {
   addLedgerEntry(ik: $ik, entry: {ledger: {ik: $ledgerIk}, type: "fixed"}) { __typename }
 }
+
+# A runtime entry type: the Schema declares no lines for it, so lines are required
+# when posting and the operation binds them. The payload therefore exposes a Lines
+# field, which payloads for templated entry types do not.
+mutation PostRuntimeLines($ik: SafeString!, $ledgerIk: SafeString!, $lines: [LedgerLineInput!]!, $memo: String!) {
+  addLedgerEntry(
+    ik: $ik
+    entry: {ledger: {ik: $ledgerIk}, type: "runtime-lines", lines: $lines, parameters: {memo: $memo}}
+  ) { __typename }
+}

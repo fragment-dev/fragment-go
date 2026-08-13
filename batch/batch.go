@@ -101,11 +101,76 @@ func (o *Object) Set(name string, v any) {
 // SetSlice adds a field only when the slice is non-nil. An empty non-nil slice
 // is still written, as [], because the caller asked for it; a nil slice is
 // treated as unset and omitted.
+//
+// Null members are stripped from the encoding. The element types these slices hold
+// are generated without omitempty, so marshalling them directly fills in every
+// field the caller left unset. That is not cosmetic: a Ledger Line's account is a
+// match input, and the API resolves {"id":null,"path":"x"} as a different Account
+// from {"path":"x"}.
 func SetSlice[T any](o *Object, name string, v []T) {
 	if v == nil {
 		return
 	}
-	o.Set(name, v)
+
+	encoded, err := json.Marshal(v)
+	if err != nil {
+		o.err = err
+		return
+	}
+	cleaned, err := StripNulls(encoded)
+	if err != nil {
+		o.err = err
+		return
+	}
+	o.Set(name, json.RawMessage(cleaned))
+}
+
+// StripNulls removes null members from every JSON object in data, recursively. The
+// value of any field named in passthrough is kept verbatim, for JSON the caller
+// owns and this package has no business rewriting.
+func StripNulls(data []byte, passthrough ...string) ([]byte, error) {
+	keep := make(map[string]bool, len(passthrough))
+	for _, name := range passthrough {
+		keep[name] = true
+	}
+	return stripNulls(data, keep)
+}
+
+func stripNulls(data json.RawMessage, passthrough map[string]bool) (json.RawMessage, error) {
+	var object map[string]json.RawMessage
+	if err := json.Unmarshal(data, &object); err == nil && object != nil {
+		kept := make(map[string]json.RawMessage, len(object))
+		for name, value := range object {
+			if string(value) == "null" {
+				continue
+			}
+			if passthrough[name] {
+				kept[name] = value
+				continue
+			}
+			cleaned, err := stripNulls(value, passthrough)
+			if err != nil {
+				return nil, err
+			}
+			kept[name] = cleaned
+		}
+		return json.Marshal(kept)
+	}
+
+	var array []json.RawMessage
+	if err := json.Unmarshal(data, &array); err == nil && array != nil {
+		for i, element := range array {
+			cleaned, err := stripNulls(element, passthrough)
+			if err != nil {
+				return nil, err
+			}
+			array[i] = cleaned
+		}
+		return json.Marshal(array)
+	}
+
+	// A scalar, or JSON this function has no business rewriting.
+	return data, nil
 }
 
 // SetOpt adds a field only when the pointer is non-nil. A nil pointer means the

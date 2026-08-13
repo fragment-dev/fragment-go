@@ -89,7 +89,8 @@ func wireOf(t *testing.T, entries ...batch.Entry) []byte {
 //	   omitted optional one, and a non-ASCII value
 //	4  parameters the operation did not type, supplied as raw JSON
 //	5  an entry type that takes no parameters
-//	6  a raw untyped entry, mixed into the same batch
+//	6  a raw untyped entry carrying a type, mixed into the same batch
+//	7  a runtime entry type, which takes its lines from the caller
 func TestWireFormat(t *testing.T) {
 	posted := "2026-01-01T00:00:00Z"
 	entryType := "card_settle"
@@ -148,9 +149,11 @@ func TestWireFormat(t *testing.T) {
 			LedgerIk: "prod",
 		},
 
-		// 6. A raw entry. Its unset fields are omitted too, which is what lets it
-		//    share a batch with the typed payloads above: the API resolves
-		//    {"id":null,"ik":"prod"} as a different Ledger from {"ik":"prod"}.
+		// 6. A raw entry carrying a type, the untyped route to what the payloads
+		//    above do. Its unset fields are omitted too, which is what lets it share
+		//    a batch with them: the API resolves {"id":null,"ik":"prod"} as a
+		//    different Ledger from {"ik":"prod"}. Note the absent typeVersion — a
+		//    typed payload always sends one, a raw entry only what the caller set.
 		queries.RawEntry{Input: queries.AddLedgerEntryInput{
 			Ik: "ik-6",
 			Entry: queries.LedgerEntryInput{
@@ -159,6 +162,27 @@ func TestWireFormat(t *testing.T) {
 				Parameters: &rawParameters,
 			},
 		}},
+
+		// 7. A runtime entry type. Its Schema entry type declares no lines, so lines
+		//    are required at post time and the operation binds them — which is what
+		//    gives this payload a Lines field that the templated ones above do not
+		//    have. Each line leaves most of LedgerLineInput unset, so this also shows
+		//    the omission rule applying inside a nested array.
+		edge.RuntimeLinesV1Entry{
+			Ik:       "ik-7",
+			LedgerIk: "prod",
+			Memo:     "incident-1",
+			Lines: []queries.LedgerLineInput{
+				{
+					Account: queries.LedgerAccountMatchInput{Path: ptr("assets/cash")},
+					Amount:  ptr("100"),
+				},
+				{
+					Account: queries.LedgerAccountMatchInput{Path: ptr("liabilities/user:user-1")},
+					Amount:  ptr("-100"),
+				},
+			},
+		},
 	)
 
 	const want = `{
@@ -235,6 +259,19 @@ func TestWireFormat(t *testing.T) {
           "amount": "25"
         }
       }
+    },
+    {
+      "ik": "ik-7",
+      "entry": {
+        "ledger": {"ik": "prod"},
+        "type": "runtime-lines",
+        "typeVersion": 1,
+        "lines": [
+          {"account": {"path": "assets/cash"}, "amount": "100"},
+          {"account": {"path": "liabilities/user:user-1"}, "amount": "-100"}
+        ],
+        "parameters": {"memo": "incident-1"}
+      }
     }
   ]
 }`
@@ -305,6 +342,48 @@ func TestUnsetFieldsAreOmitted(t *testing.T) {
 	for _, key := range []string{"posted", "description", "tags", "groups", "conditions", "lines"} {
 		if strings.Contains(got, `"`+key+`":`) {
 			t.Errorf("unset field %q should be absent, got: %s", key, got)
+		}
+	}
+}
+
+// TestCompositeFieldsAreStrippedOfNulls covers the entry fields whose values are
+// generated input structs rather than scalars.
+//
+// Those types carry no omitempty, so marshalling one directly fills in every field
+// the caller left unset. It matters most for a match input: the API resolves an
+// account named {"id":null,"path":"x"} differently from {"path":"x"}, which is the
+// same way a raw entry's Ledger reference once broke a mixed batch.
+//
+// Conditions is the case with no other coverage — it nests two match inputs and
+// three nullable fields, and nothing else in the suite sets it.
+func TestCompositeFieldsAreStrippedOfNulls(t *testing.T) {
+	got := string(wireOf(t, edge.RuntimeLinesV1Entry{
+		Ik:       "ik-1",
+		LedgerIk: "prod",
+		Memo:     "m",
+		Lines: []queries.LedgerLineInput{{
+			Account: queries.LedgerAccountMatchInput{Path: ptr("assets/cash")},
+			Amount:  ptr("100"),
+		}},
+		Conditions: []queries.LedgerEntryConditionInput{{
+			Account: queries.LedgerAccountMatchInput{Path: ptr("assets/cash")},
+		}},
+		Tags:   []queries.LedgerEntryTagInput{{Key: "k", Value: "v"}},
+		Groups: []queries.LedgerEntryGroupInput{{Key: "g", Value: "v"}},
+	}))
+
+	if strings.Contains(got, "null") {
+		t.Errorf("no field the caller left unset should be sent as null, got: %s", got)
+	}
+	// The values that were set must survive the stripping.
+	for _, want := range []string{
+		`"lines":[{"account":{"path":"assets/cash"},"amount":"100"}]`,
+		`"conditions":[{"account":{"path":"assets/cash"}}]`,
+		`"tags":[{"key":"k","value":"v"}]`,
+		`"groups":[{"key":"g","value":"v"}]`,
+	} {
+		if !strings.Contains(got, want) {
+			t.Errorf("expected %s in: %s", want, got)
 		}
 	}
 }

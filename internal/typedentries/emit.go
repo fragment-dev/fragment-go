@@ -130,6 +130,10 @@ func emitPayload(b *bytes.Buffer, p Payload) {
 		comment(b, "\t", f.Doc)
 		fmt.Fprintf(b, "\t%s %s\n", f.Name, f.Type)
 	}
+	if p.Lines {
+		comment(b, "\t", linesField.Doc)
+		fmt.Fprintf(b, "\t%s %s\n", linesField.Name, linesField.Type)
+	}
 
 	if p.Untyped {
 		b.WriteString("\n")
@@ -213,6 +217,9 @@ func emitMarshal(b *bytes.Buffer, p Payload) {
 			continue
 		}
 		setField(b, "entry", f.Wire, "e."+f.Name, f.Kind)
+	}
+	if p.Lines {
+		setField(b, "entry", linesField.Wire, "e."+linesField.Name, linesField.Kind)
 	}
 	if p.Untyped {
 		setField(b, "entry", "parameters", "e.Parameters", KindRaw)
