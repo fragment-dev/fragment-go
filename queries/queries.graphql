@@ -1241,3 +1241,37 @@ mutation CreateCustomCurrency(
     }
   }
 }
+
+mutation CreatePayment(
+  $ik: SafeString!
+  $ledgerIk: SafeString!
+  $entryType: SafeString!
+  $typeVersion: Int
+  $parameters: JSON
+) {
+  createPayment(
+    ik: $ik
+    ledger: { ik: $ledgerIk }
+    payment: {
+      type: $entryType
+      typeVersion: $typeVersion
+      parameters: $parameters
+    }
+  ) {
+    __typename
+    ... on Payment {
+      clientSecret
+      status
+    }
+    ... on BadRequestError {
+      code
+      message
+      retryable
+    }
+    ... on InternalError {
+      code
+      message
+      retryable
+    }
+  }
+}

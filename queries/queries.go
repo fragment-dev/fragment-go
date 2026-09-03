@@ -1965,6 +1965,239 @@ func (v *CreateLedgerResponse) __premarshalJSON() (*__premarshalCreateLedgerResp
 	return &retval, nil
 }
 
+// CreatePaymentCreatePayment includes the requested fields of the GraphQL type Payment.
+type CreatePaymentCreatePayment struct {
+	Typename *string `json:"__typename"`
+	// The secret handed to the payments SDK to render the payment method capture.
+	ClientSecret string `json:"clientSecret"`
+	// The status of this Payment.
+	Status PaymentStatus `json:"status"`
+}
+
+// GetTypename returns CreatePaymentCreatePayment.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePayment) GetTypename() *string { return v.Typename }
+
+// GetClientSecret returns CreatePaymentCreatePayment.ClientSecret, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePayment) GetClientSecret() string { return v.ClientSecret }
+
+// GetStatus returns CreatePaymentCreatePayment.Status, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePayment) GetStatus() PaymentStatus { return v.Status }
+
+// CreatePaymentCreatePaymentBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type CreatePaymentCreatePaymentBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreatePaymentCreatePaymentBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns CreatePaymentCreatePaymentBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns CreatePaymentCreatePaymentBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreatePaymentCreatePaymentBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// CreatePaymentCreatePaymentCreatePaymentResponse includes the requested fields of the GraphQL interface CreatePaymentResponse.
+//
+// CreatePaymentCreatePaymentCreatePaymentResponse is implemented by the following types:
+// CreatePaymentCreatePaymentBadRequestError
+// CreatePaymentCreatePaymentInternalError
+// CreatePaymentCreatePayment
+type CreatePaymentCreatePaymentCreatePaymentResponse interface {
+	implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *CreatePaymentCreatePaymentBadRequestError) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
+}
+func (v *CreatePaymentCreatePaymentInternalError) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
+}
+func (v *CreatePaymentCreatePayment) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
+}
+
+func __unmarshalCreatePaymentCreatePaymentCreatePaymentResponse(b []byte, v *CreatePaymentCreatePaymentCreatePaymentResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(CreatePaymentCreatePaymentBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(CreatePaymentCreatePaymentInternalError)
+		return json.Unmarshal(b, *v)
+	case "Payment":
+		*v = new(CreatePaymentCreatePayment)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing CreatePaymentResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreatePaymentCreatePaymentCreatePaymentResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreatePaymentCreatePaymentCreatePaymentResponse(v *CreatePaymentCreatePaymentCreatePaymentResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreatePaymentCreatePaymentBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentCreatePaymentBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreatePaymentCreatePaymentInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentCreatePaymentInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreatePaymentCreatePayment:
+		typename = "Payment"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentCreatePayment
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreatePaymentCreatePaymentCreatePaymentResponse: "%T"`, v)
+	}
+}
+
+// CreatePaymentCreatePaymentInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type CreatePaymentCreatePaymentInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreatePaymentCreatePaymentInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns CreatePaymentCreatePaymentInternalError.Code, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns CreatePaymentCreatePaymentInternalError.Message, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns CreatePaymentCreatePaymentInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentInternalError) GetRetryable() bool { return v.Retryable }
+
+// CreatePaymentResponse is returned by CreatePayment on success.
+type CreatePaymentResponse struct {
+	// EXPERIMENTAL — subject to change.
+	//
+	// Create a Payment.
+	CreatePayment CreatePaymentCreatePaymentCreatePaymentResponse `json:"-"`
+}
+
+// GetCreatePayment returns CreatePaymentResponse.CreatePayment, and is useful for accessing the field via an interface.
+func (v *CreatePaymentResponse) GetCreatePayment() CreatePaymentCreatePaymentCreatePaymentResponse {
+	return v.CreatePayment
+}
+
+func (v *CreatePaymentResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreatePaymentResponse
+		CreatePayment json.RawMessage `json:"createPayment"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreatePaymentResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.CreatePayment
+		src := firstPass.CreatePayment
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalCreatePaymentCreatePaymentCreatePaymentResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreatePaymentResponse.CreatePayment: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreatePaymentResponse struct {
+	CreatePayment json.RawMessage `json:"createPayment"`
+}
+
+func (v *CreatePaymentResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreatePaymentResponse) __premarshalJSON() (*__premarshalCreatePaymentResponse, error) {
+	var retval __premarshalCreatePaymentResponse
+
+	{
+
+		dst := &retval.CreatePayment
+		src := v.CreatePayment
+		var err error
+		*dst, err = __marshalCreatePaymentCreatePaymentCreatePaymentResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreatePaymentResponse.CreatePayment: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 type CurrencyCode string
 
 const (
@@ -6917,6 +7150,23 @@ func (v *MigrateLedgerEntryResponse) __premarshalJSON() (*__premarshalMigrateLed
 	return &retval, nil
 }
 
+// EXPERIMENTAL — subject to change.
+//
+// Status of a Payment.
+type PaymentStatus string
+
+const (
+	PaymentStatusNeedsPaymentMethod PaymentStatus = "needs_payment_method"
+	PaymentStatusProcessing         PaymentStatus = "processing"
+	PaymentStatusSettled            PaymentStatus = "settled"
+)
+
+var AllPaymentStatus = []PaymentStatus{
+	PaymentStatusNeedsPaymentMethod,
+	PaymentStatusProcessing,
+	PaymentStatusSettled,
+}
+
 // Controls how lines are posted for a Ledger Entry.
 // New entries created via the dashboard default to `net_amounts`.
 // Existing entries without this field set are treated as `raw_lines`.
@@ -10610,6 +10860,30 @@ func (v *__CreateLedgerInput) GetLedger() CreateLedgerInput { return v.Ledger }
 // GetSchemaKey returns __CreateLedgerInput.SchemaKey, and is useful for accessing the field via an interface.
 func (v *__CreateLedgerInput) GetSchemaKey() string { return v.SchemaKey }
 
+// __CreatePaymentInput is used internally by genqlient
+type __CreatePaymentInput struct {
+	Ik          string           `json:"ik"`
+	LedgerIk    string           `json:"ledgerIk"`
+	EntryType   string           `json:"entryType"`
+	TypeVersion *int             `json:"typeVersion"`
+	Parameters  *json.RawMessage `json:"parameters"`
+}
+
+// GetIk returns __CreatePaymentInput.Ik, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetIk() string { return v.Ik }
+
+// GetLedgerIk returns __CreatePaymentInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetEntryType returns __CreatePaymentInput.EntryType, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetEntryType() string { return v.EntryType }
+
+// GetTypeVersion returns __CreatePaymentInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetTypeVersion() *int { return v.TypeVersion }
+
+// GetParameters returns __CreatePaymentInput.Parameters, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetParameters() *json.RawMessage { return v.Parameters }
+
 // __DeleteCustomTxsInput is used internally by genqlient
 type __DeleteCustomTxsInput struct {
 	Txs []string `json:"txs"`
@@ -11554,6 +11828,62 @@ func CreateLedger(
 	}
 
 	data_ = &CreateLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by CreatePayment.
+const CreatePayment_Operation = `
+mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: SafeString!, $typeVersion: Int, $parameters: JSON) {
+	createPayment(ik: $ik, ledger: {ik:$ledgerIk}, payment: {type:$entryType,typeVersion:$typeVersion,parameters:$parameters}) {
+		__typename
+		... on Payment {
+			clientSecret
+			status
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func CreatePayment(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ik string,
+	ledgerIk string,
+	entryType string,
+	typeVersion *int,
+	parameters *json.RawMessage,
+) (data_ *CreatePaymentResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "CreatePayment",
+		Query:  CreatePayment_Operation,
+		Variables: &__CreatePaymentInput{
+			Ik:          ik,
+			LedgerIk:    ledgerIk,
+			EntryType:   entryType,
+			TypeVersion: typeVersion,
+			Parameters:  parameters,
+		},
+	}
+
+	data_ = &CreatePaymentResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
