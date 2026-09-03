@@ -5132,7 +5132,7 @@ type LedgerEntryInput struct {
 	Tags []LedgerEntryTagInput `json:"tags"`
 	// The type of the Ledger Entry. Must be defined in the Schema linked to the Ledger specified below.
 	Type *string `json:"type"`
-	// Experimental: This field is reserved for an upcoming feature and is not yet supported.
+	// The version of the Ledger Entry type to post. Defaults to 1.
 	TypeVersion *int `json:"typeVersion"`
 }
 
@@ -8598,14 +8598,14 @@ func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
 // through its lifecycle, keyed by lifecycle transition.
 type SchemaPaymentAccountingInput struct {
 	// Posted when the payment enters processing. Optional.
-	Needs_confirmation_to_processing *SchemaPaymentEntryInput `json:"needs_confirmation_to_processing"`
+	Needs_payment_method_to_processing *SchemaPaymentEntryInput `json:"needs_payment_method_to_processing"`
 	// Posted when the payment settles. Every Payment Type must define it.
 	Processing_to_settled SchemaPaymentEntryInput `json:"processing_to_settled"`
 }
 
-// GetNeeds_confirmation_to_processing returns SchemaPaymentAccountingInput.Needs_confirmation_to_processing, and is useful for accessing the field via an interface.
-func (v *SchemaPaymentAccountingInput) GetNeeds_confirmation_to_processing() *SchemaPaymentEntryInput {
-	return v.Needs_confirmation_to_processing
+// GetNeeds_payment_method_to_processing returns SchemaPaymentAccountingInput.Needs_payment_method_to_processing, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetNeeds_payment_method_to_processing() *SchemaPaymentEntryInput {
+	return v.Needs_payment_method_to_processing
 }
 
 // GetProcessing_to_settled returns SchemaPaymentAccountingInput.Processing_to_settled, and is useful for accessing the field via an interface.
@@ -8626,18 +8626,6 @@ func (v *SchemaPaymentEntryInput) GetDescription() *string { return v.Descriptio
 
 // GetLines returns SchemaPaymentEntryInput.Lines, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentEntryInput) GetLines() []SchemaPaymentLineInput { return v.Lines }
-
-// The status of a Payment Type.
-type SchemaPaymentEntryStatus string
-
-const (
-	// The Payment Type is active.
-	SchemaPaymentEntryStatusActive SchemaPaymentEntryStatus = "active"
-)
-
-var AllSchemaPaymentEntryStatus = []SchemaPaymentEntryStatus{
-	SchemaPaymentEntryStatusActive,
-}
 
 // EXPERIMENTAL: Marks a Ledger Account as a Payment Account.
 type SchemaPaymentInput struct {
@@ -8722,7 +8710,7 @@ type SchemaPaymentTypeInput struct {
 	// The payment this Payment Type creates.
 	Payment SchemaPaymentTypeDetailsInput `json:"payment"`
 	// The status of this Payment Type.
-	Status SchemaPaymentEntryStatus `json:"status"`
+	Status SchemaPaymentTypeStatus `json:"status"`
 	// The type of this Payment Type. This is a stable, unique identifier for it.
 	// Uniqueness is enforced at the Schema level.
 	Type string `json:"type"`
@@ -8737,13 +8725,25 @@ func (v *SchemaPaymentTypeInput) GetAccounting() SchemaPaymentAccountingInput { 
 func (v *SchemaPaymentTypeInput) GetPayment() SchemaPaymentTypeDetailsInput { return v.Payment }
 
 // GetStatus returns SchemaPaymentTypeInput.Status, and is useful for accessing the field via an interface.
-func (v *SchemaPaymentTypeInput) GetStatus() SchemaPaymentEntryStatus { return v.Status }
+func (v *SchemaPaymentTypeInput) GetStatus() SchemaPaymentTypeStatus { return v.Status }
 
 // GetType returns SchemaPaymentTypeInput.Type, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentTypeInput) GetType() string { return v.Type }
 
 // GetTypeVersion returns SchemaPaymentTypeInput.TypeVersion, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentTypeInput) GetTypeVersion() int { return v.TypeVersion }
+
+// The status of a Payment Type.
+type SchemaPaymentTypeStatus string
+
+const (
+	// The Payment Type is active.
+	SchemaPaymentTypeStatusActive SchemaPaymentTypeStatus = "active"
+)
+
+var AllSchemaPaymentTypeStatus = []SchemaPaymentTypeStatus{
+	SchemaPaymentTypeStatusActive,
+}
 
 // EXPERIMENTAL: The Payment Types in your Schema.
 type SchemaPaymentsInput struct {
