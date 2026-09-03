@@ -10,7 +10,7 @@ from typing import List
 
 def format_line(line: str):
   is_first_line = line.startswith("mutation") or line.startswith("query")
-  contains_type = line.find("$type: String!") != -1 or line.find("type: $type") != -1
+  contains_type = line.find("$type: String!") != -1 or line.find("$type: SafeString!") != -1 or line.find("type: $type") != -1
   if not (is_first_line or contains_type):
     return line
   if is_first_line:
