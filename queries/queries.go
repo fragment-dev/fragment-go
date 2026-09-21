@@ -358,7 +358,7 @@ func (v *AddLedgerEntriesAddLedgerEntriesInternalError) GetRetryable() bool { re
 
 // AddLedgerEntriesResponse is returned by AddLedgerEntries on success.
 type AddLedgerEntriesResponse struct {
-	// Batch version of [addLedgerEntry](http://localhost:3001/api-reference/ledger-mutations#addledgerentry).
+	// Batch version of [addLedgerEntry](/api-reference/ledger-mutations#addledgerentry).
 	//
 	// Adds a batch of Ledger Entries in one synchronous and atomic transaction. Either every entry is added or none are.
 	AddLedgerEntries AddLedgerEntriesAddLedgerEntriesAddLedgerEntriesResponse `json:"-"`
@@ -1965,24 +1965,6 @@ func (v *CreateLedgerResponse) __premarshalJSON() (*__premarshalCreateLedgerResp
 	return &retval, nil
 }
 
-// CreatePaymentCreatePayment includes the requested fields of the GraphQL type Payment.
-type CreatePaymentCreatePayment struct {
-	Typename *string `json:"__typename"`
-	// The secret handed to the payments SDK to render the payment method capture.
-	ClientSecret string `json:"clientSecret"`
-	// The status of this Payment.
-	Status PaymentStatus `json:"status"`
-}
-
-// GetTypename returns CreatePaymentCreatePayment.Typename, and is useful for accessing the field via an interface.
-func (v *CreatePaymentCreatePayment) GetTypename() *string { return v.Typename }
-
-// GetClientSecret returns CreatePaymentCreatePayment.ClientSecret, and is useful for accessing the field via an interface.
-func (v *CreatePaymentCreatePayment) GetClientSecret() string { return v.ClientSecret }
-
-// GetStatus returns CreatePaymentCreatePayment.Status, and is useful for accessing the field via an interface.
-func (v *CreatePaymentCreatePayment) GetStatus() PaymentStatus { return v.Status }
-
 // CreatePaymentCreatePaymentBadRequestError includes the requested fields of the GraphQL type BadRequestError.
 // The GraphQL type's documentation follows.
 //
@@ -2013,8 +1995,8 @@ func (v *CreatePaymentCreatePaymentBadRequestError) GetRetryable() bool { return
 //
 // CreatePaymentCreatePaymentCreatePaymentResponse is implemented by the following types:
 // CreatePaymentCreatePaymentBadRequestError
+// CreatePaymentCreatePaymentCreatePaymentResult
 // CreatePaymentCreatePaymentInternalError
-// CreatePaymentCreatePayment
 type CreatePaymentCreatePaymentCreatePaymentResponse interface {
 	implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -2023,9 +2005,9 @@ type CreatePaymentCreatePaymentCreatePaymentResponse interface {
 
 func (v *CreatePaymentCreatePaymentBadRequestError) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
 }
-func (v *CreatePaymentCreatePaymentInternalError) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
+func (v *CreatePaymentCreatePaymentCreatePaymentResult) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
 }
-func (v *CreatePaymentCreatePayment) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
+func (v *CreatePaymentCreatePaymentInternalError) implementsGraphQLInterfaceCreatePaymentCreatePaymentCreatePaymentResponse() {
 }
 
 func __unmarshalCreatePaymentCreatePaymentCreatePaymentResponse(b []byte, v *CreatePaymentCreatePaymentCreatePaymentResponse) error {
@@ -2045,11 +2027,11 @@ func __unmarshalCreatePaymentCreatePaymentCreatePaymentResponse(b []byte, v *Cre
 	case "BadRequestError":
 		*v = new(CreatePaymentCreatePaymentBadRequestError)
 		return json.Unmarshal(b, *v)
+	case "CreatePaymentResult":
+		*v = new(CreatePaymentCreatePaymentCreatePaymentResult)
+		return json.Unmarshal(b, *v)
 	case "InternalError":
 		*v = new(CreatePaymentCreatePaymentInternalError)
-		return json.Unmarshal(b, *v)
-	case "Payment":
-		*v = new(CreatePaymentCreatePayment)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -2072,6 +2054,14 @@ func __marshalCreatePaymentCreatePaymentCreatePaymentResponse(v *CreatePaymentCr
 			*CreatePaymentCreatePaymentBadRequestError
 		}{typename, v}
 		return json.Marshal(result)
+	case *CreatePaymentCreatePaymentCreatePaymentResult:
+		typename = "CreatePaymentResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentCreatePaymentCreatePaymentResult
+		}{typename, v}
+		return json.Marshal(result)
 	case *CreatePaymentCreatePaymentInternalError:
 		typename = "InternalError"
 
@@ -2080,20 +2070,51 @@ func __marshalCreatePaymentCreatePaymentCreatePaymentResponse(v *CreatePaymentCr
 			*CreatePaymentCreatePaymentInternalError
 		}{typename, v}
 		return json.Marshal(result)
-	case *CreatePaymentCreatePayment:
-		typename = "Payment"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CreatePaymentCreatePayment
-		}{typename, v}
-		return json.Marshal(result)
 	case nil:
 		return []byte("null"), nil
 	default:
 		return nil, fmt.Errorf(
 			`unexpected concrete type for CreatePaymentCreatePaymentCreatePaymentResponse: "%T"`, v)
 	}
+}
+
+// CreatePaymentCreatePaymentCreatePaymentResult includes the requested fields of the GraphQL type CreatePaymentResult.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: The created Payment.
+type CreatePaymentCreatePaymentCreatePaymentResult struct {
+	Typename *string `json:"__typename"`
+	// The Payment that was created.
+	Payment CreatePaymentCreatePaymentCreatePaymentResultPayment `json:"payment"`
+}
+
+// GetTypename returns CreatePaymentCreatePaymentCreatePaymentResult.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResult) GetTypename() *string { return v.Typename }
+
+// GetPayment returns CreatePaymentCreatePaymentCreatePaymentResult.Payment, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResult) GetPayment() CreatePaymentCreatePaymentCreatePaymentResultPayment {
+	return v.Payment
+}
+
+// CreatePaymentCreatePaymentCreatePaymentResultPayment includes the requested fields of the GraphQL type Payment.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: A Payment posted to a Ledger.
+type CreatePaymentCreatePaymentCreatePaymentResultPayment struct {
+	// The credential the payments SDK presents to `confirmPayment`.
+	ClientSecret string `json:"clientSecret"`
+	// The status of this Payment.
+	Status PaymentStatus `json:"status"`
+}
+
+// GetClientSecret returns CreatePaymentCreatePaymentCreatePaymentResultPayment.ClientSecret, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetClientSecret() string {
+	return v.ClientSecret
+}
+
+// GetStatus returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Status, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetStatus() PaymentStatus {
+	return v.Status
 }
 
 // CreatePaymentCreatePaymentInternalError includes the requested fields of the GraphQL type InternalError.
@@ -2340,6 +2361,7 @@ const (
 	CurrencyCodeSek     CurrencyCode = "SEK"
 	CurrencyCodeSgd     CurrencyCode = "SGD"
 	CurrencyCodeShp     CurrencyCode = "SHP"
+	CurrencyCodeSle     CurrencyCode = "SLE"
 	CurrencyCodeSll     CurrencyCode = "SLL"
 	CurrencyCodeSol     CurrencyCode = "SOL"
 	CurrencyCodeSos     CurrencyCode = "SOS"
@@ -2522,6 +2544,7 @@ var AllCurrencyCode = []CurrencyCode{
 	CurrencyCodeSek,
 	CurrencyCodeSgd,
 	CurrencyCodeShp,
+	CurrencyCodeSle,
 	CurrencyCodeSll,
 	CurrencyCodeSol,
 	CurrencyCodeSos,
@@ -4800,6 +4823,93 @@ type GetLedgerResponse struct {
 // GetLedger returns GetLedgerResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *GetLedgerResponse) GetLedger() *GetLedgerLedger { return v.Ledger }
 
+// GetPaymentPayment includes the requested fields of the GraphQL type Payment.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: A Payment posted to a Ledger.
+type GetPaymentPayment struct {
+	// The ID of this Payment.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment, in whole cents.
+	Amount string `json:"amount"`
+	// The currency this Payment is denominated in.
+	Currency GetPaymentPaymentCurrency `json:"currency"`
+	// The status of this Payment.
+	Status PaymentStatus `json:"status"`
+	// The Payment Type in the Schema this Payment was created from.
+	Type string `json:"type"`
+	// The version of the Payment Type.
+	TypeVersion int `json:"typeVersion"`
+	// The mode of this Payment. Can be `sandbox` or `production`.
+	Mode PaymentMode `json:"mode"`
+	// Parameters the Payment was created with.
+	Parameters json.RawMessage `json:"parameters"`
+	Created    string          `json:"created"`
+}
+
+// GetId returns GetPaymentPayment.Id, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetId() string { return v.Id }
+
+// GetIk returns GetPaymentPayment.Ik, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetIk() string { return v.Ik }
+
+// GetAmount returns GetPaymentPayment.Amount, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetAmount() string { return v.Amount }
+
+// GetCurrency returns GetPaymentPayment.Currency, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetCurrency() GetPaymentPaymentCurrency { return v.Currency }
+
+// GetStatus returns GetPaymentPayment.Status, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetStatus() PaymentStatus { return v.Status }
+
+// GetType returns GetPaymentPayment.Type, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetType() string { return v.Type }
+
+// GetTypeVersion returns GetPaymentPayment.TypeVersion, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetTypeVersion() int { return v.TypeVersion }
+
+// GetMode returns GetPaymentPayment.Mode, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetMode() PaymentMode { return v.Mode }
+
+// GetParameters returns GetPaymentPayment.Parameters, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetParameters() json.RawMessage { return v.Parameters }
+
+// GetCreated returns GetPaymentPayment.Created, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetCreated() string { return v.Created }
+
+// GetPaymentPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: The currency a Payment is denominated in.
+type GetPaymentPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+	// A human readable name for the currency (e.g. United States Dollar). This is used for display purposes.
+	Name string `json:"name"`
+	// The number of decimal places this currency goes to. For example, United States Dollars have a precision of 2 (i.e. 100 cents in a dollar), whereas the Jordanian Dinar has a precision of 3. This is used for display purposes.
+	Precision int `json:"precision"`
+}
+
+// GetCode returns GetPaymentPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentCurrency) GetCode() PaymentCurrencyCode { return v.Code }
+
+// GetName returns GetPaymentPaymentCurrency.Name, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentCurrency) GetName() string { return v.Name }
+
+// GetPrecision returns GetPaymentPaymentCurrency.Precision, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentCurrency) GetPrecision() int { return v.Precision }
+
+// GetPaymentResponse is returned by GetPayment on success.
+type GetPaymentResponse struct {
+	// EXPERIMENTAL: Get a single Payment by its Idempotency Key.
+	Payment *GetPaymentPayment `json:"payment"`
+}
+
+// GetPayment returns GetPaymentResponse.Payment, and is useful for accessing the field via an interface.
+func (v *GetPaymentResponse) GetPayment() *GetPaymentPayment { return v.Payment }
+
 // GetSchemaResponse is returned by GetSchema on success.
 type GetSchemaResponse struct {
 	// Get a Schema by key.
@@ -4995,6 +5105,293 @@ func (v *GroupReconciliationParametersInput) GetClearingAccountPath() SchemaLedg
 	return v.ClearingAccountPath
 }
 
+// InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse includes the requested fields of the GraphQL interface InstantiateLedgerAccountResponse.
+//
+// InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse is implemented by the following types:
+// InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError
+// InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult
+// InstantiateLedgerAccountInstantiateLedgerAccountInternalError
+type InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse interface {
+	implementsGraphQLInterfaceInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError) implementsGraphQLInterfaceInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse() {
+}
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult) implementsGraphQLInterfaceInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse() {
+}
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInternalError) implementsGraphQLInterfaceInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse() {
+}
+
+func __unmarshalInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse(b []byte, v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InstantiateLedgerAccountResult":
+		*v = new(InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(InstantiateLedgerAccountInstantiateLedgerAccountInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing InstantiateLedgerAccountResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse(v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*InstantiateLedgerAccountInstantiateLedgerAccountBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult:
+		typename = "InstantiateLedgerAccountResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *InstantiateLedgerAccountInstantiateLedgerAccountInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*InstantiateLedgerAccountInstantiateLedgerAccountInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse: "%T"`, v)
+	}
+}
+
+// InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult includes the requested fields of the GraphQL type InstantiateLedgerAccountResult.
+type InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult struct {
+	Typename *string `json:"__typename"`
+	// The instantiated Ledger Account.
+	LedgerAccount InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount `json:"ledgerAccount"`
+}
+
+// GetTypename returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult.Typename, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetLedgerAccount returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult.LedgerAccount, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResult) GetLedgerAccount() InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount {
+	return v.LedgerAccount
+}
+
+// InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount includes the requested fields of the GraphQL type LedgerAccount.
+// The GraphQL type's documentation follows.
+//
+// A ledger account is a container for money
+type InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount struct {
+	Id string `json:"id"`
+	// The unique Path of the ledger account. This is a slash-delimited string containing the location of an account in its chart of accounts.
+	// For accounts created with a schema, this will be composed of account keys. Else, for accounts created with the createLedgerAccounts API,
+	// this will be composed of the IKs of an account and its ancestors.
+	Path string `json:"path"`
+	// The name of your Ledger Account
+	Name    *string            `json:"name"`
+	Type    LedgerAccountTypes `json:"type"`
+	Created string             `json:"created"`
+}
+
+// GetId returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount.Id, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount) GetId() string {
+	return v.Id
+}
+
+// GetPath returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount.Path, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount) GetPath() string {
+	return v.Path
+}
+
+// GetName returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount.Name, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount) GetName() *string {
+	return v.Name
+}
+
+// GetType returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount.Type, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount) GetType() LedgerAccountTypes {
+	return v.Type
+}
+
+// GetCreated returns InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount.Created, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResultLedgerAccount) GetCreated() string {
+	return v.Created
+}
+
+// InstantiateLedgerAccountInstantiateLedgerAccountInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type InstantiateLedgerAccountInstantiateLedgerAccountInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns InstantiateLedgerAccountInstantiateLedgerAccountInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns InstantiateLedgerAccountInstantiateLedgerAccountInternalError.Code, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInternalError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns InstantiateLedgerAccountInstantiateLedgerAccountInternalError.Message, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns InstantiateLedgerAccountInstantiateLedgerAccountInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountInstantiateLedgerAccountInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// InstantiateLedgerAccountResponse is returned by InstantiateLedgerAccount on success.
+type InstantiateLedgerAccountResponse struct {
+	// Instantiates a Ledger Account from a template in the Ledger's Schema before any Ledger Entry is posted to it. Creates any missing templated ancestors.
+	InstantiateLedgerAccount InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse `json:"-"`
+}
+
+// GetInstantiateLedgerAccount returns InstantiateLedgerAccountResponse.InstantiateLedgerAccount, and is useful for accessing the field via an interface.
+func (v *InstantiateLedgerAccountResponse) GetInstantiateLedgerAccount() InstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse {
+	return v.InstantiateLedgerAccount
+}
+
+func (v *InstantiateLedgerAccountResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*InstantiateLedgerAccountResponse
+		InstantiateLedgerAccount json.RawMessage `json:"instantiateLedgerAccount"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.InstantiateLedgerAccountResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.InstantiateLedgerAccount
+		src := firstPass.InstantiateLedgerAccount
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal InstantiateLedgerAccountResponse.InstantiateLedgerAccount: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalInstantiateLedgerAccountResponse struct {
+	InstantiateLedgerAccount json.RawMessage `json:"instantiateLedgerAccount"`
+}
+
+func (v *InstantiateLedgerAccountResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *InstantiateLedgerAccountResponse) __premarshalJSON() (*__premarshalInstantiateLedgerAccountResponse, error) {
+	var retval __premarshalInstantiateLedgerAccountResponse
+
+	{
+
+		dst := &retval.InstantiateLedgerAccount
+		src := v.InstantiateLedgerAccount
+		var err error
+		*dst, err = __marshalInstantiateLedgerAccountInstantiateLedgerAccountInstantiateLedgerAccountResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal InstantiateLedgerAccountResponse.InstantiateLedgerAccount: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 // A condition that must be met on an `Int96` field.
 type Int96ConditionInput struct {
 	// Amount must exactly match this value. You may not specify this alongside `gte` or `lte`.
@@ -5039,9 +5436,9 @@ func (v *Int96Filter) GetNe() *string { return v.Ne }
 
 // A set of conditions that a Ledger Account must meet for an operation to succeed.
 type LedgerAccountConditionInput struct {
-	// A condition that the ownBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](https://fragment.dev/read-balances) for more on the different types of Ledger Account balances.
+	// A condition that the ownBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](/guides/read-balances) for more on the different types of Ledger Account balances.
 	OwnBalance *Int96ConditionInput `json:"ownBalance"`
-	// A condition that the totalBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](https://fragment.dev/read-balances) for more on the different types of Ledger Account balances.
+	// A condition that the totalBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](/guides/read-balances) for more on the different types of Ledger Account balances.
 	TotalBalance *Int96ConditionInput `json:"totalBalance"`
 }
 
@@ -6527,6 +6924,151 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 	return v.Ledger
 }
 
+// ListPaymentsLedger includes the requested fields of the GraphQL type Ledger.
+// The GraphQL type's documentation follows.
+//
+// Ledgers are databases designed for managing money
+type ListPaymentsLedger struct {
+	// EXPERIMENTAL: List the Payments on a Ledger, most recent first.
+	Payments ListPaymentsLedgerPaymentsPaymentsConnection `json:"payments"`
+}
+
+// GetPayments returns ListPaymentsLedger.Payments, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedger) GetPayments() ListPaymentsLedgerPaymentsPaymentsConnection {
+	return v.Payments
+}
+
+// ListPaymentsLedgerPaymentsPaymentsConnection includes the requested fields of the GraphQL type PaymentsConnection.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: A paginated list of Payments.
+type ListPaymentsLedgerPaymentsPaymentsConnection struct {
+	// The current page of results.
+	Nodes []ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment `json:"nodes"`
+	// The pagination info for this list.
+	PageInfo ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns ListPaymentsLedgerPaymentsPaymentsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnection) GetNodes() []ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment {
+	return v.Nodes
+}
+
+// GetPageInfo returns ListPaymentsLedgerPaymentsPaymentsConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnection) GetPageInfo() ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo {
+	return v.PageInfo
+}
+
+// ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment includes the requested fields of the GraphQL type Payment.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: A Payment posted to a Ledger.
+type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment struct {
+	// The ID of this Payment.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment, in whole cents.
+	Amount string `json:"amount"`
+	// The currency this Payment is denominated in.
+	Currency ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency `json:"currency"`
+	// The status of this Payment.
+	Status PaymentStatus `json:"status"`
+	// The Payment Type in the Schema this Payment was created from.
+	Type string `json:"type"`
+	// The version of the Payment Type.
+	TypeVersion int    `json:"typeVersion"`
+	Created     string `json:"created"`
+}
+
+// GetId returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Id, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetId() string { return v.Id }
+
+// GetIk returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Ik, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetIk() string { return v.Ik }
+
+// GetAmount returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Amount, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetAmount() string {
+	return v.Amount
+}
+
+// GetCurrency returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Currency, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetCurrency() ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency {
+	return v.Currency
+}
+
+// GetStatus returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Status, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetStatus() PaymentStatus {
+	return v.Status
+}
+
+// GetType returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Type, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetType() string { return v.Type }
+
+// GetTypeVersion returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.TypeVersion, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetTypeVersion() int {
+	return v.TypeVersion
+}
+
+// GetCreated returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Created, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetCreated() string {
+	return v.Created
+}
+
+// ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: The currency a Payment is denominated in.
+type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+}
+
+// GetCode returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency) GetCode() PaymentCurrencyCode {
+	return v.Code
+}
+
+// ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+type ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// ListPaymentsResponse is returned by ListPayments on success.
+type ListPaymentsResponse struct {
+	// Get a Ledger by ID
+	Ledger *ListPaymentsLedger `json:"ledger"`
+}
+
+// GetLedger returns ListPaymentsResponse.Ledger, and is useful for accessing the field via an interface.
+func (v *ListPaymentsResponse) GetLedger() *ListPaymentsLedger { return v.Ledger }
+
 // MigrateLedgerEntryMigrateLedgerEntryBadRequestError includes the requested fields of the GraphQL type BadRequestError.
 // The GraphQL type's documentation follows.
 //
@@ -7152,20 +7694,76 @@ func (v *MigrateLedgerEntryResponse) __premarshalJSON() (*__premarshalMigrateLed
 
 // EXPERIMENTAL — subject to change.
 //
+// The currencies a Payment can be denominated in.
+type PaymentCurrencyCode string
+
+const (
+	PaymentCurrencyCodeUsd PaymentCurrencyCode = "USD"
+)
+
+var AllPaymentCurrencyCode = []PaymentCurrencyCode{
+	PaymentCurrencyCodeUsd,
+}
+
+// Mode of a Payment.
+type PaymentMode string
+
+const (
+	PaymentModeProduction PaymentMode = "production"
+	PaymentModeSandbox    PaymentMode = "sandbox"
+)
+
+var AllPaymentMode = []PaymentMode{
+	PaymentModeProduction,
+	PaymentModeSandbox,
+}
+
+// EXPERIMENTAL — subject to change.
+//
 // Status of a Payment.
 type PaymentStatus string
 
 const (
+	PaymentStatusApproved           PaymentStatus = "approved"
 	PaymentStatusNeedsPaymentMethod PaymentStatus = "needs_payment_method"
 	PaymentStatusProcessing         PaymentStatus = "processing"
 	PaymentStatusSettled            PaymentStatus = "settled"
 )
 
 var AllPaymentStatus = []PaymentStatus{
+	PaymentStatusApproved,
 	PaymentStatusNeedsPaymentMethod,
 	PaymentStatusProcessing,
 	PaymentStatusSettled,
 }
+
+// EXPERIMENTAL: Filters a result set by Payment status.
+type PaymentStatusFilter struct {
+	// Results must have the specified status.
+	EqualTo *PaymentStatus `json:"equalTo"`
+	// Results can have any of the specified statuses.
+	In []PaymentStatus `json:"in"`
+}
+
+// GetEqualTo returns PaymentStatusFilter.EqualTo, and is useful for accessing the field via an interface.
+func (v *PaymentStatusFilter) GetEqualTo() *PaymentStatus { return v.EqualTo }
+
+// GetIn returns PaymentStatusFilter.In, and is useful for accessing the field via an interface.
+func (v *PaymentStatusFilter) GetIn() []PaymentStatus { return v.In }
+
+// EXPERIMENTAL: The filters that can be applied to a list of Payments.
+type PaymentsFilterSet struct {
+	// Use this filter to filter Payments by their `created` timestamp.
+	Created *DateTimeFilter `json:"created"`
+	// Use this to filter Payments by their status.
+	Status *PaymentStatusFilter `json:"status"`
+}
+
+// GetCreated returns PaymentsFilterSet.Created, and is useful for accessing the field via an interface.
+func (v *PaymentsFilterSet) GetCreated() *DateTimeFilter { return v.Created }
+
+// GetStatus returns PaymentsFilterSet.Status, and is useful for accessing the field via an interface.
+func (v *PaymentsFilterSet) GetStatus() *PaymentStatusFilter { return v.Status }
 
 // Controls how lines are posted for a Ledger Entry.
 // New entries created via the dashboard default to `net_amounts`.
@@ -8339,33 +8937,45 @@ func (v *SceneEntryInput) GetType() string { return v.Type }
 func (v *SceneEntryInput) GetTypeVersion() *int { return v.TypeVersion }
 
 type SceneEventInput struct {
-	// The simulated Ledger Entry.
-	Entry SceneEntryInput `json:"entry"`
-	// The type of the Scene Event. Currently, only entries are supported.
+	// The simulated Ledger Entry. Required when eventType is `entry`.
+	Entry *SceneEntryInput `json:"entry"`
+	// The type of the Scene Event.
 	EventType SceneEventType `json:"eventType"`
+	// EXPERIMENTAL: The simulated Payment lifecycle transition. Required when eventType is `payment`.
+	Payment *ScenePaymentEventInput `json:"payment"`
 }
 
 // GetEntry returns SceneEventInput.Entry, and is useful for accessing the field via an interface.
-func (v *SceneEventInput) GetEntry() SceneEntryInput { return v.Entry }
+func (v *SceneEventInput) GetEntry() *SceneEntryInput { return v.Entry }
 
 // GetEventType returns SceneEventInput.EventType, and is useful for accessing the field via an interface.
 func (v *SceneEventInput) GetEventType() SceneEventType { return v.EventType }
 
+// GetPayment returns SceneEventInput.Payment, and is useful for accessing the field via an interface.
+func (v *SceneEventInput) GetPayment() *ScenePaymentEventInput { return v.Payment }
+
+// The kind of thing a Scene Event simulates.
 type SceneEventType string
 
 const (
+	// A simulated Ledger Entry.
 	SceneEventTypeEntry SceneEventType = "entry"
+	// EXPERIMENTAL: One lifecycle transition of a simulated Payment.
+	SceneEventTypePayment SceneEventType = "payment"
 )
 
 var AllSceneEventType = []SceneEventType{
 	SceneEventTypeEntry,
+	SceneEventTypePayment,
 }
 
 type SceneInput struct {
-	// A list of simulated ledger entries that make up the Scene.
+	// The ordered simulated events that make up the Scene.
 	Events []SceneEventInput `json:"events"`
 	// The human-readable name of the Scene.
 	Name string `json:"name"`
+	// EXPERIMENTAL: The simulated Payments the Scene's payment events reference.
+	Payments []ScenePaymentInput `json:"payments"`
 }
 
 // GetEvents returns SceneInput.Events, and is useful for accessing the field via an interface.
@@ -8373,6 +8983,50 @@ func (v *SceneInput) GetEvents() []SceneEventInput { return v.Events }
 
 // GetName returns SceneInput.Name, and is useful for accessing the field via an interface.
 func (v *SceneInput) GetName() string { return v.Name }
+
+// GetPayments returns SceneInput.Payments, and is useful for accessing the field via an interface.
+func (v *SceneInput) GetPayments() []ScenePaymentInput { return v.Payments }
+
+// EXPERIMENTAL: One lifecycle transition of a simulated Payment, posted as a
+// part of a Scene.
+type ScenePaymentEventInput struct {
+	// The lifecycle transition this Scene Event posts.
+	Event SchemaPaymentAccountingEventKey `json:"event"`
+	// The Idempotency Key of the simulated Payment, as declared in scene.payments.
+	Ik string `json:"ik"`
+}
+
+// GetEvent returns ScenePaymentEventInput.Event, and is useful for accessing the field via an interface.
+func (v *ScenePaymentEventInput) GetEvent() SchemaPaymentAccountingEventKey { return v.Event }
+
+// GetIk returns ScenePaymentEventInput.Ik, and is useful for accessing the field via an interface.
+func (v *ScenePaymentEventInput) GetIk() string { return v.Ik }
+
+// EXPERIMENTAL: A simulated Payment declared by a Scene. Its lifecycle events
+// reference it by `ik`, so one simulated Payment has exactly one set of
+// parameters.
+type ScenePaymentInput struct {
+	// The Idempotency Key of the simulated Payment. Unique within the Scene.
+	Ik string `json:"ik"`
+	// Any parameters to be used as inputs to this simulated Payment.
+	Parameters *json.RawMessage `json:"parameters"`
+	// The type of the simulated Payment. Must match one of the types provided in schema.payments.types.
+	Type string `json:"type"`
+	// The version of the Payment Type.
+	TypeVersion *int `json:"typeVersion"`
+}
+
+// GetIk returns ScenePaymentInput.Ik, and is useful for accessing the field via an interface.
+func (v *ScenePaymentInput) GetIk() string { return v.Ik }
+
+// GetParameters returns ScenePaymentInput.Parameters, and is useful for accessing the field via an interface.
+func (v *ScenePaymentInput) GetParameters() *json.RawMessage { return v.Parameters }
+
+// GetType returns ScenePaymentInput.Type, and is useful for accessing the field via an interface.
+func (v *ScenePaymentInput) GetType() string { return v.Type }
+
+// GetTypeVersion returns ScenePaymentInput.TypeVersion, and is useful for accessing the field via an interface.
+func (v *ScenePaymentInput) GetTypeVersion() *int { return v.TypeVersion }
 
 // A condition that must be met on a Ledger Account balance. The condition can be
 // either a `precondition` or `postcondition`.
@@ -8844,24 +9498,35 @@ func (v *SchemaMatchInput) GetKey() string { return v.Key }
 // GetVersion returns SchemaMatchInput.Version, and is useful for accessing the field via an interface.
 func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
 
+// EXPERIMENTAL: A lifecycle transition of a Payment.
+type SchemaPaymentAccountingEventKey string
+
+const (
+	// The payment was approved and is guaranteed to settle.
+	SchemaPaymentAccountingEventKeyInitiated SchemaPaymentAccountingEventKey = "initiated"
+	// The payment settled.
+	SchemaPaymentAccountingEventKeySettled SchemaPaymentAccountingEventKey = "settled"
+)
+
+var AllSchemaPaymentAccountingEventKey = []SchemaPaymentAccountingEventKey{
+	SchemaPaymentAccountingEventKeyInitiated,
+	SchemaPaymentAccountingEventKeySettled,
+}
+
 // EXPERIMENTAL: The Ledger Entries a Payment Type posts as a payment moves
 // through its lifecycle, keyed by lifecycle transition.
 type SchemaPaymentAccountingInput struct {
-	// Posted when the payment enters processing. Optional.
-	Needs_payment_method_to_processing *SchemaPaymentEntryInput `json:"needs_payment_method_to_processing"`
+	// Posted when the payment is approved. Optional.
+	Initiated *SchemaPaymentEntryInput `json:"initiated"`
 	// Posted when the payment settles. Every Payment Type must define it.
-	Processing_to_settled SchemaPaymentEntryInput `json:"processing_to_settled"`
+	Settled SchemaPaymentEntryInput `json:"settled"`
 }
 
-// GetNeeds_payment_method_to_processing returns SchemaPaymentAccountingInput.Needs_payment_method_to_processing, and is useful for accessing the field via an interface.
-func (v *SchemaPaymentAccountingInput) GetNeeds_payment_method_to_processing() *SchemaPaymentEntryInput {
-	return v.Needs_payment_method_to_processing
-}
+// GetInitiated returns SchemaPaymentAccountingInput.Initiated, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetInitiated() *SchemaPaymentEntryInput { return v.Initiated }
 
-// GetProcessing_to_settled returns SchemaPaymentAccountingInput.Processing_to_settled, and is useful for accessing the field via an interface.
-func (v *SchemaPaymentAccountingInput) GetProcessing_to_settled() SchemaPaymentEntryInput {
-	return v.Processing_to_settled
-}
+// GetSettled returns SchemaPaymentAccountingInput.Settled, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetSettled() SchemaPaymentEntryInput { return v.Settled }
 
 // EXPERIMENTAL: The Ledger Entry a Payment Type posts on a payment lifecycle event.
 type SchemaPaymentEntryInput struct {
@@ -8879,11 +9544,11 @@ func (v *SchemaPaymentEntryInput) GetLines() []SchemaPaymentLineInput { return v
 
 // EXPERIMENTAL: Marks a Ledger Account as a Payment Account.
 type SchemaPaymentInput struct {
-	Penguin bool `json:"penguin"`
+	Enabled bool `json:"enabled"`
 }
 
-// GetPenguin returns SchemaPaymentInput.Penguin, and is useful for accessing the field via an interface.
-func (v *SchemaPaymentInput) GetPenguin() bool { return v.Penguin }
+// GetEnabled returns SchemaPaymentInput.Enabled, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentInput) GetEnabled() bool { return v.Enabled }
 
 // EXPERIMENTAL: A Ledger Line in a payment entry.
 type SchemaPaymentLineInput struct {
@@ -10864,8 +11529,8 @@ func (v *__CreateLedgerInput) GetSchemaKey() string { return v.SchemaKey }
 type __CreatePaymentInput struct {
 	Ik          string           `json:"ik"`
 	LedgerIk    string           `json:"ledgerIk"`
-	EntryType   string           `json:"entryType"`
-	TypeVersion *int             `json:"typeVersion"`
+	PaymentType string           `json:"paymentType"`
+	TypeVersion int              `json:"typeVersion"`
 	Parameters  *json.RawMessage `json:"parameters"`
 }
 
@@ -10875,11 +11540,11 @@ func (v *__CreatePaymentInput) GetIk() string { return v.Ik }
 // GetLedgerIk returns __CreatePaymentInput.LedgerIk, and is useful for accessing the field via an interface.
 func (v *__CreatePaymentInput) GetLedgerIk() string { return v.LedgerIk }
 
-// GetEntryType returns __CreatePaymentInput.EntryType, and is useful for accessing the field via an interface.
-func (v *__CreatePaymentInput) GetEntryType() string { return v.EntryType }
+// GetPaymentType returns __CreatePaymentInput.PaymentType, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetPaymentType() string { return v.PaymentType }
 
 // GetTypeVersion returns __CreatePaymentInput.TypeVersion, and is useful for accessing the field via an interface.
-func (v *__CreatePaymentInput) GetTypeVersion() *int { return v.TypeVersion }
+func (v *__CreatePaymentInput) GetTypeVersion() int { return v.TypeVersion }
 
 // GetParameters returns __CreatePaymentInput.Parameters, and is useful for accessing the field via an interface.
 func (v *__CreatePaymentInput) GetParameters() *json.RawMessage { return v.Parameters }
@@ -11116,6 +11781,18 @@ type __GetLedgerInput struct {
 // GetIk returns __GetLedgerInput.Ik, and is useful for accessing the field via an interface.
 func (v *__GetLedgerInput) GetIk() string { return v.Ik }
 
+// __GetPaymentInput is used internally by genqlient
+type __GetPaymentInput struct {
+	Ik       string `json:"ik"`
+	LedgerIk string `json:"ledgerIk"`
+}
+
+// GetIk returns __GetPaymentInput.Ik, and is useful for accessing the field via an interface.
+func (v *__GetPaymentInput) GetIk() string { return v.Ik }
+
+// GetLedgerIk returns __GetPaymentInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetPaymentInput) GetLedgerIk() string { return v.LedgerIk }
+
 // __GetSchemaInput is used internally by genqlient
 type __GetSchemaInput struct {
 	Key     string `json:"key"`
@@ -11127,6 +11804,22 @@ func (v *__GetSchemaInput) GetKey() string { return v.Key }
 
 // GetVersion returns __GetSchemaInput.Version, and is useful for accessing the field via an interface.
 func (v *__GetSchemaInput) GetVersion() *int { return v.Version }
+
+// __InstantiateLedgerAccountInput is used internally by genqlient
+type __InstantiateLedgerAccountInput struct {
+	Ledger     LedgerMatchInput `json:"ledger"`
+	Path       string           `json:"path"`
+	Parameters *json.RawMessage `json:"parameters"`
+}
+
+// GetLedger returns __InstantiateLedgerAccountInput.Ledger, and is useful for accessing the field via an interface.
+func (v *__InstantiateLedgerAccountInput) GetLedger() LedgerMatchInput { return v.Ledger }
+
+// GetPath returns __InstantiateLedgerAccountInput.Path, and is useful for accessing the field via an interface.
+func (v *__InstantiateLedgerAccountInput) GetPath() string { return v.Path }
+
+// GetParameters returns __InstantiateLedgerAccountInput.Parameters, and is useful for accessing the field via an interface.
+func (v *__InstantiateLedgerAccountInput) GetParameters() *json.RawMessage { return v.Parameters }
 
 // __ListLedgerAccountBalancesInput is used internally by genqlient
 type __ListLedgerAccountBalancesInput struct {
@@ -11305,6 +11998,30 @@ func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetChildBalancesConsiste
 func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetBalancesConsistencyMode() *ReadBalanceConsistencyMode {
 	return v.BalancesConsistencyMode
 }
+
+// __ListPaymentsInput is used internally by genqlient
+type __ListPaymentsInput struct {
+	LedgerIk string             `json:"ledgerIk"`
+	After    *string            `json:"after"`
+	First    *int               `json:"first"`
+	Before   *string            `json:"before"`
+	Filter   *PaymentsFilterSet `json:"filter"`
+}
+
+// GetLedgerIk returns __ListPaymentsInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__ListPaymentsInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetAfter returns __ListPaymentsInput.After, and is useful for accessing the field via an interface.
+func (v *__ListPaymentsInput) GetAfter() *string { return v.After }
+
+// GetFirst returns __ListPaymentsInput.First, and is useful for accessing the field via an interface.
+func (v *__ListPaymentsInput) GetFirst() *int { return v.First }
+
+// GetBefore returns __ListPaymentsInput.Before, and is useful for accessing the field via an interface.
+func (v *__ListPaymentsInput) GetBefore() *string { return v.Before }
+
+// GetFilter returns __ListPaymentsInput.Filter, and is useful for accessing the field via an interface.
+func (v *__ListPaymentsInput) GetFilter() *PaymentsFilterSet { return v.Filter }
 
 // __MigrateLedgerEntryInput is used internally by genqlient
 type __MigrateLedgerEntryInput struct {
@@ -11841,12 +12558,14 @@ func CreateLedger(
 
 // The mutation executed by CreatePayment.
 const CreatePayment_Operation = `
-mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $entryType: SafeString!, $typeVersion: Int, $parameters: JSON) {
-	createPayment(ik: $ik, ledger: {ik:$ledgerIk}, payment: {type:$entryType,typeVersion:$typeVersion,parameters:$parameters}) {
+mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $paymentType: SafeString!, $typeVersion: Int!, $parameters: JSON) {
+	createPayment(ik: $ik, ledger: {ik:$ledgerIk}, payment: {type:$paymentType,typeVersion:$typeVersion,parameters:$parameters}) {
 		__typename
-		... on Payment {
-			clientSecret
-			status
+		... on CreatePaymentResult {
+			payment {
+				clientSecret
+				status
+			}
 		}
 		... on BadRequestError {
 			code
@@ -11867,8 +12586,8 @@ func CreatePayment(
 	client_ graphql.Client,
 	ik string,
 	ledgerIk string,
-	entryType string,
-	typeVersion *int,
+	paymentType string,
+	typeVersion int,
 	parameters *json.RawMessage,
 ) (data_ *CreatePaymentResponse, err_ error) {
 	req_ := &graphql.Request{
@@ -11877,7 +12596,7 @@ func CreatePayment(
 		Variables: &__CreatePaymentInput{
 			Ik:          ik,
 			LedgerIk:    ledgerIk,
-			EntryType:   entryType,
+			PaymentType: paymentType,
 			TypeVersion: typeVersion,
 			Parameters:  parameters,
 		},
@@ -12559,6 +13278,55 @@ func GetLedgerEntry(
 	return data_, err_
 }
 
+// The query executed by GetPayment.
+const GetPayment_Operation = `
+query GetPayment ($ik: SafeString!, $ledgerIk: SafeString!) {
+	payment(payment: {ik:$ik,ledger:{ik:$ledgerIk}}) {
+		id
+		ik
+		amount
+		currency {
+			code
+			name
+			precision
+		}
+		status
+		type
+		typeVersion
+		mode
+		parameters
+		created
+	}
+}
+`
+
+func GetPayment(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ik string,
+	ledgerIk string,
+) (data_ *GetPaymentResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetPayment",
+		Query:  GetPayment_Operation,
+		Variables: &__GetPaymentInput{
+			Ik:       ik,
+			LedgerIk: ledgerIk,
+		},
+	}
+
+	data_ = &GetPaymentResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
 // The query executed by GetSchema.
 const GetSchema_Operation = `
 query GetSchema ($key: SafeString!, $version: Int) {
@@ -12621,6 +13389,63 @@ func GetWorkspace(
 	}
 
 	data_ = &GetWorkspaceResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by InstantiateLedgerAccount.
+const InstantiateLedgerAccount_Operation = `
+mutation InstantiateLedgerAccount ($ledger: LedgerMatchInput!, $path: String!, $parameters: Parameters) {
+	instantiateLedgerAccount(ledger: $ledger, path: $path, parameters: $parameters) {
+		__typename
+		... on InstantiateLedgerAccountResult {
+			ledgerAccount {
+				id
+				path
+				name
+				type
+				created
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func InstantiateLedgerAccount(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ledger LedgerMatchInput,
+	path string,
+	parameters *json.RawMessage,
+) (data_ *InstantiateLedgerAccountResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "InstantiateLedgerAccount",
+		Query:  InstantiateLedgerAccount_Operation,
+		Variables: &__InstantiateLedgerAccountInput{
+			Ledger:     ledger,
+			Path:       path,
+			Parameters: parameters,
+		},
+	}
+
+	data_ = &InstantiateLedgerAccountResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -12975,6 +13800,67 @@ func ListMultiCurrencyLedgerAccountBalances(
 	}
 
 	data_ = &ListMultiCurrencyLedgerAccountBalancesResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by ListPayments.
+const ListPayments_Operation = `
+query ListPayments ($ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $filter: PaymentsFilterSet) {
+	ledger(ledger: {ik:$ledgerIk}) {
+		payments(after: $after, first: $first, before: $before, filter: $filter) {
+			nodes {
+				id
+				ik
+				amount
+				currency {
+					code
+				}
+				status
+				type
+				typeVersion
+				created
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+				hasPreviousPage
+				startCursor
+			}
+		}
+	}
+}
+`
+
+func ListPayments(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ledgerIk string,
+	after *string,
+	first *int,
+	before *string,
+	filter *PaymentsFilterSet,
+) (data_ *ListPaymentsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "ListPayments",
+		Query:  ListPayments_Operation,
+		Variables: &__ListPaymentsInput{
+			LedgerIk: ledgerIk,
+			After:    after,
+			First:    first,
+			Before:   before,
+			Filter:   filter,
+		},
+	}
+
+	data_ = &ListPaymentsResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(

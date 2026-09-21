@@ -94,6 +94,39 @@ mutation DeleteLedger($ledger: LedgerMatchInput!) {
   }
 }
 
+mutation InstantiateLedgerAccount(
+  $ledger: LedgerMatchInput!
+  $path: String!
+  $parameters: Parameters
+) {
+  instantiateLedgerAccount(
+    ledger: $ledger
+    path: $path
+    parameters: $parameters
+  ) {
+    __typename
+    ... on InstantiateLedgerAccountResult {
+      ledgerAccount {
+        id
+        path
+        name
+        type
+        created
+      }
+    }
+    ... on BadRequestError {
+      code
+      message
+      retryable
+    }
+    ... on InternalError {
+      code
+      message
+      retryable
+    }
+  }
+}
+
 mutation AddLedgerEntries($entries: [AddLedgerEntryInput!]!) {
   addLedgerEntries(entries: $entries) {
     __typename
@@ -1220,6 +1253,7 @@ mutation CreateCustomCurrency(
       customCode: $customCode
     }
   ) {
+    __typename
     ... on CreateCustomCurrencyResult {
       customCurrency {
         code
@@ -1245,23 +1279,21 @@ mutation CreateCustomCurrency(
 mutation CreatePayment(
   $ik: SafeString!
   $ledgerIk: SafeString!
-  $entryType: SafeString!
-  $typeVersion: Int
+  $paymentType: SafeString!
+  $typeVersion: Int!
   $parameters: JSON
 ) {
   createPayment(
     ik: $ik
     ledger: { ik: $ledgerIk }
-    payment: {
-      type: $entryType
-      typeVersion: $typeVersion
-      parameters: $parameters
-    }
+    payment: { type: $paymentType, typeVersion: $typeVersion, parameters: $parameters }
   ) {
     __typename
-    ... on Payment {
-      clientSecret
-      status
+    ... on CreatePaymentResult {
+      payment {
+        clientSecret
+        status
+      }
     }
     ... on BadRequestError {
       code
@@ -1272,6 +1304,56 @@ mutation CreatePayment(
       code
       message
       retryable
+    }
+  }
+}
+
+query GetPayment($ik: SafeString!, $ledgerIk: SafeString!) {
+  payment(payment: { ik: $ik, ledger: { ik: $ledgerIk } }) {
+    id
+    ik
+    amount
+    currency {
+      code
+      name
+      precision
+    }
+    status
+    type
+    typeVersion
+    mode
+    parameters
+    created
+  }
+}
+
+query ListPayments(
+  $ledgerIk: SafeString!
+  $after: String
+  $first: Int
+  $before: String
+  $filter: PaymentsFilterSet
+) {
+  ledger(ledger: { ik: $ledgerIk }) {
+    payments(after: $after, first: $first, before: $before, filter: $filter) {
+      nodes {
+        id
+        ik
+        amount
+        currency {
+          code
+        }
+        status
+        type
+        typeVersion
+        created
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
+      }
     }
   }
 }
