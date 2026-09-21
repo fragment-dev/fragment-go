@@ -19,21 +19,21 @@ TYPE_RENAMES = {
 
 
 def format_lines(lines):
-    op_name = None
+    curr_op_name = None
     for line in lines:
         if line.startswith(("mutation ", "query ")):
             parts = line.split(" ")
             parts[1] = parts[1][0].upper() + parts[1][1:]
             line = " ".join(parts)
-            op_name = re.match(r"\w+", parts[1]).group()
+            curr_op_name = re.match(r"\w+", parts[1]).group()
         if re.search(r"\$type\b", line):
-            if op_name not in TYPE_RENAMES:
+            if curr_op_name not in TYPE_RENAMES:
                 raise SystemExit(
-                    f"operation {op_name!r} uses $type but has no entry in "
+                    f"operation {curr_op_name!r} uses $type but has no entry in "
                     "TYPE_RENAMES; add one so the generated Go parameter "
                     "gets a deliberate name ($type itself is a Go keyword)"
                 )
-            line = re.sub(r"\$type\b", TYPE_RENAMES[op_name], line)
+            line = re.sub(r"\$type\b", TYPE_RENAMES[curr_op_name], line)
         yield line
 
 
