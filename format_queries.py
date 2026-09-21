@@ -1,34 +1,48 @@
 """
-Script to format/clean the standard queries in the SDK.
+Formats the standard queries for the Go SDK.
 
-1. Capitalize query names so that they are consistent with Go's public
-   method nomenclature.
-2. Rename protected variable names.
+1. Capitalizes operation names to match Go's public method nomenclature.
+2. Renames the $type variable: `type` is a Go keyword and genqlient refuses
+   to generate from it. Every operation using $type must have an explicit
+   replacement in TYPE_RENAMES; an unmapped operation fails the run so the
+   generated Go parameter is always deliberately named.
 """
-import string
-from typing import List
+import re
 
-def format_line(line: str):
-  is_first_line = line.startswith("mutation") or line.startswith("query")
-  contains_type = line.find("$type: String!") != -1 or line.find("$type: SafeString!") != -1 or line.find("type: $type") != -1
-  if not (is_first_line or contains_type):
-    return line
-  if is_first_line:
-    line_parts = line.split(" ")
-    return " ".join([part[0].upper()+part[1:] if idx == 1 else part for idx,part in enumerate(line_parts)])
-  if contains_type:
-    return line.replace("$type", "$entryType")
+TYPE_RENAMES = {
+    "AddLedgerEntry": "$entryType",
+    "AddLedgerEntryRuntime": "$entryType",
+    "ReconcileTx": "$entryType",
+    "ReconcileTxRuntime": "$entryType",
+    "CreatePayment": "$paymentType",
+}
 
-def format_graphql_queries(raw_lines: [str]):
-  return map(format_line, raw_lines)
+
+def format_lines(lines):
+    op_name = None
+    for line in lines:
+        if line.startswith(("mutation ", "query ")):
+            parts = line.split(" ")
+            parts[1] = parts[1][0].upper() + parts[1][1:]
+            line = " ".join(parts)
+            op_name = re.match(r"\w+", parts[1]).group()
+        if re.search(r"\$type\b", line):
+            if op_name not in TYPE_RENAMES:
+                raise SystemExit(
+                    f"operation {op_name!r} uses $type but has no entry in "
+                    "TYPE_RENAMES; add one so the generated Go parameter "
+                    "gets a deliberate name ($type itself is a Go keyword)"
+                )
+            line = re.sub(r"\$type\b", TYPE_RENAMES[op_name], line)
+        yield line
+
 
 def main():
-  formatted_lines = list()
-  with open('queries/queries.graphql', 'r') as infile:
-    formatted_lines = format_graphql_queries(infile.readlines())
-  with open('queries/queries.graphql', 'w+') as outfile:
-    outfile.write("".join(formatted_lines))
+    with open("queries/queries.graphql", "r") as infile:
+        formatted = list(format_lines(infile.readlines()))
+    with open("queries/queries.graphql", "w+") as outfile:
+        outfile.write("".join(formatted))
+
 
 if __name__ == "__main__":
-  main()
-  
+    main()
