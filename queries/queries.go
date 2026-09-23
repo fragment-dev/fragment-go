@@ -5907,6 +5907,8 @@ type LedgerLinesFilterSet struct {
 	Currency *CurrencyFilter `json:"currency"`
 	// Use this filter to filter Ledger Lines by their `posted` date.
 	Date *DateFilter `json:"date"`
+	// Filter Ledger Lines by the external IDs of their linked transactions. Only supported on `LedgerAccount.lines` for a linked Ledger Account.
+	ExternalTxIds []string `json:"externalTxIds"`
 	// Use this to filter Ledger Lines that were posted to this Ledger Account, using `reverseLedgerEntry`.
 	IsReversal *bool `json:"isReversal"`
 	// Use this to filter Ledger Lines that have been reversed.
@@ -5938,6 +5940,9 @@ func (v *LedgerLinesFilterSet) GetCurrency() *CurrencyFilter { return v.Currency
 
 // GetDate returns LedgerLinesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetDate() *DateFilter { return v.Date }
+
+// GetExternalTxIds returns LedgerLinesFilterSet.ExternalTxIds, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetExternalTxIds() []string { return v.ExternalTxIds }
 
 // GetIsReversal returns LedgerLinesFilterSet.IsReversal, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetIsReversal() *bool { return v.IsReversal }
