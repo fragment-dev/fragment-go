@@ -2101,11 +2101,27 @@ func (v *CreatePaymentCreatePaymentCreatePaymentResult) GetPayment() CreatePayme
 //
 // EXPERIMENTAL: A Payment posted to a Ledger.
 type CreatePaymentCreatePaymentCreatePaymentResultPayment struct {
+	// The ID of this Payment.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment was created with.
+	Ik string `json:"ik"`
 	// The credential the payments SDK presents to `confirmPayment`.
 	ClientSecret string `json:"clientSecret"`
 	// The status of this Payment.
 	Status PaymentStatus `json:"status"`
+	// The amount of this Payment, in whole cents.
+	Amount string `json:"amount"`
+	// The mode of this Payment. Can be `sandbox` or `production`.
+	Mode PaymentMode `json:"mode"`
+	// The currency this Payment is denominated in.
+	Currency CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency `json:"currency"`
 }
+
+// GetId returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Id, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetId() string { return v.Id }
+
+// GetIk returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Ik, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetIk() string { return v.Ik }
 
 // GetClientSecret returns CreatePaymentCreatePaymentCreatePaymentResultPayment.ClientSecret, and is useful for accessing the field via an interface.
 func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetClientSecret() string {
@@ -2115,6 +2131,31 @@ func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetClientSecret()
 // GetStatus returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Status, and is useful for accessing the field via an interface.
 func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetStatus() PaymentStatus {
 	return v.Status
+}
+
+// GetAmount returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Amount, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetAmount() string { return v.Amount }
+
+// GetMode returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Mode, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetMode() PaymentMode { return v.Mode }
+
+// GetCurrency returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Currency, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetCurrency() CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency {
+	return v.Currency
+}
+
+// CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// EXPERIMENTAL: The currency a Payment is denominated in.
+type CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+}
+
+// GetCode returns CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency) GetCode() PaymentCurrencyCode {
+	return v.Code
 }
 
 // CreatePaymentCreatePaymentInternalError includes the requested fields of the GraphQL type InternalError.
@@ -5907,6 +5948,8 @@ type LedgerLinesFilterSet struct {
 	Currency *CurrencyFilter `json:"currency"`
 	// Use this filter to filter Ledger Lines by their `posted` date.
 	Date *DateFilter `json:"date"`
+	// Filter Ledger Lines by the external IDs of their linked transactions. Only supported on `LedgerAccount.lines` for a linked Ledger Account.
+	ExternalTxIds []string `json:"externalTxIds"`
 	// Use this to filter Ledger Lines that were posted to this Ledger Account, using `reverseLedgerEntry`.
 	IsReversal *bool `json:"isReversal"`
 	// Use this to filter Ledger Lines that have been reversed.
@@ -5938,6 +5981,9 @@ func (v *LedgerLinesFilterSet) GetCurrency() *CurrencyFilter { return v.Currency
 
 // GetDate returns LedgerLinesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetDate() *DateFilter { return v.Date }
+
+// GetExternalTxIds returns LedgerLinesFilterSet.ExternalTxIds, and is useful for accessing the field via an interface.
+func (v *LedgerLinesFilterSet) GetExternalTxIds() []string { return v.ExternalTxIds }
 
 // GetIsReversal returns LedgerLinesFilterSet.IsReversal, and is useful for accessing the field via an interface.
 func (v *LedgerLinesFilterSet) GetIsReversal() *bool { return v.IsReversal }
@@ -7724,14 +7770,14 @@ var AllPaymentMode = []PaymentMode{
 type PaymentStatus string
 
 const (
-	PaymentStatusApproved           PaymentStatus = "approved"
+	PaymentStatusAccepted           PaymentStatus = "accepted"
 	PaymentStatusNeedsPaymentMethod PaymentStatus = "needs_payment_method"
 	PaymentStatusProcessing         PaymentStatus = "processing"
 	PaymentStatusSettled            PaymentStatus = "settled"
 )
 
 var AllPaymentStatus = []PaymentStatus{
-	PaymentStatusApproved,
+	PaymentStatusAccepted,
 	PaymentStatusNeedsPaymentMethod,
 	PaymentStatusProcessing,
 	PaymentStatusSettled,
@@ -9502,7 +9548,7 @@ func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
 type SchemaPaymentAccountingEventKey string
 
 const (
-	// The payment was approved and is guaranteed to settle.
+	// The payment was captured and is guaranteed to settle.
 	SchemaPaymentAccountingEventKeyInitiated SchemaPaymentAccountingEventKey = "initiated"
 	// The payment settled.
 	SchemaPaymentAccountingEventKeySettled SchemaPaymentAccountingEventKey = "settled"
@@ -9516,7 +9562,7 @@ var AllSchemaPaymentAccountingEventKey = []SchemaPaymentAccountingEventKey{
 // EXPERIMENTAL: The Ledger Entries a Payment Type posts as a payment moves
 // through its lifecycle, keyed by lifecycle transition.
 type SchemaPaymentAccountingInput struct {
-	// Posted when the payment is approved. Optional.
+	// Posted when the payment is captured. Optional.
 	Initiated *SchemaPaymentEntryInput `json:"initiated"`
 	// Posted when the payment settles. Every Payment Type must define it.
 	Settled SchemaPaymentEntryInput `json:"settled"`
@@ -12563,8 +12609,15 @@ mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $paymentType: 
 		__typename
 		... on CreatePaymentResult {
 			payment {
+				id
+				ik
 				clientSecret
 				status
+				amount
+				mode
+				currency {
+					code
+				}
 			}
 		}
 		... on BadRequestError {
