@@ -2081,7 +2081,7 @@ func __marshalCreatePaymentCreatePaymentCreatePaymentResponse(v *CreatePaymentCr
 // CreatePaymentCreatePaymentCreatePaymentResult includes the requested fields of the GraphQL type CreatePaymentResult.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: The created Payment.
+// The created Payment.
 type CreatePaymentCreatePaymentCreatePaymentResult struct {
 	Typename *string `json:"__typename"`
 	// The Payment that was created.
@@ -2099,7 +2099,7 @@ func (v *CreatePaymentCreatePaymentCreatePaymentResult) GetPayment() CreatePayme
 // CreatePaymentCreatePaymentCreatePaymentResultPayment includes the requested fields of the GraphQL type Payment.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: A Payment posted to a Ledger.
+// A Payment posted to a Ledger.
 type CreatePaymentCreatePaymentCreatePaymentResultPayment struct {
 	// The ID of this Payment.
 	Id string `json:"id"`
@@ -2147,7 +2147,7 @@ func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetCurrency() Cre
 // CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: The currency a Payment is denominated in.
+// The currency a Payment is denominated in.
 type CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency struct {
 	// The currency code.
 	Code PaymentCurrencyCode `json:"code"`
@@ -2186,8 +2186,6 @@ func (v *CreatePaymentCreatePaymentInternalError) GetRetryable() bool { return v
 
 // CreatePaymentResponse is returned by CreatePayment on success.
 type CreatePaymentResponse struct {
-	// EXPERIMENTAL — subject to change.
-	//
 	// Create a Payment.
 	CreatePayment CreatePaymentCreatePaymentCreatePaymentResponse `json:"-"`
 }
@@ -4867,7 +4865,7 @@ func (v *GetLedgerResponse) GetLedger() *GetLedgerLedger { return v.Ledger }
 // GetPaymentPayment includes the requested fields of the GraphQL type Payment.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: A Payment posted to a Ledger.
+// A Payment posted to a Ledger.
 type GetPaymentPayment struct {
 	// The ID of this Payment.
 	Id string `json:"id"`
@@ -4923,7 +4921,7 @@ func (v *GetPaymentPayment) GetCreated() string { return v.Created }
 // GetPaymentPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: The currency a Payment is denominated in.
+// The currency a Payment is denominated in.
 type GetPaymentPaymentCurrency struct {
 	// The currency code.
 	Code PaymentCurrencyCode `json:"code"`
@@ -4944,7 +4942,7 @@ func (v *GetPaymentPaymentCurrency) GetPrecision() int { return v.Precision }
 
 // GetPaymentResponse is returned by GetPayment on success.
 type GetPaymentResponse struct {
-	// EXPERIMENTAL: Get a single Payment by its Idempotency Key.
+	// Get a single Payment by its Idempotency Key.
 	Payment *GetPaymentPayment `json:"payment"`
 }
 
@@ -5859,7 +5857,7 @@ func (v *LedgerEntryMatchInput) GetLedger() *LedgerMatchInput { return v.Ledger 
 type LedgerEntryTagInput struct {
 	// The key of this tag. Can be up to 128 characters long.
 	Key string `json:"key"`
-	// The value associated with this tag's key. Can be up to 128 characters long.
+	// The value associated with this tag's key. Can be up to 256 characters long.
 	Value string `json:"value"`
 }
 
@@ -5919,7 +5917,7 @@ func (v *LedgerLineMatchInput) GetId() string { return v.Id }
 type LedgerLineTagInput struct {
 	// The key of this tag. Can be up to 128 characters long.
 	Key string `json:"key"`
-	// The value associated with this tag's key. Can be up to 128 characters long.
+	// The value associated with this tag's key. Can be up to 256 characters long.
 	Value string `json:"value"`
 }
 
@@ -6975,7 +6973,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 //
 // Ledgers are databases designed for managing money
 type ListPaymentsLedger struct {
-	// EXPERIMENTAL: List the Payments on a Ledger, most recent first.
+	// List the Payments on a Ledger, most recent first.
 	Payments ListPaymentsLedgerPaymentsPaymentsConnection `json:"payments"`
 }
 
@@ -6987,7 +6985,7 @@ func (v *ListPaymentsLedger) GetPayments() ListPaymentsLedgerPaymentsPaymentsCon
 // ListPaymentsLedgerPaymentsPaymentsConnection includes the requested fields of the GraphQL type PaymentsConnection.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: A paginated list of Payments.
+// A paginated list of Payments.
 type ListPaymentsLedgerPaymentsPaymentsConnection struct {
 	// The current page of results.
 	Nodes []ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment `json:"nodes"`
@@ -7008,7 +7006,7 @@ func (v *ListPaymentsLedgerPaymentsPaymentsConnection) GetPageInfo() ListPayment
 // ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment includes the requested fields of the GraphQL type Payment.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: A Payment posted to a Ledger.
+// A Payment posted to a Ledger.
 type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment struct {
 	// The ID of this Payment.
 	Id string `json:"id"`
@@ -7064,7 +7062,7 @@ func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetCreated() 
 // ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
 // The GraphQL type's documentation follows.
 //
-// EXPERIMENTAL: The currency a Payment is denominated in.
+// The currency a Payment is denominated in.
 type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency struct {
 	// The currency code.
 	Code PaymentCurrencyCode `json:"code"`
@@ -7738,8 +7736,6 @@ func (v *MigrateLedgerEntryResponse) __premarshalJSON() (*__premarshalMigrateLed
 	return &retval, nil
 }
 
-// EXPERIMENTAL — subject to change.
-//
 // The currencies a Payment can be denominated in.
 type PaymentCurrencyCode string
 
@@ -7764,8 +7760,6 @@ var AllPaymentMode = []PaymentMode{
 	PaymentModeSandbox,
 }
 
-// EXPERIMENTAL — subject to change.
-//
 // Status of a Payment.
 type PaymentStatus string
 
@@ -7783,7 +7777,7 @@ var AllPaymentStatus = []PaymentStatus{
 	PaymentStatusSettled,
 }
 
-// EXPERIMENTAL: Filters a result set by Payment status.
+// Filters a result set by Payment status.
 type PaymentStatusFilter struct {
 	// Results must have the specified status.
 	EqualTo *PaymentStatus `json:"equalTo"`
@@ -7797,7 +7791,7 @@ func (v *PaymentStatusFilter) GetEqualTo() *PaymentStatus { return v.EqualTo }
 // GetIn returns PaymentStatusFilter.In, and is useful for accessing the field via an interface.
 func (v *PaymentStatusFilter) GetIn() []PaymentStatus { return v.In }
 
-// EXPERIMENTAL: The filters that can be applied to a list of Payments.
+// The filters that can be applied to a list of Payments.
 type PaymentsFilterSet struct {
 	// Use this filter to filter Payments by their `created` timestamp.
 	Created *DateTimeFilter `json:"created"`
@@ -8987,7 +8981,7 @@ type SceneEventInput struct {
 	Entry *SceneEntryInput `json:"entry"`
 	// The type of the Scene Event.
 	EventType SceneEventType `json:"eventType"`
-	// EXPERIMENTAL: The simulated Payment lifecycle transition. Required when eventType is `payment`.
+	// The simulated Payment lifecycle transition. Required when eventType is `payment`.
 	Payment *ScenePaymentEventInput `json:"payment"`
 }
 
@@ -9006,7 +9000,7 @@ type SceneEventType string
 const (
 	// A simulated Ledger Entry.
 	SceneEventTypeEntry SceneEventType = "entry"
-	// EXPERIMENTAL: One lifecycle transition of a simulated Payment.
+	// One lifecycle transition of a simulated Payment.
 	SceneEventTypePayment SceneEventType = "payment"
 )
 
@@ -9020,7 +9014,7 @@ type SceneInput struct {
 	Events []SceneEventInput `json:"events"`
 	// The human-readable name of the Scene.
 	Name string `json:"name"`
-	// EXPERIMENTAL: The simulated Payments the Scene's payment events reference.
+	// The simulated Payments the Scene's payment events reference.
 	Payments []ScenePaymentInput `json:"payments"`
 }
 
@@ -9033,7 +9027,7 @@ func (v *SceneInput) GetName() string { return v.Name }
 // GetPayments returns SceneInput.Payments, and is useful for accessing the field via an interface.
 func (v *SceneInput) GetPayments() []ScenePaymentInput { return v.Payments }
 
-// EXPERIMENTAL: One lifecycle transition of a simulated Payment, posted as a
+// One lifecycle transition of a simulated Payment, posted as a
 // part of a Scene.
 type ScenePaymentEventInput struct {
 	// The lifecycle transition this Scene Event posts.
@@ -9048,7 +9042,7 @@ func (v *ScenePaymentEventInput) GetEvent() SchemaPaymentAccountingEventKey { re
 // GetIk returns ScenePaymentEventInput.Ik, and is useful for accessing the field via an interface.
 func (v *ScenePaymentEventInput) GetIk() string { return v.Ik }
 
-// EXPERIMENTAL: A simulated Payment declared by a Scene. Its lifecycle events
+// A simulated Payment declared by a Scene. Its lifecycle events
 // reference it by `ik`, so one simulated Payment has exactly one set of
 // parameters.
 type ScenePaymentInput struct {
@@ -9141,6 +9135,9 @@ type SchemaExternalAccountMatchInput struct {
 	Id *string `json:"id"`
 	// The FRAGMENT ID of the link
 	LinkId *string `json:"linkId"`
+	// The idempotency key of a CustomLink, expressed with a schema parameter. Requires linkType: CustomLink.
+	// If linkId is also supplied, both must identify the same Link.
+	LinkIk *string `json:"linkIk"`
 	// The type of Link this external account belongs to. Must be one of: IncreaseLink, UnitLink, CustomLink, or StripeLink.
 	LinkType *LinkType `json:"linkType"`
 }
@@ -9153,6 +9150,9 @@ func (v *SchemaExternalAccountMatchInput) GetId() *string { return v.Id }
 
 // GetLinkId returns SchemaExternalAccountMatchInput.LinkId, and is useful for accessing the field via an interface.
 func (v *SchemaExternalAccountMatchInput) GetLinkId() *string { return v.LinkId }
+
+// GetLinkIk returns SchemaExternalAccountMatchInput.LinkIk, and is useful for accessing the field via an interface.
+func (v *SchemaExternalAccountMatchInput) GetLinkIk() *string { return v.LinkIk }
 
 // GetLinkType returns SchemaExternalAccountMatchInput.LinkType, and is useful for accessing the field via an interface.
 func (v *SchemaExternalAccountMatchInput) GetLinkType() *LinkType { return v.LinkType }
@@ -9171,7 +9171,7 @@ type SchemaInput struct {
 	LedgerEntries *SchemaLedgerEntriesInput `json:"ledgerEntries"`
 	// The human-readable name of the Schema.
 	Name *string `json:"name"`
-	// EXPERIMENTAL: The Payment Types to add to the Schema.
+	// The Payment Types to add to the Schema.
 	Payments *SchemaPaymentsInput `json:"payments"`
 	// Any scenes associated with this Schema.
 	Scenes []SceneInput `json:"scenes"`
@@ -9246,7 +9246,7 @@ type SchemaLedgerAccountInput struct {
 	LinkedAccount *SchemaExternalAccountMatchInput `json:"linkedAccount"`
 	// The human-readable name of this Ledger Account.
 	Name *string `json:"name"`
-	// EXPERIMENTAL: Marks this as a Payment Account.
+	// Marks this as a Payment Account.
 	Payment *SchemaPaymentInput `json:"payment"`
 	// The status of this Ledger Account. Defaults to active.
 	Status *SchemaLedgerAccountStatus `json:"status"`
@@ -9544,7 +9544,7 @@ func (v *SchemaMatchInput) GetKey() string { return v.Key }
 // GetVersion returns SchemaMatchInput.Version, and is useful for accessing the field via an interface.
 func (v *SchemaMatchInput) GetVersion() *int { return v.Version }
 
-// EXPERIMENTAL: A lifecycle transition of a Payment.
+// A lifecycle transition of a Payment.
 type SchemaPaymentAccountingEventKey string
 
 const (
@@ -9559,7 +9559,7 @@ var AllSchemaPaymentAccountingEventKey = []SchemaPaymentAccountingEventKey{
 	SchemaPaymentAccountingEventKeySettled,
 }
 
-// EXPERIMENTAL: The Ledger Entries a Payment Type posts as a payment moves
+// The Ledger Entries a Payment Type posts as a payment moves
 // through its lifecycle, keyed by lifecycle transition.
 type SchemaPaymentAccountingInput struct {
 	// Posted when the payment is captured. Optional.
@@ -9574,7 +9574,7 @@ func (v *SchemaPaymentAccountingInput) GetInitiated() *SchemaPaymentEntryInput {
 // GetSettled returns SchemaPaymentAccountingInput.Settled, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentAccountingInput) GetSettled() SchemaPaymentEntryInput { return v.Settled }
 
-// EXPERIMENTAL: The Ledger Entry a Payment Type posts on a payment lifecycle event.
+// The Ledger Entry a Payment Type posts on a payment lifecycle event.
 type SchemaPaymentEntryInput struct {
 	// Human-readable description of the payment entry.
 	Description *string `json:"description"`
@@ -9588,7 +9588,7 @@ func (v *SchemaPaymentEntryInput) GetDescription() *string { return v.Descriptio
 // GetLines returns SchemaPaymentEntryInput.Lines, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentEntryInput) GetLines() []SchemaPaymentLineInput { return v.Lines }
 
-// EXPERIMENTAL: Marks a Ledger Account as a Payment Account.
+// Marks a Ledger Account as a Payment Account.
 type SchemaPaymentInput struct {
 	Enabled bool `json:"enabled"`
 }
@@ -9596,7 +9596,7 @@ type SchemaPaymentInput struct {
 // GetEnabled returns SchemaPaymentInput.Enabled, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentInput) GetEnabled() bool { return v.Enabled }
 
-// EXPERIMENTAL: A Ledger Line in a payment entry.
+// A Ledger Line in a payment entry.
 type SchemaPaymentLineInput struct {
 	// The Ledger Account this line will be posted to.
 	// It supports parameters in its attributes via handlebars syntax.
@@ -9633,7 +9633,7 @@ func (v *SchemaPaymentLineInput) GetKey() string { return v.Key }
 // GetSystem returns SchemaPaymentLineInput.System, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentLineInput) GetSystem() *SchemaSystemLineKind { return v.System }
 
-// EXPERIMENTAL: The payment a Payment Type creates.
+// The payment a Payment Type creates.
 type SchemaPaymentTypeDetailsInput struct {
 	// The amount requested for the payment, as a parameterized expression filled
 	// from createPayment parameters.
@@ -9663,7 +9663,7 @@ var AllSchemaPaymentTypeDirection = []SchemaPaymentTypeDirection{
 	SchemaPaymentTypeDirectionPayout,
 }
 
-// EXPERIMENTAL: A Payment Type in a Schema. All Payment Types defined in a
+// A Payment Type in a Schema. All Payment Types defined in a
 // Schema must have a unique `type` and `typeVersion` pair.
 type SchemaPaymentTypeInput struct {
 	// The Ledger Entries posted as the payment moves through its lifecycle.
@@ -9706,7 +9706,7 @@ var AllSchemaPaymentTypeStatus = []SchemaPaymentTypeStatus{
 	SchemaPaymentTypeStatusActive,
 }
 
-// EXPERIMENTAL: The Payment Types in your Schema.
+// The Payment Types in your Schema.
 type SchemaPaymentsInput struct {
 	// A list of Payment Type definitions.
 	Types []SchemaPaymentTypeInput `json:"types"`
