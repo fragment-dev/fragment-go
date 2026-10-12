@@ -133,6 +133,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"os"
+
+	"github.com/fragment-dev/fragment-go/v4/client"
 	"github.com/fragment-dev/fragment-go/v4/queries"
 )
 
@@ -142,6 +145,19 @@ type UserFundsAccountParameters struct {
 }
 
 func main() {
+	// Create the client as shown in Usage.
+	graphqlClient, err := client.NewClient(&client.GetTokenParams{
+		ClientID:     "Client ID from Dashboard",
+		ClientSecret: "Client Secret from Dashboard",
+		Scope:        "OAuth Scope from Dashboard",
+		AuthURL:      "OAuth URL from Dashboard",
+		ApiURL:       "API URL from Dashboard",
+	})
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	serializedParams, _ := json.Marshal(&UserFundsAccountParameters{
 		FundingAmount: "100",
 		UserID:        "user-1",
@@ -154,20 +170,20 @@ func main() {
 		"some-ik",
 		"your-ledger-ik",
 		"user_funds_account",
+		nil,
 		&posted,
-		json.RawMessage(&serializedParams),
+		json.RawMessage(serializedParams),
 		[]queries.LedgerEntryTagInput{},
 		[]queries.LedgerEntryGroupInput{},
 	)
 
 	switch r := (response.AddLedgerEntry).(type) {
 	case *queries.AddLedgerEntryAddLedgerEntryAddLedgerEntryResult:
-		fmt.Println("Posted Entry with IK: ", v.Entry.Ik)
-		break
+		fmt.Println("Posted Entry with IK: ", r.Entry.Ik)
 	case *queries.AddLedgerEntryAddLedgerEntryInternalError:
+		fmt.Println("Received error: ", r.Message)
 	case *queries.AddLedgerEntryAddLedgerEntryBadRequestError:
-		fmt.Println("Received error: ", v.Message)
-		break
+		fmt.Println("Received error: ", r.Message)
 	}
 }
 ```
