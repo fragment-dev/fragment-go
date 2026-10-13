@@ -2184,6 +2184,553 @@ func (v *CreatePaymentCreatePaymentInternalError) GetMessage() string { return v
 // GetRetryable returns CreatePaymentCreatePaymentInternalError.Retryable, and is useful for accessing the field via an interface.
 func (v *CreatePaymentCreatePaymentInternalError) GetRetryable() bool { return v.Retryable }
 
+// CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse includes the requested fields of the GraphQL interface CreatePaymentMethodSetupResponse.
+//
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse is implemented by the following types:
+// CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult
+// CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError
+type CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse interface {
+	implementsGraphQLInterfaceCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError) implementsGraphQLInterfaceCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse() {
+}
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult) implementsGraphQLInterfaceCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse() {
+}
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError) implementsGraphQLInterfaceCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse() {
+}
+
+func __unmarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse(b []byte, v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "CreatePaymentMethodSetupResult":
+		*v = new(CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing CreatePaymentMethodSetupResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse(v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentMethodSetupCreatePaymentMethodSetupBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult:
+		typename = "CreatePaymentMethodSetupResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse: "%T"`, v)
+	}
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult includes the requested fields of the GraphQL type CreatePaymentMethodSetupResult.
+// The GraphQL type's documentation follows.
+//
+// The created Payment Method Setup.
+type CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult struct {
+	Typename *string `json:"__typename"`
+	// The Payment Method Setup that was created.
+	PaymentMethodSetup CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup `json:"paymentMethodSetup"`
+	// Whether an earlier call with the same `ik` created this Payment Method Setup.
+	IsIkReplay bool `json:"isIkReplay"`
+}
+
+// GetTypename returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetPaymentMethodSetup returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult.PaymentMethodSetup, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult) GetPaymentMethodSetup() CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup {
+	return v.PaymentMethodSetup
+}
+
+// GetIsIkReplay returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult.IsIkReplay, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResult) GetIsIkReplay() bool {
+	return v.IsIkReplay
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup includes the requested fields of the GraphQL type PaymentMethodSetup.
+// The GraphQL type's documentation follows.
+//
+// An attempt to save the Payment Method for a User.
+type CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup struct {
+	// The Fragment ID of this Payment Method Setup.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Method Setup was created with.
+	Ik string `json:"ik"`
+	// The credential to provide to the `<PaymentMethodSetupSession>` component in the Fragment Elements SDK.
+	ClientSecret string `json:"clientSecret"`
+	// The status of this Payment Method Setup.
+	Status PaymentMethodSetupStatus `json:"status"`
+	// Whether this Payment Method Setup was created in sandbox or production.
+	Mode PaymentMode `json:"mode"`
+	// When the Payment Method Setup was created.
+	Created string `json:"created"`
+	// The currency the saved payment method will be charged in.
+	Currency CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency `json:"currency"`
+	// The Payment Method this setup saved, once its status is `saved`.
+	PaymentMethod *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod `json:"-"`
+}
+
+// GetId returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.Id, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetId() string {
+	return v.Id
+}
+
+// GetIk returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.Ik, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetIk() string {
+	return v.Ik
+}
+
+// GetClientSecret returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.ClientSecret, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetClientSecret() string {
+	return v.ClientSecret
+}
+
+// GetStatus returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.Status, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetStatus() PaymentMethodSetupStatus {
+	return v.Status
+}
+
+// GetMode returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.Mode, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetMode() PaymentMode {
+	return v.Mode
+}
+
+// GetCreated returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.Created, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetCreated() string {
+	return v.Created
+}
+
+// GetCurrency returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.Currency, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetCurrency() CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency {
+	return v.Currency
+}
+
+// GetPaymentMethod returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.PaymentMethod, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) GetPaymentMethod() *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod {
+	return v.PaymentMethod
+}
+
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup
+		PaymentMethod json.RawMessage `json:"paymentMethod"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.PaymentMethod
+		src := firstPass.PaymentMethod
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod)
+			err = __unmarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.PaymentMethod: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup struct {
+	Id string `json:"id"`
+
+	Ik string `json:"ik"`
+
+	ClientSecret string `json:"clientSecret"`
+
+	Status PaymentMethodSetupStatus `json:"status"`
+
+	Mode PaymentMode `json:"mode"`
+
+	Created string `json:"created"`
+
+	Currency CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency `json:"currency"`
+
+	PaymentMethod json.RawMessage `json:"paymentMethod"`
+}
+
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup) __premarshalJSON() (*__premarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup, error) {
+	var retval __premarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup
+
+	retval.Id = v.Id
+	retval.Ik = v.Ik
+	retval.ClientSecret = v.ClientSecret
+	retval.Status = v.Status
+	retval.Mode = v.Mode
+	retval.Created = v.Created
+	retval.Currency = v.Currency
+	{
+
+		dst := &retval.PaymentMethod
+		src := v.PaymentMethod
+		if src != nil {
+			var err error
+			*dst, err = __marshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetup.PaymentMethod: %w", err)
+			}
+		}
+	}
+	return &retval, nil
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// The currency a Payment is denominated in.
+type CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+}
+
+// GetCode returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupCurrencyPaymentCurrency) GetCode() PaymentCurrencyCode {
+	return v.Code
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod includes the requested fields of the GraphQL interface PaymentMethod.
+//
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod is implemented by the following types:
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod
+// The GraphQL type's documentation follows.
+//
+// A payment method saved for a User.
+type CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod interface {
+	implementsGraphQLInterfaceCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+	// GetId returns the interface-field "id" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// FRAGMENT ID of the saved Payment Method.
+	GetId() string
+	// GetCreated returns the interface-field "created" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// When the payment method was saved.
+	GetCreated() string
+}
+
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) implementsGraphQLInterfaceCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod() {
+}
+
+func __unmarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod(b []byte, v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "CardPaymentMethod":
+		*v = new(CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing PaymentMethod.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod(v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod:
+		typename = "CardPaymentMethod"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethod: "%T"`, v)
+	}
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod includes the requested fields of the GraphQL type CardPaymentMethod.
+// The GraphQL type's documentation follows.
+//
+// A saved card.
+type CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod struct {
+	Typename *string `json:"__typename"`
+	// FRAGMENT ID of the saved Payment Method.
+	Id string `json:"id"`
+	// When the payment method was saved.
+	Created string `json:"created"`
+	// The card network, for example `visa` or `mastercard`.
+	Brand string `json:"brand"`
+	// The last four digits of the card number.
+	Last4 string `json:"last4"`
+	// The card's expiry month, 1–12.
+	ExpiryMonth int `json:"expiryMonth"`
+	// The card's four-digit expiry year.
+	ExpiryYear int `json:"expiryYear"`
+}
+
+// GetTypename returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetTypename() *string {
+	return v.Typename
+}
+
+// GetId returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.Id, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.Created, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetCreated() string {
+	return v.Created
+}
+
+// GetBrand returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.Brand, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetBrand() string {
+	return v.Brand
+}
+
+// GetLast4 returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.Last4, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetLast4() string {
+	return v.Last4
+}
+
+// GetExpiryMonth returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.ExpiryMonth, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetExpiryMonth() int {
+	return v.ExpiryMonth
+}
+
+// GetExpiryYear returns CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod.ExpiryYear, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResultPaymentMethodSetupPaymentMethodCardPaymentMethod) GetExpiryYear() int {
+	return v.ExpiryYear
+}
+
+// CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError.Code, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError.Message, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupCreatePaymentMethodSetupInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreatePaymentMethodSetupResponse is returned by CreatePaymentMethodSetup on success.
+type CreatePaymentMethodSetupResponse struct {
+	// Save a Payment Method for a User without charging it.
+	CreatePaymentMethodSetup CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse `json:"-"`
+}
+
+// GetCreatePaymentMethodSetup returns CreatePaymentMethodSetupResponse.CreatePaymentMethodSetup, and is useful for accessing the field via an interface.
+func (v *CreatePaymentMethodSetupResponse) GetCreatePaymentMethodSetup() CreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse {
+	return v.CreatePaymentMethodSetup
+}
+
+func (v *CreatePaymentMethodSetupResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreatePaymentMethodSetupResponse
+		CreatePaymentMethodSetup json.RawMessage `json:"createPaymentMethodSetup"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreatePaymentMethodSetupResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.CreatePaymentMethodSetup
+		src := firstPass.CreatePaymentMethodSetup
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreatePaymentMethodSetupResponse.CreatePaymentMethodSetup: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreatePaymentMethodSetupResponse struct {
+	CreatePaymentMethodSetup json.RawMessage `json:"createPaymentMethodSetup"`
+}
+
+func (v *CreatePaymentMethodSetupResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreatePaymentMethodSetupResponse) __premarshalJSON() (*__premarshalCreatePaymentMethodSetupResponse, error) {
+	var retval __premarshalCreatePaymentMethodSetupResponse
+
+	{
+
+		dst := &retval.CreatePaymentMethodSetup
+		src := v.CreatePaymentMethodSetup
+		var err error
+		*dst, err = __marshalCreatePaymentMethodSetupCreatePaymentMethodSetupCreatePaymentMethodSetupResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreatePaymentMethodSetupResponse.CreatePaymentMethodSetup: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 // CreatePaymentResponse is returned by CreatePayment on success.
 type CreatePaymentResponse struct {
 	// Create a Payment.
@@ -3276,6 +3823,245 @@ func (v *DeleteLedgerResponse) __premarshalJSON() (*__premarshalDeleteLedgerResp
 		if err != nil {
 			return nil, fmt.Errorf(
 				"unable to marshal DeleteLedgerResponse.DeleteLedger: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// DeletePaymentMethodDeletePaymentMethodBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type DeletePaymentMethodDeletePaymentMethodBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeletePaymentMethodDeletePaymentMethodBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns DeletePaymentMethodDeletePaymentMethodBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns DeletePaymentMethodDeletePaymentMethodBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeletePaymentMethodDeletePaymentMethodBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse includes the requested fields of the GraphQL interface DeletePaymentMethodResponse.
+//
+// DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse is implemented by the following types:
+// DeletePaymentMethodDeletePaymentMethodBadRequestError
+// DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult
+// DeletePaymentMethodDeletePaymentMethodInternalError
+type DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse interface {
+	implementsGraphQLInterfaceDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *DeletePaymentMethodDeletePaymentMethodBadRequestError) implementsGraphQLInterfaceDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse() {
+}
+func (v *DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult) implementsGraphQLInterfaceDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse() {
+}
+func (v *DeletePaymentMethodDeletePaymentMethodInternalError) implementsGraphQLInterfaceDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse() {
+}
+
+func __unmarshalDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse(b []byte, v *DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(DeletePaymentMethodDeletePaymentMethodBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "DeletePaymentMethodResult":
+		*v = new(DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(DeletePaymentMethodDeletePaymentMethodInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing DeletePaymentMethodResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse(v *DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DeletePaymentMethodDeletePaymentMethodBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeletePaymentMethodDeletePaymentMethodBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult:
+		typename = "DeletePaymentMethodResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeletePaymentMethodDeletePaymentMethodInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeletePaymentMethodDeletePaymentMethodInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse: "%T"`, v)
+	}
+}
+
+// DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult includes the requested fields of the GraphQL type DeletePaymentMethodResult.
+// The GraphQL type's documentation follows.
+//
+// The result of deleting a Payment Method.
+type DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult struct {
+	Typename *string `json:"__typename"`
+	// Whether the Payment Method was deleted.
+	Success bool `json:"success"`
+}
+
+// GetTypename returns DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult.Typename, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetSuccess returns DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult.Success, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResult) GetSuccess() bool {
+	return v.Success
+}
+
+// DeletePaymentMethodDeletePaymentMethodInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type DeletePaymentMethodDeletePaymentMethodInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeletePaymentMethodDeletePaymentMethodInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns DeletePaymentMethodDeletePaymentMethodInternalError.Code, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns DeletePaymentMethodDeletePaymentMethodInternalError.Message, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns DeletePaymentMethodDeletePaymentMethodInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodDeletePaymentMethodInternalError) GetRetryable() bool { return v.Retryable }
+
+// DeletePaymentMethodResponse is returned by DeletePaymentMethod on success.
+type DeletePaymentMethodResponse struct {
+	// Delete a Payment Method saved for a User.
+	DeletePaymentMethod DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse `json:"-"`
+}
+
+// GetDeletePaymentMethod returns DeletePaymentMethodResponse.DeletePaymentMethod, and is useful for accessing the field via an interface.
+func (v *DeletePaymentMethodResponse) GetDeletePaymentMethod() DeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse {
+	return v.DeletePaymentMethod
+}
+
+func (v *DeletePaymentMethodResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DeletePaymentMethodResponse
+		DeletePaymentMethod json.RawMessage `json:"deletePaymentMethod"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DeletePaymentMethodResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.DeletePaymentMethod
+		src := firstPass.DeletePaymentMethod
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal DeletePaymentMethodResponse.DeletePaymentMethod: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDeletePaymentMethodResponse struct {
+	DeletePaymentMethod json.RawMessage `json:"deletePaymentMethod"`
+}
+
+func (v *DeletePaymentMethodResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DeletePaymentMethodResponse) __premarshalJSON() (*__premarshalDeletePaymentMethodResponse, error) {
+	var retval __premarshalDeletePaymentMethodResponse
+
+	{
+
+		dst := &retval.DeletePaymentMethod
+		src := v.DeletePaymentMethod
+		var err error
+		*dst, err = __marshalDeletePaymentMethodDeletePaymentMethodDeletePaymentMethodResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal DeletePaymentMethodResponse.DeletePaymentMethod: %w", err)
 		}
 	}
 	return &retval, nil
@@ -4861,6 +5647,488 @@ type GetLedgerResponse struct {
 
 // GetLedger returns GetLedgerResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *GetLedgerResponse) GetLedger() *GetLedgerLedger { return v.Ledger }
+
+// GetPaymentMethodPaymentMethod includes the requested fields of the GraphQL interface PaymentMethod.
+//
+// GetPaymentMethodPaymentMethod is implemented by the following types:
+// GetPaymentMethodPaymentMethodCardPaymentMethod
+// The GraphQL type's documentation follows.
+//
+// A payment method saved for a User.
+type GetPaymentMethodPaymentMethod interface {
+	implementsGraphQLInterfaceGetPaymentMethodPaymentMethod()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+	// GetId returns the interface-field "id" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// FRAGMENT ID of the saved Payment Method.
+	GetId() string
+	// GetCreated returns the interface-field "created" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// When the payment method was saved.
+	GetCreated() string
+}
+
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) implementsGraphQLInterfaceGetPaymentMethodPaymentMethod() {
+}
+
+func __unmarshalGetPaymentMethodPaymentMethod(b []byte, v *GetPaymentMethodPaymentMethod) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "CardPaymentMethod":
+		*v = new(GetPaymentMethodPaymentMethodCardPaymentMethod)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing PaymentMethod.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for GetPaymentMethodPaymentMethod: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalGetPaymentMethodPaymentMethod(v *GetPaymentMethodPaymentMethod) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *GetPaymentMethodPaymentMethodCardPaymentMethod:
+		typename = "CardPaymentMethod"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetPaymentMethodPaymentMethodCardPaymentMethod
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for GetPaymentMethodPaymentMethod: "%T"`, v)
+	}
+}
+
+// GetPaymentMethodPaymentMethodCardPaymentMethod includes the requested fields of the GraphQL type CardPaymentMethod.
+// The GraphQL type's documentation follows.
+//
+// A saved card.
+type GetPaymentMethodPaymentMethodCardPaymentMethod struct {
+	Typename *string `json:"__typename"`
+	// FRAGMENT ID of the saved Payment Method.
+	Id string `json:"id"`
+	// When the payment method was saved.
+	Created string `json:"created"`
+	// The card network, for example `visa` or `mastercard`.
+	Brand string `json:"brand"`
+	// The last four digits of the card number.
+	Last4 string `json:"last4"`
+	// The card's expiry month, 1–12.
+	ExpiryMonth int `json:"expiryMonth"`
+	// The card's four-digit expiry year.
+	ExpiryYear int `json:"expiryYear"`
+}
+
+// GetTypename returns GetPaymentMethodPaymentMethodCardPaymentMethod.Typename, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetTypename() *string { return v.Typename }
+
+// GetId returns GetPaymentMethodPaymentMethodCardPaymentMethod.Id, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetId() string { return v.Id }
+
+// GetCreated returns GetPaymentMethodPaymentMethodCardPaymentMethod.Created, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetCreated() string { return v.Created }
+
+// GetBrand returns GetPaymentMethodPaymentMethodCardPaymentMethod.Brand, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetBrand() string { return v.Brand }
+
+// GetLast4 returns GetPaymentMethodPaymentMethodCardPaymentMethod.Last4, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetLast4() string { return v.Last4 }
+
+// GetExpiryMonth returns GetPaymentMethodPaymentMethodCardPaymentMethod.ExpiryMonth, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetExpiryMonth() int { return v.ExpiryMonth }
+
+// GetExpiryYear returns GetPaymentMethodPaymentMethodCardPaymentMethod.ExpiryYear, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodPaymentMethodCardPaymentMethod) GetExpiryYear() int { return v.ExpiryYear }
+
+// GetPaymentMethodResponse is returned by GetPaymentMethod on success.
+type GetPaymentMethodResponse struct {
+	// Get a Payment Method saved for a User.
+	PaymentMethod *GetPaymentMethodPaymentMethod `json:"-"`
+}
+
+// GetPaymentMethod returns GetPaymentMethodResponse.PaymentMethod, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodResponse) GetPaymentMethod() *GetPaymentMethodPaymentMethod {
+	return v.PaymentMethod
+}
+
+func (v *GetPaymentMethodResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetPaymentMethodResponse
+		PaymentMethod json.RawMessage `json:"paymentMethod"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetPaymentMethodResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.PaymentMethod
+		src := firstPass.PaymentMethod
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(GetPaymentMethodPaymentMethod)
+			err = __unmarshalGetPaymentMethodPaymentMethod(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal GetPaymentMethodResponse.PaymentMethod: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalGetPaymentMethodResponse struct {
+	PaymentMethod json.RawMessage `json:"paymentMethod"`
+}
+
+func (v *GetPaymentMethodResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetPaymentMethodResponse) __premarshalJSON() (*__premarshalGetPaymentMethodResponse, error) {
+	var retval __premarshalGetPaymentMethodResponse
+
+	{
+
+		dst := &retval.PaymentMethod
+		src := v.PaymentMethod
+		if src != nil {
+			var err error
+			*dst, err = __marshalGetPaymentMethodPaymentMethod(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal GetPaymentMethodResponse.PaymentMethod: %w", err)
+			}
+		}
+	}
+	return &retval, nil
+}
+
+// GetPaymentMethodSetupPaymentMethodSetup includes the requested fields of the GraphQL type PaymentMethodSetup.
+// The GraphQL type's documentation follows.
+//
+// An attempt to save the Payment Method for a User.
+type GetPaymentMethodSetupPaymentMethodSetup struct {
+	// The Fragment ID of this Payment Method Setup.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Method Setup was created with.
+	Ik string `json:"ik"`
+	// The credential to provide to the `<PaymentMethodSetupSession>` component in the Fragment Elements SDK.
+	ClientSecret string `json:"clientSecret"`
+	// The status of this Payment Method Setup.
+	Status PaymentMethodSetupStatus `json:"status"`
+	// Whether this Payment Method Setup was created in sandbox or production.
+	Mode PaymentMode `json:"mode"`
+	// When the Payment Method Setup was created.
+	Created string `json:"created"`
+	// The currency the saved payment method will be charged in.
+	Currency GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency `json:"currency"`
+	// The Payment Method this setup saved, once its status is `saved`.
+	PaymentMethod *GetPaymentMethodSetupPaymentMethodSetupPaymentMethod `json:"-"`
+}
+
+// GetId returns GetPaymentMethodSetupPaymentMethodSetup.Id, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetId() string { return v.Id }
+
+// GetIk returns GetPaymentMethodSetupPaymentMethodSetup.Ik, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetIk() string { return v.Ik }
+
+// GetClientSecret returns GetPaymentMethodSetupPaymentMethodSetup.ClientSecret, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetClientSecret() string { return v.ClientSecret }
+
+// GetStatus returns GetPaymentMethodSetupPaymentMethodSetup.Status, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetStatus() PaymentMethodSetupStatus {
+	return v.Status
+}
+
+// GetMode returns GetPaymentMethodSetupPaymentMethodSetup.Mode, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetMode() PaymentMode { return v.Mode }
+
+// GetCreated returns GetPaymentMethodSetupPaymentMethodSetup.Created, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetCreated() string { return v.Created }
+
+// GetCurrency returns GetPaymentMethodSetupPaymentMethodSetup.Currency, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetCurrency() GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency {
+	return v.Currency
+}
+
+// GetPaymentMethod returns GetPaymentMethodSetupPaymentMethodSetup.PaymentMethod, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetup) GetPaymentMethod() *GetPaymentMethodSetupPaymentMethodSetupPaymentMethod {
+	return v.PaymentMethod
+}
+
+func (v *GetPaymentMethodSetupPaymentMethodSetup) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*GetPaymentMethodSetupPaymentMethodSetup
+		PaymentMethod json.RawMessage `json:"paymentMethod"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.GetPaymentMethodSetupPaymentMethodSetup = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.PaymentMethod
+		src := firstPass.PaymentMethod
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(GetPaymentMethodSetupPaymentMethodSetupPaymentMethod)
+			err = __unmarshalGetPaymentMethodSetupPaymentMethodSetupPaymentMethod(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal GetPaymentMethodSetupPaymentMethodSetup.PaymentMethod: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalGetPaymentMethodSetupPaymentMethodSetup struct {
+	Id string `json:"id"`
+
+	Ik string `json:"ik"`
+
+	ClientSecret string `json:"clientSecret"`
+
+	Status PaymentMethodSetupStatus `json:"status"`
+
+	Mode PaymentMode `json:"mode"`
+
+	Created string `json:"created"`
+
+	Currency GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency `json:"currency"`
+
+	PaymentMethod json.RawMessage `json:"paymentMethod"`
+}
+
+func (v *GetPaymentMethodSetupPaymentMethodSetup) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *GetPaymentMethodSetupPaymentMethodSetup) __premarshalJSON() (*__premarshalGetPaymentMethodSetupPaymentMethodSetup, error) {
+	var retval __premarshalGetPaymentMethodSetupPaymentMethodSetup
+
+	retval.Id = v.Id
+	retval.Ik = v.Ik
+	retval.ClientSecret = v.ClientSecret
+	retval.Status = v.Status
+	retval.Mode = v.Mode
+	retval.Created = v.Created
+	retval.Currency = v.Currency
+	{
+
+		dst := &retval.PaymentMethod
+		src := v.PaymentMethod
+		if src != nil {
+			var err error
+			*dst, err = __marshalGetPaymentMethodSetupPaymentMethodSetupPaymentMethod(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal GetPaymentMethodSetupPaymentMethodSetup.PaymentMethod: %w", err)
+			}
+		}
+	}
+	return &retval, nil
+}
+
+// GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// The currency a Payment is denominated in.
+type GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+}
+
+// GetCode returns GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupCurrencyPaymentCurrency) GetCode() PaymentCurrencyCode {
+	return v.Code
+}
+
+// GetPaymentMethodSetupPaymentMethodSetupPaymentMethod includes the requested fields of the GraphQL interface PaymentMethod.
+//
+// GetPaymentMethodSetupPaymentMethodSetupPaymentMethod is implemented by the following types:
+// GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod
+// The GraphQL type's documentation follows.
+//
+// A payment method saved for a User.
+type GetPaymentMethodSetupPaymentMethodSetupPaymentMethod interface {
+	implementsGraphQLInterfaceGetPaymentMethodSetupPaymentMethodSetupPaymentMethod()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+	// GetId returns the interface-field "id" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// FRAGMENT ID of the saved Payment Method.
+	GetId() string
+	// GetCreated returns the interface-field "created" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// When the payment method was saved.
+	GetCreated() string
+}
+
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) implementsGraphQLInterfaceGetPaymentMethodSetupPaymentMethodSetupPaymentMethod() {
+}
+
+func __unmarshalGetPaymentMethodSetupPaymentMethodSetupPaymentMethod(b []byte, v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethod) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "CardPaymentMethod":
+		*v = new(GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing PaymentMethod.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for GetPaymentMethodSetupPaymentMethodSetupPaymentMethod: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalGetPaymentMethodSetupPaymentMethodSetupPaymentMethod(v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethod) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod:
+		typename = "CardPaymentMethod"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for GetPaymentMethodSetupPaymentMethodSetupPaymentMethod: "%T"`, v)
+	}
+}
+
+// GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod includes the requested fields of the GraphQL type CardPaymentMethod.
+// The GraphQL type's documentation follows.
+//
+// A saved card.
+type GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod struct {
+	Typename *string `json:"__typename"`
+	// FRAGMENT ID of the saved Payment Method.
+	Id string `json:"id"`
+	// When the payment method was saved.
+	Created string `json:"created"`
+	// The card network, for example `visa` or `mastercard`.
+	Brand string `json:"brand"`
+	// The last four digits of the card number.
+	Last4 string `json:"last4"`
+	// The card's expiry month, 1–12.
+	ExpiryMonth int `json:"expiryMonth"`
+	// The card's four-digit expiry year.
+	ExpiryYear int `json:"expiryYear"`
+}
+
+// GetTypename returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.Typename, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetTypename() *string {
+	return v.Typename
+}
+
+// GetId returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.Id, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.Created, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetCreated() string {
+	return v.Created
+}
+
+// GetBrand returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.Brand, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetBrand() string {
+	return v.Brand
+}
+
+// GetLast4 returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.Last4, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetLast4() string {
+	return v.Last4
+}
+
+// GetExpiryMonth returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.ExpiryMonth, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetExpiryMonth() int {
+	return v.ExpiryMonth
+}
+
+// GetExpiryYear returns GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod.ExpiryYear, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupPaymentMethodSetupPaymentMethodCardPaymentMethod) GetExpiryYear() int {
+	return v.ExpiryYear
+}
+
+// GetPaymentMethodSetupResponse is returned by GetPaymentMethodSetup on success.
+type GetPaymentMethodSetupResponse struct {
+	// Get a Payment Method Setup.
+	PaymentMethodSetup GetPaymentMethodSetupPaymentMethodSetup `json:"paymentMethodSetup"`
+}
+
+// GetPaymentMethodSetup returns GetPaymentMethodSetupResponse.PaymentMethodSetup, and is useful for accessing the field via an interface.
+func (v *GetPaymentMethodSetupResponse) GetPaymentMethodSetup() GetPaymentMethodSetupPaymentMethodSetup {
+	return v.PaymentMethodSetup
+}
 
 // GetPaymentPayment includes the requested fields of the GraphQL type Payment.
 // The GraphQL type's documentation follows.
@@ -6968,6 +8236,274 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 	return v.Ledger
 }
 
+// ListPaymentMethodsPaymentMethodsPaymentMethodsConnection includes the requested fields of the GraphQL type PaymentMethodsConnection.
+// The GraphQL type's documentation follows.
+//
+// A list of Payment Methods, all in one page.
+type ListPaymentMethodsPaymentMethodsPaymentMethodsConnection struct {
+	// Every Payment Method in the list.
+	Nodes []ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod `json:"-"`
+	// The pagination info for this list. It never reports another page.
+	PageInfo ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo `json:"pageInfo"`
+}
+
+// GetNodes returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnection) GetNodes() []ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod {
+	return v.Nodes
+}
+
+// GetPageInfo returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnection) GetPageInfo() ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo {
+	return v.PageInfo
+}
+
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnection) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ListPaymentMethodsPaymentMethodsPaymentMethodsConnection
+		Nodes []json.RawMessage `json:"nodes"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ListPaymentMethodsPaymentMethodsPaymentMethodsConnection = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Nodes
+		src := firstPass.Nodes
+		*dst = make(
+			[]ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod,
+			len(src))
+		for i, src := range src {
+			dst := &(*dst)[i]
+			if len(src) != 0 && string(src) != "null" {
+				err = __unmarshalListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod(
+					src, dst)
+				if err != nil {
+					return fmt.Errorf(
+						"unable to unmarshal ListPaymentMethodsPaymentMethodsPaymentMethodsConnection.Nodes: %w", err)
+				}
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalListPaymentMethodsPaymentMethodsPaymentMethodsConnection struct {
+	Nodes []json.RawMessage `json:"nodes"`
+
+	PageInfo ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo `json:"pageInfo"`
+}
+
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnection) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnection) __premarshalJSON() (*__premarshalListPaymentMethodsPaymentMethodsPaymentMethodsConnection, error) {
+	var retval __premarshalListPaymentMethodsPaymentMethodsPaymentMethodsConnection
+
+	{
+
+		dst := &retval.Nodes
+		src := v.Nodes
+		*dst = make(
+			[]json.RawMessage,
+			len(src))
+		for i, src := range src {
+			dst := &(*dst)[i]
+			var err error
+			*dst, err = __marshalListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod(
+				&src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal ListPaymentMethodsPaymentMethodsPaymentMethodsConnection.Nodes: %w", err)
+			}
+		}
+	}
+	retval.PageInfo = v.PageInfo
+	return &retval, nil
+}
+
+// ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod includes the requested fields of the GraphQL type CardPaymentMethod.
+// The GraphQL type's documentation follows.
+//
+// A saved card.
+type ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod struct {
+	Typename *string `json:"__typename"`
+	// FRAGMENT ID of the saved Payment Method.
+	Id string `json:"id"`
+	// When the payment method was saved.
+	Created string `json:"created"`
+	// The card network, for example `visa` or `mastercard`.
+	Brand string `json:"brand"`
+	// The last four digits of the card number.
+	Last4 string `json:"last4"`
+	// The card's expiry month, 1–12.
+	ExpiryMonth int `json:"expiryMonth"`
+	// The card's four-digit expiry year.
+	ExpiryYear int `json:"expiryYear"`
+}
+
+// GetTypename returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.Typename, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetTypename() *string {
+	return v.Typename
+}
+
+// GetId returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.Id, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetId() string {
+	return v.Id
+}
+
+// GetCreated returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.Created, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetCreated() string {
+	return v.Created
+}
+
+// GetBrand returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.Brand, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetBrand() string {
+	return v.Brand
+}
+
+// GetLast4 returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.Last4, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetLast4() string {
+	return v.Last4
+}
+
+// GetExpiryMonth returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.ExpiryMonth, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetExpiryMonth() int {
+	return v.ExpiryMonth
+}
+
+// GetExpiryYear returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod.ExpiryYear, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) GetExpiryYear() int {
+	return v.ExpiryYear
+}
+
+// ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod includes the requested fields of the GraphQL interface PaymentMethod.
+//
+// ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod is implemented by the following types:
+// ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod
+// The GraphQL type's documentation follows.
+//
+// A payment method saved for a User.
+type ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod interface {
+	implementsGraphQLInterfaceListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+	// GetId returns the interface-field "id" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// FRAGMENT ID of the saved Payment Method.
+	GetId() string
+	// GetCreated returns the interface-field "created" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// When the payment method was saved.
+	GetCreated() string
+}
+
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod) implementsGraphQLInterfaceListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod() {
+}
+
+func __unmarshalListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod(b []byte, v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "CardPaymentMethod":
+		*v = new(ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing PaymentMethod.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod(v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod:
+		typename = "CardPaymentMethod"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesCardPaymentMethod
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod: "%T"`, v)
+	}
+}
+
+// ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+type ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor"`
+}
+
+// GetHasNextPage returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
+
+// GetHasPreviousPage returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo) GetHasPreviousPage() bool {
+	return v.HasPreviousPage
+}
+
+// GetStartCursor returns ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo) GetStartCursor() *string {
+	return v.StartCursor
+}
+
+// ListPaymentMethodsResponse is returned by ListPaymentMethods on success.
+type ListPaymentMethodsResponse struct {
+	// List the Payment Methods a User saved in a Ledger, newest first. Deleted Payment Methods are not listed.
+	PaymentMethods ListPaymentMethodsPaymentMethodsPaymentMethodsConnection `json:"paymentMethods"`
+}
+
+// GetPaymentMethods returns ListPaymentMethodsResponse.PaymentMethods, and is useful for accessing the field via an interface.
+func (v *ListPaymentMethodsResponse) GetPaymentMethods() ListPaymentMethodsPaymentMethodsPaymentMethodsConnection {
+	return v.PaymentMethods
+}
+
 // ListPaymentsLedger includes the requested fields of the GraphQL type Ledger.
 // The GraphQL type's documentation follows.
 //
@@ -7745,6 +9281,34 @@ const (
 
 var AllPaymentCurrencyCode = []PaymentCurrencyCode{
 	PaymentCurrencyCodeUsd,
+}
+
+// Specify a saved Payment Method by its ID.
+type PaymentMethodMatchInput struct {
+	// FRAGMENT ID of the Payment Method.
+	Id string `json:"id"`
+}
+
+// GetId returns PaymentMethodMatchInput.Id, and is useful for accessing the field via an interface.
+func (v *PaymentMethodMatchInput) GetId() string { return v.Id }
+
+// Status of a Payment Method Setup.
+type PaymentMethodSetupStatus string
+
+const (
+	PaymentMethodSetupStatusCanceled           PaymentMethodSetupStatus = "canceled"
+	PaymentMethodSetupStatusNeedsAction        PaymentMethodSetupStatus = "needs_action"
+	PaymentMethodSetupStatusNeedsPaymentMethod PaymentMethodSetupStatus = "needs_payment_method"
+	PaymentMethodSetupStatusProcessing         PaymentMethodSetupStatus = "processing"
+	PaymentMethodSetupStatusSaved              PaymentMethodSetupStatus = "saved"
+)
+
+var AllPaymentMethodSetupStatus = []PaymentMethodSetupStatus{
+	PaymentMethodSetupStatusCanceled,
+	PaymentMethodSetupStatusNeedsAction,
+	PaymentMethodSetupStatusNeedsPaymentMethod,
+	PaymentMethodSetupStatusProcessing,
+	PaymentMethodSetupStatusSaved,
 }
 
 // Mode of a Payment.
@@ -10081,6 +11645,297 @@ func (v *StringMatchFilter) GetMatches() *string { return v.Matches }
 // GetMatchesAny returns StringMatchFilter.MatchesAny, and is useful for accessing the field via an interface.
 func (v *StringMatchFilter) GetMatchesAny() []string { return v.MatchesAny }
 
+// SyncCustomAccountsByLinkIkResponse is returned by SyncCustomAccountsByLinkIk on success.
+type SyncCustomAccountsByLinkIkResponse struct {
+	// Once you've created a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
+	SyncCustomAccounts SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse `json:"-"`
+}
+
+// GetSyncCustomAccounts returns SyncCustomAccountsByLinkIkResponse.SyncCustomAccounts, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkResponse) GetSyncCustomAccounts() SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse {
+	return v.SyncCustomAccounts
+}
+
+func (v *SyncCustomAccountsByLinkIkResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*SyncCustomAccountsByLinkIkResponse
+		SyncCustomAccounts json.RawMessage `json:"syncCustomAccounts"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.SyncCustomAccountsByLinkIkResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.SyncCustomAccounts
+		src := firstPass.SyncCustomAccounts
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal SyncCustomAccountsByLinkIkResponse.SyncCustomAccounts: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalSyncCustomAccountsByLinkIkResponse struct {
+	SyncCustomAccounts json.RawMessage `json:"syncCustomAccounts"`
+}
+
+func (v *SyncCustomAccountsByLinkIkResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *SyncCustomAccountsByLinkIkResponse) __premarshalJSON() (*__premarshalSyncCustomAccountsByLinkIkResponse, error) {
+	var retval __premarshalSyncCustomAccountsByLinkIkResponse
+
+	{
+
+		dst := &retval.SyncCustomAccounts
+		src := v.SyncCustomAccounts
+		var err error
+		*dst, err = __marshalSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal SyncCustomAccountsByLinkIkResponse.SyncCustomAccounts: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError.Code, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError.Message, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse includes the requested fields of the GraphQL interface SyncCustomAccountsResponse.
+//
+// SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse is implemented by the following types:
+// SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError
+// SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError
+// SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult
+type SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse interface {
+	implementsGraphQLInterfaceSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError) implementsGraphQLInterfaceSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse() {
+}
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError) implementsGraphQLInterfaceSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse() {
+}
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult) implementsGraphQLInterfaceSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse() {
+}
+
+func __unmarshalSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse(b []byte, v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError)
+		return json.Unmarshal(b, *v)
+	case "SyncCustomAccountsResult":
+		*v = new(SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing SyncCustomAccountsResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalSyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse(v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*SyncCustomAccountsByLinkIkSyncCustomAccountsBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*SyncCustomAccountsByLinkIkSyncCustomAccountsInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult:
+		typename = "SyncCustomAccountsResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse: "%T"`, v)
+	}
+}
+
+// SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult includes the requested fields of the GraphQL type SyncCustomAccountsResult.
+type SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult struct {
+	Typename *string `json:"__typename"`
+	// The external accounts that were synced.
+	Accounts []SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount `json:"accounts"`
+}
+
+// GetTypename returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetAccounts returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult.Accounts, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResult) GetAccounts() []SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount {
+	return v.Accounts
+}
+
+// SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount includes the requested fields of the GraphQL type ExternalAccount.
+type SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount struct {
+	// FRAGMENT ID of External Account
+	Id string `json:"id"`
+	// ID used for the external account
+	ExternalId string `json:"externalId"`
+	Name       string `json:"name"`
+	// The currency of this external account.
+	Currency *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency `json:"currency"`
+}
+
+// GetId returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount.Id, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount) GetId() string {
+	return v.Id
+}
+
+// GetExternalId returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount.ExternalId, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount) GetExternalId() string {
+	return v.ExternalId
+}
+
+// GetName returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount.Name, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount) GetName() string {
+	return v.Name
+}
+
+// GetCurrency returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount.Currency, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccount) GetCurrency() *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency {
+	return v.Currency
+}
+
+// SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency includes the requested fields of the GraphQL type Currency.
+type SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency struct {
+	// The currency code. This is an [enum type](https://fragment.dev/api-reference/api-types#scalars-and-enums-currencycode) .
+	Code CurrencyCode `json:"code"`
+	// The ID for a custom currency. This is specified when creating the custom currency using the [createCustomCurrency](https://fragment.dev/api-reference/api-mutations#createcustomcurrency) mutation.
+	CustomCurrencyId *string `json:"customCurrencyId"`
+}
+
+// GetCode returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency.Code, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency) GetCode() CurrencyCode {
+	return v.Code
+}
+
+// GetCustomCurrencyId returns SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency.CustomCurrencyId, and is useful for accessing the field via an interface.
+func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency) GetCustomCurrencyId() *string {
+	return v.CustomCurrencyId
+}
+
 // SyncCustomAccountsResponse is returned by SyncCustomAccounts on success.
 type SyncCustomAccountsResponse struct {
 	// Once you've created a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
@@ -10360,6 +12215,292 @@ func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExt
 // GetCustomCurrencyId returns SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency.CustomCurrencyId, and is useful for accessing the field via an interface.
 func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExternalAccountCurrency) GetCustomCurrencyId() *string {
 	return v.CustomCurrencyId
+}
+
+// SyncCustomTxsByLinkIkResponse is returned by SyncCustomTxsByLinkIk on success.
+type SyncCustomTxsByLinkIkResponse struct {
+	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
+	SyncCustomTxs SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse `json:"-"`
+}
+
+// GetSyncCustomTxs returns SyncCustomTxsByLinkIkResponse.SyncCustomTxs, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkResponse) GetSyncCustomTxs() SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse {
+	return v.SyncCustomTxs
+}
+
+func (v *SyncCustomTxsByLinkIkResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*SyncCustomTxsByLinkIkResponse
+		SyncCustomTxs json.RawMessage `json:"syncCustomTxs"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.SyncCustomTxsByLinkIkResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.SyncCustomTxs
+		src := firstPass.SyncCustomTxs
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal SyncCustomTxsByLinkIkResponse.SyncCustomTxs: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalSyncCustomTxsByLinkIkResponse struct {
+	SyncCustomTxs json.RawMessage `json:"syncCustomTxs"`
+}
+
+func (v *SyncCustomTxsByLinkIkResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *SyncCustomTxsByLinkIkResponse) __premarshalJSON() (*__premarshalSyncCustomTxsByLinkIkResponse, error) {
+	var retval __premarshalSyncCustomTxsByLinkIkResponse
+
+	{
+
+		dst := &retval.SyncCustomTxs
+		src := v.SyncCustomTxs
+		var err error
+		*dst, err = __marshalSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal SyncCustomTxsByLinkIkResponse.SyncCustomTxs: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// SyncCustomTxsByLinkIkSyncCustomTxsInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type SyncCustomTxsByLinkIkSyncCustomTxsInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns SyncCustomTxsByLinkIkSyncCustomTxsInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns SyncCustomTxsByLinkIkSyncCustomTxsInternalError.Code, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns SyncCustomTxsByLinkIkSyncCustomTxsInternalError.Message, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns SyncCustomTxsByLinkIkSyncCustomTxsInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsInternalError) GetRetryable() bool { return v.Retryable }
+
+// SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse includes the requested fields of the GraphQL interface SyncCustomTxsResponse.
+//
+// SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse is implemented by the following types:
+// SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError
+// SyncCustomTxsByLinkIkSyncCustomTxsInternalError
+// SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult
+type SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse interface {
+	implementsGraphQLInterfaceSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError) implementsGraphQLInterfaceSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse() {
+}
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsInternalError) implementsGraphQLInterfaceSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse() {
+}
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult) implementsGraphQLInterfaceSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse() {
+}
+
+func __unmarshalSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse(b []byte, v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(SyncCustomTxsByLinkIkSyncCustomTxsInternalError)
+		return json.Unmarshal(b, *v)
+	case "SyncCustomTxsResult":
+		*v = new(SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing SyncCustomTxsResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalSyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse(v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*SyncCustomTxsByLinkIkSyncCustomTxsBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *SyncCustomTxsByLinkIkSyncCustomTxsInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*SyncCustomTxsByLinkIkSyncCustomTxsInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult:
+		typename = "SyncCustomTxsResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse: "%T"`, v)
+	}
+}
+
+// SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult includes the requested fields of the GraphQL type SyncCustomTxsResult.
+type SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult struct {
+	Typename *string                                                      `json:"__typename"`
+	Txs      []SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx `json:"txs"`
+}
+
+// GetTypename returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetTxs returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult.Txs, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResult) GetTxs() []SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx {
+	return v.Txs
+}
+
+// SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx includes the requested fields of the GraphQL type Tx.
+type SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx struct {
+	Typename *string `json:"__typename"`
+	// FRAGMENT ID of this transaction's Link
+	LinkId string `json:"linkId"`
+	// FRAGMENT ID of this Tx. If you delete a Tx via deleteCustomTxs, it will not show up in listing queries, but can be resolved by if you lookup by its Fragment ID. If you resync a Tx with the same externalId, its Fragment ID will be different than the previous Tx.
+	Id string `json:"id"`
+	// ID of this transaction in the external system
+	ExternalId string `json:"externalId"`
+	// ID in the external system of this transaction's external account
+	ExternalAccountId string `json:"externalAccountId"`
+	// Integer amount in cents. Positive indicates money entering the external account, negative indicates money leaving
+	Amount string `json:"amount"`
+	// Description at the external account
+	Description string `json:"description"`
+	// ISO-8601 timestamp when this Tx posted to the external account
+	Posted string `json:"posted"`
+}
+
+// GetTypename returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.Typename, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetTypename() *string {
+	return v.Typename
+}
+
+// GetLinkId returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.LinkId, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetLinkId() string {
+	return v.LinkId
+}
+
+// GetId returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.Id, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetId() string { return v.Id }
+
+// GetExternalId returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.ExternalId, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetExternalId() string {
+	return v.ExternalId
+}
+
+// GetExternalAccountId returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.ExternalAccountId, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetExternalAccountId() string {
+	return v.ExternalAccountId
+}
+
+// GetAmount returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.Amount, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetAmount() string {
+	return v.Amount
+}
+
+// GetDescription returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.Description, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetDescription() string {
+	return v.Description
+}
+
+// GetPosted returns SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx.Posted, and is useful for accessing the field via an interface.
+func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetPosted() string {
+	return v.Posted
 }
 
 // SyncCustomTxsResponse is returned by SyncCustomTxs on success.
@@ -11573,11 +13714,12 @@ func (v *__CreateLedgerInput) GetSchemaKey() string { return v.SchemaKey }
 
 // __CreatePaymentInput is used internally by genqlient
 type __CreatePaymentInput struct {
-	Ik          string           `json:"ik"`
-	LedgerIk    string           `json:"ledgerIk"`
-	PaymentType string           `json:"paymentType"`
-	TypeVersion int              `json:"typeVersion"`
-	Parameters  *json.RawMessage `json:"parameters"`
+	Ik            string                   `json:"ik"`
+	LedgerIk      string                   `json:"ledgerIk"`
+	PaymentType   string                   `json:"paymentType"`
+	TypeVersion   int                      `json:"typeVersion"`
+	Parameters    *json.RawMessage         `json:"parameters"`
+	PaymentMethod *PaymentMethodMatchInput `json:"paymentMethod"`
 }
 
 // GetIk returns __CreatePaymentInput.Ik, and is useful for accessing the field via an interface.
@@ -11595,6 +13737,25 @@ func (v *__CreatePaymentInput) GetTypeVersion() int { return v.TypeVersion }
 // GetParameters returns __CreatePaymentInput.Parameters, and is useful for accessing the field via an interface.
 func (v *__CreatePaymentInput) GetParameters() *json.RawMessage { return v.Parameters }
 
+// GetPaymentMethod returns __CreatePaymentInput.PaymentMethod, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentInput) GetPaymentMethod() *PaymentMethodMatchInput { return v.PaymentMethod }
+
+// __CreatePaymentMethodSetupInput is used internally by genqlient
+type __CreatePaymentMethodSetupInput struct {
+	Ik       string `json:"ik"`
+	LedgerIk string `json:"ledgerIk"`
+	Email    string `json:"email"`
+}
+
+// GetIk returns __CreatePaymentMethodSetupInput.Ik, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentMethodSetupInput) GetIk() string { return v.Ik }
+
+// GetLedgerIk returns __CreatePaymentMethodSetupInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentMethodSetupInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetEmail returns __CreatePaymentMethodSetupInput.Email, and is useful for accessing the field via an interface.
+func (v *__CreatePaymentMethodSetupInput) GetEmail() string { return v.Email }
+
 // __DeleteCustomTxsInput is used internally by genqlient
 type __DeleteCustomTxsInput struct {
 	Txs []string `json:"txs"`
@@ -11610,6 +13771,14 @@ type __DeleteLedgerInput struct {
 
 // GetLedger returns __DeleteLedgerInput.Ledger, and is useful for accessing the field via an interface.
 func (v *__DeleteLedgerInput) GetLedger() LedgerMatchInput { return v.Ledger }
+
+// __DeletePaymentMethodInput is used internally by genqlient
+type __DeletePaymentMethodInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeletePaymentMethodInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeletePaymentMethodInput) GetId() string { return v.Id }
 
 // __DeleteSchemaInput is used internally by genqlient
 type __DeleteSchemaInput struct {
@@ -11839,6 +14008,26 @@ func (v *__GetPaymentInput) GetIk() string { return v.Ik }
 // GetLedgerIk returns __GetPaymentInput.LedgerIk, and is useful for accessing the field via an interface.
 func (v *__GetPaymentInput) GetLedgerIk() string { return v.LedgerIk }
 
+// __GetPaymentMethodInput is used internally by genqlient
+type __GetPaymentMethodInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __GetPaymentMethodInput.Id, and is useful for accessing the field via an interface.
+func (v *__GetPaymentMethodInput) GetId() string { return v.Id }
+
+// __GetPaymentMethodSetupInput is used internally by genqlient
+type __GetPaymentMethodSetupInput struct {
+	Ik       string `json:"ik"`
+	LedgerIk string `json:"ledgerIk"`
+}
+
+// GetIk returns __GetPaymentMethodSetupInput.Ik, and is useful for accessing the field via an interface.
+func (v *__GetPaymentMethodSetupInput) GetIk() string { return v.Ik }
+
+// GetLedgerIk returns __GetPaymentMethodSetupInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__GetPaymentMethodSetupInput) GetLedgerIk() string { return v.LedgerIk }
+
 // __GetSchemaInput is used internally by genqlient
 type __GetSchemaInput struct {
 	Key     string `json:"key"`
@@ -12045,6 +14234,34 @@ func (v *__ListMultiCurrencyLedgerAccountBalancesInput) GetBalancesConsistencyMo
 	return v.BalancesConsistencyMode
 }
 
+// __ListPaymentMethodsInput is used internally by genqlient
+type __ListPaymentMethodsInput struct {
+	Email    string  `json:"email"`
+	LedgerIk string  `json:"ledgerIk"`
+	After    *string `json:"after"`
+	First    *int    `json:"first"`
+	Before   *string `json:"before"`
+	Last     *int    `json:"last"`
+}
+
+// GetEmail returns __ListPaymentMethodsInput.Email, and is useful for accessing the field via an interface.
+func (v *__ListPaymentMethodsInput) GetEmail() string { return v.Email }
+
+// GetLedgerIk returns __ListPaymentMethodsInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__ListPaymentMethodsInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetAfter returns __ListPaymentMethodsInput.After, and is useful for accessing the field via an interface.
+func (v *__ListPaymentMethodsInput) GetAfter() *string { return v.After }
+
+// GetFirst returns __ListPaymentMethodsInput.First, and is useful for accessing the field via an interface.
+func (v *__ListPaymentMethodsInput) GetFirst() *int { return v.First }
+
+// GetBefore returns __ListPaymentMethodsInput.Before, and is useful for accessing the field via an interface.
+func (v *__ListPaymentMethodsInput) GetBefore() *string { return v.Before }
+
+// GetLast returns __ListPaymentMethodsInput.Last, and is useful for accessing the field via an interface.
+func (v *__ListPaymentMethodsInput) GetLast() *int { return v.Last }
+
 // __ListPaymentsInput is used internally by genqlient
 type __ListPaymentsInput struct {
 	LedgerIk string             `json:"ledgerIk"`
@@ -12153,6 +14370,18 @@ type __StoreSchemaInput struct {
 // GetSchema returns __StoreSchemaInput.Schema, and is useful for accessing the field via an interface.
 func (v *__StoreSchemaInput) GetSchema() SchemaInput { return v.Schema }
 
+// __SyncCustomAccountsByLinkIkInput is used internally by genqlient
+type __SyncCustomAccountsByLinkIkInput struct {
+	LinkIk   string               `json:"linkIk"`
+	Accounts []CustomAccountInput `json:"accounts"`
+}
+
+// GetLinkIk returns __SyncCustomAccountsByLinkIkInput.LinkIk, and is useful for accessing the field via an interface.
+func (v *__SyncCustomAccountsByLinkIkInput) GetLinkIk() string { return v.LinkIk }
+
+// GetAccounts returns __SyncCustomAccountsByLinkIkInput.Accounts, and is useful for accessing the field via an interface.
+func (v *__SyncCustomAccountsByLinkIkInput) GetAccounts() []CustomAccountInput { return v.Accounts }
+
 // __SyncCustomAccountsInput is used internally by genqlient
 type __SyncCustomAccountsInput struct {
 	LinkId   string               `json:"linkId"`
@@ -12164,6 +14393,18 @@ func (v *__SyncCustomAccountsInput) GetLinkId() string { return v.LinkId }
 
 // GetAccounts returns __SyncCustomAccountsInput.Accounts, and is useful for accessing the field via an interface.
 func (v *__SyncCustomAccountsInput) GetAccounts() []CustomAccountInput { return v.Accounts }
+
+// __SyncCustomTxsByLinkIkInput is used internally by genqlient
+type __SyncCustomTxsByLinkIkInput struct {
+	LinkIk string          `json:"linkIk"`
+	Txs    []CustomTxInput `json:"txs"`
+}
+
+// GetLinkIk returns __SyncCustomTxsByLinkIkInput.LinkIk, and is useful for accessing the field via an interface.
+func (v *__SyncCustomTxsByLinkIkInput) GetLinkIk() string { return v.LinkIk }
+
+// GetTxs returns __SyncCustomTxsByLinkIkInput.Txs, and is useful for accessing the field via an interface.
+func (v *__SyncCustomTxsByLinkIkInput) GetTxs() []CustomTxInput { return v.Txs }
 
 // __SyncCustomTxsInput is used internally by genqlient
 type __SyncCustomTxsInput struct {
@@ -12604,8 +14845,8 @@ func CreateLedger(
 
 // The mutation executed by CreatePayment.
 const CreatePayment_Operation = `
-mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $paymentType: SafeString!, $typeVersion: Int!, $parameters: JSON) {
-	createPayment(ik: $ik, ledger: {ik:$ledgerIk}, payment: {type:$paymentType,typeVersion:$typeVersion,parameters:$parameters}) {
+mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $paymentType: SafeString!, $typeVersion: Int!, $parameters: JSON, $paymentMethod: PaymentMethodMatchInput) {
+	createPayment(ik: $ik, ledger: {ik:$ledgerIk}, payment: {type:$paymentType,typeVersion:$typeVersion,parameters:$parameters,paymentMethod:$paymentMethod}) {
 		__typename
 		... on CreatePaymentResult {
 			payment {
@@ -12642,20 +14883,95 @@ func CreatePayment(
 	paymentType string,
 	typeVersion int,
 	parameters *json.RawMessage,
+	paymentMethod *PaymentMethodMatchInput,
 ) (data_ *CreatePaymentResponse, err_ error) {
 	req_ := &graphql.Request{
 		OpName: "CreatePayment",
 		Query:  CreatePayment_Operation,
 		Variables: &__CreatePaymentInput{
-			Ik:          ik,
-			LedgerIk:    ledgerIk,
-			PaymentType: paymentType,
-			TypeVersion: typeVersion,
-			Parameters:  parameters,
+			Ik:            ik,
+			LedgerIk:      ledgerIk,
+			PaymentType:   paymentType,
+			TypeVersion:   typeVersion,
+			Parameters:    parameters,
+			PaymentMethod: paymentMethod,
 		},
 	}
 
 	data_ = &CreatePaymentResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by CreatePaymentMethodSetup.
+const CreatePaymentMethodSetup_Operation = `
+mutation CreatePaymentMethodSetup ($ik: SafeString!, $ledgerIk: SafeString!, $email: String!) {
+	createPaymentMethodSetup(ik: $ik, ledger: {ik:$ledgerIk}, user: {email:$email}) {
+		__typename
+		... on CreatePaymentMethodSetupResult {
+			paymentMethodSetup {
+				id
+				ik
+				clientSecret
+				status
+				mode
+				created
+				currency {
+					code
+				}
+				paymentMethod {
+					__typename
+					id
+					created
+					... on CardPaymentMethod {
+						brand
+						last4
+						expiryMonth
+						expiryYear
+					}
+				}
+			}
+			isIkReplay
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func CreatePaymentMethodSetup(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ik string,
+	ledgerIk string,
+	email string,
+) (data_ *CreatePaymentMethodSetupResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "CreatePaymentMethodSetup",
+		Query:  CreatePaymentMethodSetup_Operation,
+		Variables: &__CreatePaymentMethodSetupInput{
+			Ik:       ik,
+			LedgerIk: ledgerIk,
+			Email:    email,
+		},
+	}
+
+	data_ = &CreatePaymentMethodSetupResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -12761,6 +15077,53 @@ func DeleteLedger(
 	}
 
 	data_ = &DeleteLedgerResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by DeletePaymentMethod.
+const DeletePaymentMethod_Operation = `
+mutation DeletePaymentMethod ($id: ID!) {
+	deletePaymentMethod(paymentMethod: {id:$id}) {
+		__typename
+		... on DeletePaymentMethodResult {
+			success
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func DeletePaymentMethod(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+) (data_ *DeletePaymentMethodResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "DeletePaymentMethod",
+		Query:  DeletePaymentMethod_Operation,
+		Variables: &__DeletePaymentMethodInput{
+			Id: id,
+		},
+	}
+
+	data_ = &DeletePaymentMethodResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -13380,6 +15743,103 @@ func GetPayment(
 	return data_, err_
 }
 
+// The query executed by GetPaymentMethod.
+const GetPaymentMethod_Operation = `
+query GetPaymentMethod ($id: ID!) {
+	paymentMethod(paymentMethod: {id:$id}) {
+		__typename
+		id
+		created
+		... on CardPaymentMethod {
+			brand
+			last4
+			expiryMonth
+			expiryYear
+		}
+	}
+}
+`
+
+func GetPaymentMethod(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+) (data_ *GetPaymentMethodResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetPaymentMethod",
+		Query:  GetPaymentMethod_Operation,
+		Variables: &__GetPaymentMethodInput{
+			Id: id,
+		},
+	}
+
+	data_ = &GetPaymentMethodResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by GetPaymentMethodSetup.
+const GetPaymentMethodSetup_Operation = `
+query GetPaymentMethodSetup ($ik: SafeString!, $ledgerIk: SafeString!) {
+	paymentMethodSetup(paymentMethodSetup: {ik:$ik,ledger:{ik:$ledgerIk}}) {
+		id
+		ik
+		clientSecret
+		status
+		mode
+		created
+		currency {
+			code
+		}
+		paymentMethod {
+			__typename
+			id
+			created
+			... on CardPaymentMethod {
+				brand
+				last4
+				expiryMonth
+				expiryYear
+			}
+		}
+	}
+}
+`
+
+func GetPaymentMethodSetup(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ik string,
+	ledgerIk string,
+) (data_ *GetPaymentMethodSetupResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "GetPaymentMethodSetup",
+		Query:  GetPaymentMethodSetup_Operation,
+		Variables: &__GetPaymentMethodSetupInput{
+			Ik:       ik,
+			LedgerIk: ledgerIk,
+		},
+	}
+
+	data_ = &GetPaymentMethodSetupResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
 // The query executed by GetSchema.
 const GetSchema_Operation = `
 query GetSchema ($key: SafeString!, $version: Int) {
@@ -13853,6 +16313,66 @@ func ListMultiCurrencyLedgerAccountBalances(
 	}
 
 	data_ = &ListMultiCurrencyLedgerAccountBalancesResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by ListPaymentMethods.
+const ListPaymentMethods_Operation = `
+query ListPaymentMethods ($email: String!, $ledgerIk: SafeString!, $after: String, $first: Int, $before: String, $last: Int) {
+	paymentMethods(filter: {user:{email:{equalTo:$email},ledger:{ik:$ledgerIk}}}, after: $after, first: $first, before: $before, last: $last) {
+		nodes {
+			__typename
+			id
+			created
+			... on CardPaymentMethod {
+				brand
+				last4
+				expiryMonth
+				expiryYear
+			}
+		}
+		pageInfo {
+			hasNextPage
+			endCursor
+			hasPreviousPage
+			startCursor
+		}
+	}
+}
+`
+
+func ListPaymentMethods(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	email string,
+	ledgerIk string,
+	after *string,
+	first *int,
+	before *string,
+	last *int,
+) (data_ *ListPaymentMethodsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "ListPaymentMethods",
+		Query:  ListPaymentMethods_Operation,
+		Variables: &__ListPaymentMethodsInput{
+			Email:    email,
+			LedgerIk: ledgerIk,
+			After:    after,
+			First:    first,
+			Before:   before,
+			Last:     last,
+		},
+	}
+
+	data_ = &ListPaymentMethodsResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -14369,6 +16889,63 @@ func SyncCustomAccounts(
 	return data_, err_
 }
 
+// The mutation executed by SyncCustomAccountsByLinkIk.
+const SyncCustomAccountsByLinkIk_Operation = `
+mutation SyncCustomAccountsByLinkIk ($linkIk: SafeString!, $accounts: [CustomAccountInput!]!) {
+	syncCustomAccounts(link: {ik:$linkIk}, accounts: $accounts) {
+		__typename
+		... on SyncCustomAccountsResult {
+			accounts {
+				id
+				externalId
+				name
+				currency {
+					code
+					customCurrencyId
+				}
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func SyncCustomAccountsByLinkIk(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	linkIk string,
+	accounts []CustomAccountInput,
+) (data_ *SyncCustomAccountsByLinkIkResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "SyncCustomAccountsByLinkIk",
+		Query:  SyncCustomAccountsByLinkIk_Operation,
+		Variables: &__SyncCustomAccountsByLinkIkInput{
+			LinkIk:   linkIk,
+			Accounts: accounts,
+		},
+	}
+
+	data_ = &SyncCustomAccountsByLinkIkResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
 // The mutation executed by SyncCustomTxs.
 const SyncCustomTxs_Operation = `
 mutation SyncCustomTxs ($linkId: ID!, $txs: [CustomTxInput!]!) {
@@ -14416,6 +16993,64 @@ func SyncCustomTxs(
 	}
 
 	data_ = &SyncCustomTxsResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by SyncCustomTxsByLinkIk.
+const SyncCustomTxsByLinkIk_Operation = `
+mutation SyncCustomTxsByLinkIk ($linkIk: SafeString!, $txs: [CustomTxInput!]!) {
+	syncCustomTxs(link: {ik:$linkIk}, txs: $txs) {
+		__typename
+		... on SyncCustomTxsResult {
+			txs {
+				__typename
+				linkId
+				id
+				externalId
+				externalAccountId
+				amount
+				description
+				posted
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func SyncCustomTxsByLinkIk(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	linkIk string,
+	txs []CustomTxInput,
+) (data_ *SyncCustomTxsByLinkIkResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "SyncCustomTxsByLinkIk",
+		Query:  SyncCustomTxsByLinkIk_Operation,
+		Variables: &__SyncCustomTxsByLinkIkInput{
+			LinkIk: linkIk,
+			Txs:    txs,
+		},
+	}
+
+	data_ = &SyncCustomTxsByLinkIkResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
