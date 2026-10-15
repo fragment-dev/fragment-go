@@ -9,16 +9,26 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Khan/genqlient/graphql"
 )
 
+// defaultTokenTimeout bounds a token request, including when the caller's
+// context has no deadline.
+const defaultTokenTimeout = 30 * time.Second
+
 type HttpClient struct {
-	client      *http.Client
-	tokenParams TokenParams
-	token       *Token
-	clock       Clock
+	client       *http.Client
+	tokenParams  TokenParams
+	tokenTimeout time.Duration
+	clock        Clock
+
+	// mu guards token, and is held for the whole of a refresh so that
+	// concurrent requests share one token request rather than each making one.
+	mu    sync.Mutex
+	token *Token
 }
 
 type realClock struct{}
@@ -36,9 +46,10 @@ func newHttpClient(clock Clock, tokenParams TokenParams) *HttpClient {
 		clock = getClock()
 	}
 	return &HttpClient{
-		client:      &http.Client{},
-		clock:       clock,
-		tokenParams: tokenParams,
+		client:       &http.Client{},
+		clock:        clock,
+		tokenParams:  tokenParams,
+		tokenTimeout: defaultTokenTimeout,
 	}
 }
 
@@ -47,10 +58,14 @@ func (c *HttpClient) GetTokenParams() TokenParams {
 }
 
 func (c *HttpClient) GetToken() *Token {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	return c.token
 }
 
 func (c *HttpClient) SetToken(token *Token) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.token = token
 }
 
@@ -72,13 +87,19 @@ func (c *HttpClient) GenerateToken(ctx context.Context) (*Token, error) {
 	data.Set("scope", c.tokenParams.GetScope())
 	data.Set("client_id", c.tokenParams.GetClientID())
 
-	req, err := http.NewRequest(http.MethodPost, c.tokenParams.GetAuthURL(), strings.NewReader(data.Encode()))
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	timeout := c.tokenTimeout
+	if timeout <= 0 {
+		timeout = defaultTokenTimeout
+	}
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.tokenParams.GetAuthURL(), strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
-	}
-
-	if ctx != nil {
-		req = req.WithContext(ctx)
 	}
 
 	req.Header.Add("Authorization", "Basic "+encodedAuthURL)
@@ -121,20 +142,32 @@ func (c *HttpClient) GenerateToken(ctx context.Context) (*Token, error) {
 }
 
 func (c *HttpClient) Do(req *http.Request) (*http.Response, error) {
-	token := c.GetToken()
-	// If we haven't generated a token yet or the token has expired, get a new one.
-	if token == nil || c.clock.Now().After(token.ExpiresAt) {
-		newToken, err := c.GenerateToken(context.Background())
-		if err != nil {
-			return nil, err
-		}
-		c.SetToken(newToken)
-		token = newToken
+	token, err := c.validToken(req.Context())
+	if err != nil {
+		return nil, err
 	}
 
 	req.Header.Set("Authorization", "Bearer "+token.AccessToken)
 	req.Header.Set("X-Fragment-Client", "go-client")
 	return c.client.Do(req)
+}
+
+// validToken returns the cached token, generating a new one if we haven't
+// generated a token yet or the token has expired.
+func (c *HttpClient) validToken(ctx context.Context) (*Token, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	if c.token != nil && !c.clock.Now().After(c.token.ExpiresAt) {
+		return c.token, nil
+	}
+
+	token, err := c.GenerateToken(ctx)
+	if err != nil {
+		return nil, err
+	}
+	c.token = token
+	return token, nil
 }
 
 // NewClient creates a new GraphQL client with the provided authenticated context.
