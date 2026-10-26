@@ -2115,6 +2115,10 @@ type CreatePaymentCreatePaymentCreatePaymentResultPayment struct {
 	Mode PaymentMode `json:"mode"`
 	// The currency this Payment is denominated in.
 	Currency CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency `json:"currency"`
+	// The amount refunded from this Payment, in whole cents.
+	RefundedAmount string `json:"refundedAmount"`
+	// The Payment's refunds, newest first.
+	Refunds CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnection `json:"refunds"`
 }
 
 // GetId returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Id, and is useful for accessing the field via an interface.
@@ -2144,6 +2148,16 @@ func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetCurrency() Cre
 	return v.Currency
 }
 
+// GetRefundedAmount returns CreatePaymentCreatePaymentCreatePaymentResultPayment.RefundedAmount, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetRefundedAmount() string {
+	return v.RefundedAmount
+}
+
+// GetRefunds returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Refunds, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetRefunds() CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnection {
+	return v.Refunds
+}
+
 // CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
 // The GraphQL type's documentation follows.
 //
@@ -2156,6 +2170,62 @@ type CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency struct {
 // GetCode returns CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency.Code, and is useful for accessing the field via an interface.
 func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency) GetCode() PaymentCurrencyCode {
 	return v.Code
+}
+
+// CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnection includes the requested fields of the GraphQL type PaymentRefundsConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Payment refunds.
+type CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnection struct {
+	// The current page of results.
+	Nodes []CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund `json:"nodes"`
+}
+
+// GetNodes returns CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnection) GetNodes() []CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund {
+	return v.Nodes
+}
+
+// CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund includes the requested fields of the GraphQL type PaymentRefund.
+// The GraphQL type's documentation follows.
+//
+// A refund issued against a Payment.
+type CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund struct {
+	// The ID of this Payment Refund.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Refund was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment Refund, in whole cents.
+	Amount string `json:"amount"`
+	// The status of this Payment Refund.
+	Status PaymentRefundStatus `json:"status"`
+	// When this Payment Refund was created.
+	Created string `json:"created"`
+}
+
+// GetId returns CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Id, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetId() string {
+	return v.Id
+}
+
+// GetIk returns CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Ik, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetIk() string {
+	return v.Ik
+}
+
+// GetAmount returns CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Amount, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetAmount() string {
+	return v.Amount
+}
+
+// GetStatus returns CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Status, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetStatus() PaymentRefundStatus {
+	return v.Status
+}
+
+// GetCreated returns CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Created, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetCreated() string {
+	return v.Created
 }
 
 // CreatePaymentCreatePaymentInternalError includes the requested fields of the GraphQL type InternalError.
@@ -6154,6 +6224,10 @@ type GetPaymentPayment struct {
 	// Parameters the Payment was created with.
 	Parameters json.RawMessage `json:"parameters"`
 	Created    string          `json:"created"`
+	// The amount refunded from this Payment, in whole cents.
+	RefundedAmount string `json:"refundedAmount"`
+	// The Payment's refunds, newest first.
+	Refunds GetPaymentPaymentRefundsPaymentRefundsConnection `json:"refunds"`
 }
 
 // GetId returns GetPaymentPayment.Id, and is useful for accessing the field via an interface.
@@ -6186,6 +6260,14 @@ func (v *GetPaymentPayment) GetParameters() json.RawMessage { return v.Parameter
 // GetCreated returns GetPaymentPayment.Created, and is useful for accessing the field via an interface.
 func (v *GetPaymentPayment) GetCreated() string { return v.Created }
 
+// GetRefundedAmount returns GetPaymentPayment.RefundedAmount, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetRefundedAmount() string { return v.RefundedAmount }
+
+// GetRefunds returns GetPaymentPayment.Refunds, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetRefunds() GetPaymentPaymentRefundsPaymentRefundsConnection {
+	return v.Refunds
+}
+
 // GetPaymentPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
 // The GraphQL type's documentation follows.
 //
@@ -6208,9 +6290,65 @@ func (v *GetPaymentPaymentCurrency) GetName() string { return v.Name }
 // GetPrecision returns GetPaymentPaymentCurrency.Precision, and is useful for accessing the field via an interface.
 func (v *GetPaymentPaymentCurrency) GetPrecision() int { return v.Precision }
 
+// GetPaymentPaymentRefundsPaymentRefundsConnection includes the requested fields of the GraphQL type PaymentRefundsConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Payment refunds.
+type GetPaymentPaymentRefundsPaymentRefundsConnection struct {
+	// The current page of results.
+	Nodes []GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund `json:"nodes"`
+}
+
+// GetNodes returns GetPaymentPaymentRefundsPaymentRefundsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentRefundsPaymentRefundsConnection) GetNodes() []GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund {
+	return v.Nodes
+}
+
+// GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund includes the requested fields of the GraphQL type PaymentRefund.
+// The GraphQL type's documentation follows.
+//
+// A refund issued against a Payment.
+type GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund struct {
+	// The ID of this Payment Refund.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Refund was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment Refund, in whole cents.
+	Amount string `json:"amount"`
+	// The status of this Payment Refund.
+	Status PaymentRefundStatus `json:"status"`
+	// When this Payment Refund was created.
+	Created string `json:"created"`
+}
+
+// GetId returns GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Id, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetId() string {
+	return v.Id
+}
+
+// GetIk returns GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Ik, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetIk() string {
+	return v.Ik
+}
+
+// GetAmount returns GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Amount, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetAmount() string {
+	return v.Amount
+}
+
+// GetStatus returns GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Status, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetStatus() PaymentRefundStatus {
+	return v.Status
+}
+
+// GetCreated returns GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Created, and is useful for accessing the field via an interface.
+func (v *GetPaymentPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetCreated() string {
+	return v.Created
+}
+
 // GetPaymentResponse is returned by GetPayment on success.
 type GetPaymentResponse struct {
-	// Get a single Payment by its Idempotency Key.
+	// Get a single Payment by its ID or Idempotency Key in a Ledger.
 	Payment *GetPaymentPayment `json:"payment"`
 }
 
@@ -8559,6 +8697,10 @@ type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment struct {
 	// The version of the Payment Type.
 	TypeVersion int    `json:"typeVersion"`
 	Created     string `json:"created"`
+	// The amount refunded from this Payment, in whole cents.
+	RefundedAmount string `json:"refundedAmount"`
+	// The Payment's refunds, newest first.
+	Refunds ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnection `json:"refunds"`
 }
 
 // GetId returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Id, and is useful for accessing the field via an interface.
@@ -8595,6 +8737,16 @@ func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetCreated() 
 	return v.Created
 }
 
+// GetRefundedAmount returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.RefundedAmount, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetRefundedAmount() string {
+	return v.RefundedAmount
+}
+
+// GetRefunds returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Refunds, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetRefunds() ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnection {
+	return v.Refunds
+}
+
 // ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
 // The GraphQL type's documentation follows.
 //
@@ -8607,6 +8759,62 @@ type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency struct {
 // GetCode returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency.Code, and is useful for accessing the field via an interface.
 func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency) GetCode() PaymentCurrencyCode {
 	return v.Code
+}
+
+// ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnection includes the requested fields of the GraphQL type PaymentRefundsConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Payment refunds.
+type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnection struct {
+	// The current page of results.
+	Nodes []ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund `json:"nodes"`
+}
+
+// GetNodes returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnection) GetNodes() []ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund {
+	return v.Nodes
+}
+
+// ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund includes the requested fields of the GraphQL type PaymentRefund.
+// The GraphQL type's documentation follows.
+//
+// A refund issued against a Payment.
+type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund struct {
+	// The ID of this Payment Refund.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Refund was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment Refund, in whole cents.
+	Amount string `json:"amount"`
+	// The status of this Payment Refund.
+	Status PaymentRefundStatus `json:"status"`
+	// When this Payment Refund was created.
+	Created string `json:"created"`
+}
+
+// GetId returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Id, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetId() string {
+	return v.Id
+}
+
+// GetIk returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Ik, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetIk() string {
+	return v.Ik
+}
+
+// GetAmount returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Amount, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetAmount() string {
+	return v.Amount
+}
+
+// GetStatus returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Status, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetStatus() PaymentRefundStatus {
+	return v.Status
+}
+
+// GetCreated returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Created, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetCreated() string {
+	return v.Created
 }
 
 // ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
@@ -9272,6 +9480,21 @@ func (v *MigrateLedgerEntryResponse) __premarshalJSON() (*__premarshalMigrateLed
 	return &retval, nil
 }
 
+// Status of a Payment attempt.
+type PaymentAttemptStatus string
+
+const (
+	PaymentAttemptStatusFailed     PaymentAttemptStatus = "failed"
+	PaymentAttemptStatusProcessing PaymentAttemptStatus = "processing"
+	PaymentAttemptStatusSucceeded  PaymentAttemptStatus = "succeeded"
+)
+
+var AllPaymentAttemptStatus = []PaymentAttemptStatus{
+	PaymentAttemptStatusFailed,
+	PaymentAttemptStatusProcessing,
+	PaymentAttemptStatusSucceeded,
+}
+
 // The currencies a Payment can be denominated in.
 type PaymentCurrencyCode string
 
@@ -9322,6 +9545,21 @@ const (
 var AllPaymentMode = []PaymentMode{
 	PaymentModeProduction,
 	PaymentModeSandbox,
+}
+
+// Status of a Payment refund.
+type PaymentRefundStatus string
+
+const (
+	PaymentRefundStatusFailed     PaymentRefundStatus = "failed"
+	PaymentRefundStatusProcessing PaymentRefundStatus = "processing"
+	PaymentRefundStatusSettled    PaymentRefundStatus = "settled"
+)
+
+var AllPaymentRefundStatus = []PaymentRefundStatus{
+	PaymentRefundStatusFailed,
+	PaymentRefundStatusProcessing,
+	PaymentRefundStatusSettled,
 }
 
 // Status of a Payment.
@@ -10043,6 +10281,805 @@ func (v *ReconcileTxRuntimeResponse) __premarshalJSON() (*__premarshalReconcileT
 		}
 	}
 	return &retval, nil
+}
+
+// RefundPaymentRefundPaymentBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type RefundPaymentRefundPaymentBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns RefundPaymentRefundPaymentBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns RefundPaymentRefundPaymentBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns RefundPaymentRefundPaymentBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns RefundPaymentRefundPaymentBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// RefundPaymentRefundPaymentInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type RefundPaymentRefundPaymentInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns RefundPaymentRefundPaymentInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns RefundPaymentRefundPaymentInternalError.Code, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns RefundPaymentRefundPaymentInternalError.Message, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns RefundPaymentRefundPaymentInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentInternalError) GetRetryable() bool { return v.Retryable }
+
+// RefundPaymentRefundPaymentRefundPaymentResponse includes the requested fields of the GraphQL interface RefundPaymentResponse.
+//
+// RefundPaymentRefundPaymentRefundPaymentResponse is implemented by the following types:
+// RefundPaymentRefundPaymentBadRequestError
+// RefundPaymentRefundPaymentInternalError
+// RefundPaymentRefundPaymentRefundPaymentResult
+type RefundPaymentRefundPaymentRefundPaymentResponse interface {
+	implementsGraphQLInterfaceRefundPaymentRefundPaymentRefundPaymentResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *RefundPaymentRefundPaymentBadRequestError) implementsGraphQLInterfaceRefundPaymentRefundPaymentRefundPaymentResponse() {
+}
+func (v *RefundPaymentRefundPaymentInternalError) implementsGraphQLInterfaceRefundPaymentRefundPaymentRefundPaymentResponse() {
+}
+func (v *RefundPaymentRefundPaymentRefundPaymentResult) implementsGraphQLInterfaceRefundPaymentRefundPaymentRefundPaymentResponse() {
+}
+
+func __unmarshalRefundPaymentRefundPaymentRefundPaymentResponse(b []byte, v *RefundPaymentRefundPaymentRefundPaymentResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(RefundPaymentRefundPaymentBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(RefundPaymentRefundPaymentInternalError)
+		return json.Unmarshal(b, *v)
+	case "RefundPaymentResult":
+		*v = new(RefundPaymentRefundPaymentRefundPaymentResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing RefundPaymentResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for RefundPaymentRefundPaymentRefundPaymentResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalRefundPaymentRefundPaymentRefundPaymentResponse(v *RefundPaymentRefundPaymentRefundPaymentResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *RefundPaymentRefundPaymentBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*RefundPaymentRefundPaymentBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *RefundPaymentRefundPaymentInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*RefundPaymentRefundPaymentInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *RefundPaymentRefundPaymentRefundPaymentResult:
+		typename = "RefundPaymentResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*RefundPaymentRefundPaymentRefundPaymentResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for RefundPaymentRefundPaymentRefundPaymentResponse: "%T"`, v)
+	}
+}
+
+// RefundPaymentRefundPaymentRefundPaymentResult includes the requested fields of the GraphQL type RefundPaymentResult.
+// The GraphQL type's documentation follows.
+//
+// The created Payment Refund.
+type RefundPaymentRefundPaymentRefundPaymentResult struct {
+	Typename *string `json:"__typename"`
+	// Whether an earlier call with the same `ik` created this Payment Refund.
+	IsIkReplay bool `json:"isIkReplay"`
+	// The created Payment Refund.
+	Refund RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund `json:"refund"`
+	// The Payment after reserving the refund amount.
+	Payment RefundPaymentRefundPaymentRefundPaymentResultPayment `json:"payment"`
+}
+
+// GetTypename returns RefundPaymentRefundPaymentRefundPaymentResult.Typename, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResult) GetTypename() *string { return v.Typename }
+
+// GetIsIkReplay returns RefundPaymentRefundPaymentRefundPaymentResult.IsIkReplay, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResult) GetIsIkReplay() bool { return v.IsIkReplay }
+
+// GetRefund returns RefundPaymentRefundPaymentRefundPaymentResult.Refund, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResult) GetRefund() RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund {
+	return v.Refund
+}
+
+// GetPayment returns RefundPaymentRefundPaymentRefundPaymentResult.Payment, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResult) GetPayment() RefundPaymentRefundPaymentRefundPaymentResultPayment {
+	return v.Payment
+}
+
+// RefundPaymentRefundPaymentRefundPaymentResultPayment includes the requested fields of the GraphQL type Payment.
+// The GraphQL type's documentation follows.
+//
+// A Payment posted to a Ledger.
+type RefundPaymentRefundPaymentRefundPaymentResultPayment struct {
+	// The ID of this Payment.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment was created with.
+	Ik string `json:"ik"`
+	// The status of this Payment.
+	Status PaymentStatus `json:"status"`
+	// The amount of this Payment, in whole cents.
+	Amount string `json:"amount"`
+	// The mode of this Payment. Can be `sandbox` or `production`.
+	Mode PaymentMode `json:"mode"`
+	// The currency this Payment is denominated in.
+	Currency RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency `json:"currency"`
+	// The amount refunded from this Payment, in whole cents.
+	RefundedAmount string `json:"refundedAmount"`
+	// The Payment's refunds, newest first.
+	Refunds RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnection `json:"refunds"`
+}
+
+// GetId returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Id, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetId() string { return v.Id }
+
+// GetIk returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Ik, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetIk() string { return v.Ik }
+
+// GetStatus returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Status, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetStatus() PaymentStatus {
+	return v.Status
+}
+
+// GetAmount returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Amount, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetAmount() string { return v.Amount }
+
+// GetMode returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Mode, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetMode() PaymentMode { return v.Mode }
+
+// GetCurrency returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Currency, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetCurrency() RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency {
+	return v.Currency
+}
+
+// GetRefundedAmount returns RefundPaymentRefundPaymentRefundPaymentResultPayment.RefundedAmount, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetRefundedAmount() string {
+	return v.RefundedAmount
+}
+
+// GetRefunds returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Refunds, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetRefunds() RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnection {
+	return v.Refunds
+}
+
+// RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// The currency a Payment is denominated in.
+type RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+}
+
+// GetCode returns RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency) GetCode() PaymentCurrencyCode {
+	return v.Code
+}
+
+// RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnection includes the requested fields of the GraphQL type PaymentRefundsConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Payment refunds.
+type RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnection struct {
+	// The current page of results.
+	Nodes []RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund `json:"nodes"`
+}
+
+// GetNodes returns RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnection) GetNodes() []RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund {
+	return v.Nodes
+}
+
+// RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund includes the requested fields of the GraphQL type PaymentRefund.
+// The GraphQL type's documentation follows.
+//
+// A refund issued against a Payment.
+type RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund struct {
+	// The ID of this Payment Refund.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Refund was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment Refund, in whole cents.
+	Amount string `json:"amount"`
+	// The status of this Payment Refund.
+	Status PaymentRefundStatus `json:"status"`
+	// When this Payment Refund was created.
+	Created string `json:"created"`
+}
+
+// GetId returns RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Id, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetId() string {
+	return v.Id
+}
+
+// GetIk returns RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Ik, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetIk() string {
+	return v.Ik
+}
+
+// GetAmount returns RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Amount, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetAmount() string {
+	return v.Amount
+}
+
+// GetStatus returns RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Status, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetStatus() PaymentRefundStatus {
+	return v.Status
+}
+
+// GetCreated returns RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Created, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetCreated() string {
+	return v.Created
+}
+
+// RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund includes the requested fields of the GraphQL type PaymentRefund.
+// The GraphQL type's documentation follows.
+//
+// A refund issued against a Payment.
+type RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund struct {
+	// The ID of this Payment Refund.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Refund was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment Refund, in whole cents.
+	Amount string `json:"amount"`
+	// The status of this Payment Refund.
+	Status PaymentRefundStatus `json:"status"`
+	// When this Payment Refund was created.
+	Created string `json:"created"`
+}
+
+// GetId returns RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund.Id, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund) GetId() string {
+	return v.Id
+}
+
+// GetIk returns RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund.Ik, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund) GetIk() string {
+	return v.Ik
+}
+
+// GetAmount returns RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund.Amount, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund) GetAmount() string {
+	return v.Amount
+}
+
+// GetStatus returns RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund.Status, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund) GetStatus() PaymentRefundStatus {
+	return v.Status
+}
+
+// GetCreated returns RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund.Created, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultRefundPaymentRefund) GetCreated() string {
+	return v.Created
+}
+
+// RefundPaymentResponse is returned by RefundPayment on success.
+type RefundPaymentResponse struct {
+	// Refund a settled Payment.
+	RefundPayment RefundPaymentRefundPaymentRefundPaymentResponse `json:"-"`
+}
+
+// GetRefundPayment returns RefundPaymentResponse.RefundPayment, and is useful for accessing the field via an interface.
+func (v *RefundPaymentResponse) GetRefundPayment() RefundPaymentRefundPaymentRefundPaymentResponse {
+	return v.RefundPayment
+}
+
+func (v *RefundPaymentResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*RefundPaymentResponse
+		RefundPayment json.RawMessage `json:"refundPayment"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.RefundPaymentResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.RefundPayment
+		src := firstPass.RefundPayment
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalRefundPaymentRefundPaymentRefundPaymentResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal RefundPaymentResponse.RefundPayment: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalRefundPaymentResponse struct {
+	RefundPayment json.RawMessage `json:"refundPayment"`
+}
+
+func (v *RefundPaymentResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *RefundPaymentResponse) __premarshalJSON() (*__premarshalRefundPaymentResponse, error) {
+	var retval __premarshalRefundPaymentResponse
+
+	{
+
+		dst := &retval.RefundPayment
+		src := v.RefundPayment
+		var err error
+		*dst, err = __marshalRefundPaymentRefundPaymentRefundPaymentResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal RefundPaymentResponse.RefundPayment: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// RetryPaymentResponse is returned by RetryPayment on success.
+type RetryPaymentResponse struct {
+	// Retry a Payment on a saved Payment Method after its latest attempt was declined, rejected or canceled.
+	RetryPayment RetryPaymentRetryPaymentRetryPaymentResponse `json:"-"`
+}
+
+// GetRetryPayment returns RetryPaymentResponse.RetryPayment, and is useful for accessing the field via an interface.
+func (v *RetryPaymentResponse) GetRetryPayment() RetryPaymentRetryPaymentRetryPaymentResponse {
+	return v.RetryPayment
+}
+
+func (v *RetryPaymentResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*RetryPaymentResponse
+		RetryPayment json.RawMessage `json:"retryPayment"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.RetryPaymentResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.RetryPayment
+		src := firstPass.RetryPayment
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalRetryPaymentRetryPaymentRetryPaymentResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal RetryPaymentResponse.RetryPayment: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalRetryPaymentResponse struct {
+	RetryPayment json.RawMessage `json:"retryPayment"`
+}
+
+func (v *RetryPaymentResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *RetryPaymentResponse) __premarshalJSON() (*__premarshalRetryPaymentResponse, error) {
+	var retval __premarshalRetryPaymentResponse
+
+	{
+
+		dst := &retval.RetryPayment
+		src := v.RetryPayment
+		var err error
+		*dst, err = __marshalRetryPaymentRetryPaymentRetryPaymentResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal RetryPaymentResponse.RetryPayment: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// RetryPaymentRetryPaymentBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type RetryPaymentRetryPaymentBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns RetryPaymentRetryPaymentBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentBadRequestError) GetTypename() *string { return v.Typename }
+
+// GetCode returns RetryPaymentRetryPaymentBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentBadRequestError) GetCode() string { return v.Code }
+
+// GetMessage returns RetryPaymentRetryPaymentBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentBadRequestError) GetMessage() string { return v.Message }
+
+// GetRetryable returns RetryPaymentRetryPaymentBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentBadRequestError) GetRetryable() bool { return v.Retryable }
+
+// RetryPaymentRetryPaymentInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type RetryPaymentRetryPaymentInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns RetryPaymentRetryPaymentInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentInternalError) GetTypename() *string { return v.Typename }
+
+// GetCode returns RetryPaymentRetryPaymentInternalError.Code, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentInternalError) GetCode() string { return v.Code }
+
+// GetMessage returns RetryPaymentRetryPaymentInternalError.Message, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentInternalError) GetMessage() string { return v.Message }
+
+// GetRetryable returns RetryPaymentRetryPaymentInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentInternalError) GetRetryable() bool { return v.Retryable }
+
+// RetryPaymentRetryPaymentRetryPaymentResponse includes the requested fields of the GraphQL interface RetryPaymentResponse.
+//
+// RetryPaymentRetryPaymentRetryPaymentResponse is implemented by the following types:
+// RetryPaymentRetryPaymentBadRequestError
+// RetryPaymentRetryPaymentInternalError
+// RetryPaymentRetryPaymentRetryPaymentResult
+type RetryPaymentRetryPaymentRetryPaymentResponse interface {
+	implementsGraphQLInterfaceRetryPaymentRetryPaymentRetryPaymentResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *RetryPaymentRetryPaymentBadRequestError) implementsGraphQLInterfaceRetryPaymentRetryPaymentRetryPaymentResponse() {
+}
+func (v *RetryPaymentRetryPaymentInternalError) implementsGraphQLInterfaceRetryPaymentRetryPaymentRetryPaymentResponse() {
+}
+func (v *RetryPaymentRetryPaymentRetryPaymentResult) implementsGraphQLInterfaceRetryPaymentRetryPaymentRetryPaymentResponse() {
+}
+
+func __unmarshalRetryPaymentRetryPaymentRetryPaymentResponse(b []byte, v *RetryPaymentRetryPaymentRetryPaymentResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(RetryPaymentRetryPaymentBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(RetryPaymentRetryPaymentInternalError)
+		return json.Unmarshal(b, *v)
+	case "RetryPaymentResult":
+		*v = new(RetryPaymentRetryPaymentRetryPaymentResult)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing RetryPaymentResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for RetryPaymentRetryPaymentRetryPaymentResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalRetryPaymentRetryPaymentRetryPaymentResponse(v *RetryPaymentRetryPaymentRetryPaymentResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *RetryPaymentRetryPaymentBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*RetryPaymentRetryPaymentBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *RetryPaymentRetryPaymentInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*RetryPaymentRetryPaymentInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case *RetryPaymentRetryPaymentRetryPaymentResult:
+		typename = "RetryPaymentResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*RetryPaymentRetryPaymentRetryPaymentResult
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for RetryPaymentRetryPaymentRetryPaymentResponse: "%T"`, v)
+	}
+}
+
+// RetryPaymentRetryPaymentRetryPaymentResult includes the requested fields of the GraphQL type RetryPaymentResult.
+// The GraphQL type's documentation follows.
+//
+// The Payment and the attempt the Retry started.
+type RetryPaymentRetryPaymentRetryPaymentResult struct {
+	Typename *string `json:"__typename"`
+	// Whether an earlier call with the same `attemptIk` started this attempt.
+	IsIkReplay bool `json:"isIkReplay"`
+	// The attempt this `attemptIk` started. Its outcome events name it.
+	Attempt RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt `json:"attempt"`
+	// The retried Payment.
+	Payment RetryPaymentRetryPaymentRetryPaymentResultPayment `json:"payment"`
+}
+
+// GetTypename returns RetryPaymentRetryPaymentRetryPaymentResult.Typename, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResult) GetTypename() *string { return v.Typename }
+
+// GetIsIkReplay returns RetryPaymentRetryPaymentRetryPaymentResult.IsIkReplay, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResult) GetIsIkReplay() bool { return v.IsIkReplay }
+
+// GetAttempt returns RetryPaymentRetryPaymentRetryPaymentResult.Attempt, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResult) GetAttempt() RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt {
+	return v.Attempt
+}
+
+// GetPayment returns RetryPaymentRetryPaymentRetryPaymentResult.Payment, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResult) GetPayment() RetryPaymentRetryPaymentRetryPaymentResultPayment {
+	return v.Payment
+}
+
+// RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt includes the requested fields of the GraphQL type SavedPaymentMethodPaymentAttempt.
+// The GraphQL type's documentation follows.
+//
+// An attempt that charged a saved Payment Method.
+type RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt struct {
+	// The ID of this Payment attempt.
+	Id string `json:"id"`
+	// The status of this Payment attempt.
+	Status PaymentAttemptStatus `json:"status"`
+}
+
+// GetId returns RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt.Id, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt) GetId() string {
+	return v.Id
+}
+
+// GetStatus returns RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt.Status, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultAttemptSavedPaymentMethodPaymentAttempt) GetStatus() PaymentAttemptStatus {
+	return v.Status
+}
+
+// RetryPaymentRetryPaymentRetryPaymentResultPayment includes the requested fields of the GraphQL type Payment.
+// The GraphQL type's documentation follows.
+//
+// A Payment posted to a Ledger.
+type RetryPaymentRetryPaymentRetryPaymentResultPayment struct {
+	// The ID of this Payment.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment was created with.
+	Ik string `json:"ik"`
+	// The status of this Payment.
+	Status PaymentStatus `json:"status"`
+	// The amount of this Payment, in whole cents.
+	Amount string `json:"amount"`
+	// The mode of this Payment. Can be `sandbox` or `production`.
+	Mode PaymentMode `json:"mode"`
+	// The currency this Payment is denominated in.
+	Currency RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency `json:"currency"`
+	// The amount refunded from this Payment, in whole cents.
+	RefundedAmount string `json:"refundedAmount"`
+	// The Payment's refunds, newest first.
+	Refunds RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnection `json:"refunds"`
+}
+
+// GetId returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Id, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetId() string { return v.Id }
+
+// GetIk returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Ik, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetIk() string { return v.Ik }
+
+// GetStatus returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Status, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetStatus() PaymentStatus {
+	return v.Status
+}
+
+// GetAmount returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Amount, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetAmount() string { return v.Amount }
+
+// GetMode returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Mode, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetMode() PaymentMode { return v.Mode }
+
+// GetCurrency returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Currency, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetCurrency() RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency {
+	return v.Currency
+}
+
+// GetRefundedAmount returns RetryPaymentRetryPaymentRetryPaymentResultPayment.RefundedAmount, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetRefundedAmount() string {
+	return v.RefundedAmount
+}
+
+// GetRefunds returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Refunds, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetRefunds() RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnection {
+	return v.Refunds
+}
+
+// RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency includes the requested fields of the GraphQL type PaymentCurrency.
+// The GraphQL type's documentation follows.
+//
+// The currency a Payment is denominated in.
+type RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency struct {
+	// The currency code.
+	Code PaymentCurrencyCode `json:"code"`
+}
+
+// GetCode returns RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency.Code, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency) GetCode() PaymentCurrencyCode {
+	return v.Code
+}
+
+// RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnection includes the requested fields of the GraphQL type PaymentRefundsConnection.
+// The GraphQL type's documentation follows.
+//
+// A paginated list of Payment refunds.
+type RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnection struct {
+	// The current page of results.
+	Nodes []RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund `json:"nodes"`
+}
+
+// GetNodes returns RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnection) GetNodes() []RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund {
+	return v.Nodes
+}
+
+// RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund includes the requested fields of the GraphQL type PaymentRefund.
+// The GraphQL type's documentation follows.
+//
+// A refund issued against a Payment.
+type RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund struct {
+	// The ID of this Payment Refund.
+	Id string `json:"id"`
+	// The [Idempotency Key](https://fragment.dev/api-reference/api-overview#idempotency) the Payment Refund was created with.
+	Ik string `json:"ik"`
+	// The amount of this Payment Refund, in whole cents.
+	Amount string `json:"amount"`
+	// The status of this Payment Refund.
+	Status PaymentRefundStatus `json:"status"`
+	// When this Payment Refund was created.
+	Created string `json:"created"`
+}
+
+// GetId returns RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Id, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetId() string {
+	return v.Id
+}
+
+// GetIk returns RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Ik, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetIk() string {
+	return v.Ik
+}
+
+// GetAmount returns RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Amount, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetAmount() string {
+	return v.Amount
+}
+
+// GetStatus returns RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Status, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetStatus() PaymentRefundStatus {
+	return v.Status
+}
+
+// GetCreated returns RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund.Created, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPaymentRefundsPaymentRefundsConnectionNodesPaymentRefund) GetCreated() string {
+	return v.Created
 }
 
 // ReverseLedgerEntryResponse is returned by ReverseLedgerEntry on success.
@@ -11114,12 +12151,18 @@ type SchemaPaymentAccountingEventKey string
 const (
 	// The payment was captured and is guaranteed to settle.
 	SchemaPaymentAccountingEventKeyInitiated SchemaPaymentAccountingEventKey = "initiated"
+	// EXPERIMENTAL: An initiated refund failed.
+	SchemaPaymentAccountingEventKeyRefundFailed SchemaPaymentAccountingEventKey = "refund_failed"
+	// EXPERIMENTAL: A refund of the settled payment is initiated.
+	SchemaPaymentAccountingEventKeyRefundInitiated SchemaPaymentAccountingEventKey = "refund_initiated"
 	// The payment settled.
 	SchemaPaymentAccountingEventKeySettled SchemaPaymentAccountingEventKey = "settled"
 )
 
 var AllSchemaPaymentAccountingEventKey = []SchemaPaymentAccountingEventKey{
 	SchemaPaymentAccountingEventKeyInitiated,
+	SchemaPaymentAccountingEventKeyRefundFailed,
+	SchemaPaymentAccountingEventKeyRefundInitiated,
 	SchemaPaymentAccountingEventKeySettled,
 }
 
@@ -11128,12 +12171,26 @@ var AllSchemaPaymentAccountingEventKey = []SchemaPaymentAccountingEventKey{
 type SchemaPaymentAccountingInput struct {
 	// Posted when the payment is captured. Optional.
 	Initiated *SchemaPaymentEntryInput `json:"initiated"`
+	// EXPERIMENTAL: Posted when an initiated refund fails. Optional.
+	Refund_failed *SchemaPaymentEntryInput `json:"refund_failed"`
+	// EXPERIMENTAL: Posted when a refund of the settled payment is initiated. Optional.
+	Refund_initiated *SchemaPaymentEntryInput `json:"refund_initiated"`
 	// Posted when the payment settles. Every Payment Type must define it.
 	Settled SchemaPaymentEntryInput `json:"settled"`
 }
 
 // GetInitiated returns SchemaPaymentAccountingInput.Initiated, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentAccountingInput) GetInitiated() *SchemaPaymentEntryInput { return v.Initiated }
+
+// GetRefund_failed returns SchemaPaymentAccountingInput.Refund_failed, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetRefund_failed() *SchemaPaymentEntryInput {
+	return v.Refund_failed
+}
+
+// GetRefund_initiated returns SchemaPaymentAccountingInput.Refund_initiated, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetRefund_initiated() *SchemaPaymentEntryInput {
+	return v.Refund_initiated
+}
 
 // GetSettled returns SchemaPaymentAccountingInput.Settled, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentAccountingInput) GetSettled() SchemaPaymentEntryInput { return v.Settled }
@@ -11296,12 +12353,18 @@ type SchemaSystemLineKind string
 const (
 	// The line carrying the Fragment fee amount, posted to the Payment Account.
 	SchemaSystemLineKindPaymentFeeLine SchemaSystemLineKind = "payment_fee_line"
+	// The line removing the refund amount from the Payment Account when a Refund is initiated.
+	SchemaSystemLineKindPaymentRefundLine SchemaSystemLineKind = "payment_refund_line"
+	// The line restoring the refund amount to the Payment Account when a Refund fails.
+	SchemaSystemLineKindPaymentRefundReversalLine SchemaSystemLineKind = "payment_refund_reversal_line"
 	// The line carrying the settled payment amount, posted to the Payment Account.
 	SchemaSystemLineKindPaymentSettlementLine SchemaSystemLineKind = "payment_settlement_line"
 )
 
 var AllSchemaSystemLineKind = []SchemaSystemLineKind{
 	SchemaSystemLineKindPaymentFeeLine,
+	SchemaSystemLineKindPaymentRefundLine,
+	SchemaSystemLineKindPaymentRefundReversalLine,
 	SchemaSystemLineKindPaymentSettlementLine,
 }
 
@@ -14354,6 +15417,50 @@ func (v *__ReconcileTxRuntimeInput) GetTags() []LedgerEntryTagInput { return v.T
 // GetGroups returns __ReconcileTxRuntimeInput.Groups, and is useful for accessing the field via an interface.
 func (v *__ReconcileTxRuntimeInput) GetGroups() []LedgerEntryGroupInput { return v.Groups }
 
+// __RefundPaymentInput is used internally by genqlient
+type __RefundPaymentInput struct {
+	Ik         string           `json:"ik"`
+	PaymentIk  string           `json:"paymentIk"`
+	LedgerIk   string           `json:"ledgerIk"`
+	Amount     string           `json:"amount"`
+	Parameters *json.RawMessage `json:"parameters"`
+}
+
+// GetIk returns __RefundPaymentInput.Ik, and is useful for accessing the field via an interface.
+func (v *__RefundPaymentInput) GetIk() string { return v.Ik }
+
+// GetPaymentIk returns __RefundPaymentInput.PaymentIk, and is useful for accessing the field via an interface.
+func (v *__RefundPaymentInput) GetPaymentIk() string { return v.PaymentIk }
+
+// GetLedgerIk returns __RefundPaymentInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__RefundPaymentInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetAmount returns __RefundPaymentInput.Amount, and is useful for accessing the field via an interface.
+func (v *__RefundPaymentInput) GetAmount() string { return v.Amount }
+
+// GetParameters returns __RefundPaymentInput.Parameters, and is useful for accessing the field via an interface.
+func (v *__RefundPaymentInput) GetParameters() *json.RawMessage { return v.Parameters }
+
+// __RetryPaymentInput is used internally by genqlient
+type __RetryPaymentInput struct {
+	AttemptIk     string                   `json:"attemptIk"`
+	PaymentIk     string                   `json:"paymentIk"`
+	LedgerIk      string                   `json:"ledgerIk"`
+	PaymentMethod *PaymentMethodMatchInput `json:"paymentMethod"`
+}
+
+// GetAttemptIk returns __RetryPaymentInput.AttemptIk, and is useful for accessing the field via an interface.
+func (v *__RetryPaymentInput) GetAttemptIk() string { return v.AttemptIk }
+
+// GetPaymentIk returns __RetryPaymentInput.PaymentIk, and is useful for accessing the field via an interface.
+func (v *__RetryPaymentInput) GetPaymentIk() string { return v.PaymentIk }
+
+// GetLedgerIk returns __RetryPaymentInput.LedgerIk, and is useful for accessing the field via an interface.
+func (v *__RetryPaymentInput) GetLedgerIk() string { return v.LedgerIk }
+
+// GetPaymentMethod returns __RetryPaymentInput.PaymentMethod, and is useful for accessing the field via an interface.
+func (v *__RetryPaymentInput) GetPaymentMethod() *PaymentMethodMatchInput { return v.PaymentMethod }
+
 // __ReverseLedgerEntryInput is used internally by genqlient
 type __ReverseLedgerEntryInput struct {
 	Id string `json:"id"`
@@ -14858,6 +15965,16 @@ mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $paymentType: 
 				mode
 				currency {
 					code
+				}
+				refundedAmount
+				refunds {
+					nodes {
+						id
+						ik
+						amount
+						status
+						created
+					}
 				}
 			}
 		}
@@ -15712,6 +16829,16 @@ query GetPayment ($ik: SafeString!, $ledgerIk: SafeString!) {
 		mode
 		parameters
 		created
+		refundedAmount
+		refunds {
+			nodes {
+				id
+				ik
+				amount
+				status
+				created
+			}
+		}
 	}
 }
 `
@@ -16400,6 +17527,16 @@ query ListPayments ($ledgerIk: SafeString!, $after: String, $first: Int, $before
 				type
 				typeVersion
 				created
+				refundedAmount
+				refunds {
+					nodes {
+						id
+						ik
+						amount
+						status
+						created
+					}
+				}
 			}
 			pageInfo {
 				hasNextPage
@@ -16684,6 +17821,165 @@ func ReconcileTxRuntime(
 	}
 
 	data_ = &ReconcileTxRuntimeResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by RefundPayment.
+const RefundPayment_Operation = `
+mutation RefundPayment ($ik: SafeString!, $paymentIk: SafeString!, $ledgerIk: SafeString!, $amount: Int96!, $parameters: JSON) {
+	refundPayment(ik: $ik, payment: {ik:$paymentIk,ledger:{ik:$ledgerIk}}, refund: {amount:$amount,parameters:$parameters}) {
+		__typename
+		... on RefundPaymentResult {
+			isIkReplay
+			refund {
+				id
+				ik
+				amount
+				status
+				created
+			}
+			payment {
+				id
+				ik
+				status
+				amount
+				mode
+				currency {
+					code
+				}
+				refundedAmount
+				refunds {
+					nodes {
+						id
+						ik
+						amount
+						status
+						created
+					}
+				}
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func RefundPayment(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	ik string,
+	paymentIk string,
+	ledgerIk string,
+	amount string,
+	parameters *json.RawMessage,
+) (data_ *RefundPaymentResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "RefundPayment",
+		Query:  RefundPayment_Operation,
+		Variables: &__RefundPaymentInput{
+			Ik:         ik,
+			PaymentIk:  paymentIk,
+			LedgerIk:   ledgerIk,
+			Amount:     amount,
+			Parameters: parameters,
+		},
+	}
+
+	data_ = &RefundPaymentResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by RetryPayment.
+const RetryPayment_Operation = `
+mutation RetryPayment ($attemptIk: SafeString!, $paymentIk: SafeString!, $ledgerIk: SafeString!, $paymentMethod: PaymentMethodMatchInput) {
+	retryPayment(attemptIk: $attemptIk, payment: {ik:$paymentIk,ledger:{ik:$ledgerIk}}, paymentMethod: $paymentMethod) {
+		__typename
+		... on RetryPaymentResult {
+			isIkReplay
+			attempt {
+				id
+				status
+			}
+			payment {
+				id
+				ik
+				status
+				amount
+				mode
+				currency {
+					code
+				}
+				refundedAmount
+				refunds {
+					nodes {
+						id
+						ik
+						amount
+						status
+						created
+					}
+				}
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func RetryPayment(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	attemptIk string,
+	paymentIk string,
+	ledgerIk string,
+	paymentMethod *PaymentMethodMatchInput,
+) (data_ *RetryPaymentResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "RetryPayment",
+		Query:  RetryPayment_Operation,
+		Variables: &__RetryPaymentInput{
+			AttemptIk:     attemptIk,
+			PaymentIk:     paymentIk,
+			LedgerIk:      ledgerIk,
+			PaymentMethod: paymentMethod,
+		},
+	}
+
+	data_ = &RetryPaymentResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
