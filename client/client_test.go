@@ -3,10 +3,14 @@ package client
 import (
 	"context"
 	"encoding/base64"
+	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -139,5 +143,110 @@ func TestGenerateToken(t *testing.T) {
 	}
 	if !time.Unix(time.Now().Unix()+3600-expiryTimeSkew+1, 0).After(token.ExpiresAt) {
 		t.Errorf("Expected token to expire in ~3600 seconds, got %s", token.ExpiresAt)
+	}
+}
+
+// getSlowTokenServer returns a server whose token endpoint takes 2 seconds to
+// respond, or stops early if the request is cancelled.
+func getSlowTokenServer(t *testing.T) *httptest.Server {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// The server only notices the client going away once the body has been read.
+		io.Copy(io.Discard, r.Body)
+		select {
+		case <-r.Context().Done():
+		case <-time.After(2 * time.Second):
+			w.Write([]byte(`{"access_token":"token","expires_in":3600}`))
+		}
+	}))
+	t.Cleanup(server.Close)
+	return server
+}
+
+func testTokenParams(serverURL string) *GetTokenParams {
+	return &GetTokenParams{
+		ClientID:     "test_client_id",
+		ClientSecret: "test_client_secret",
+		Scope:        "*",
+		AuthURL:      serverURL + "/oauth2/token",
+		ApiURL:       serverURL,
+	}
+}
+
+func TestDoUsesRequestContextForTokenRequest(t *testing.T) {
+	server := getSlowTokenServer(t)
+	client := newHttpClient(nil, testTokenParams(server.URL))
+
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, server.URL, nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %s", err)
+	}
+
+	start := time.Now()
+	_, err = client.Do(req)
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Errorf("Expected context.DeadlineExceeded, got: %v", err)
+	}
+	if elapsed := time.Since(start); elapsed > time.Second {
+		t.Errorf("Expected Do to return at the request deadline, took %s", elapsed)
+	}
+}
+
+func TestGenerateTokenTimeout(t *testing.T) {
+	server := getSlowTokenServer(t)
+	client := newHttpClient(nil, testTokenParams(server.URL))
+	client.tokenTimeout = 100 * time.Millisecond
+
+	start := time.Now()
+	_, err := client.GenerateToken(context.Background())
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Errorf("Expected context.DeadlineExceeded, got: %v", err)
+	}
+	if elapsed := time.Since(start); elapsed > time.Second {
+		t.Errorf("Expected GenerateToken to return at the timeout, took %s", elapsed)
+	}
+}
+
+func TestDoConcurrentRequestsShareOneTokenRequest(t *testing.T) {
+	var tokenRequests atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/oauth2/token") {
+			tokenRequests.Add(1)
+			// Hold the token request open so the other requests arrive while it's in flight.
+			time.Sleep(50 * time.Millisecond)
+			w.Write([]byte(`{"access_token":"token","expires_in":3600}`))
+			return
+		}
+		if r.Header.Get("Authorization") != "Bearer token" {
+			t.Errorf("Expected Authorization header Bearer token, got %s", r.Header.Get("Authorization"))
+		}
+	}))
+	defer server.Close()
+
+	client := newHttpClient(nil, testTokenParams(server.URL))
+
+	var wg sync.WaitGroup
+	for range 20 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			req, err := http.NewRequest(http.MethodPost, server.URL, nil)
+			if err != nil {
+				t.Errorf("Failed to create request: %s", err)
+				return
+			}
+			resp, err := client.Do(req)
+			if err != nil {
+				t.Errorf("Expected no error, got: %s", err)
+				return
+			}
+			resp.Body.Close()
+		}()
+	}
+	wg.Wait()
+
+	if n := tokenRequests.Load(); n != 1 {
+		t.Errorf("Expected 1 token request, got %d", n)
 	}
 }
