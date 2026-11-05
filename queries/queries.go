@@ -2875,6 +2875,278 @@ func (v *CreatePaymentResponse) __premarshalJSON() (*__premarshalCreatePaymentRe
 	return &retval, nil
 }
 
+// CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse includes the requested fields of the GraphQL interface CreateWebhookSubscriptionResponse.
+//
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse is implemented by the following types:
+// CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult
+// CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError
+type CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse interface {
+	implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse() {
+}
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse() {
+}
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse() {
+}
+
+func __unmarshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(b []byte, v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "CreateWebhookSubscriptionResult":
+		*v = new(CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing CreateWebhookSubscriptionResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult:
+		typename = "CreateWebhookSubscriptionResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse: "%T"`, v)
+	}
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult includes the requested fields of the GraphQL type CreateWebhookSubscriptionResult.
+type CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult struct {
+	Typename      *string                                                                                                          `json:"__typename"`
+	SigningSecret string                                                                                                           `json:"signingSecret"`
+	Subscription  CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription `json:"subscription"`
+}
+
+// GetTypename returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult.Typename, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetSigningSecret returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult.SigningSecret, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) GetSigningSecret() string {
+	return v.SigningSecret
+}
+
+// GetSubscription returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult.Subscription, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) GetSubscription() CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription {
+	return v.Subscription
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription includes the requested fields of the GraphQL type WebhookSubscription.
+type CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription struct {
+	Id      string `json:"id"`
+	Url     string `json:"url"`
+	Created string `json:"created"`
+}
+
+// GetId returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription.Id, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription) GetId() string {
+	return v.Id
+}
+
+// GetUrl returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription.Url, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription) GetUrl() string {
+	return v.Url
+}
+
+// GetCreated returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription.Created, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription) GetCreated() string {
+	return v.Created
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Code, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Message, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreateWebhookSubscriptionResponse is returned by CreateWebhookSubscription on success.
+type CreateWebhookSubscriptionResponse struct {
+	CreateWebhookSubscription CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse `json:"-"`
+}
+
+// GetCreateWebhookSubscription returns CreateWebhookSubscriptionResponse.CreateWebhookSubscription, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionResponse) GetCreateWebhookSubscription() CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse {
+	return v.CreateWebhookSubscription
+}
+
+func (v *CreateWebhookSubscriptionResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateWebhookSubscriptionResponse
+		CreateWebhookSubscription json.RawMessage `json:"createWebhookSubscription"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateWebhookSubscriptionResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.CreateWebhookSubscription
+		src := firstPass.CreateWebhookSubscription
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreateWebhookSubscriptionResponse.CreateWebhookSubscription: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreateWebhookSubscriptionResponse struct {
+	CreateWebhookSubscription json.RawMessage `json:"createWebhookSubscription"`
+}
+
+func (v *CreateWebhookSubscriptionResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateWebhookSubscriptionResponse) __premarshalJSON() (*__premarshalCreateWebhookSubscriptionResponse, error) {
+	var retval __premarshalCreateWebhookSubscriptionResponse
+
+	{
+
+		dst := &retval.CreateWebhookSubscription
+		src := v.CreateWebhookSubscription
+		var err error
+		*dst, err = __marshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateWebhookSubscriptionResponse.CreateWebhookSubscription: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 type CurrencyCode string
 
 const (
@@ -4357,6 +4629,250 @@ func (v *DeleteSchemaResponse) __premarshalJSON() (*__premarshalDeleteSchemaResp
 		if err != nil {
 			return nil, fmt.Errorf(
 				"unable to marshal DeleteSchemaResponse.DeleteSchema: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse includes the requested fields of the GraphQL interface DeleteWebhookSubscriptionResponse.
+//
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse is implemented by the following types:
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse interface {
+	implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse() {
+}
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult) implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse() {
+}
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse() {
+}
+
+func __unmarshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(b []byte, v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "DeleteWebhookSubscriptionResult":
+		*v = new(DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing DeleteWebhookSubscriptionResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult:
+		typename = "DeleteWebhookSubscriptionResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse: "%T"`, v)
+	}
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult includes the requested fields of the GraphQL type DeleteWebhookSubscriptionResult.
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult struct {
+	Typename *string `json:"__typename"`
+	Success  bool    `json:"success"`
+}
+
+// GetTypename returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetSuccess returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult.Success, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult) GetSuccess() bool {
+	return v.Success
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// DeleteWebhookSubscriptionResponse is returned by DeleteWebhookSubscription on success.
+type DeleteWebhookSubscriptionResponse struct {
+	DeleteWebhookSubscription DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse `json:"-"`
+}
+
+// GetDeleteWebhookSubscription returns DeleteWebhookSubscriptionResponse.DeleteWebhookSubscription, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionResponse) GetDeleteWebhookSubscription() DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse {
+	return v.DeleteWebhookSubscription
+}
+
+func (v *DeleteWebhookSubscriptionResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DeleteWebhookSubscriptionResponse
+		DeleteWebhookSubscription json.RawMessage `json:"deleteWebhookSubscription"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DeleteWebhookSubscriptionResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.DeleteWebhookSubscription
+		src := firstPass.DeleteWebhookSubscription
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal DeleteWebhookSubscriptionResponse.DeleteWebhookSubscription: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDeleteWebhookSubscriptionResponse struct {
+	DeleteWebhookSubscription json.RawMessage `json:"deleteWebhookSubscription"`
+}
+
+func (v *DeleteWebhookSubscriptionResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DeleteWebhookSubscriptionResponse) __premarshalJSON() (*__premarshalDeleteWebhookSubscriptionResponse, error) {
+	var retval __premarshalDeleteWebhookSubscriptionResponse
+
+	{
+
+		dst := &retval.DeleteWebhookSubscription
+		src := v.DeleteWebhookSubscription
+		var err error
+		*dst, err = __marshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal DeleteWebhookSubscriptionResponse.DeleteWebhookSubscription: %w", err)
 		}
 	}
 	return &retval, nil
@@ -7044,6 +7560,8 @@ var AllLedgerDataMigrationStatus = []LedgerDataMigrationStatus{
 }
 
 type LedgerEntriesFilterSet struct {
+	// Use this filter to filter Ledger Entries by their `created` timestamp. This is the wall-clock time when the Ledger Entry was created.
+	Created *DateTimeFilter `json:"created"`
 	// Use this filter to filter Ledger Entries by their `posted` date.
 	Date *DateFilter `json:"date"`
 	// Use this to filter Ledger Entries by groups. The response will include entries that contain or do not contain specific groups.
@@ -7065,6 +7583,9 @@ type LedgerEntriesFilterSet struct {
 	// Use this to filter Ledger Entries by their type version.
 	TypeVersion *StringFilter `json:"typeVersion"`
 }
+
+// GetCreated returns LedgerEntriesFilterSet.Created, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetCreated() *DateTimeFilter { return v.Created }
 
 // GetDate returns LedgerEntriesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetDate() *DateFilter { return v.Date }
@@ -8377,11 +8898,11 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 // ListPaymentMethodsPaymentMethodsPaymentMethodsConnection includes the requested fields of the GraphQL type PaymentMethodsConnection.
 // The GraphQL type's documentation follows.
 //
-// A list of Payment Methods, all in one page.
+// A page of Payment Methods.
 type ListPaymentMethodsPaymentMethodsPaymentMethodsConnection struct {
-	// Every Payment Method in the list.
+	// The Payment Methods in this page.
 	Nodes []ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod `json:"-"`
-	// The pagination info for this list. It never reports another page.
+	// The pagination info for this page.
 	PageInfo ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -8856,6 +9377,73 @@ type ListPaymentsResponse struct {
 
 // GetLedger returns ListPaymentsResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *ListPaymentsResponse) GetLedger() *ListPaymentsLedger { return v.Ledger }
+
+// ListWebhookSubscriptionsResponse is returned by ListWebhookSubscriptions on success.
+type ListWebhookSubscriptionsResponse struct {
+	WebhookSubscriptions ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection `json:"webhookSubscriptions"`
+}
+
+// GetWebhookSubscriptions returns ListWebhookSubscriptionsResponse.WebhookSubscriptions, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsResponse) GetWebhookSubscriptions() ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection {
+	return v.WebhookSubscriptions
+}
+
+// ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection includes the requested fields of the GraphQL type WebhookSubscriptionsConnection.
+type ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection struct {
+	Nodes    []ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription `json:"nodes"`
+	PageInfo ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo                   `json:"pageInfo"`
+}
+
+// GetNodes returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection) GetNodes() []ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription {
+	return v.Nodes
+}
+
+// GetPageInfo returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection) GetPageInfo() ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo {
+	return v.PageInfo
+}
+
+// ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription includes the requested fields of the GraphQL type WebhookSubscription.
+type ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription struct {
+	Id      string `json:"id"`
+	Url     string `json:"url"`
+	Created string `json:"created"`
+}
+
+// GetId returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription.Id, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription) GetId() string {
+	return v.Id
+}
+
+// GetUrl returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription.Url, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription) GetUrl() string {
+	return v.Url
+}
+
+// GetCreated returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription.Created, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription) GetCreated() string {
+	return v.Created
+}
+
+// ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+type ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo struct {
+	HasNextPage bool    `json:"hasNextPage"`
+	EndCursor   *string `json:"endCursor"`
+}
+
+// GetHasNextPage returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
 
 // MigrateLedgerEntryMigrateLedgerEntryBadRequestError includes the requested fields of the GraphQL type BadRequestError.
 // The GraphQL type's documentation follows.
@@ -9519,16 +10107,12 @@ func (v *PaymentMethodMatchInput) GetId() string { return v.Id }
 type PaymentMethodSetupStatus string
 
 const (
-	PaymentMethodSetupStatusCanceled           PaymentMethodSetupStatus = "canceled"
-	PaymentMethodSetupStatusNeedsAction        PaymentMethodSetupStatus = "needs_action"
 	PaymentMethodSetupStatusNeedsPaymentMethod PaymentMethodSetupStatus = "needs_payment_method"
 	PaymentMethodSetupStatusProcessing         PaymentMethodSetupStatus = "processing"
 	PaymentMethodSetupStatusSaved              PaymentMethodSetupStatus = "saved"
 )
 
 var AllPaymentMethodSetupStatus = []PaymentMethodSetupStatus{
-	PaymentMethodSetupStatusCanceled,
-	PaymentMethodSetupStatusNeedsAction,
 	PaymentMethodSetupStatusNeedsPaymentMethod,
 	PaymentMethodSetupStatusProcessing,
 	PaymentMethodSetupStatusSaved,
@@ -14822,6 +15406,14 @@ func (v *__CreatePaymentMethodSetupInput) GetLedgerIk() string { return v.Ledger
 // GetEmail returns __CreatePaymentMethodSetupInput.Email, and is useful for accessing the field via an interface.
 func (v *__CreatePaymentMethodSetupInput) GetEmail() string { return v.Email }
 
+// __CreateWebhookSubscriptionInput is used internally by genqlient
+type __CreateWebhookSubscriptionInput struct {
+	Url string `json:"url"`
+}
+
+// GetUrl returns __CreateWebhookSubscriptionInput.Url, and is useful for accessing the field via an interface.
+func (v *__CreateWebhookSubscriptionInput) GetUrl() string { return v.Url }
+
 // __DeleteCustomTxsInput is used internally by genqlient
 type __DeleteCustomTxsInput struct {
 	Txs []string `json:"txs"`
@@ -14853,6 +15445,14 @@ type __DeleteSchemaInput struct {
 
 // GetSchema returns __DeleteSchemaInput.Schema, and is useful for accessing the field via an interface.
 func (v *__DeleteSchemaInput) GetSchema() SchemaMatchInput { return v.Schema }
+
+// __DeleteWebhookSubscriptionInput is used internally by genqlient
+type __DeleteWebhookSubscriptionInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeleteWebhookSubscriptionInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeleteWebhookSubscriptionInput) GetId() string { return v.Id }
 
 // __GetAccountDataMigrationsInput is used internally by genqlient
 type __GetAccountDataMigrationsInput struct {
@@ -15351,6 +15951,18 @@ func (v *__ListPaymentsInput) GetBefore() *string { return v.Before }
 
 // GetFilter returns __ListPaymentsInput.Filter, and is useful for accessing the field via an interface.
 func (v *__ListPaymentsInput) GetFilter() *PaymentsFilterSet { return v.Filter }
+
+// __ListWebhookSubscriptionsInput is used internally by genqlient
+type __ListWebhookSubscriptionsInput struct {
+	After *string `json:"after"`
+	First *int    `json:"first"`
+}
+
+// GetAfter returns __ListWebhookSubscriptionsInput.After, and is useful for accessing the field via an interface.
+func (v *__ListWebhookSubscriptionsInput) GetAfter() *string { return v.After }
+
+// GetFirst returns __ListWebhookSubscriptionsInput.First, and is useful for accessing the field via an interface.
+func (v *__ListWebhookSubscriptionsInput) GetFirst() *int { return v.First }
 
 // __MigrateLedgerEntryInput is used internally by genqlient
 type __MigrateLedgerEntryInput struct {
@@ -16103,6 +16715,58 @@ func CreatePaymentMethodSetup(
 	return data_, err_
 }
 
+// The mutation executed by CreateWebhookSubscription.
+const CreateWebhookSubscription_Operation = `
+mutation CreateWebhookSubscription ($url: String!) {
+	createWebhookSubscription(input: {url:$url}) {
+		__typename
+		... on CreateWebhookSubscriptionResult {
+			signingSecret
+			subscription {
+				id
+				url
+				created
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func CreateWebhookSubscription(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	url string,
+) (data_ *CreateWebhookSubscriptionResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "CreateWebhookSubscription",
+		Query:  CreateWebhookSubscription_Operation,
+		Variables: &__CreateWebhookSubscriptionInput{
+			Url: url,
+		},
+	}
+
+	data_ = &CreateWebhookSubscriptionResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
 // The mutation executed by DeleteCustomTxs.
 const DeleteCustomTxs_Operation = `
 mutation DeleteCustomTxs ($txs: [ID!]!) {
@@ -16291,6 +16955,53 @@ func DeleteSchema(
 	}
 
 	data_ = &DeleteSchemaResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by DeleteWebhookSubscription.
+const DeleteWebhookSubscription_Operation = `
+mutation DeleteWebhookSubscription ($id: ID!) {
+	deleteWebhookSubscription(id: $id) {
+		__typename
+		... on DeleteWebhookSubscriptionResult {
+			success
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func DeleteWebhookSubscription(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+) (data_ *DeleteWebhookSubscriptionResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "DeleteWebhookSubscription",
+		Query:  DeleteWebhookSubscription_Operation,
+		Variables: &__DeleteWebhookSubscriptionInput{
+			Id: id,
+		},
+	}
+
+	data_ = &DeleteWebhookSubscriptionResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -17574,6 +18285,50 @@ func ListPayments(
 	}
 
 	data_ = &ListPaymentsResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by ListWebhookSubscriptions.
+const ListWebhookSubscriptions_Operation = `
+query ListWebhookSubscriptions ($after: String, $first: Int) {
+	webhookSubscriptions(after: $after, first: $first) {
+		nodes {
+			id
+			url
+			created
+		}
+		pageInfo {
+			hasNextPage
+			endCursor
+		}
+	}
+}
+`
+
+func ListWebhookSubscriptions(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	after *string,
+	first *int,
+) (data_ *ListWebhookSubscriptionsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "ListWebhookSubscriptions",
+		Query:  ListWebhookSubscriptions_Operation,
+		Variables: &__ListWebhookSubscriptionsInput{
+			After: after,
+			First: first,
+		},
+	}
+
+	data_ = &ListWebhookSubscriptionsResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(

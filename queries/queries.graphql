@@ -1710,3 +1710,60 @@ query GetPaymentMethodSetup($ik: SafeString!, $ledgerIk: SafeString!) {
     }
   }
 }
+
+mutation CreateWebhookSubscription($url: String!) {
+  createWebhookSubscription(input: { url: $url }) {
+    __typename
+    ... on CreateWebhookSubscriptionResult {
+      signingSecret
+      subscription {
+        id
+        url
+        created
+      }
+    }
+    ... on BadRequestError {
+      code
+      message
+      retryable
+    }
+    ... on InternalError {
+      code
+      message
+      retryable
+    }
+  }
+}
+
+query ListWebhookSubscriptions($after: String, $first: Int) {
+  webhookSubscriptions(after: $after, first: $first) {
+    nodes {
+      id
+      url
+      created
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+mutation DeleteWebhookSubscription($id: ID!) {
+  deleteWebhookSubscription(id: $id) {
+    __typename
+    ... on DeleteWebhookSubscriptionResult {
+      success
+    }
+    ... on BadRequestError {
+      code
+      message
+      retryable
+    }
+    ... on InternalError {
+      code
+      message
+      retryable
+    }
+  }
+}
