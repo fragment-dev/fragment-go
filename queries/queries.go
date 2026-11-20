@@ -1085,7 +1085,7 @@ func (v *AddLedgerEntryRuntimeResponse) __premarshalJSON() (*__premarshalAddLedg
 	return &retval, nil
 }
 
-// Used to configure the write-consistency of a Ledger Account's balance. See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+// Used to configure the write-consistency of a Ledger Account's balance. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type BalanceUpdateConsistencyMode string
 
 const (
@@ -1105,7 +1105,7 @@ type ChartOfAccountsInput struct {
 	// The default consistency configuration for all Ledger Accounts in this Schema.
 	// If a Ledger Account does not specify its own consistency configuration, it will use the default values provided here.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	DefaultConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"defaultConsistencyConfig"`
 	// The default currency of each Ledger Account in the Chart Of Accounts.
 	// It must be provided if `defaultCurrencyMode` is set to `single`.
@@ -1597,7 +1597,7 @@ func (v *CreateCustomLinkCreateCustomLinkInternalError) GetRetryable() bool { re
 
 // CreateCustomLinkResponse is returned by CreateCustomLink on success.
 type CreateCustomLinkResponse struct {
-	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/guides/sync-payments#custom-link)
+	// Custom Links let you integrate external systems that don't have native support. See [Custom Links](https://fragment.dev/docs/sync-payments#custom-link)
 	CreateCustomLink CreateCustomLinkCreateCustomLinkCreateCustomLinkResponse `json:"-"`
 }
 
@@ -2115,6 +2115,8 @@ type CreatePaymentCreatePaymentCreatePaymentResultPayment struct {
 	Mode PaymentMode `json:"mode"`
 	// The currency this Payment is denominated in.
 	Currency CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency `json:"currency"`
+	// The payment network this Payment moves money over.
+	Rail PaymentRail `json:"rail"`
 	// The amount refunded from this Payment, in whole cents.
 	RefundedAmount string `json:"refundedAmount"`
 	// The Payment's refunds, newest first.
@@ -2147,6 +2149,9 @@ func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetMode() Payment
 func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetCurrency() CreatePaymentCreatePaymentCreatePaymentResultPaymentCurrency {
 	return v.Currency
 }
+
+// GetRail returns CreatePaymentCreatePaymentCreatePaymentResultPayment.Rail, and is useful for accessing the field via an interface.
+func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetRail() PaymentRail { return v.Rail }
 
 // GetRefundedAmount returns CreatePaymentCreatePaymentCreatePaymentResultPayment.RefundedAmount, and is useful for accessing the field via an interface.
 func (v *CreatePaymentCreatePaymentCreatePaymentResultPayment) GetRefundedAmount() string {
@@ -2870,6 +2875,278 @@ func (v *CreatePaymentResponse) __premarshalJSON() (*__premarshalCreatePaymentRe
 		if err != nil {
 			return nil, fmt.Errorf(
 				"unable to marshal CreatePaymentResponse.CreatePayment: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse includes the requested fields of the GraphQL interface CreateWebhookSubscriptionResponse.
+//
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse is implemented by the following types:
+// CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult
+// CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError
+type CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse interface {
+	implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError) implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse() {
+}
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse() {
+}
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) implementsGraphQLInterfaceCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse() {
+}
+
+func __unmarshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(b []byte, v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "CreateWebhookSubscriptionResult":
+		*v = new(CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing CreateWebhookSubscriptionResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateWebhookSubscriptionCreateWebhookSubscriptionBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult:
+		typename = "CreateWebhookSubscriptionResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse: "%T"`, v)
+	}
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult includes the requested fields of the GraphQL type CreateWebhookSubscriptionResult.
+type CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult struct {
+	Typename      *string                                                                                                          `json:"__typename"`
+	SigningSecret string                                                                                                           `json:"signingSecret"`
+	Subscription  CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription `json:"subscription"`
+}
+
+// GetTypename returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult.Typename, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetSigningSecret returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult.SigningSecret, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) GetSigningSecret() string {
+	return v.SigningSecret
+}
+
+// GetSubscription returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult.Subscription, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResult) GetSubscription() CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription {
+	return v.Subscription
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription includes the requested fields of the GraphQL type WebhookSubscription.
+type CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription struct {
+	Id      string `json:"id"`
+	Url     string `json:"url"`
+	Created string `json:"created"`
+}
+
+// GetId returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription.Id, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription) GetId() string {
+	return v.Id
+}
+
+// GetUrl returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription.Url, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription) GetUrl() string {
+	return v.Url
+}
+
+// GetCreated returns CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription.Created, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResultSubscriptionWebhookSubscription) GetCreated() string {
+	return v.Created
+}
+
+// CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Code, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Message, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionCreateWebhookSubscriptionInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// CreateWebhookSubscriptionResponse is returned by CreateWebhookSubscription on success.
+type CreateWebhookSubscriptionResponse struct {
+	CreateWebhookSubscription CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse `json:"-"`
+}
+
+// GetCreateWebhookSubscription returns CreateWebhookSubscriptionResponse.CreateWebhookSubscription, and is useful for accessing the field via an interface.
+func (v *CreateWebhookSubscriptionResponse) GetCreateWebhookSubscription() CreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse {
+	return v.CreateWebhookSubscription
+}
+
+func (v *CreateWebhookSubscriptionResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateWebhookSubscriptionResponse
+		CreateWebhookSubscription json.RawMessage `json:"createWebhookSubscription"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateWebhookSubscriptionResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.CreateWebhookSubscription
+		src := firstPass.CreateWebhookSubscription
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreateWebhookSubscriptionResponse.CreateWebhookSubscription: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreateWebhookSubscriptionResponse struct {
+	CreateWebhookSubscription json.RawMessage `json:"createWebhookSubscription"`
+}
+
+func (v *CreateWebhookSubscriptionResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateWebhookSubscriptionResponse) __premarshalJSON() (*__premarshalCreateWebhookSubscriptionResponse, error) {
+	var retval __premarshalCreateWebhookSubscriptionResponse
+
+	{
+
+		dst := &retval.CreateWebhookSubscription
+		src := v.CreateWebhookSubscription
+		var err error
+		*dst, err = __marshalCreateWebhookSubscriptionCreateWebhookSubscriptionCreateWebhookSubscriptionResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateWebhookSubscriptionResponse.CreateWebhookSubscription: %w", err)
 		}
 	}
 	return &retval, nil
@@ -4362,6 +4639,250 @@ func (v *DeleteSchemaResponse) __premarshalJSON() (*__premarshalDeleteSchemaResp
 	return &retval, nil
 }
 
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError includes the requested fields of the GraphQL type BadRequestError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 400 - request either has missing or incorrect data
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse includes the requested fields of the GraphQL interface DeleteWebhookSubscriptionResponse.
+//
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse is implemented by the following types:
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse interface {
+	implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError) implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse() {
+}
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult) implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse() {
+}
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) implementsGraphQLInterfaceDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse() {
+}
+
+func __unmarshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(b []byte, v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "BadRequestError":
+		*v = new(DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError)
+		return json.Unmarshal(b, *v)
+	case "DeleteWebhookSubscriptionResult":
+		*v = new(DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult)
+		return json.Unmarshal(b, *v)
+	case "InternalError":
+		*v = new(DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing DeleteWebhookSubscriptionResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError:
+		typename = "BadRequestError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteWebhookSubscriptionDeleteWebhookSubscriptionBadRequestError
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult:
+		typename = "DeleteWebhookSubscriptionResult"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult
+		}{typename, v}
+		return json.Marshal(result)
+	case *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError:
+		typename = "InternalError"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse: "%T"`, v)
+	}
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult includes the requested fields of the GraphQL type DeleteWebhookSubscriptionResult.
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult struct {
+	Typename *string `json:"__typename"`
+	Success  bool    `json:"success"`
+}
+
+// GetTypename returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult) GetTypename() *string {
+	return v.Typename
+}
+
+// GetSuccess returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult.Success, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResult) GetSuccess() bool {
+	return v.Success
+}
+
+// DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError includes the requested fields of the GraphQL type InternalError.
+// The GraphQL type's documentation follows.
+//
+// Equivalent to an HTTP 5XX - something went wrong with our API.
+type DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError struct {
+	Typename *string `json:"__typename"`
+	// The status code of error. For example, 'ledger_not_found'.
+	Code string `json:"code"`
+	// The error message
+	Message string `json:"message"`
+	// Whether or not the operation is retryable
+	Retryable bool `json:"retryable"`
+}
+
+// GetTypename returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Typename, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetTypename() *string {
+	return v.Typename
+}
+
+// GetCode returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Code, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Message, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetMessage() string {
+	return v.Message
+}
+
+// GetRetryable returns DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError.Retryable, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionDeleteWebhookSubscriptionInternalError) GetRetryable() bool {
+	return v.Retryable
+}
+
+// DeleteWebhookSubscriptionResponse is returned by DeleteWebhookSubscription on success.
+type DeleteWebhookSubscriptionResponse struct {
+	DeleteWebhookSubscription DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse `json:"-"`
+}
+
+// GetDeleteWebhookSubscription returns DeleteWebhookSubscriptionResponse.DeleteWebhookSubscription, and is useful for accessing the field via an interface.
+func (v *DeleteWebhookSubscriptionResponse) GetDeleteWebhookSubscription() DeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse {
+	return v.DeleteWebhookSubscription
+}
+
+func (v *DeleteWebhookSubscriptionResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DeleteWebhookSubscriptionResponse
+		DeleteWebhookSubscription json.RawMessage `json:"deleteWebhookSubscription"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DeleteWebhookSubscriptionResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.DeleteWebhookSubscription
+		src := firstPass.DeleteWebhookSubscription
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal DeleteWebhookSubscriptionResponse.DeleteWebhookSubscription: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDeleteWebhookSubscriptionResponse struct {
+	DeleteWebhookSubscription json.RawMessage `json:"deleteWebhookSubscription"`
+}
+
+func (v *DeleteWebhookSubscriptionResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DeleteWebhookSubscriptionResponse) __premarshalJSON() (*__premarshalDeleteWebhookSubscriptionResponse, error) {
+	var retval __premarshalDeleteWebhookSubscriptionResponse
+
+	{
+
+		dst := &retval.DeleteWebhookSubscription
+		src := v.DeleteWebhookSubscription
+		var err error
+		*dst, err = __marshalDeleteWebhookSubscriptionDeleteWebhookSubscriptionDeleteWebhookSubscriptionResponse(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal DeleteWebhookSubscriptionResponse.DeleteWebhookSubscription: %w", err)
+		}
+	}
+	return &retval, nil
+}
+
 // Specify an External Account by using `id`, or `linkId` and `externalId`.
 type ExternalAccountMatchInput struct {
 	// The external system's ID of the External Account. If this is specified, `linkId` is required. `id` is optional, but will be validated if provided.
@@ -4521,7 +5042,7 @@ func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountD
 // GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -4605,7 +5126,7 @@ func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountD
 // GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -4636,7 +5157,7 @@ func (v *GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountD
 // GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetAccountDataMigrationsLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -4859,7 +5380,7 @@ func (v *GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountData
 // GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetEntriesToMigrateForLedgerAccountDataMigrationLedgerLedgerAccountDataMigrationsLedgerAccountDataMigrationConnectionNodesLedgerAccountDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5082,7 +5603,7 @@ func (v *GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigr
 // GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetEntriesToMigrateForLedgerEntryDataMigrationLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5268,7 +5789,7 @@ func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMig
 // GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationHistoryLedgerDataMigrationHistoryConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5352,7 +5873,7 @@ func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMig
 // GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionNodesLedgerEntryDataMigrationLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5383,7 +5904,7 @@ func (v *GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMig
 // GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetEntryDataMigrationsLedgerLedgerEntryDataMigrationsLedgerEntryDataMigrationConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -5541,7 +6062,7 @@ func (v *GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionNodesLedger
 // GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type GetLedgerAccountLinesLedgerAccountLinesLedgerLinesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -6213,6 +6734,8 @@ type GetPaymentPayment struct {
 	Amount string `json:"amount"`
 	// The currency this Payment is denominated in.
 	Currency GetPaymentPaymentCurrency `json:"currency"`
+	// The payment network this Payment moves money over.
+	Rail PaymentRail `json:"rail"`
 	// The status of this Payment.
 	Status PaymentStatus `json:"status"`
 	// The Payment Type in the Schema this Payment was created from.
@@ -6241,6 +6764,9 @@ func (v *GetPaymentPayment) GetAmount() string { return v.Amount }
 
 // GetCurrency returns GetPaymentPayment.Currency, and is useful for accessing the field via an interface.
 func (v *GetPaymentPayment) GetCurrency() GetPaymentPaymentCurrency { return v.Currency }
+
+// GetRail returns GetPaymentPayment.Rail, and is useful for accessing the field via an interface.
+func (v *GetPaymentPayment) GetRail() PaymentRail { return v.Rail }
 
 // GetStatus returns GetPaymentPayment.Status, and is useful for accessing the field via an interface.
 func (v *GetPaymentPayment) GetStatus() PaymentStatus { return v.Status }
@@ -6881,9 +7407,9 @@ func (v *Int96Filter) GetNe() *string { return v.Ne }
 
 // A set of conditions that a Ledger Account must meet for an operation to succeed.
 type LedgerAccountConditionInput struct {
-	// A condition that the ownBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](/guides/read-balances) for more on the different types of Ledger Account balances.
+	// A condition that the ownBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](/docs/read-balances) for more on the different types of Ledger Account balances.
 	OwnBalance *Int96ConditionInput `json:"ownBalance"`
-	// A condition that the totalBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](/guides/read-balances) for more on the different types of Ledger Account balances.
+	// A condition that the totalBalance field must satisfy. Note that this condition always applies to the latest balance, not to balances at a specific date or time. See [Read balances](/docs/read-balances) for more on the different types of Ledger Account balances.
 	TotalBalance *Int96ConditionInput `json:"totalBalance"`
 }
 
@@ -6894,32 +7420,32 @@ func (v *LedgerAccountConditionInput) GetOwnBalance() *Int96ConditionInput { ret
 func (v *LedgerAccountConditionInput) GetTotalBalance() *Int96ConditionInput { return v.TotalBalance }
 
 // The payload configuring the consistency for this Ledger Account.
-// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type LedgerAccountConsistencyConfigInput struct {
 	// The consistency configuration for Ledger Entry Groups affecting this account.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	Groups []LedgerAccountGroupConsistencyConfigInput `json:"groups"`
 	// If set to `strong`, then a Ledger Account's `lines` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `lines` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	Lines *LedgerLinesConsistencyMode `json:"lines"`
 	// If set to `strong`, then a Ledger Account's `ownBalance` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	OwnBalanceUpdates *BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 	// EXPERIMENTAL: If set to `strong`, then a Ledger Account's `totalBalance` updates will be strongly consistent with the API response.
 	// This Ledger Account's balance will be updated and available for strongly consistent reads before you receive an API response.
 	//
 	// Otherwise if unset or set to `eventual`, `totalBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	TotalBalanceUpdates *BalanceUpdateConsistencyMode `json:"totalBalanceUpdates"`
 }
 
@@ -6978,7 +7504,7 @@ type LedgerAccountGroupConsistencyConfigInput struct {
 	//
 	// Otherwise if unset or set to `eventual`, Ledger Entry Group `ownBalance` updates are applied asynchronously and may not be immediately reflected in queries.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	OwnBalanceUpdates BalanceUpdateConsistencyMode `json:"ownBalanceUpdates"`
 }
 
@@ -7044,6 +7570,8 @@ var AllLedgerDataMigrationStatus = []LedgerDataMigrationStatus{
 }
 
 type LedgerEntriesFilterSet struct {
+	// Use this filter to filter Ledger Entries by their `created` timestamp. This is the wall-clock time when the Ledger Entry was created.
+	Created *DateTimeFilter `json:"created"`
 	// Use this filter to filter Ledger Entries by their `posted` date.
 	Date *DateFilter `json:"date"`
 	// Use this to filter Ledger Entries by groups. The response will include entries that contain or do not contain specific groups.
@@ -7065,6 +7593,9 @@ type LedgerEntriesFilterSet struct {
 	// Use this to filter Ledger Entries by their type version.
 	TypeVersion *StringFilter `json:"typeVersion"`
 }
+
+// GetCreated returns LedgerEntriesFilterSet.Created, and is useful for accessing the field via an interface.
+func (v *LedgerEntriesFilterSet) GetCreated() *DateTimeFilter { return v.Created }
 
 // GetDate returns LedgerEntriesFilterSet.Date, and is useful for accessing the field via an interface.
 func (v *LedgerEntriesFilterSet) GetDate() *DateFilter { return v.Date }
@@ -7579,7 +8110,7 @@ func (v *ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionNo
 // ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -7715,7 +8246,7 @@ func (v *ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionNodesLedg
 // ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerAccountsLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -7870,7 +8401,7 @@ func (v *ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionNodesLedgerE
 // ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerEntriesLedgerLedgerEntriesLedgerEntriesConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -8019,7 +8550,7 @@ func (v *ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBal
 // ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListLedgerEntryGroupBalancesLedgerEntryGroupBalancesLedgerEntryGroupBalanceConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -8335,7 +8866,7 @@ func (v *ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccount
 // ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListMultiCurrencyLedgerAccountBalancesLedgerLedgerAccountsLedgerAccountsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -8377,11 +8908,11 @@ func (v *ListMultiCurrencyLedgerAccountBalancesResponse) GetLedger() *ListMultiC
 // ListPaymentMethodsPaymentMethodsPaymentMethodsConnection includes the requested fields of the GraphQL type PaymentMethodsConnection.
 // The GraphQL type's documentation follows.
 //
-// A list of Payment Methods, all in one page.
+// A page of Payment Methods.
 type ListPaymentMethodsPaymentMethodsPaymentMethodsConnection struct {
-	// Every Payment Method in the list.
+	// The Payment Methods in this page.
 	Nodes []ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPaymentMethod `json:"-"`
-	// The pagination info for this list. It never reports another page.
+	// The pagination info for this page.
 	PageInfo ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo `json:"pageInfo"`
 }
 
@@ -8603,7 +9134,7 @@ func __marshalListPaymentMethodsPaymentMethodsPaymentMethodsConnectionNodesPayme
 // ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListPaymentMethodsPaymentMethodsPaymentMethodsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -8690,6 +9221,8 @@ type ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment struct {
 	Amount string `json:"amount"`
 	// The currency this Payment is denominated in.
 	Currency ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency `json:"currency"`
+	// The payment network this Payment moves money over.
+	Rail PaymentRail `json:"rail"`
 	// The status of this Payment.
 	Status PaymentStatus `json:"status"`
 	// The Payment Type in the Schema this Payment was created from.
@@ -8717,6 +9250,11 @@ func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetAmount() s
 // GetCurrency returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Currency, and is useful for accessing the field via an interface.
 func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetCurrency() ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentCurrency {
 	return v.Currency
+}
+
+// GetRail returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Rail, and is useful for accessing the field via an interface.
+func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment) GetRail() PaymentRail {
+	return v.Rail
 }
 
 // GetStatus returns ListPaymentsLedgerPaymentsPaymentsConnectionNodesPayment.Status, and is useful for accessing the field via an interface.
@@ -8820,7 +9358,7 @@ func (v *ListPaymentsLedgerPaymentsPaymentsConnectionNodesPaymentRefundsPaymentR
 // ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 // The GraphQL type's documentation follows.
 //
-// An object containing [pagination](https://fragment.dev/guides/query-data#basics-pagination) details.
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
 type ListPaymentsLedgerPaymentsPaymentsConnectionPageInfo struct {
 	HasNextPage     bool    `json:"hasNextPage"`
 	EndCursor       *string `json:"endCursor"`
@@ -8856,6 +9394,73 @@ type ListPaymentsResponse struct {
 
 // GetLedger returns ListPaymentsResponse.Ledger, and is useful for accessing the field via an interface.
 func (v *ListPaymentsResponse) GetLedger() *ListPaymentsLedger { return v.Ledger }
+
+// ListWebhookSubscriptionsResponse is returned by ListWebhookSubscriptions on success.
+type ListWebhookSubscriptionsResponse struct {
+	WebhookSubscriptions ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection `json:"webhookSubscriptions"`
+}
+
+// GetWebhookSubscriptions returns ListWebhookSubscriptionsResponse.WebhookSubscriptions, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsResponse) GetWebhookSubscriptions() ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection {
+	return v.WebhookSubscriptions
+}
+
+// ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection includes the requested fields of the GraphQL type WebhookSubscriptionsConnection.
+type ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection struct {
+	Nodes    []ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription `json:"nodes"`
+	PageInfo ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo                   `json:"pageInfo"`
+}
+
+// GetNodes returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection) GetNodes() []ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription {
+	return v.Nodes
+}
+
+// GetPageInfo returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection.PageInfo, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnection) GetPageInfo() ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo {
+	return v.PageInfo
+}
+
+// ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription includes the requested fields of the GraphQL type WebhookSubscription.
+type ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription struct {
+	Id      string `json:"id"`
+	Url     string `json:"url"`
+	Created string `json:"created"`
+}
+
+// GetId returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription.Id, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription) GetId() string {
+	return v.Id
+}
+
+// GetUrl returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription.Url, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription) GetUrl() string {
+	return v.Url
+}
+
+// GetCreated returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription.Created, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionNodesWebhookSubscription) GetCreated() string {
+	return v.Created
+}
+
+// ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// An object containing [pagination](https://fragment.dev/docs/query-data#basics-pagination) details.
+type ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo struct {
+	HasNextPage bool    `json:"hasNextPage"`
+	EndCursor   *string `json:"endCursor"`
+}
+
+// GetHasNextPage returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo) GetHasNextPage() bool {
+	return v.HasNextPage
+}
+
+// GetEndCursor returns ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
+func (v *ListWebhookSubscriptionsWebhookSubscriptionsWebhookSubscriptionsConnectionPageInfo) GetEndCursor() *string {
+	return v.EndCursor
+}
 
 // MigrateLedgerEntryMigrateLedgerEntryBadRequestError includes the requested fields of the GraphQL type BadRequestError.
 // The GraphQL type's documentation follows.
@@ -9519,16 +10124,12 @@ func (v *PaymentMethodMatchInput) GetId() string { return v.Id }
 type PaymentMethodSetupStatus string
 
 const (
-	PaymentMethodSetupStatusCanceled           PaymentMethodSetupStatus = "canceled"
-	PaymentMethodSetupStatusNeedsAction        PaymentMethodSetupStatus = "needs_action"
 	PaymentMethodSetupStatusNeedsPaymentMethod PaymentMethodSetupStatus = "needs_payment_method"
 	PaymentMethodSetupStatusProcessing         PaymentMethodSetupStatus = "processing"
 	PaymentMethodSetupStatusSaved              PaymentMethodSetupStatus = "saved"
 )
 
 var AllPaymentMethodSetupStatus = []PaymentMethodSetupStatus{
-	PaymentMethodSetupStatusCanceled,
-	PaymentMethodSetupStatusNeedsAction,
 	PaymentMethodSetupStatusNeedsPaymentMethod,
 	PaymentMethodSetupStatusProcessing,
 	PaymentMethodSetupStatusSaved,
@@ -9545,6 +10146,21 @@ const (
 var AllPaymentMode = []PaymentMode{
 	PaymentModeProduction,
 	PaymentModeSandbox,
+}
+
+// A payment network a Payment moves money over.
+type PaymentRail string
+
+const (
+	// The ACH network.
+	PaymentRailAch PaymentRail = "ach"
+	// Card networks.
+	PaymentRailCard PaymentRail = "card"
+)
+
+var AllPaymentRail = []PaymentRail{
+	PaymentRailAch,
+	PaymentRailCard,
 }
 
 // Status of a Payment refund.
@@ -9627,7 +10243,7 @@ var AllPostLinesAs = []PostLinesAs{
 	PostLinesAsSkipZeroLines,
 }
 
-// The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+// The consistency configuration of a Ledger Account's balance queries. If not provided as an argument to a balance query, the default behavior is to read eventually consistent balances. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type ReadBalanceConsistencyMode string
 
 const (
@@ -9889,7 +10505,7 @@ func (v *ReconcileTxReconcileTxReconcileTxResultLinesLedgerLineAccountLedgerAcco
 
 // ReconcileTxResponse is returned by ReconcileTx on success.
 type ReconcileTxResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/guides/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -10211,7 +10827,7 @@ func (v *ReconcileTxRuntimeReconcileTxReconcileTxResultLinesLedgerLineAccountLed
 
 // ReconcileTxRuntimeResponse is returned by ReconcileTxRuntime on success.
 type ReconcileTxRuntimeResponse struct {
-	// This mutation is used to [reconcile](https://fragment.dev/guides/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
+	// This mutation is used to [reconcile](https://fragment.dev/docs/reconcile-payments#reconcile-a-tx) transactions from an external system into a Ledger Entry. This mutation does not require an idempotency key since a transaction can only be reconciled once per Linked Ledger Account.  If you are reconciling a transfer between two Link Accounts which are both linked to the same Ledger, use a transit account in between to split the transfer into two `reconcileTx` calls.
 	ReconcileTx ReconcileTxRuntimeReconcileTxReconcileTxResponse `json:"-"`
 }
 
@@ -10469,6 +11085,8 @@ type RefundPaymentRefundPaymentRefundPaymentResultPayment struct {
 	Mode PaymentMode `json:"mode"`
 	// The currency this Payment is denominated in.
 	Currency RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency `json:"currency"`
+	// The payment network this Payment moves money over.
+	Rail PaymentRail `json:"rail"`
 	// The amount refunded from this Payment, in whole cents.
 	RefundedAmount string `json:"refundedAmount"`
 	// The Payment's refunds, newest first.
@@ -10496,6 +11114,9 @@ func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetMode() Payment
 func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetCurrency() RefundPaymentRefundPaymentRefundPaymentResultPaymentCurrency {
 	return v.Currency
 }
+
+// GetRail returns RefundPaymentRefundPaymentRefundPaymentResultPayment.Rail, and is useful for accessing the field via an interface.
+func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetRail() PaymentRail { return v.Rail }
 
 // GetRefundedAmount returns RefundPaymentRefundPaymentRefundPaymentResultPayment.RefundedAmount, and is useful for accessing the field via an interface.
 func (v *RefundPaymentRefundPaymentRefundPaymentResultPayment) GetRefundedAmount() string {
@@ -10977,6 +11598,8 @@ type RetryPaymentRetryPaymentRetryPaymentResultPayment struct {
 	Mode PaymentMode `json:"mode"`
 	// The currency this Payment is denominated in.
 	Currency RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency `json:"currency"`
+	// The payment network this Payment moves money over.
+	Rail PaymentRail `json:"rail"`
 	// The amount refunded from this Payment, in whole cents.
 	RefundedAmount string `json:"refundedAmount"`
 	// The Payment's refunds, newest first.
@@ -11004,6 +11627,9 @@ func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetMode() PaymentMod
 func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetCurrency() RetryPaymentRetryPaymentRetryPaymentResultPaymentCurrency {
 	return v.Currency
 }
+
+// GetRail returns RetryPaymentRetryPaymentRetryPaymentResultPayment.Rail, and is useful for accessing the field via an interface.
+func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetRail() PaymentRail { return v.Rail }
 
 // GetRefundedAmount returns RetryPaymentRetryPaymentRetryPaymentResultPayment.RefundedAmount, and is useful for accessing the field via an interface.
 func (v *RetryPaymentRetryPaymentRetryPaymentResultPayment) GetRefundedAmount() string {
@@ -11689,11 +12315,11 @@ func (v *SchemaConditionInput) GetTotalBalance() *SchemaInt96ConditionInput { re
 
 // The consistency configuration for entities created within Ledgers created by this Schema.
 //
-// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type SchemaConsistencyConfigInput struct {
 	// The consistency mode for the Ledger Entries list query within Ledgers created by this Schema.
 	//
-	// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	Entries *SchemaConsistencyMode `json:"entries"`
 }
 
@@ -11702,7 +12328,7 @@ func (v *SchemaConsistencyConfigInput) GetEntries() *SchemaConsistencyMode { ret
 
 // The consistency modes available for entities created within this Schema.
 //
-// See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+// See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 type SchemaConsistencyMode string
 
 const (
@@ -11835,7 +12461,7 @@ type SchemaLedgerAccountInput struct {
 	// EXPERIMENTAL: Whether or not this Ledger Account is a Clearing Account.
 	// Clearing Accounts have balances that should tend to zero. They are used to track in-progress workflows and payments.
 	Clearing *bool `json:"clearing"`
-	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/guides/configure-consistency).
+	// The consistency configuration for this ledger account. See [Configure consistency](https://fragment.dev/docs/configure-consistency).
 	ConsistencyConfig *LedgerAccountConsistencyConfigInput `json:"consistencyConfig"`
 	// The currency of this Ledger Account. If this is not set, and `currencyMode` is
 	// not set to `multi`, it is derived from the Chart of Accounts' default.
@@ -12105,7 +12731,7 @@ type SchemaLedgerLineInput struct {
 	// This field is required if the Ledger Account being posted to is a Linked Ledger Account. Otherwise, this field is disallowed.
 	// It supports parameters in its attributes via handlebars syntax.
 	//
-	// See the docs on [reconciling payments](https://fragment.dev/guides/reconcile-payments).
+	// See the docs on [reconciling payments](https://fragment.dev/docs/reconcile-payments).
 	Tx *SchemaTxMatchInput `json:"tx"`
 }
 
@@ -12154,9 +12780,9 @@ type SchemaPaymentAccountingEventKey string
 const (
 	// The payment was captured and is guaranteed to settle.
 	SchemaPaymentAccountingEventKeyInitiated SchemaPaymentAccountingEventKey = "initiated"
-	// EXPERIMENTAL: An initiated refund failed.
+	// An initiated refund failed.
 	SchemaPaymentAccountingEventKeyRefundFailed SchemaPaymentAccountingEventKey = "refund_failed"
-	// EXPERIMENTAL: A refund of the settled payment is initiated.
+	// A refund of the settled payment is initiated.
 	SchemaPaymentAccountingEventKeyRefundInitiated SchemaPaymentAccountingEventKey = "refund_initiated"
 	// The payment settled.
 	SchemaPaymentAccountingEventKeySettled SchemaPaymentAccountingEventKey = "settled"
@@ -12172,14 +12798,36 @@ var AllSchemaPaymentAccountingEventKey = []SchemaPaymentAccountingEventKey{
 // The Ledger Entries a Payment Type posts as a payment moves
 // through its lifecycle, keyed by lifecycle transition.
 type SchemaPaymentAccountingInput struct {
+	// Posted when the fee for contesting a chargeback is collected.
+	Chargeback_countered SchemaPaymentEntryInput `json:"chargeback_countered"`
+	// Posted when funds withdrawn for a chargeback are returned.
+	Chargeback_reversed SchemaPaymentEntryInput `json:"chargeback_reversed"`
+	// Posted when a chargeback opens, withdrawing the disputed amount and the dispute fee.
+	// createPayment requires the parameters the three chargeback entries use.
+	Chargeback_settled SchemaPaymentEntryInput `json:"chargeback_settled"`
 	// Posted when the payment is captured. Optional.
 	Initiated *SchemaPaymentEntryInput `json:"initiated"`
-	// EXPERIMENTAL: Posted when an initiated refund fails. Optional.
+	// Posted when an initiated refund fails. Optional.
 	Refund_failed *SchemaPaymentEntryInput `json:"refund_failed"`
-	// EXPERIMENTAL: Posted when a refund of the settled payment is initiated. Optional.
+	// Posted when a refund of the settled payment is initiated. Optional.
 	Refund_initiated *SchemaPaymentEntryInput `json:"refund_initiated"`
 	// Posted when the payment settles. Every Payment Type must define it.
 	Settled SchemaPaymentEntryInput `json:"settled"`
+}
+
+// GetChargeback_countered returns SchemaPaymentAccountingInput.Chargeback_countered, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetChargeback_countered() SchemaPaymentEntryInput {
+	return v.Chargeback_countered
+}
+
+// GetChargeback_reversed returns SchemaPaymentAccountingInput.Chargeback_reversed, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetChargeback_reversed() SchemaPaymentEntryInput {
+	return v.Chargeback_reversed
+}
+
+// GetChargeback_settled returns SchemaPaymentAccountingInput.Chargeback_settled, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentAccountingInput) GetChargeback_settled() SchemaPaymentEntryInput {
+	return v.Chargeback_settled
 }
 
 // GetInitiated returns SchemaPaymentAccountingInput.Initiated, and is useful for accessing the field via an interface.
@@ -12264,6 +12912,11 @@ type SchemaPaymentTypeDetailsInput struct {
 	Amount string `json:"amount"`
 	// The direction the payment moves money.
 	Direction SchemaPaymentTypeDirection `json:"direction"`
+	// The payment networks the payment moves money over. List exactly one.
+	// Defaults to `[card]`. A `payin` Payment Type accepts only `card`.
+	Rails []SchemaPaymentTypeRail `json:"rails"`
+	// Key value pairs on a Payment, inherited by its Ledger Entries
+	Tags []SchemaLedgerEntryTagInput `json:"tags"`
 }
 
 // GetAmount returns SchemaPaymentTypeDetailsInput.Amount, and is useful for accessing the field via an interface.
@@ -12271,6 +12924,12 @@ func (v *SchemaPaymentTypeDetailsInput) GetAmount() string { return v.Amount }
 
 // GetDirection returns SchemaPaymentTypeDetailsInput.Direction, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentTypeDetailsInput) GetDirection() SchemaPaymentTypeDirection { return v.Direction }
+
+// GetRails returns SchemaPaymentTypeDetailsInput.Rails, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeDetailsInput) GetRails() []SchemaPaymentTypeRail { return v.Rails }
+
+// GetTags returns SchemaPaymentTypeDetailsInput.Tags, and is useful for accessing the field via an interface.
+func (v *SchemaPaymentTypeDetailsInput) GetTags() []SchemaLedgerEntryTagInput { return v.Tags }
 
 // The direction a Payment Type moves money.
 type SchemaPaymentTypeDirection string
@@ -12318,6 +12977,21 @@ func (v *SchemaPaymentTypeInput) GetType() string { return v.Type }
 // GetTypeVersion returns SchemaPaymentTypeInput.TypeVersion, and is useful for accessing the field via an interface.
 func (v *SchemaPaymentTypeInput) GetTypeVersion() int { return v.TypeVersion }
 
+// A payment network a Payment Type moves money over.
+type SchemaPaymentTypeRail string
+
+const (
+	// The ACH network.
+	SchemaPaymentTypeRailAch SchemaPaymentTypeRail = "ach"
+	// Card networks.
+	SchemaPaymentTypeRailCard SchemaPaymentTypeRail = "card"
+)
+
+var AllSchemaPaymentTypeRail = []SchemaPaymentTypeRail{
+	SchemaPaymentTypeRailAch,
+	SchemaPaymentTypeRailCard,
+}
+
 // The status of a Payment Type.
 type SchemaPaymentTypeStatus string
 
@@ -12354,8 +13028,26 @@ func (v *SchemaRepeatedConfigInput) GetKey() string { return v.Key }
 type SchemaSystemLineKind string
 
 const (
+	// The line removing the countered fee from the Payment Account when a chargeback is contested.
+	SchemaSystemLineKindPaymentChargebackCounteredFeeLine SchemaSystemLineKind = "payment_chargeback_countered_fee_line"
+	// The line restoring the countered fee to the Payment Account when a chargeback is reversed.
+	SchemaSystemLineKindPaymentChargebackCounteredFeeReversalLine SchemaSystemLineKind = "payment_chargeback_countered_fee_reversal_line"
+	// The line removing the dispute fee from the Payment Account when a chargeback opens.
+	SchemaSystemLineKindPaymentChargebackFeeLine SchemaSystemLineKind = "payment_chargeback_fee_line"
+	// The line removing the disputed amount from the Payment Account when a chargeback opens.
+	SchemaSystemLineKindPaymentChargebackLine SchemaSystemLineKind = "payment_chargeback_line"
+	// The line restoring a disputed amount to the Payment Account when a chargeback is reversed.
+	SchemaSystemLineKindPaymentChargebackReversalLine SchemaSystemLineKind = "payment_chargeback_reversal_line"
 	// The line carrying the Fragment fee amount, posted to the Payment Account.
 	SchemaSystemLineKindPaymentFeeLine SchemaSystemLineKind = "payment_fee_line"
+	// The line restoring the Fragment fee to the Payment Account when a payout fails.
+	SchemaSystemLineKindPaymentFeeReversalLine SchemaSystemLineKind = "payment_fee_reversal_line"
+	// The line removing the payout amount from the Payment Account when a payout is initiated.
+	SchemaSystemLineKindPaymentPayoutLine SchemaSystemLineKind = "payment_payout_line"
+	// The line restoring the payout return amount to the Payment Account when a payout is returned.
+	SchemaSystemLineKindPaymentPayoutReturnLine SchemaSystemLineKind = "payment_payout_return_line"
+	// The line restoring the payout amount to the Payment Account when a payout fails.
+	SchemaSystemLineKindPaymentPayoutReversalLine SchemaSystemLineKind = "payment_payout_reversal_line"
 	// The line removing the refund amount from the Payment Account when a Refund is initiated.
 	SchemaSystemLineKindPaymentRefundLine SchemaSystemLineKind = "payment_refund_line"
 	// The line restoring the refund amount to the Payment Account when a Refund fails.
@@ -12365,7 +13057,16 @@ const (
 )
 
 var AllSchemaSystemLineKind = []SchemaSystemLineKind{
+	SchemaSystemLineKindPaymentChargebackCounteredFeeLine,
+	SchemaSystemLineKindPaymentChargebackCounteredFeeReversalLine,
+	SchemaSystemLineKindPaymentChargebackFeeLine,
+	SchemaSystemLineKindPaymentChargebackLine,
+	SchemaSystemLineKindPaymentChargebackReversalLine,
 	SchemaSystemLineKindPaymentFeeLine,
+	SchemaSystemLineKindPaymentFeeReversalLine,
+	SchemaSystemLineKindPaymentPayoutLine,
+	SchemaSystemLineKindPaymentPayoutReturnLine,
+	SchemaSystemLineKindPaymentPayoutReversalLine,
 	SchemaSystemLineKindPaymentRefundLine,
 	SchemaSystemLineKindPaymentRefundReversalLine,
 	SchemaSystemLineKindPaymentSettlementLine,
@@ -12713,7 +13414,7 @@ func (v *StringMatchFilter) GetMatchesAny() []string { return v.MatchesAny }
 
 // SyncCustomAccountsByLinkIkResponse is returned by SyncCustomAccountsByLinkIk on success.
 type SyncCustomAccountsByLinkIkResponse struct {
-	// Once you've created a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
+	// Once you've created a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
 	SyncCustomAccounts SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResponse `json:"-"`
 }
 
@@ -13004,7 +13705,7 @@ func (v *SyncCustomAccountsByLinkIkSyncCustomAccountsSyncCustomAccountsResultAcc
 
 // SyncCustomAccountsResponse is returned by SyncCustomAccounts on success.
 type SyncCustomAccountsResponse struct {
-	// Once you've created a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
+	// Once you've created a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link), create accounts under it using this mutation. Each Custom Account is an immutable, single-entry view of all the transactions in the external account. You can sync up to 100 Custom Accounts in one API call.
 	SyncCustomAccounts SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResponse `json:"-"`
 }
 
@@ -13285,7 +13986,7 @@ func (v *SyncCustomAccountsSyncCustomAccountsSyncCustomAccountsResultAccountsExt
 
 // SyncCustomTxsByLinkIkResponse is returned by SyncCustomTxsByLinkIk on success.
 type SyncCustomTxsByLinkIkResponse struct {
-	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
+	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
 	SyncCustomTxs SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResponse `json:"-"`
 }
 
@@ -13571,7 +14272,7 @@ func (v *SyncCustomTxsByLinkIkSyncCustomTxsSyncCustomTxsResultTxsTx) GetPosted()
 
 // SyncCustomTxsResponse is returned by SyncCustomTxs on success.
 type SyncCustomTxsResponse struct {
-	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/guides/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
+	// You can create transactions under a Custom Account in a [Custom Link](https://fragment.dev/docs/sync-payments#custom-link) using this mutation. Once you've imported transactions, you can use the reconcileTx mutation to add them to a Ledger via the Linked Ledger Account. You can sync up to 100 Custom Transactions in one API call.
 	SyncCustomTxs SyncCustomTxsSyncCustomTxsSyncCustomTxsResponse `json:"-"`
 }
 
@@ -14822,6 +15523,14 @@ func (v *__CreatePaymentMethodSetupInput) GetLedgerIk() string { return v.Ledger
 // GetEmail returns __CreatePaymentMethodSetupInput.Email, and is useful for accessing the field via an interface.
 func (v *__CreatePaymentMethodSetupInput) GetEmail() string { return v.Email }
 
+// __CreateWebhookSubscriptionInput is used internally by genqlient
+type __CreateWebhookSubscriptionInput struct {
+	Url string `json:"url"`
+}
+
+// GetUrl returns __CreateWebhookSubscriptionInput.Url, and is useful for accessing the field via an interface.
+func (v *__CreateWebhookSubscriptionInput) GetUrl() string { return v.Url }
+
 // __DeleteCustomTxsInput is used internally by genqlient
 type __DeleteCustomTxsInput struct {
 	Txs []string `json:"txs"`
@@ -14853,6 +15562,14 @@ type __DeleteSchemaInput struct {
 
 // GetSchema returns __DeleteSchemaInput.Schema, and is useful for accessing the field via an interface.
 func (v *__DeleteSchemaInput) GetSchema() SchemaMatchInput { return v.Schema }
+
+// __DeleteWebhookSubscriptionInput is used internally by genqlient
+type __DeleteWebhookSubscriptionInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeleteWebhookSubscriptionInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeleteWebhookSubscriptionInput) GetId() string { return v.Id }
 
 // __GetAccountDataMigrationsInput is used internally by genqlient
 type __GetAccountDataMigrationsInput struct {
@@ -15351,6 +16068,18 @@ func (v *__ListPaymentsInput) GetBefore() *string { return v.Before }
 
 // GetFilter returns __ListPaymentsInput.Filter, and is useful for accessing the field via an interface.
 func (v *__ListPaymentsInput) GetFilter() *PaymentsFilterSet { return v.Filter }
+
+// __ListWebhookSubscriptionsInput is used internally by genqlient
+type __ListWebhookSubscriptionsInput struct {
+	After *string `json:"after"`
+	First *int    `json:"first"`
+}
+
+// GetAfter returns __ListWebhookSubscriptionsInput.After, and is useful for accessing the field via an interface.
+func (v *__ListWebhookSubscriptionsInput) GetAfter() *string { return v.After }
+
+// GetFirst returns __ListWebhookSubscriptionsInput.First, and is useful for accessing the field via an interface.
+func (v *__ListWebhookSubscriptionsInput) GetFirst() *int { return v.First }
 
 // __MigrateLedgerEntryInput is used internally by genqlient
 type __MigrateLedgerEntryInput struct {
@@ -15969,6 +16698,7 @@ mutation CreatePayment ($ik: SafeString!, $ledgerIk: SafeString!, $paymentType: 
 				currency {
 					code
 				}
+				rail
 				refundedAmount
 				refunds {
 					nodes {
@@ -16092,6 +16822,58 @@ func CreatePaymentMethodSetup(
 	}
 
 	data_ = &CreatePaymentMethodSetupResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by CreateWebhookSubscription.
+const CreateWebhookSubscription_Operation = `
+mutation CreateWebhookSubscription ($url: String!) {
+	createWebhookSubscription(input: {url:$url}) {
+		__typename
+		... on CreateWebhookSubscriptionResult {
+			signingSecret
+			subscription {
+				id
+				url
+				created
+			}
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func CreateWebhookSubscription(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	url string,
+) (data_ *CreateWebhookSubscriptionResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "CreateWebhookSubscription",
+		Query:  CreateWebhookSubscription_Operation,
+		Variables: &__CreateWebhookSubscriptionInput{
+			Url: url,
+		},
+	}
+
+	data_ = &CreateWebhookSubscriptionResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -16291,6 +17073,53 @@ func DeleteSchema(
 	}
 
 	data_ = &DeleteSchemaResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The mutation executed by DeleteWebhookSubscription.
+const DeleteWebhookSubscription_Operation = `
+mutation DeleteWebhookSubscription ($id: ID!) {
+	deleteWebhookSubscription(id: $id) {
+		__typename
+		... on DeleteWebhookSubscriptionResult {
+			success
+		}
+		... on BadRequestError {
+			code
+			message
+			retryable
+		}
+		... on InternalError {
+			code
+			message
+			retryable
+		}
+	}
+}
+`
+
+func DeleteWebhookSubscription(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+) (data_ *DeleteWebhookSubscriptionResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "DeleteWebhookSubscription",
+		Query:  DeleteWebhookSubscription_Operation,
+		Variables: &__DeleteWebhookSubscriptionInput{
+			Id: id,
+		},
+	}
+
+	data_ = &DeleteWebhookSubscriptionResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -16826,6 +17655,7 @@ query GetPayment ($ik: SafeString!, $ledgerIk: SafeString!) {
 			name
 			precision
 		}
+		rail
 		status
 		type
 		typeVersion
@@ -17526,6 +18356,7 @@ query ListPayments ($ledgerIk: SafeString!, $after: String, $first: Int, $before
 				currency {
 					code
 				}
+				rail
 				status
 				type
 				typeVersion
@@ -17574,6 +18405,50 @@ func ListPayments(
 	}
 
 	data_ = &ListPaymentsResponse{}
+	resp_ := &graphql.Response{Data: data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return data_, err_
+}
+
+// The query executed by ListWebhookSubscriptions.
+const ListWebhookSubscriptions_Operation = `
+query ListWebhookSubscriptions ($after: String, $first: Int) {
+	webhookSubscriptions(after: $after, first: $first) {
+		nodes {
+			id
+			url
+			created
+		}
+		pageInfo {
+			hasNextPage
+			endCursor
+		}
+	}
+}
+`
+
+func ListWebhookSubscriptions(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	after *string,
+	first *int,
+) (data_ *ListWebhookSubscriptionsResponse, err_ error) {
+	req_ := &graphql.Request{
+		OpName: "ListWebhookSubscriptions",
+		Query:  ListWebhookSubscriptions_Operation,
+		Variables: &__ListWebhookSubscriptionsInput{
+			After: after,
+			First: first,
+		},
+	}
+
+	data_ = &ListWebhookSubscriptionsResponse{}
 	resp_ := &graphql.Response{Data: data_}
 
 	err_ = client_.MakeRequest(
@@ -17858,6 +18733,7 @@ mutation RefundPayment ($ik: SafeString!, $paymentIk: SafeString!, $ledgerIk: Sa
 				currency {
 					code
 				}
+				rail
 				refundedAmount
 				refunds {
 					nodes {
@@ -17937,6 +18813,7 @@ mutation RetryPayment ($attemptIk: SafeString!, $paymentIk: SafeString!, $ledger
 				currency {
 					code
 				}
+				rail
 				refundedAmount
 				refunds {
 					nodes {

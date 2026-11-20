@@ -1364,6 +1364,7 @@ mutation CreatePayment(
         currency {
           code
         }
+        rail
         refundedAmount
         refunds {
           nodes {
@@ -1416,6 +1417,7 @@ mutation RetryPayment(
         currency {
           code
         }
+        rail
         refundedAmount
         refunds {
           nodes {
@@ -1472,6 +1474,7 @@ mutation RefundPayment(
         currency {
           code
         }
+        rail
         refundedAmount
         refunds {
           nodes {
@@ -1507,6 +1510,7 @@ query GetPayment($ik: SafeString!, $ledgerIk: SafeString!) {
       name
       precision
     }
+    rail
     status
     type
     typeVersion
@@ -1542,6 +1546,7 @@ query ListPayments(
         currency {
           code
         }
+        rail
         status
         type
         typeVersion
@@ -1707,6 +1712,63 @@ query GetPaymentMethodSetup($ik: SafeString!, $ledgerIk: SafeString!) {
         expiryMonth
         expiryYear
       }
+    }
+  }
+}
+
+mutation CreateWebhookSubscription($url: String!) {
+  createWebhookSubscription(input: { url: $url }) {
+    __typename
+    ... on CreateWebhookSubscriptionResult {
+      signingSecret
+      subscription {
+        id
+        url
+        created
+      }
+    }
+    ... on BadRequestError {
+      code
+      message
+      retryable
+    }
+    ... on InternalError {
+      code
+      message
+      retryable
+    }
+  }
+}
+
+query ListWebhookSubscriptions($after: String, $first: Int) {
+  webhookSubscriptions(after: $after, first: $first) {
+    nodes {
+      id
+      url
+      created
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+mutation DeleteWebhookSubscription($id: ID!) {
+  deleteWebhookSubscription(id: $id) {
+    __typename
+    ... on DeleteWebhookSubscriptionResult {
+      success
+    }
+    ... on BadRequestError {
+      code
+      message
+      retryable
+    }
+    ... on InternalError {
+      code
+      message
+      retryable
     }
   }
 }
